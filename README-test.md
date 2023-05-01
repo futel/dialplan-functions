@@ -1,0 +1,27 @@
+# Smoke test stage deployment
+
+Use the URL found in README-deploy.md.
+
+    doctl --config config.yaml serverless connect <namespace>
+
+    doctl --config config.yaml serverless functions invoke dialplans/outgoing
+    
+    curl <host>/api/v1/web/<namespace_id>/<package>/<function>
+
+# Unit test
+
+## Setup
+
+To be done once.
+
+    virtualenv env
+    
+    source env/bin/activate
+    
+    pip install -r requirements.txt
+        
+## Test
+
+    source env/bin/activate
+    
+    python3 -m unittest discover -s twilio/packages/dialplans/outgoing/
