@@ -22,27 +22,36 @@ Check out or create relevant source branch <branch>. Namespace is twilio_<branch
 
 # Create a new stage or dev deployment, or update an existing one
 
-XXX record the namespaces being used by Twilio stage and prod somewhere here and in Twilio source. Eventually this would selfdocument in the ansible build?
-
     doctl --config config.yaml serverless connect <namespace>
     
     doctl --config config.yaml serverless deploy twilio
 
 # Get the URL
 
-Get the host, package, and function URL components:
+Get the namespace ID and host URL components:
 
     doctl --config config.yaml serverless namespaces list
 
+The package and function components are as in the directory tree:
+
+- e.g. twilio/packages/<package>/<function>
+- e.g. dialplans/dialer and dialplans/outgoing
+
 The URL is <host>/api/v1/web/<namespace_id>/<package>/<function>.
 
-Update Twilio stage or dev emergency and nonemergency SIP domains to point to URL.
+XXX record the namespaces being used by Twilio stage and prod somewhere here and in Twilio source. Eventually this would selfdocument in the build, either Ansible or scripts?
+
+Update Twilio Programmable Voice components to point to URL.
+
+XXX This is TBD. Could be stage or dev emergency and nonemergency SIP domains, could be environment or variables used by the PV Services.
 
 # Promote the stage deployment to production
 
-XXX record the namespaces being used by Twilio stage and prod somewhere here and in Twilio source. Eventually this would selfdocument in the ansible build?
+XXX record the namespaces being used by Twilio stage and prod somewhere here and in Twilio source. Eventually this would selfdocument in the build, either Ansible or scripts?
 
-Update Twilio prod emergency and nonemergency SIP domains to point to the URL of the namespace to promote.
+Update Twilio Programmable Voice components to point to URL.
+
+XXX This is TBD. Could be stage or dev emergency and nonemergency SIP domains, could be environment or variables used by the PV Services.
 
 Delete unused deployments.
 

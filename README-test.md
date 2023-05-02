@@ -1,11 +1,13 @@
 # Smoke test stage deployment
 
-Use the URL found in README-deploy.md.
-
     doctl --config config.yaml serverless connect <namespace>
 
     doctl --config config.yaml serverless functions invoke dialplans/outgoing
     
+    doctl --config config.yaml serverless functions invoke dialplans/dialer
+
+Use the URL found in README-deploy.md.
+
     curl <host>/api/v1/web/<namespace_id>/<package>/<function>
 
 # Unit test
