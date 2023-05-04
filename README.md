@@ -8,7 +8,10 @@ We are deploying DigitalOcean functions which will return TwiML to a GET or POST
 
 We have separate projects in the same namespace if they are versioned together. Put experiments in their own repo, move them here if they are part of twilio-sip-direct.
 
-Do we need access control, or is the URL secret? If we do, we include an X-Function-Auth header containing a secret.
+Do we need access control, or is the URL secret? If we do, we include an X-Function-Auth header containing a secret, or:
+
+- https://www.twilio.com/docs/usage/security#http-authentication
+- https://www.twilio.com/docs/usage/tutorials/how-to-secure-your-flask-app-by-validating-incoming-twilio-requests
 
 https://docs.digitalocean.com/products/functions/
 
@@ -20,9 +23,11 @@ The repo has a project tree initialized with:
 
     doctl --config config.yaml serverless init --language python twilio
 
-
     doctl serverless watch example-project
 
-    doctl serverless activations logs --follow
+To view logs:
+
+- doctl --config config.yaml serverless activations logs --follow
+- doctl --config config.yaml serverless activations logs --function dialplans/dialer --limit 1
 
     doctl serverless activations get ...

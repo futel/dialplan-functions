@@ -26,4 +26,6 @@ To be done once.
 
     source env/bin/activate
     
-    python3 -m unittest discover -s twilio/packages/dialplans/outgoing/
+    python3 -m unittest discover -s twilio/packages/dialplans/outgoing
+    
+    python3 -m unittest discover -s twilio/packages/dialplans/dialer
