@@ -22,12 +22,3 @@ https://docs.digitalocean.com/products/functions/
 The repo has a project tree initialized with:
 
     doctl --config config.yaml serverless init --language python twilio
-
-    doctl serverless watch example-project
-
-To view logs:
-
-- doctl --config config.yaml serverless activations logs --follow
-- doctl --config config.yaml serverless activations logs --function dialplans/dialer --limit 1
-
-    doctl serverless activations get ...

@@ -1,3 +1,5 @@
+# Testing and development
+
 # Smoke test stage deployment
 
     doctl --config config.yaml serverless connect <namespace>
@@ -29,3 +31,13 @@ To be done once.
     python3 -m unittest discover -s twilio/packages/dialplans/outgoing
     
     python3 -m unittest discover -s twilio/packages/dialplans/dialer
+
+# Continuously deploy
+
+    doctl serverless watch example-project
+
+# View logs
+
+    doctl --config config.yaml serverless activations logs --follow
+
+    doctl --config config.yaml serverless activations logs --function dialplans/dialer --limit 1
