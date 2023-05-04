@@ -8,10 +8,9 @@ We are deploying DigitalOcean functions which will return TwiML to a GET or POST
 
 We have separate projects in the same namespace if they are versioned together. Put experiments in their own repo, move them here if they are part of twilio-sip-direct.
 
-Do we need access control, or is the URL secret? If we do, we include an X-Function-Auth header containing a secret, or:
+Do we need access control, or is the URL secret?
 
-- https://www.twilio.com/docs/usage/security#http-authentication
-- https://www.twilio.com/docs/usage/tutorials/how-to-secure-your-flask-app-by-validating-incoming-twilio-requests
+If we do, we include an x-require-whisk-auth header containing a secret
 
 https://docs.digitalocean.com/products/functions/
 
