@@ -5,8 +5,8 @@
     doctl --config config.yaml serverless connect <namespace>
 
     doctl --config config.yaml serverless functions invoke dialplans/outgoing
-    
-    doctl --config config.yaml serverless functions invoke dialplans/dialer
+
+    doctl --config config.yaml serverless functions invoke dialplans/dialer -p number:number -p caller_id:caller_id
 
 Use the URL found in README-deploy.md.
 
