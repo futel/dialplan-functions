@@ -8,9 +8,7 @@ We are deploying DigitalOcean functions which will return TwiML to a GET or POST
 
 We have separate projects in the same namespace if they are versioned together. Put experiments in their own repo, move them here if they are part of twilio-sip-direct.
 
-Do we need access control, or is the URL secret?
-
-If we do, we include an x-require-whisk-auth header containing a secret
+Do we need access control, or is the URL secret? If we need access control, we need to implement our own. DO's automagic auth reads a x-require-whisk-auth header containing a secret, but Twilio can't set headers. Twilio will do basic auth, but will DO handle that? The Twilio libs do have a validator thing, hashing the URL and params, and it puts them in an x-twilio-signature header for requests coming from Twilio. We could verify that. The downside is that we would need to set a util to do that for smoke testing from the commandline. https://www.twilio.com/docs/usage/security#validating-requests
 
 https://docs.digitalocean.com/products/functions/
 
