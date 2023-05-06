@@ -47,11 +47,13 @@ XXX This is TBD. Could be stage or dev emergency and nonemergency SIP domains, c
 
 # Promote the stage deployment to production
 
-XXX record the namespaces being used by Twilio stage and prod somewhere here and in Twilio source. Eventually this would selfdocument in the build, either Ansible or scripts?
+XXX Document the namespaces which are stage and prod somewhere here.
 
-XXX Add a 'prod' component to config and remove it from current prod. Do this in the deployment step so it isn't in src.
+XXX Update the namespaces being used by Twilio stage and prod somewhere in the Twilio source. Eventually this would selfdocument in the build, either Ansible or scripts?
 
-Update Twilio Programmable Voice components to point to URL.
+XXX We need a way for a component to tell whether it is prod, stage, dev. Do this in the deployment step so it isn't in src. A newly created stage namespace should have stage, a newly created dev namespace should have dev, a promoted stage namespace should have prod.
+
+Update Twilio Programmable Voice components so that the DO Function URLs for prod use the promoted namespace.
 
 XXX This is TBD. Could be stage or dev emergency and nonemergency SIP domains, could be environment or variables used by the PV Services.
 
