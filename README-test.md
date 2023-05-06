@@ -4,9 +4,9 @@
 
     doctl --config config.yaml serverless connect <namespace>
 
-    doctl --config config.yaml serverless functions invoke dialplans/outgoing
-
     doctl --config config.yaml serverless functions invoke dialplans/dialer -p number:number -p caller_id:caller_id
+    
+    doctl --config config.yaml serverless functions invoke dialplans/dialer_status -p 'From:sip:test@direct-futel-nonemergency-stage.sip.twilio.com' -p DialCallStatus:completed -p 'To:sip:5035551212@direct-futel-nonemergency-stage.sip.twilio.com'
 
 Use the URL found in README-deploy.md.
 
