@@ -38,6 +38,7 @@ To be done once.
     cd twilio
     
     (PYTHONPATH=$PYTHONPATH:lib python3 -m unittest discover -s packages/dialplans/dial_pstn)
+    (PYTHONPATH=$PYTHONPATH:lib python3 -m unittest discover -s packages/dialplans/dial_sip)
     
 # Continuously deploy
 
