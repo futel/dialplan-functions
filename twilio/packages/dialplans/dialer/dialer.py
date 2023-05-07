@@ -22,6 +22,7 @@ def dialer(event, context):
     number = event['number']
     caller_id = event['caller_id']
     response = VoiceResponse()
+    # XXX default timeLimit is 4 hours, should be smaller, in seconds
     dial = response.dial(
         caller_id=caller_id,
         answer_on_bridge=True,
