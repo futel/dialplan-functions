@@ -13,7 +13,7 @@ def dial_pstn(event, context):
     dial = response.dial(
         caller_id=caller_id,
         answer_on_bridge=True,
-        action=util.function_url(context, 'dialer_status'))
+        action=util.function_url(context, 'metric_dialer_status'))
     dial.number(number)
     response.append(dial)
     return util.twiml_response(response)

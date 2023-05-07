@@ -20,7 +20,7 @@ packages:
           environment: {}
           annotations: {}
           limits: {}
-        - name: dialer_status
+        - name: metric_dialer_status
           binary: false
           main: ""
           runtime: nodejs:default

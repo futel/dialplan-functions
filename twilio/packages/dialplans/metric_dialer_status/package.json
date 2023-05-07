@@ -1,6 +1,6 @@
 {
-    "name": "dialer-status",
-    "main": "dialer-status.js",
+    "name": "metric-dialer-status",
+    "main": "metric-dialer-status.js",
     "dependencies": {
         "twilio": "^3.56",
         "@aws-sdk/client-sns": "3.32.0"
