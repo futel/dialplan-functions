@@ -10,7 +10,7 @@ packages:
       parameters: {}
       annotations: {}
       functions:
-        - name: dialer
+        - name: dial_pstn
           binary: false
           main: ""
           runtime: python:default

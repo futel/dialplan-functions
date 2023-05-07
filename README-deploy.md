@@ -59,7 +59,7 @@ Get the namespace ID and host URL components:
 The package and function components are as in the directory tree:
 
 - twilio/packages/<package>/<function>
-- e.g. dialplans/dialer and dialplans/outgoing
+- e.g. dialplans/dial_pstn and dialplans/outgoing
 
 The URL is <host>/api/v1/web/<namespace_id>/<package>/<function>, but we only need that for manual testing.
 

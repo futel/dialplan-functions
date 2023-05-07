@@ -4,7 +4,7 @@ from twilio.twiml.voice_response import VoiceResponse
 
 import util
 
-def dialer(event, context):
+def dial_pstn(event, context):
     """Return TwiML to dial number with attributes from event."""
     number = event['number']
     caller_id = event['caller_id']

@@ -4,7 +4,7 @@
 
     doctl --config config.yaml serverless connect <namespace>
 
-    doctl --config config.yaml serverless functions invoke dialplans/dialer -p number:number -p caller_id:caller_id
+    doctl --config config.yaml serverless functions invoke dialplans/dial_pstn -p number:number -p caller_id:caller_id
     
     doctl --config config.yaml serverless functions invoke dialplans/dialer_status -p 'From:sip:test@direct-futel-nonemergency-stage.sip.twilio.com' -p DialCallStatus:completed -p 'To:sip:5035551212@direct-futel-nonemergency-stage.sip.twilio.com'
 
@@ -30,7 +30,7 @@ To be done once.
     
     python3 -m unittest discover -s twilio/packages/dialplans/outgoing
     
-    python3 -m unittest discover -s twilio/packages/dialplans/dialer
+    python3 -m unittest discover -s twilio/packages/dialplans/dial_pstn
 
 # Continuously deploy
 
@@ -40,4 +40,4 @@ To be done once.
 
     doctl --config config.yaml serverless activations logs --follow
 
-    doctl --config config.yaml serverless activations logs --function dialplans/dialer --limit 1
+    doctl --config config.yaml serverless activations logs --function dialplans/dial_pstn --limit 1
