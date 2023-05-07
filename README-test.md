@@ -28,10 +28,8 @@ To be done once.
 
     source env/bin/activate
     
-    python3 -m unittest discover -s twilio/packages/dialplans/outgoing
+    (PYTHONPATH=$PYTHONPATH:twilio/lib python3 -m unittest discover -s twilio/packages/dialplans/dial_pstn)
     
-    python3 -m unittest discover -s twilio/packages/dialplans/dial_pstn
-
 # Continuously deploy
 
     doctl serverless watch example-project
