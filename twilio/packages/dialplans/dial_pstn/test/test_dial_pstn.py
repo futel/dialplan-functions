@@ -21,6 +21,12 @@ class TestDialPstn(TestCase):
         self.assertEqual(dial_pstn.normalize_number('+911'), '+911')
         self.assertEqual(dial_pstn.normalize_number('911'), '+911')
 
+    def test_filter_outgoing_number(self):
+        self.assertFalse(dial_pstn.filter_outgoing_number('+911'))
+        self.assertFalse(dial_pstn.filter_outgoing_number('+15035551212'))
+        # Mexico City Anthropological Museum
+        self.assertFalse(dial_pstn.filter_outgoing_number('+525555536266'))
+
     def test_dial_pstn(self):
         event = {'to_uri': 'sip:5035551212@direct-futel-nonemergency-stage.sip.twilio.com',
                  'from_uri': 'sip:test@direct-futel-nonemergency-stage.sip.twilio.com'}

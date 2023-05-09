@@ -63,42 +63,44 @@ def transform_number(phone_number):
     return phone_number
 
 def filter_outgoing_number(number):
-    if re.match(r"/^\+...$/", number):
+    """Return True if number should be filtered."""
+    if len(number) == 4:
         # Allow 911, 211, etc.
         return False
-    if not (number.startswith('+1' + usa_code) or
-            number.startswith('+1' + mexico_code)):
-        # Not NANPA or Mexico. Note that Twilio might still reject
-        # some NANPA, depending on settings.
-        return False
-        for prefix in premium_nanpa_codes:
-            if number.startswith('+1' + prefix):
-                return True
+    if not (number.startswith('+' + usa_code) or
+            number.startswith('+' + mexico_code)):
+        # Not NANPA or Mexico.
+        return True
+    # Should we validate US length here?
+    # Can we validate Mexico length here?
+    # Check for expensive NANPA numbers.
+    # Note that Twilio might still reject some NANPA,
+    # depending on settings.
+    for prefix in premium_nanpa_codes:
+        if number.startswith('+1' + prefix):
+            return True
     return False
 
 def dial_pstn(event, context):
     """Return TwiML to dial PSTN number with attributes from event."""
-    # XXX Are we assuming that the to number is E.164?
+    util.log('dial_pstn')
     to_uri = event['to_uri']
     from_uri = event['from_uri']
+    response = VoiceResponse()
 
     to_number = util.sip_to_exension(to_uri)
     to_number = normalize_number(to_number)
     to_number = transform_number(to_number)
+    util.log(f'to_number: {to_number}')
     if filter_outgoing_number(to_number):
-        # XXX notify
-        #twiml.say("We're sorry, your call cannot be completed as dialed. Please check the number and try again.");
-        #twiml.reject();
-        return util.twiml_response('')
+        util.log(f'filtered to_number: {to_number}')
+        response.redirect(util.function_url(context, 'reject'))
+        return util.twiml_response(response)
 
-    # The caller ID is the SIP extension we are calling from, which we assume is E.164.
     from_extension = util.sip_to_exension(from_uri)
     caller_id = extensions[from_extension]['caller_id']
-
     util.log(f'caller_id: {caller_id}')
-    util.log(f'to_number: {to_number}')
 
-    response = VoiceResponse()
     # XXX default timeLimit is 4 hours, should be smaller, in seconds
     dial = response.dial(
         caller_id=caller_id,

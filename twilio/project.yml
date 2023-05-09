@@ -40,3 +40,13 @@ packages:
           environment: {}
           annotations: {}
           limits: {}
+        - name: reject
+          binary: false
+          main: ""
+          runtime: python:default
+          web: true
+          webSecure: false
+          parameters: {}
+          environment: {}
+          annotations: {}
+          limits: {}
