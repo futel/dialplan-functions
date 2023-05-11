@@ -6,13 +6,6 @@ import util
 
 extensions = util.get_extensions()
 
-def python_to_twilio_param(v):
-    if v == True:
-        return 'true'
-    elif v == False:
-        return 'false'
-    raise NotImplementedError
-
 def dial_sip(event, context):
     """Return TwiML to dial SIP URI with attributes from event."""
     to_extension = event['to_extension']
@@ -32,7 +25,7 @@ def dial_sip(event, context):
     # The caller ID is the SIP extension we are calling from, which we assume is E.164.
     caller_id = extensions[from_extension]['caller_id']
     enable_emergency = extensions[from_extension]['enable_emergency']
-    enable_emergency = python_to_twilio_param(enable_emergency)
+    enable_emergency = util.python_to_twilio_param(enable_emergency)
 
     util.log(f'caller_id: {caller_id}')
     util.log(f'to_extension: {to_extension}')

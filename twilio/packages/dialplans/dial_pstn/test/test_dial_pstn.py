@@ -12,15 +12,6 @@ out = {'headers':
 
 class TestDialPstn(TestCase):
 
-    def test_normalize_number(self):
-        self.assertEqual(dial_pstn.normalize_number('+15035551212'), '+15035551212')
-        self.assertEqual(dial_pstn.normalize_number('15035551212'), '+15035551212')
-        self.assertEqual(dial_pstn.normalize_number('5035551212'), '+15035551212')
-        self.assertEqual(dial_pstn.normalize_number('+01115035551212'), '+15035551212')
-        self.assertEqual(dial_pstn.normalize_number('01115035551212'), '+15035551212')
-        self.assertEqual(dial_pstn.normalize_number('+911'), '+911')
-        self.assertEqual(dial_pstn.normalize_number('911'), '+911')
-
     def test_filter_outgoing_number(self):
         self.assertFalse(dial_pstn.filter_outgoing_number('+911'))
         self.assertFalse(dial_pstn.filter_outgoing_number('+15035551212'))

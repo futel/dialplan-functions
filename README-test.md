@@ -7,7 +7,9 @@
     doctl --config config.yaml serverless functions invoke dialplans/dial_pstn -p 'to_uri:sip:5035551212@direct-futel-nonemergency-stage.sip.twilio.com' -p 'from_uri:sip:test@direct-futel-nonemergency-stage.sip.twilio.com'
     
     doctl --config config.yaml serverless functions invoke dialplans/dial_sip -p to_extension:0 -p 'from_uri:sip:test@direct-futel-nonemergency-stage.sip.twilio.com'
-    
+
+    doctl --config config.yaml serverless functions invoke dialplans/dial_sip_e164 -p to_number:+19713512383 -p 'from_number:5035551212'
+
     doctl --config config.yaml serverless functions invoke dialplans/metric_dialer_status -p 'From:sip:test@direct-futel-nonemergency-dev.sip.twilio.com' -p DialCallStatus:completed -p 'To:sip:5035551212@direct-futel-nonemergency-dev.sip.twilio.com'
 
 Use the URL found in README-deploy.md.
@@ -39,6 +41,7 @@ To be done once.
     
     (PYTHONPATH=$PYTHONPATH:lib python3 -m unittest discover -s packages/dialplans/dial_pstn)
     (PYTHONPATH=$PYTHONPATH:lib python3 -m unittest discover -s packages/dialplans/dial_sip)
+    (PYTHONPATH=$PYTHONPATH:lib python3 -m unittest discover -s packages/dialplans/dial_sip_e164)
     
 # Continuously deploy
 
