@@ -37,7 +37,7 @@ def get_extensions():
     return extensions.extensions
 
 #sip:test@direct-futel-nonemergency-stage.sip.twilio.com
-def sip_to_exension(sip_uri):
+def sip_to_extension(sip_uri):
     """Return the extension from a SIP URI."""
     return sip_uri.split('@')[0].split(':')[1]
 

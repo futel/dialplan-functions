@@ -68,7 +68,7 @@ def dial_pstn(event, context):
     from_uri = event['from_uri']
     response = VoiceResponse()
 
-    to_number = util.sip_to_exension(to_uri)
+    to_number = util.sip_to_extension(to_uri)
     to_number = util.normalize_number(to_number)
     to_number = transform_number(to_number)
     util.log(f'to_number: {to_number}')

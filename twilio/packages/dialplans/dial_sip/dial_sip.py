@@ -11,7 +11,7 @@ def dial_sip(event, context):
     to_extension = event['to_extension']
     from_uri = event['from_uri']
 
-    from_extension = util.sip_to_exension(from_uri)
+    from_extension = util.sip_to_extension(from_uri)
     if to_extension == "#":
         to_extension = extensions[from_extension]['outgoing']
     elif to_extension == "0":
