@@ -38,8 +38,18 @@ def get_extensions():
 
 #sip:test@direct-futel-nonemergency-stage.sip.twilio.com
 def sip_to_extension(sip_uri):
-    """Return the extension from a SIP URI."""
-    return sip_uri.split('@')[0].split(':')[1]
+    """Return the extension from a SIP URI, or None."""
+    try:
+        return sip_uri.split('@')[0].split(':')[1]
+    except IndexError:
+        return None
+
+def e164_to_extension(e164, extension_map):
+    """Return an extension for E.164 string, or None."""
+    for key in extension_map:
+        if extension_map[key]['caller_id'] == e164:
+            return key
+    return None
 
 # Return phoneNumber string normalized to E.164, if it can be.
 # E.164 is +[country code][number].

@@ -17,13 +17,6 @@ def get_sip_domain(extension, extension_map):
         sip_domain_subdomain_base = sip_domain_subdomain_base_non_emergency
     return sip_domain_subdomain_base + '-' + util.get_instance() + '.' + sip_domain_suffix
 
-def e164_to_extension(e164, extension_map):
-    """Return an extension for E.164 string."""
-    for key in extension_map:
-        if extension_map[key]['caller_id'] == e164:
-            return key
-    return None
-
 def dial_sip_e164(event, context):
     """Return TwiML to dial SIP URI with attributes from event."""
     util.log('dial_sip_e164')
@@ -31,7 +24,7 @@ def dial_sip_e164(event, context):
     from_number = event['from_number']
 
     to_number = util.normalize_number(to_number)
-    to_extension = e164_to_extension(to_number, extensions)
+    to_extension = util.e164_to_extension(to_number, extensions)
     if not to_extension:
         util.log("Could not find extension for E.164 number")
         response.redirect(util.function_url(context, 'reject'))

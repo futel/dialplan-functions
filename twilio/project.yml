@@ -43,13 +43,7 @@ packages:
         - name: metric_dialer_status
           binary: false
           main: ""
-          runtime: nodejs:default
-          web: true
-          webSecure: false
-          parameters: {}
-          environment: {}
-          annotations: {}
-          limits: {}
+          runtime: python:default
           web: true
           webSecure: false
           parameters: {}
