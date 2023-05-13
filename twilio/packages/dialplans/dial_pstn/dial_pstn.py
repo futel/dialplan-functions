@@ -77,7 +77,7 @@ def dial_pstn(event, context):
         response.redirect(util.function_url(context, 'reject'))
         return util.twiml_response(response)
 
-    from_extension = util.sip_to_exension(from_uri)
+    from_extension = util.sip_to_extension(from_uri)
     caller_id = extensions[from_extension]['caller_id']
     util.log(f'caller_id: {caller_id}')
 
