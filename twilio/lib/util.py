@@ -1,6 +1,7 @@
 from assets import extensions
 
 import re
+from urllib import parse
 
 def log(msg):
     print(msg)
@@ -40,7 +41,9 @@ def get_extensions():
 def sip_to_extension(sip_uri):
     """Return the extension from a SIP URI, or None."""
     try:
-        return sip_uri.split('@')[0].split(':')[1]
+        extension = sip_uri.split('@')[0].split(':')[1]
+        extension = parse.unquote(extension)
+        return extension
     except IndexError:
         return None
 

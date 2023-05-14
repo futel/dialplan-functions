@@ -8,10 +8,12 @@ extensions = util.get_extensions()
 
 def dial_sip(event, context):
     """Return TwiML to dial SIP URI with attributes from event."""
-    to_extension = event['to_extension']
+    util.log('dial_sip')
     from_uri = event['from_uri']
+    to_uri = event['to_uri']
 
     from_extension = util.sip_to_extension(from_uri)
+    to_extension = util.sip_to_extension(to_uri)
     if to_extension == "#":
         to_extension = extensions[from_extension]['outgoing']
     elif to_extension == "0":
