@@ -34,6 +34,7 @@ To be done once.
     pip install -r packages/dialplans/dial_pstn/requirements.txt
     pip install -r packages/dialplans/metric_dialer_status/requirements.txt
     pip install python-dotenv
+
 ## Test
 
     source env/bin/activate
@@ -44,7 +45,11 @@ To be done once.
     (PYTHONPATH=$PYTHONPATH:lib python3 -m unittest discover -s packages/dialplans/dial_sip)
     (PYTHONPATH=$PYTHONPATH:lib python3 -m unittest discover -s packages/dialplans/dial_sip_e164)
     (PYTHONPATH=$PYTHONPATH:lib python3 -m unittest discover -s packages/dialplans/metric_dialer_status)
-    
+
+# Integration test
+
+XXX implement testplan
+
 # Continuously deploy
 
     doctl serverless watch example-project

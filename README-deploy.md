@@ -14,11 +14,11 @@ doctl >= 1.93.1
 
 # Deploy and development notes
 
-We create stage namespaces. We turn them into prod by pointing the Twilio Programmable Voice components at them.
+A namespace is an instance. We use stage, prod, probably dev and others.
 
-XXX What makes a namespace stage or prod? Twilio stage or prod pointing to it, and an attibute, either from environment or from the Twilio calls?
+We create stage namespaces. We turn them into prod by pointing the Twilio Programmable Voice components at them. We normally don't want to create prod namespaces or do anything to them after promotion except delete them when they become obsolete.
 
-We don't replace namespaces and they don't have a 'stage' or 'prod' address, Twilio Programmable Voice must know the correct namespace to call. When the relevant Twilio components don't point to them, they can be deleted.
+We don't replace specific namespace instances after creation and they don't have a 'stage' or 'prod' address, Twilio Programmable Voice must know the correct namespace to call. When the relevant Twilio components don't point to them, they can be deleted.
 
 # Setup
 
@@ -33,8 +33,6 @@ Fill .env to match .env.sample as described in README-aws.
 Create auth token in DigitalOcean web interface with read/write permissions. Note the token string.
 
     doctl --config config.yaml auth init --access-token <access-token> --interactive false
-
-# XXX
 
 # Create new namespace
 
@@ -67,15 +65,34 @@ The URL is <host>/api/v1/web/<namespace_id>/<package>/<function>, but we only ne
 
 Update DO_HOST and DO_NAMESPACE in the .env file for the Twilio Programmable Voice service, and deploy to stage.
 
-## Promote the stage deployment to production
+# Promote the stage instance to production
 
 Promote the Twilio Programmable Voice service to prod.
 
-XXX We need a way for a component to tell whether it is prod, stage, dev. Do this in the deployment step so it isn't in src. A newly created stage namespace should have stage, a newly created dev namespace should have dev, a promoted stage namespace should have prod. Or maybe a namespace don't know it is stage or prod, Twilio tells it?
+XXX A component tells whether it is prod, stage, dev in util.get_instance(). Update that. Do this in the deployment step so it isn't in src.
+XXX or have twilio tell us during a call
 
-Delete unused deployments.
+## Update Twilio Programamble Voice stage environment
 
-# Update an existing stage or dev deployment
+Update DO_HOST and DO_NAMESPACE in the environment file for the "dialer" Twilio Service, and deploy it to stage.
+
+## Test stage instance
+
+See README-test. Run the unit tests and some part of the integration and smoke tests.
+
+## Promote Twilio Programamble Voice
+
+Promote the "dialer" Twilio Service to prod.
+
+## Test prod
+
+Run some part of the integration tests.
+
+## Tear down old prod
+
+Delete unused instances.
+
+# Update an existing stage or dev instance
 
 This could be done for prod also, but we don't want to do that.
 
@@ -83,7 +100,7 @@ This could be done for prod also, but we don't want to do that.
     
     doctl --config config.yaml serverless deploy twilio
 
-# Delete deployment
+# Delete a stage or dev instance
 
     doctl --config config.yaml serverless connect <namespace>
 
