@@ -33,7 +33,6 @@ To be done once.
     #     Better would be to create an env for each function and test each.
     pip install -r packages/dialplans/dial_pstn/requirements.txt
     pip install -r packages/dialplans/metric_dialer_status/requirements.txt
-    pip install python-dotenv
 
 ## Test
 
@@ -48,7 +47,7 @@ To be done once.
 
 # Integration test
 
-XXX implement testplan
+Run tests in testplan. Emphasize tests which are important or have not been run for a while.
 
 # Continuously deploy
 
