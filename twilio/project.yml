@@ -10,6 +10,11 @@ packages:
       parameters: {}
       annotations: {}
       functions:
+        - name: dial_outgoing
+          binary: false
+          runtime: python:default
+          web: true
+          webSecure: false
         - name: dial_pstn
           binary: false
           runtime: python:default

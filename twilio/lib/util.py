@@ -24,10 +24,16 @@ def get_instance():
     # XXX we are stage!
     return 'stage'
 
-def function_url(context, function_name):
-    """Return the URL for another function in this package and namespace."""
+def function_url(context, function_name, params=None):
+    """
+    Return the URL for another function in this package and namespace.
+    """
     package = 'dialplans'
-    return context.api_host + '/api/v1/web/' + context.namespace + '/' + package + '/' + function_name
+    url = context.api_host + '/api/v1/web/' + context.namespace + '/' + package + '/' + function_name
+    if params:
+        params = parse.urlencode(params)
+        url += '?' + params
+    return url
 
 def source_dir():
     """Return the directory that files and directories can be accessed from."""

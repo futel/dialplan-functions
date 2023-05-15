@@ -4,6 +4,8 @@
 
     doctl --config config.yaml serverless connect <namespace>
 
+    doctl --config config.yaml serverless functions invoke dialplans/dial_outgoing -p 'to_uri:sip:5035551212@direct-futel-nonemergency-stage.sip.twilio.com' -p 'from_uri:sip:test@direct-futel-nonemergency-stage.sip.twilio.com'
+
     doctl --config config.yaml serverless functions invoke dialplans/dial_pstn -p 'to_uri:sip:5035551212@direct-futel-nonemergency-stage.sip.twilio.com' -p 'from_uri:sip:test@direct-futel-nonemergency-stage.sip.twilio.com'
     
     doctl --config config.yaml serverless functions invoke dialplans/dial_sip -p to_extension:0 -p 'from_uri:sip:test@direct-futel-nonemergency-stage.sip.twilio.com'
@@ -39,7 +41,8 @@ To be done once.
     source env/bin/activate
     
     cd twilio
-    
+
+    (PYTHONPATH=$PYTHONPATH:lib python3 -m unittest discover -s packages/dialplans/dial_outgoing)
     (PYTHONPATH=$PYTHONPATH:lib python3 -m unittest discover -s packages/dialplans/dial_pstn)
     (PYTHONPATH=$PYTHONPATH:lib python3 -m unittest discover -s packages/dialplans/dial_sip)
     (PYTHONPATH=$PYTHONPATH:lib python3 -m unittest discover -s packages/dialplans/dial_sip_e164)
