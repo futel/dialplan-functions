@@ -27,7 +27,7 @@ extensions = {
     "ghost-mountain": {
         "outgoing": "outgoing_portland",
         "caller_id": "+15034448615",
-        "enable_emergency": False
+        "enable_emergency": True
     },
     "r2d2": {
         "outgoing": "outgoing_safe",
