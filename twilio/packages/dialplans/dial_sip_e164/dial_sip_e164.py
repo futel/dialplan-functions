@@ -1,4 +1,4 @@
-# TwiML dialer suitable as the destination for a TwiML <redirect> verb.
+# Return TwiML to ring the relevant extension registered to our Twilio SIP Domains.
 
 from twilio.twiml.voice_response import VoiceResponse
 
