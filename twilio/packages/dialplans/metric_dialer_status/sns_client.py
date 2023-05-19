@@ -8,15 +8,9 @@ import util
 
 metric_host_base = 'do-dialplans';
 
-def getenv():
-    return {
-        'AWS_ACCESS_KEY_ID': os.environ['AWS_ACCESS_KEY_ID'],
-        'AWS_SECRET_ACCESS_KEY': os.environ['AWS_SECRET_ACCESS_KEY'],
-        'AWS_TOPIC_ARN': os.environ['AWS_TOPIC_ARN']}
-
 # Return the appropriate metric event hostname for our environment.
-def get_metric_hostname():
-    return metric_host_base + '-' + util.get_instance()
+def get_metric_hostname(env):
+    return metric_host_base + '-' + util.get_instance(env)
 
 def event_to_message(event, hostname):
     date_string = datetime.datetime.now().isoformat()
@@ -31,7 +25,7 @@ def event_to_message(event, hostname):
     return message
 
 def publish(event, env):
-    hostname = get_metric_hostname()
+    hostname = get_metric_hostname(env)
     message = event_to_message(event, hostname)
     client = boto3.client(
         'sns',

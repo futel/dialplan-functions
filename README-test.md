@@ -2,15 +2,19 @@
 
 # Smoke test stage deployment
 
+XXX test dial_outgoing with #/0 also
+
     doctl --config config.yaml serverless connect <namespace>
 
-    doctl --config config.yaml serverless functions invoke dialplans/dial_outgoing -p 'to_uri:sip:5035551212@direct-futel-nonemergency-stage.sip.twilio.com' -p 'from_uri:sip:test@direct-futel-nonemergency-stage.sip.twilio.com'
+    doctl --config config.yaml serverless functions invoke dialplans/dial_outgoing -p 'To:sip:5035551212@direct-futel-nonemergency-stage.sip.twilio.com' -p 'From:sip:test@direct-futel-nonemergency-stage.sip.twilio.com'
+    
+    doctl --config config.yaml serverless functions invoke dialplans/dial_outgoing -p 'To:sip:0@direct-futel-nonemergency-stage.sip.twilio.com' -p 'From:sip:test@direct-futel-nonemergency-stage.sip.twilio.com'
 
     doctl --config config.yaml serverless functions invoke dialplans/dial_pstn -p 'to_uri:sip:5035551212@direct-futel-nonemergency-stage.sip.twilio.com' -p 'from_uri:sip:test@direct-futel-nonemergency-stage.sip.twilio.com'
     
-    doctl --config config.yaml serverless functions invoke dialplans/dial_sip -p to_extension:0 -p 'from_uri:sip:test@direct-futel-nonemergency-stage.sip.twilio.com'
+    doctl --config config.yaml serverless functions invoke dialplans/dial_sip -p 'to_uri:sip:0@direct-futel-nonemergency-stage.sip.twilio.com' -p 'from_uri:sip:test@direct-futel-nonemergency-stage.sip.twilio.com'
 
-    doctl --config config.yaml serverless functions invoke dialplans/dial_sip_e164 -p to_number:+19713512383 -p 'from_number:5035551212'
+    doctl --config config.yaml serverless functions invoke dialplans/dial_sip_e164 -p 'To:+19713512383' -p 'From:5035551212'
 
     doctl --config config.yaml serverless functions invoke dialplans/metric_dialer_status -p 'From:sip:test@direct-futel-nonemergency-dev.sip.twilio.com' -p DialCallStatus:completed -p 'To:sip:5035551212@direct-futel-nonemergency-dev.sip.twilio.com'
 
@@ -47,7 +51,8 @@ To be done once.
     (PYTHONPATH=$PYTHONPATH:lib python3 -m unittest discover -s packages/dialplans/dial_sip)
     (PYTHONPATH=$PYTHONPATH:lib python3 -m unittest discover -s packages/dialplans/dial_sip_e164)
     (PYTHONPATH=$PYTHONPATH:lib python3 -m unittest discover -s packages/dialplans/metric_dialer_status)
-
+    (PYTHONPATH=$PYTHONPATH:lib python3 -m unittest discover -s packages/dialplans/reject)
+    
 # Integration test
 
 Run tests in testplan. Emphasize tests which are important or have not been run for a while.

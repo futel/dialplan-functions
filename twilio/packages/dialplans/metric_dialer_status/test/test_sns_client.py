@@ -7,8 +7,9 @@ import sns_client
 class TestSnsClient(TestCase):
 
     def test_foo(self):
+        env = {'INSTANCE': 'stage'}
         self.assertEqual(
-            sns_client.get_metric_hostname(), 'do-dialplans-stage')
+            sns_client.get_metric_hostname(env), 'do-dialplans-stage')
 
     def test_event_to_message(self):
         event = {

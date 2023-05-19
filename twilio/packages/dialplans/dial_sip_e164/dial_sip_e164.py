@@ -10,18 +10,18 @@ sip_domain_suffix = "sip.us1.twilio.com";
 
 extensions = util.get_extensions()
 
-def get_sip_domain(extension, extension_map):
+def get_sip_domain(extension, extension_map, env):
     if extension_map[extension]['enable_emergency']:
         sip_domain_subdomain_base = sip_domain_subdomain_base_emergency
     else:
         sip_domain_subdomain_base = sip_domain_subdomain_base_non_emergency
-    return sip_domain_subdomain_base + '-' + util.get_instance() + '.' + sip_domain_suffix
+    return sip_domain_subdomain_base + '-' + util.get_instance(env) + '.' + sip_domain_suffix
 
-def dial_sip_e164(event, context):
+def dial_sip_e164(event, context, env):
     """Return TwiML to dial SIP URI with attributes from event."""
     util.log('dial_sip_e164')
-    to_number = event['to_number']
-    from_number = event['from_number']
+    to_number = event['To']
+    from_number = event['From']
 
     to_number = util.normalize_number(to_number)
     to_extension = util.e164_to_extension(to_number, extensions)
@@ -29,7 +29,7 @@ def dial_sip_e164(event, context):
         util.log("Could not find extension for E.164 number")
         response.redirect(util.function_url(context, 'reject'))
         return util.twiml_response(response)
-    sip_domain = get_sip_domain(to_extension, extensions)
+    sip_domain = get_sip_domain(to_extension, extensions, env)
     util.log(f'to_extension: {to_extension}')
     util.log(f'from_number: {from_number}')
     util.log(f'sip_domain: {sip_domain}')

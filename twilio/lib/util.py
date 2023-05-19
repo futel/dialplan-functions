@@ -1,10 +1,18 @@
 from assets import extensions
 
+import os
 import re
 from urllib import parse
 
 def log(msg):
     print(msg)
+
+def get_env():
+    return {
+        'AWS_ACCESS_KEY_ID': os.environ['AWS_ACCESS_KEY_ID'],
+        'AWS_SECRET_ACCESS_KEY': os.environ['AWS_SECRET_ACCESS_KEY'],
+        'AWS_TOPIC_ARN': os.environ['AWS_TOPIC_ARN'],
+        'INSTANCE': os.environ['INSTANCE']}
 
 def twiml_response(twiml):
     return {
@@ -19,10 +27,9 @@ def python_to_twilio_param(v):
         return 'false'
     raise NotImplementedError
 
-def get_instance():
+def get_instance(env):
     """Return the instance/namespace/environment name eg 'prod', 'stage', 'dev'."""
-    # XXX we are stage!
-    return 'stage'
+    return env['INSTANCE']
 
 def function_url(context, function_name, params=None):
     """

@@ -39,13 +39,12 @@ def event_to_events(event):
     return (dial_event, dial_status_event)
 
 
-def metric_dialer_status(event, context):
+def metric_dialer_status(event, context, env):
     """
     Metric the dial status callback attributes from event,
     and return TwiML.
     """
     util.log('metric_dialer_status')
-    env = sns_client.getenv()
     for e in event_to_events(event):
         sns_client.publish(e, env)
 

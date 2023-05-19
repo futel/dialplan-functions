@@ -17,7 +17,8 @@ class TestDialSip(TestCase):
         event = {'to_uri': 'sip:%23@direct-futel-nonemergency-stage.sip.twilio.com',
                  'from_uri': 'sip:test@direct-futel-nonemergency-stage.sip.twilio.com'}
         context = mock.Mock(api_host='api_host', namespace='namespace')
-        got = dial_sip.dial_sip(event, context)
+        env = {'INSTANCE': 'stage'}
+        got = dial_sip.dial_sip(event, context, env)
         self.assertEqual(out, got)
 
 

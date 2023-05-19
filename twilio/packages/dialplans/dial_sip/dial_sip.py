@@ -6,7 +6,7 @@ import util
 
 extensions = util.get_extensions()
 
-def dial_sip(event, context):
+def dial_sip(event, context, env):
     """Return TwiML to dial SIP URI with attributes from event."""
     util.log('dial_sip')
     from_uri = event['from_uri']
@@ -22,7 +22,7 @@ def dial_sip(event, context):
         # XXX redirect to call cannot be completed as dialed
         raise NotImplementedError
 
-    instance = util.get_instance()
+    instance = util.get_instance(env)
 
     # The caller ID is the SIP extension we are calling from, which we assume is E.164.
     caller_id = extensions[from_extension]['caller_id']
