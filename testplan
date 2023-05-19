@@ -2,16 +2,21 @@ outgoing setup:
 Register client to Twilio SIP Domain as in twilio-sip-server README-client. Registration details will determine whether emergency calls are enabled.
 
 incoming setup:
-Register client to Twilio SIP Domain as in twilio-sip-server README-client.
+Register client to Twilio SIP Domain as in twilio-sip-server README-client. Register an extension which receives phone calls from a number which is configured to send calls to stage.
 
 outgoing dialtone:
 # sends to appropriate context
-0 sends to operator from dialtone and asterisk
-emergency call acts appropriately from dialtone and asterisk
+0 sends to operator from dialtone
+emergency call acts appropriately from dialtone
 caller ID is appropriate from dialtone and asterisk
 (dial 933 to test emergency calls)
 (dial 1 from asterisk prompt to test asterisk calls)
 (note that an ATA should collect/send PSTN/0/9xx numbers or autodial #, a SIP client like Linphone will need to enter the initial dial/#)
+
+outgoing asterisk:
+0 sends to operator from asterisk
+emergency call acts appropriately from asterisk
+caller ID is appropriate from asterisk
 
 extension # has-emergency caller-id
 demo outgoing_safe no incoming_leet
