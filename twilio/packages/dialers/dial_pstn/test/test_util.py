@@ -10,10 +10,10 @@ class TestUtil(TestCase):
         context.namespace = 'namespace'
         self.assertEqual(
             util.function_url(context, 'foo'),
-            'https://host/api/v1/web/namespace/dialplans/foo')
+            'https://host/api/v1/web/namespace/dialers/foo')
         self.assertEqual(
             util.function_url(context, 'foo', {'bar':'baz'}),
-            'https://host/api/v1/web/namespace/dialplans/foo?bar=baz')
+            'https://host/api/v1/web/namespace/dialers/foo?bar=baz')
 
     def test_get_extensions(self):
         self.assertTrue(util.get_extensions())

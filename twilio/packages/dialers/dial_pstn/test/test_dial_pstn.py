@@ -6,7 +6,7 @@ out = {'headers':
        {'Content-Type': 'text/xml'},
        'statusCode': 200,
        'body': '<?xml version="1.0" encoding="UTF-8"?><Response><Dial '
-       'action="api_host/api/v1/web/namespace/dialplans/metric_dialer_status" '
+       'action="api_host/api/v1/web/namespace/dialers/metric_dialer_status" '
        'answerOnBridge="true" callerId="+19713512383"><Number>+15035551212</Number></Dial></Response>'}
 
 

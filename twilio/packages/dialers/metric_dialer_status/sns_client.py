@@ -6,7 +6,7 @@ import os
 import util
 
 
-metric_host_base = 'do-dialplans';
+metric_host_base = 'do-functions';
 
 # Return the appropriate metric event hostname for our environment.
 def get_metric_hostname(env):

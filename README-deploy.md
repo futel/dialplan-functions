@@ -69,7 +69,7 @@ Note that the URLs are secrets!
 The package and function can be found from the directory tree:
 
 - twilio/packages/<package>/<function>
-- e.g. dialplans/dial_pstn and dialplans/dial_outgoing
+- e.g. dialers/dial_pstn and dialplans/dial_outgoing
 
 The URLs are <host>/api/v1/web/<namespace_id>/<package>/<function>. Note that <host> is misnamed because it also includes the protocol declaration.
 

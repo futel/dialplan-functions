@@ -6,7 +6,7 @@ out = {'headers':
        {'Content-Type': 'text/xml'},
        'statusCode': 200,
        'body': '<?xml version="1.0" encoding="UTF-8"?><Response><Dial '
-       'action="api_host/api/v1/web/namespace/dialplans/metric_dialer_status" '
+       'action="api_host/api/v1/web/namespace/dialers/metric_dialer_status" '
        'answerOnBridge="true">'
        '<Sip>sip:outgoing_safe@futel-stage.phu73l.net;region=us2?x-callerid=+19713512383&amp;x-enableemergency=false</Sip></Dial></Response>'}
 

@@ -35,7 +35,7 @@ def function_url(context, function_name, params=None):
     """
     Return the URL for another function in this package and namespace.
     """
-    package = 'dialplans'
+    package = 'dialers'
     url = context.api_host + '/api/v1/web/' + context.namespace + '/' + package + '/' + function_name
     if params:
         params = parse.urlencode(params)

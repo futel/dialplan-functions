@@ -1,7 +1,7 @@
 parameters: {}
 environment: {}
 packages:
-    - name: dialplans
+    - name: dialers
       shared: false
       environment:
         AWS_TOPIC_ARN: "${AWS_TOPIC_ARN}"
