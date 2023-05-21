@@ -25,7 +25,7 @@ dome-basement outging_safe no incoming_leet
 dome-booth outgoing_safe no incoming_leet
 dome-garage outgoing no incoming_leet
 dome-office outgoing_safe no incoming_leet
-ghost-mountain outging no ghost-mountain
+ghost-mountain outgoing yes ghost-mountain
 r2d2 outging_safe yes r2d2
 sjac outging_safe no sjac
 test outging_safe no test
@@ -37,7 +37,7 @@ dome-basement outging_safe no incoming_leet
 dome-booth outgoing_safe no incoming_leet
 dome-garage outgoing no incoming_leet
 dome-office outgoing_safe no incoming_leet
-ghost-mountain outgoing no ghost-mountain
+ghost-mountain outgoing yes ghost-mountain
 r2d2 outging_safe yes r2d2
 sjac outging_safe no sjac
 test outging_safe no test
