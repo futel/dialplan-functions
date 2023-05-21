@@ -1,0 +1,5 @@
+Run tests on stage
+Prioritize tests which haven't been run in a while or which are important
+Some tests are confusing or can't be run, don't stress, ask or leave notes
+For passed tests, mark date and name
+For failed tests, mark fail, name, comment, optionally open issue and add link
