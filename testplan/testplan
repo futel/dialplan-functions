@@ -4,7 +4,7 @@ Register client to Twilio SIP Domain as in twilio-sip-server README-client. Regi
 incoming setup:
 Register client to Twilio SIP Domain as in twilio-sip-server README-client. Register an extension which receives phone calls from a number which is configured to send calls to stage.
 
-outgoing dialtone:
+tests for outgoing dialtone (for each extension):
 # sends to appropriate context
 0 sends to operator from dialtone
 emergency call acts appropriately from dialtone
@@ -13,13 +13,13 @@ caller ID is appropriate from dialtone and asterisk
 (dial 1 from asterisk prompt to test asterisk calls)
 (note that an ATA should collect/send PSTN/0/9xx numbers or autodial #, a SIP client like Linphone will need to enter the initial dial/#)
 
-outgoing asterisk:
+tests for outgoing asterisk (for each extension):
 0 sends to operator from asterisk
 emergency call acts appropriately from asterisk
 caller ID is appropriate from asterisk
 
-dialtone:
-extension # has-emergency caller-id
+outgoing dialtone tests for each extension:
+(extension, #-destination, has-emergency, caller-id)
 demo outgoing_safe no incoming_leet
 dome-basement outging_safe no incoming_leet
 dome-booth outgoing_safe no incoming_leet
@@ -30,17 +30,17 @@ r2d2 outging_safe yes r2d2
 sjac outging_safe no sjac
 test outging_safe no test
 
-asterisk:
-extension # has-emergency caller-id
-demo outgoing_safe no incoming_leet
-dome-basement outging_safe no incoming_leet
-dome-booth outgoing_safe no incoming_leet
-dome-garage outgoing no incoming_leet
-dome-office outgoing_safe no incoming_leet
-ghost-mountain outgoing yes ghost-mountain
-r2d2 outging_safe yes r2d2
-sjac outging_safe no sjac
-test outging_safe no test
+outgoing asterisk tests for each extension:
+(extension, has-emergency, caller-id)
+demo no incoming_leet
+dome-basement no incoming_leet
+dome-booth no incoming_leet
+dome-garage no incoming_leet
+dome-office no incoming_leet
+ghost-mountain yes ghost-mountain
+r2d2 yes r2d2
+sjac no sjac
+test no test
 
 incoming call:
 Call test number from PSTN. Experience call.
