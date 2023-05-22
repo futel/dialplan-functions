@@ -24,8 +24,8 @@ class TestUtil(TestCase):
         self.assertEqual(util.normalize_number('5035551212'), '+15035551212')
         self.assertEqual(util.normalize_number('+01115035551212'), '+15035551212')
         self.assertEqual(util.normalize_number('01115035551212'), '+15035551212')
-        self.assertEqual(util.normalize_number('+911'), '+911')
-        self.assertEqual(util.normalize_number('911'), '+911')
+        self.assertEqual(util.normalize_number('+911'), '+1911')
+        self.assertEqual(util.normalize_number('911'), '+1911')
 
 if __name__ == '__main__':
     unittest.main()

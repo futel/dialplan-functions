@@ -67,17 +67,17 @@ def e164_to_extension(e164, extension_map):
             return key
     return None
 
-# Return phoneNumber string normalized to E.164, if it can be.
-# E.164 is +[country code][number].
+# Return normalized string, if it can be.
+# E.164 is +[country code][number]. Three digit numbers are +1[number].
 def normalize_number(number):
     # XXX DigitalOcean is not letting us import the phonenumbers library?
     #     We do this klugy partial normalization instead.
     if number.startswith('+'):
         # Temporarily remove a leading +.
         number = number[1:]
-    if re.match(r"/^...$/", number):
-        # Allow 911, 211, etc.
-        return '+' + number
+    if len(number) == 3:
+        # Allow 911, 211, etc. This is how Twilio wants it?
+        return '+1' + number
     if number.startswith('011'):
         # Remove international prefix, assume the rest is NANPA + country code.
         return '+' + number[3:]
