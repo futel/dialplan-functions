@@ -44,3 +44,6 @@ test no test
 
 incoming call:
 Call test number from PSTN. Experience call.
+
+other:
+metrics are generated
