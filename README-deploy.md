@@ -127,6 +127,8 @@ Deploy the current checked out source.
 
     doctl --config config.yaml serverless deploy twilio
 
+Twilio components do not need to be updated, since the namespace has not changed.
+
 # Delete a stage or dev instance
 
     doctl --config config.yaml serverless namespace delete <namespace>
