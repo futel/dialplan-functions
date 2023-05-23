@@ -10,23 +10,24 @@ extensions = util.get_extensions()
 
 def event_to_events(event):
     """Return sequence of sns_client events from DO event."""
-    extension_uri = event['From']
-    to_number = event['To']
+    event = util.twilio_event_to_event(event)
+    from_uri = event['from_uri']
+    to_uri = event['to_uri']
     dial_call_status = event['DialCallStatus']
     dial_event = None
     dial_status_event_base = None
 
-    extension = util.sip_to_extension(extension_uri)
+    extension = util.sip_to_extension(from_uri)
     if extension:
         # Outgoing from Twilio SIP Domain,
-        # extension_uri is SIP URI to extension.
+        # from_uri is SIP URI to extension.
         endpoint = extension
         dial_user_event = "outgoing_call"
         dial_status_user_event_base = "outgoing_dialstatus_"
     else:
         # Incoming to Twilio phone number,
-        # extensionUri is E.164 of caller.
-        endpoint = util.e164_to_extension(to_number, extensions)
+        # to_uri is E.164 of caller.
+        endpoint = util.e164_to_extension(to_uri, extensions)
         dial_user_event = "incoming_call"
         dial_status_user_event_base = "incoming_dialstatus_"
 
