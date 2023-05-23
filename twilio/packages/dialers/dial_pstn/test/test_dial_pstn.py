@@ -1,5 +1,7 @@
 from unittest import mock, TestCase
+
 import dial_pstn
+import test_util
 
 
 out = {'headers':
@@ -16,13 +18,16 @@ class TestDialPstn(TestCase):
         self.assertFalse(dial_pstn.filter_outgoing_number('+911'))
         self.assertFalse(dial_pstn.filter_outgoing_number('+15035551212'))
         # Mexico City Anthropological Museum
-        self.assertFalse(dial_pstn.filter_outgoing_number('+525555536266'))
+        self.assertFalse(
+            dial_pstn.filter_outgoing_number('+525555536266'))
 
     def test_dial_pstn(self):
-        event = {'to_uri': 'sip:5035551212@direct-futel-nonemergency-stage.sip.twilio.com',
-                 'from_uri': 'sip:test@direct-futel-nonemergency-stage.sip.twilio.com'}
+        event = {
+            'to_uri': 'sip:5035551212@direct-futel-nonemergency-stage.sip.twilio.com',
+            'from_uri': 'sip:test@direct-futel-nonemergency-stage.sip.twilio.com'}
         context = mock.Mock(api_host='api_host', namespace='namespace')
-        got = dial_pstn.dial_pstn(event, context)
+        env = test_util.MockDict()
+        got = dial_pstn.dial_pstn(event, context, env)
         self.assertEqual(out, got)
 
 

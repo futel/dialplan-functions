@@ -8,7 +8,7 @@ import util
 
 extensions = util.get_extensions()
 
-def dial_outgoing(event, context):
+def dial_outgoing(event, context, env):
     """Return TwiML to dial SIP URI with attributes from event."""
     event = util.twilio_event_to_event(event)
     from_uri = event['from_uri']

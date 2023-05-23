@@ -4,7 +4,7 @@ from twilio.twiml.voice_response import VoiceResponse
 
 import util
 
-def reject(event, context):
+def reject(event, context, env):
     """Return TwiML reject call."""
     util.log('reject')
     response = VoiceResponse()

@@ -1,5 +1,7 @@
 from unittest import mock, TestCase
+
 import dial_outgoing
+import test_util
 
 
 out = {
@@ -15,7 +17,8 @@ class TestDialOutgoing(TestCase):
             'To': 'sip:%23@direct-futel-nonemergency-stage.sip.twilio.com',
             'From': 'sip:test@direct-futel-nonemergency-stage.sip.twilio.com'}
         context = mock.Mock(api_host='api_host', namespace='namespace')
-        got = dial_outgoing.dial_outgoing(event, context)
+        env = test_util.MockDict()
+        got = dial_outgoing.dial_outgoing(event, context, env)
         self.assertEqual(out, got)
 
 

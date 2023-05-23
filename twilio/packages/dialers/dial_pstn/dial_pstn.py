@@ -1,4 +1,4 @@
-# TwiML dialer suitable as the destination for a TwiML <redirect> verb.
+"""TwiML dialer suitable as the destination for a TwiML <redirect> verb."""
 
 from twilio.twiml.voice_response import VoiceResponse
 
@@ -61,7 +61,7 @@ def filter_outgoing_number(number):
             return True
     return False
 
-def dial_pstn(event, context):
+def dial_pstn(event, context, env):
     """Return TwiML to dial PSTN number with attributes from event."""
     util.log('dial_pstn')
     to_uri = event['to_uri']
