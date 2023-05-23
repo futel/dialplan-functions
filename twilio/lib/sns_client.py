@@ -24,9 +24,9 @@ def event_to_message(channel, user_event, hostname):
         'event': event}
     return message
 
-def publish(event, env):
+def publish(channel, user_event, env):
     hostname = get_metric_hostname(env)
-    message = event_to_message(event, hostname)
+    message = event_to_message(channel, user_event, hostname)
     client = boto3.client(
         'sns',
         aws_access_key_id=env['AWS_ACCESS_KEY_ID'],
