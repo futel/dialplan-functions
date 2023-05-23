@@ -12,12 +12,12 @@ metric_host_base = 'do-functions';
 def get_metric_hostname(env):
     return metric_host_base + '-' + util.get_instance(env)
 
-def event_to_message(event, hostname):
+def event_to_message(channel, user_event, hostname):
     date_string = datetime.datetime.now().isoformat()
     event = {
         'Event': 'UserEvent',
-        'Channel': event['channel'],
-        'UserEvent': event['user_event']}
+        'Channel': channel,
+        'UserEvent': user_event}
     message = {
         'timestamp': date_string,
         'hostname': hostname,

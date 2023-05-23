@@ -12,11 +12,8 @@ class TestSnsClient(TestCase):
             sns_client.get_metric_hostname(env), 'do-functions-stage')
 
     def test_event_to_message(self):
-        event = {
-            'channel': 'dummy',
-            'user_event': 'dummy'}
-        out = {"timestamp": "2023-05-11T22:36:13.000489", "hostname": "hostname", "event": {"Event": "UserEvent", "Channel": "dummy", "UserEvent": "dummy"}}
-        got = sns_client.event_to_message(event, 'hostname')
+        out = {"timestamp": "2023-05-11T22:36:13.000489", "hostname": "hostname", "event": {"Event": "UserEvent", "Channel": "channel", "UserEvent": "user_event"}}
+        got = sns_client.event_to_message('channel', 'user_event', 'hostname')
         del out['timestamp']
         del got['timestamp']
         self.assertEqual(got, out)

@@ -31,9 +31,10 @@ def event_to_events(event):
         dial_status_user_event_base = "incoming_dialstatus_"
 
     dial_status_user_event = dial_status_user_event_base + dial_call_status + '_' + endpoint;
-    dial_event = {'channel': endpoint, 'user_event': dial_user_event};
+    dial_event = {
+        'channel': endpoint,
+        'user_event': dial_user_event};
     dial_status_event = {
-        'endpoint': endpoint,
         'channel': endpoint,
         'user_event': dial_status_user_event};
     return (dial_event, dial_status_event)
@@ -46,7 +47,7 @@ def metric_dialer_status(event, context, env):
     """
     util.log('metric_dialer_status')
     for e in event_to_events(event):
-        sns_client.publish(e, env)
+        sns_client.publish(e['channel'], e['user_event'], env)
 
     response = VoiceResponse()
     if event['DialCallStatus'] == 'failed':
