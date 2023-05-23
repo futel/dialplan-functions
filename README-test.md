@@ -46,12 +46,7 @@ To be done once.
     
     cd twilio
 
-    (PYTHONPATH=$PYTHONPATH:lib python3 -m unittest discover -s packages/dialers/dial_outgoing)
-    (PYTHONPATH=$PYTHONPATH:lib python3 -m unittest discover -s packages/dialers/dial_pstn)
-    (PYTHONPATH=$PYTHONPATH:lib python3 -m unittest discover -s packages/dialers/dial_sip)
-    (PYTHONPATH=$PYTHONPATH:lib python3 -m unittest discover -s packages/dialers/dial_sip_e164)
-    (PYTHONPATH=$PYTHONPATH:lib python3 -m unittest discover -s packages/dialers/metric_dialer_status)
-    (PYTHONPATH=$PYTHONPATH:lib python3 -m unittest discover -s packages/dialers/reject)
+    for i in packages/dialers/*; do (PYTHONPATH=$PYTHONPATH:lib python3 -m unittest discover -s $i); done
     
 # Integration test
 
