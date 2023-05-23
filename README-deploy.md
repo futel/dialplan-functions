@@ -46,6 +46,8 @@ We create a dev or stage instance by creating and deploying a namespace.
 
 Check out or create relevant source branch <branch>. <branch> may be main for a dev branch, but should be a release branch for stage.
 
+## Create namespace
+
 Label is twilio_<branch>.
 
     doctl --config config.yaml serverless namespaces create --label <label> --region sfo3
@@ -60,7 +62,7 @@ In .env, set the INSTANCE variable to "stage" or "dev". Deploy the namespace.
 
 ## Get the URLs
 
-The URLs are needed for the Twilio deploy. Get the namespace ID and host URL components:
+Get the namespace ID and host URL components:
 
     doctl --config config.yaml serverless namespaces list
 
@@ -89,7 +91,7 @@ See README-test. Run the unit tests. Run the smoke tests. Run some part of the i
 
 ## Update and deploy stage instance
 
-In .env, set the INSTANCE variable to "prod".
+In twilio/.env, set the INSTANCE variable to "prod".
 
 Deploy the instance.
 
@@ -97,11 +99,28 @@ Deploy the instance.
     
     doctl --config config.yaml serverless deploy twilio
 
-In .env, set the INSTANCE variable back to "stage" (and don't deploy or update this instance again without reverting .env).
+In .env, set the INSTANCE variable back to "stage".
 
-## Update Twilio Programamble Voice prod and stage environments
+Continue the rest of promotion immediately, so we don't remain connected to prod. Don't deploy or update this instance again without reverting .env.
 
-Update the prod TwiML Application Resources and SIP Domains to point to the promoted instance as in twilio-sip-server README-deploy.
+## Get the URLs
+
+Get the namespace ID and host URL components:
+
+    doctl --config config.yaml serverless namespaces list
+
+Note that the URLs are secrets!
+
+The package and function can be found from the directory tree:
+
+- twilio/packages/<package>/<function>
+- e.g. dialers/dial_pstn and dialplans/dial_outgoing
+
+The URLs are <host>/api/v1/web/<namespace_id>/<package>/<function>. Note that <host> is misnamed because it also includes the protocol declaration.
+
+## Update Twilio Programmable Voice prod and stage components to point to URLs
+
+Update the stage TwiML Application Resources and SIP Domains to point to the instance as in twilio-sip-server README-deploy.
 
 ## Tear down old prod
 
