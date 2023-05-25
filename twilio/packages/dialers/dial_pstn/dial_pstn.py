@@ -80,7 +80,6 @@ def dial_pstn(event, context, env):
 
     from_extension = util.sip_to_extension(from_uri)
     caller_id = extensions[from_extension]['caller_id']
-    util.log(f'caller_id: {caller_id}')
 
     # XXX default timeLimit is 4 hours, should be smaller, in seconds
     dial = response.dial(
@@ -88,4 +87,5 @@ def dial_pstn(event, context, env):
         answer_on_bridge=True,
         action=util.function_url(context, 'metric_dialer_status'))
     dial.number(to_number)
+    metric.publish('dialing', event, env) # We passed the filter.
     return util.twiml_response(response)
