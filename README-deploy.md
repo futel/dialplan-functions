@@ -124,7 +124,7 @@ Update the stage TwiML Application Resources and SIP Domains to point to the ins
 
 ## Tear down old prod
 
-Delete the prod instance which is no longer are pointed to by Twilio.
+Delete the prod instance which is no longer pointed to by Twilio.
 
     doctl --config config.yaml serverless connect <namespace>
 
@@ -157,3 +157,10 @@ Twilio components do not need to be updated, since the namespace has not changed
 # Add configuration for a new SIP client
 
 Update the source at twilio/lib/assets/extensions.py.
+
+---
+
+# Todo
+
+How do we tell which namespace we are connected to? Just connect to it, I guess? Would be good to combine a doctl command assembler with a sanity check e.g. the sources idea of which instance does not match the label of the namespace.
+
