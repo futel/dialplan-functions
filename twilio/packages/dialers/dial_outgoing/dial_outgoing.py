@@ -4,6 +4,7 @@
 
 from twilio.twiml.voice_response import VoiceResponse
 
+import metric
 import util
 
 extensions = util.get_extensions()
@@ -11,6 +12,7 @@ extensions = util.get_extensions()
 def dial_outgoing(event, context, env):
     """Return TwiML to dial SIP URI with attributes from event."""
     event = util.twilio_event_to_event(event)
+    metric.publish('dial_outgoing', event, env)
     from_uri = event['from_uri']
     to_uri = event['to_uri']
 

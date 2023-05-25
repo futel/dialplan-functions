@@ -21,7 +21,8 @@ class TestDialPstn(TestCase):
         self.assertFalse(
             dial_pstn.filter_outgoing_number('+525555536266'))
 
-    def test_dial_pstn(self):
+    @mock.patch.object(dial_pstn, 'metric')
+    def test_dial_pstn(self, _mock_metric):
         event = {
             'to_uri': 'sip:5035551212@direct-futel-nonemergency-stage.sip.twilio.com',
             'from_uri': 'sip:test@direct-futel-nonemergency-stage.sip.twilio.com'}

@@ -2,11 +2,12 @@
 
 from twilio.twiml.voice_response import VoiceResponse
 
+import metric
 import util
 
 def reject(event, context, env):
     """Return TwiML reject call."""
-    util.log('reject')
+    metric.publish('reject', event, env)
     response = VoiceResponse()
     response.say(
         "We're sorry, your call cannot be completed as dialed. "

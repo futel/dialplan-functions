@@ -2,6 +2,7 @@
 
 from twilio.twiml.voice_response import VoiceResponse
 
+import metric
 import util
 
 sip_domain_subdomain_base_emergency = "direct-futel";
@@ -19,9 +20,10 @@ def get_sip_domain(extension, extension_map, env):
 
 def dial_sip_e164(event, context, env):
     """Return TwiML to dial SIP URI with attributes from event."""
-    util.log('dial_sip_e164')
-    to_number = event['To']
-    from_number = event['From']
+    event = util.twilio_event_to_event(event)
+    metric.publish('dial_sip_e164', event, env)
+    from_number = event['from_uri']
+    to_number = event['to_uri']
 
     to_number = util.normalize_number(to_number)
     to_extension = util.e164_to_extension(to_number, extensions)

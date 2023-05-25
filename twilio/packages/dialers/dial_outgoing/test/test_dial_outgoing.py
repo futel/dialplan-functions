@@ -12,7 +12,8 @@ out = {
 
 class TestDialOutgoing(TestCase):
 
-    def test_foo(self):
+    @mock.patch.object(dial_outgoing, 'metric')
+    def test_dial_outgoingo(self, _mock_metric):
         event = {
             'To': 'sip:%23@direct-futel-nonemergency-stage.sip.twilio.com',
             'From': 'sip:test@direct-futel-nonemergency-stage.sip.twilio.com'}

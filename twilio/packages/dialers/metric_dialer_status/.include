@@ -1,6 +1,7 @@
 metric_dialer_status.py
 __main__.py
 requirements.txt
+../../../lib/metric.py
 ../../../lib/sns_client.py
 ../../../lib/util.py
 ../../../lib/assets

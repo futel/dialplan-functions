@@ -2,13 +2,14 @@
 
 from twilio.twiml.voice_response import VoiceResponse
 
+import metric
 import util
 
 extensions = util.get_extensions()
 
 def dial_sip(event, context, env):
     """Return TwiML to dial SIP URI with attributes from event."""
-    util.log('dial_sip')
+    metric.publish('dial_sip', event, env)
     from_uri = event['from_uri']
     to_uri = event['to_uri']
 

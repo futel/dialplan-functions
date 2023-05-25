@@ -3,6 +3,7 @@
 
 from twilio.twiml.voice_response import VoiceResponse
 
+import metric
 import sns_client
 import util
 
@@ -10,45 +11,44 @@ extensions = util.get_extensions()
 
 def event_to_events(event):
     """Return sequence of sns_client events from DO event."""
-    event = util.twilio_event_to_event(event)
     from_uri = event['from_uri']
     to_uri = event['to_uri']
     dial_call_status = event['DialCallStatus']
     dial_event = None
     dial_status_event_base = None
 
+    endpoint = metric.event_to_endpoint(event)
+
     extension = util.sip_to_extension(from_uri)
     if extension:
         # Outgoing from Twilio SIP Domain,
         # from_uri is SIP URI to extension.
-        endpoint = extension
         dial_user_event = "outgoing_call"
         dial_status_user_event_base = "outgoing_dialstatus_"
     else:
         # Incoming to Twilio phone number,
         # to_uri is E.164 of caller.
-        endpoint = util.e164_to_extension(to_uri, extensions)
         dial_user_event = "incoming_call"
         dial_status_user_event_base = "incoming_dialstatus_"
 
     dial_status_user_event = dial_status_user_event_base + dial_call_status + '_' + endpoint;
     dial_event = {
-        'channel': endpoint,
+        'endpoint': endpoint,
         'user_event': dial_user_event};
     dial_status_event = {
-        'channel': endpoint,
+        'endpoint': endpoint,
         'user_event': dial_status_user_event};
     return (dial_event, dial_status_event)
-
 
 def metric_dialer_status(event, context, env):
     """
     Metric the dial status callback attributes from event,
     and return TwiML.
     """
-    util.log('metric_dialer_status')
+    event = util.twilio_event_to_event(event)
+    metric.publish('metric_dialer_status', event, env)
     for e in event_to_events(event):
-        sns_client.publish(e['channel'], e['user_event'], env)
+        sns_client.publish(e['endpoint'], e['user_event'], env)
 
     response = VoiceResponse()
     if event['DialCallStatus'] == 'failed':

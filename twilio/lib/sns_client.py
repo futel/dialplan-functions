@@ -12,11 +12,12 @@ metric_host_base = 'do-functions';
 def get_metric_hostname(env):
     return metric_host_base + '-' + util.get_instance(env)
 
-def event_to_message(channel, user_event, hostname):
+def event_to_message(endpoint, user_event, hostname):
     date_string = datetime.datetime.now().isoformat()
     event = {
         'Event': 'UserEvent',
-        'Channel': channel,
+        'endpoint': endpoint,
+        'Channel': endpoint,    # Can probably be removed.
         'UserEvent': user_event}
     message = {
         'timestamp': date_string,
@@ -24,9 +25,9 @@ def event_to_message(channel, user_event, hostname):
         'event': event}
     return message
 
-def publish(channel, user_event, env):
+def publish(endpoint, user_event, env):
     hostname = get_metric_hostname(env)
-    message = event_to_message(channel, user_event, hostname)
+    message = event_to_message(endpoint, user_event, hostname)
     client = boto3.client(
         'sns',
         aws_access_key_id=env['AWS_ACCESS_KEY_ID'],

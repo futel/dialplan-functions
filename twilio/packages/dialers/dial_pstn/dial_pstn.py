@@ -2,6 +2,7 @@
 
 from twilio.twiml.voice_response import VoiceResponse
 
+import metric
 import util
 
 extensions = util.get_extensions()
@@ -63,7 +64,7 @@ def filter_outgoing_number(number):
 
 def dial_pstn(event, context, env):
     """Return TwiML to dial PSTN number with attributes from event."""
-    util.log('dial_pstn')
+    metric.publish('dial_pstn', event, env)
     to_uri = event['to_uri']
     from_uri = event['from_uri']
     response = VoiceResponse()
