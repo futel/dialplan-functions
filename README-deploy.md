@@ -122,6 +122,10 @@ The URLs are <host>/api/v1/web/<namespace_id>/<package>/<function>. Note that <h
 
 Update the stage TwiML Application Resources and SIP Domains to point to the instance as in twilio-sip-server README-deploy.
 
+## Smoke test
+
+Receive PSTN call from a prod client, or make an outgoing call from a prod client.
+
 ## Tear down old prod
 
 Delete the prod instance which is no longer pointed to by Twilio.
