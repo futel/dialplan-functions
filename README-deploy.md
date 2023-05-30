@@ -79,6 +79,11 @@ The URLs are <host>/api/v1/web/<namespace_id>/<package>/<function>. Note that <h
 
 Update the stage TwiML Application Resources and SIP Domains to point to the instance as in twilio-sip-server README-deploy.
 
+For the SIP domains, the package is "dialers" and the function is "dial_outgoing".
+
+For the Application Resources, the package is "dialers" and the function is "dial_sip_e164".
+
+
 ---
 
 # Promote a stage instance to production
@@ -124,7 +129,7 @@ Update the stage TwiML Application Resources and SIP Domains to point to the ins
 
 ## Smoke test
 
-Receive PSTN call from a prod client, or make an outgoing call from a prod client.
+Receive PSTN call from a prod client. Make an outgoing PSTN call from a prod client. Make outgoing '#' and '0' calls from a prod client.
 
 ## Tear down old prod
 

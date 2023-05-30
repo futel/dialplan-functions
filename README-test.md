@@ -2,12 +2,12 @@
 
 # Smoke test stage deployment
 
-XXX test dial_outgoing with #/0 also
-
     doctl --config config.yaml serverless connect <namespace>
 
     doctl --config config.yaml serverless functions invoke dialers/dial_outgoing -p 'To:sip:5035551212@direct-futel-nonemergency-stage.sip.twilio.com' -p 'From:sip:test@direct-futel-nonemergency-stage.sip.twilio.com'
-    
+
+    doctl --config config.yaml serverless functions invoke dialers/dial_outgoing -p 'To:sip:%23@direct-futel-nonemergency-stage.sip.twilio.com' -p 'From:sip:test@direct-futel-nonemergency-stage.sip.twilio.com'
+
     doctl --config config.yaml serverless functions invoke dialers/dial_outgoing -p 'To:sip:0@direct-futel-nonemergency-stage.sip.twilio.com' -p 'From:sip:test@direct-futel-nonemergency-stage.sip.twilio.com'
 
     doctl --config config.yaml serverless functions invoke dialers/dial_pstn -p 'to_uri:sip:5035551212@direct-futel-nonemergency-stage.sip.twilio.com' -p 'from_uri:sip:test@direct-futel-nonemergency-stage.sip.twilio.com'
