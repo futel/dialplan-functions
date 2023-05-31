@@ -20,7 +20,7 @@
 
 Use the URL found in README-deploy.md.
 
-    curl <host>/api/v1/web/<namespace_id>/<package>/<function>
+    wget --post-data 'To=sip:5035551212@direct-futel-nonemergency-stage.sip.twilio.com&From=sip:test@direct-futel-nonemergency-stage.sip.twilio.com' <host>/api/v1/web/<namespace_id>/dialers/dial_outgoing
 
 # Unit test
 
