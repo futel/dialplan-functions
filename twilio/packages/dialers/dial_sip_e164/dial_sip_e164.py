@@ -7,7 +7,9 @@ import util
 
 sip_domain_subdomain_base_emergency = "direct-futel";
 sip_domain_subdomain_base_non_emergency = "direct-futel-nonemergency";
-sip_domain_suffix = "sip.us1.twilio.com";
+# Note that we don't use sip.us1
+# https://www.twilio.com/docs/voice/api/sip-registration
+sip_domain_suffix = "sip.twilio.com";
 
 extensions = util.get_extensions()
 
