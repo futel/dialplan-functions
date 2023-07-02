@@ -4,7 +4,7 @@
 
 AWS should be set up as described in README-aws.
 
-Twilio Programmable Voice should be set up (after this componeont) as described in README-twilio.
+Twilio Programmable Voice should be set up (after this component) as described in README-twilio.
 
 # Requirements
 
@@ -14,9 +14,9 @@ doctl >= 1.93.1
 
 # Deploy and development notes
 
-An instance is a DigitalOcean Function namespace. We use stage, prod, and dev instances.
+An instance is a DigitalOcean Function namespace. We use stage, prod, and dev instances. We create stage and dev instances, and we promote stage instances to prod.
 
-We create stage and dev instances. The instance type is determined by which Twilio Programmable Voice components are pointed at them, and possibly by instance settings. We don't replace specific instances after creation and they don't have a descriptive address, Twilio components must know the correct namespace to call. When the relevant Twilio components don't point to them, they can be deleted.
+The instance type is determined by which Twilio Programmable Voice components are pointed at them, and by an environment variable. We don't replace specific instances after creation and they don't have a descriptive address, Twilio components must know the correct namespace to call. When the relevant Twilio components don't point to them, they can be deleted.
 
 We normally don't want to create prod instances or do anything to them after promotion except delete them when they become obsolete.
 
