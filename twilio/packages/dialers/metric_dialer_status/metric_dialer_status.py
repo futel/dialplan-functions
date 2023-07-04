@@ -45,19 +45,27 @@ def metric_dialer_status(event, context, env):
     Metric the dial status callback attributes from event,
     and return TwiML.
     """
+
+    # Perform the side effects.
     event = util.twilio_event_to_event(event)
     metric.publish('metric_dialer_status', event, env)
     for e in event_to_events(event):
         sns_client.publish(e['endpoint'], e['user_event'], env)
 
+    # Return TwiML.
     response = VoiceResponse()
     if event['DialCallStatus'] == 'failed':
-        response.say("We're sorry, your call cannot be completed as dialed. Please try again later.")
+        response.say(
+            "We're sorry, your call cannot be completed as dialed. "
+            "Please try again later.")
+    if event['DialCallStatus'] == 'busy':
+        response.hangup()       # XXX want slow busy
+    if event['DialCallStatus'] == 'no-answer':
+        response.hangup()       # XXX want fast busy
     else:
         # If the first interation on handset pickup is a local menu, we want to return to that.
         # If the first interation is a SIP call to a remote menu, we want to SIP it again if that
         # call hung up due to a user hitting the back key from the top, otherwise we want to end.
         # If the first interation is a dialtone, we want to end.
         response.hangup()
-
     return util.twiml_response(response)

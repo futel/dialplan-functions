@@ -7,7 +7,7 @@ import test_util
 out={'headers':
      {'Content-Type': 'text/xml'},
      'statusCode': 200,
-     'body': '<?xml version="1.0" encoding="UTF-8"?><Response><Dial action="api_host/api/v1/web/namespace/dialers/metric_dialer_status" answerOnBridge="true" callerId="5035551212"><Sip>sip:test@direct-futel-nonemergency-INSTANCE.sip.us1.twilio.com;</Sip></Dial></Response>'}
+     'body': '<?xml version="1.0" encoding="UTF-8"?><Response><Dial action="api_host/api/v1/web/namespace/dialers/metric_dialer_status" answerOnBridge="true" callerId="5035551212"><Sip>sip:test@direct-futel-nonemergency-INSTANCE.sip.twilio.com;</Sip></Dial></Response>'}
 
 
 class TestDialSipE164(TestCase):
