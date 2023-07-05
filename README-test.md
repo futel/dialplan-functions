@@ -18,6 +18,7 @@ Resources which are redirected to by dial_outgoing and/or dial_sip_e164
 - doctl --config config.yaml serverless functions invoke dialers/dial_pstn -p 'to_uri:sip:5035551212@direct-futel-nonemergency-stage.sip.twilio.com' -p 'from_uri:sip:test@direct-futel-nonemergency-stage.sip.twilio.com'
 - doctl --config config.yaml serverless functions invoke dialers/dial_sip -p 'to_uri:sip:0@direct-futel-nonemergency-stage.sip.twilio.com' -p 'from_uri:sip:test@direct-futel-nonemergency-stage.sip.twilio.com'
 - doctl --config config.yaml serverless functions invoke dialers/metric_dialer_status -p 'From:sip:test@direct-futel-nonemergency-dev.sip.twilio.com' -p DialCallStatus:completed -p 'To:sip:5035551212@direct-futel-nonemergency-dev.sip.twilio.com'
+- doctl --config config.yaml serverless functions invoke dialers/metric_dialer_status -p 'From:sip:test@direct-futel-nonemergency-dev.sip.twilio.com' -p DialCallStatus:busy -p 'To:sip:5035551212@direct-futel-nonemergency-dev.sip.twilio.com'
 - XXX metric_dialer_status should be invoked as for outgoing and incoming, and for all DialCallStatus
 
 Use the URL found in README-deploy.md.
