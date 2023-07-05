@@ -56,7 +56,7 @@ Label is twilio_<branch>.
 
 In .env, set the INSTANCE variable to "stage" or "dev". Deploy the namespace.
 
-    doctl --config config.yaml serverless connect <namespace>
+    doctl --config config.yaml serverless connect <namespace-label>
     
     doctl --config config.yaml serverless deploy twilio
 
@@ -68,20 +68,20 @@ Get the namespace ID and host URL components:
 
 Note that the URLs are secrets!
 
-The package and function can be found from the directory tree:
+The package and function can be found from the directory tree. The package is "dialers".
 
 - twilio/packages/<package>/<function>
-- e.g. dialers/dial_pstn and dialplans/dial_outgoing
+- e.g. dialers/dial_pstn and dialers/dial_outgoing
 
-The URLs are <host>/api/v1/web/<namespace_id>/<package>/<function>. Note that <host> is misnamed because it also includes the protocol declaration.
+The URLs are <host>/api/v1/web/<namespace_id>/dialers/<function>. Note that <host> is misnamed because it also includes the protocol declaration.
 
 ## Update Twilio Programmable Voice stage components to point to URLs
 
-Update the stage TwiML Application Resources and SIP Domains to point to the instance as in twilio-sip-server README-deploy.
+Update the dev or stage TwiML Application Resources and SIP Domains to point to the instance as in twilio-sip-server README-deploy.
 
-For the SIP domains, the package is "dialers" and the function is "dial_outgoing".
+For the SIP domains, the function is "dial_outgoing".
 
-For the Application Resources, the package is "dialers" and the function is "dial_sip_e164".
+For the Application Resources, the function is "dial_sip_e164".
 
 
 ---
@@ -119,13 +119,17 @@ Note that the URLs are secrets!
 The package and function can be found from the directory tree:
 
 - twilio/packages/<package>/<function>
-- e.g. dialers/dial_pstn and dialplans/dial_outgoing
+- e.g. dialers/dial_pstn and dialers/dial_outgoing
 
-The URLs are <host>/api/v1/web/<namespace_id>/<package>/<function>. Note that <host> is misnamed because it also includes the protocol declaration.
+The URLs are <host>/api/v1/web/<namespace_id>/dialers/<function>. Note that <host> is misnamed because it also includes the protocol declaration.
 
 ## Update Twilio Programmable Voice prod and stage components to point to URLs
 
 Update the stage TwiML Application Resources and SIP Domains to point to the instance as in twilio-sip-server README-deploy.
+
+For the SIP domains, the function is "dial_outgoing".
+
+For the Application Resources, the function is "dial_sip_e164".
 
 ## Smoke test
 
