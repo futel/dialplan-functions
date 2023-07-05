@@ -59,9 +59,9 @@ def metric_dialer_status(event, context, env):
             "We're sorry, your call cannot be completed as dialed. "
             "Please try again later.")
     if event['DialCallStatus'] == 'busy':
-        response.hangup()       # XXX want slow busy
+        response.reject(reason='busy')
     if event['DialCallStatus'] == 'no-answer':
-        response.hangup()       # XXX want fast busy
+        response.reject(reason='busy')
     else:
         # If the first interation on handset pickup is a local menu, we want to return to that.
         # If the first interation is a SIP call to a remote menu, we want to SIP it again if that
