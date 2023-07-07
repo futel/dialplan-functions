@@ -1,3 +1,7 @@
+"""
+Return TwiML to dial a SIP URI for our Asterisk server.
+"""
+
 # TwiML dialer suitable as the destination for a TwiML <redirect> verb.
 
 from twilio.twiml.voice_response import VoiceResponse

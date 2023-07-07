@@ -1,4 +1,7 @@
-# Return TwiML to ring the relevant extension registered to our Twilio SIP Domains.
+"""
+Return TwiML to call an extension registered to our Twilio SIP Domains, looked up by
+the given E.164 number.
+"""
 
 from twilio.twiml.voice_response import VoiceResponse
 

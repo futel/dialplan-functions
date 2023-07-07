@@ -1,6 +1,8 @@
-# TwiML dialer suitable as the destination for a TwiML <redirect> verb.
-# Determine whether we are dialing a PSTN number or a predetermined SIP
-# extension.
+"""
+Return TwiML to redirect to the SIP or PSTN dialer.
+"""
+# We should probably just return the relvant TwiML
+# instead of redirecting.
 
 from twilio.twiml.voice_response import VoiceResponse
 

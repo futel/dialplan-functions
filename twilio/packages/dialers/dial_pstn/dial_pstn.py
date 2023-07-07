@@ -1,4 +1,6 @@
-"""TwiML dialer suitable as the destination for a TwiML <redirect> verb."""
+"""
+Return TwiML to dial a PSTN number.
+"""
 
 from twilio.twiml.voice_response import VoiceResponse
 

@@ -1,5 +1,7 @@
-# Handler for a Dial status callback.
-# Publishes metrics to SNS, returns TwiML to continue call, or not.
+"""
+Handler for a Dial status callback.
+Publishes metrics to SNS, returns TwiML to continue call, or not.
+"""
 
 from twilio.twiml.voice_response import VoiceResponse
 
@@ -61,6 +63,12 @@ def metric_dialer_status(event, context, env):
     if event['DialCallStatus'] == 'busy':
         response.reject(reason='busy')
     if event['DialCallStatus'] == 'no-answer':
+        # This could be no pickup or not registered.
+        # We should care about not registered, metric something,
+        # it would be nice to fast busy also.
+        # The context should have this for not registered:
+        # ErrorCode "32009"
+        # ErrorMessage "Your TwiML tried to Dial a Twilio SIP Registered User that is not currently registered"
         response.reject(reason='busy')
     else:
         # If the first interation on handset pickup is a local menu, we want to return to that.

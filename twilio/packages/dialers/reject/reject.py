@@ -1,4 +1,6 @@
-# Reject call.
+"""
+Return TwiML to reject call.
+"""
 
 from twilio.twiml.voice_response import VoiceResponse
 
