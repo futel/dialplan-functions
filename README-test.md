@@ -53,7 +53,9 @@ To be done once.
     
 # Integration test
 
-Run tests in testplan. Emphasize tests which are important or have not been run for a while.
+If testplan has changed since last release branch, update google sheet testplan, keeping dates of nonupdated completed tests.
+
+Test stage against google sheet testplan. Emphasize tests which are important or have not been run for a while.
 
 # Continuously deploy
 
