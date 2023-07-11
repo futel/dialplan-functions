@@ -1,4 +1,9 @@
 extensions = {
+    "alleymaple": {
+        "outgoing": "outgoing_portland",
+        "caller_id": "+15034681337",
+        "enable_emergency": False
+    },
     "demo": {
         "outgoing": "outgoing_safe",
         "caller_id": "+15034681337",
