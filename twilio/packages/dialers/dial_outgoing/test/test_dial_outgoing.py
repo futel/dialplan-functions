@@ -7,7 +7,7 @@ import test_util
 out = {
     'headers': {'Content-Type': 'text/xml'},
     'statusCode': 200,
-    'body': '<?xml version="1.0" encoding="UTF-8"?><Response><Redirect>api_host/api/v1/web/namespace/dialers/dial_sip?to_uri=sip%3A%2523%40direct-futel-nonemergency-stage.sip.twilio.com&amp;from_uri=sip%3Atest%40direct-futel-nonemergency-stage.sip.twilio.com</Redirect></Response>'}
+    'body': '<?xml version="1.0" encoding="UTF-8"?><Response><Redirect>api_host/api/v1/web/namespace/dialers/dial_sip?To=sip%3A%2523%40direct-futel-nonemergency-stage.sip.twilio.com&amp;From=sip%3Atest%40direct-futel-nonemergency-stage.sip.twilio.com</Redirect></Response>'}
 
 
 class TestDialOutgoing(TestCase):

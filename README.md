@@ -19,3 +19,12 @@ https://docs.digitalocean.com/products/functions/
 The repo has a project tree initialized with:
 
     doctl --config config.yaml serverless init --language python twilio
+
+
+twilio services
+statements-en
+statements-es
+sounds
+
+create service
+update do dns name to point to statements-en-prod.assets.phu73l.net etc

@@ -24,8 +24,8 @@ class TestDialPstn(TestCase):
     @mock.patch.object(dial_pstn, 'metric')
     def test_dial_pstn(self, _mock_metric):
         event = {
-            'to_uri': 'sip:5035551212@direct-futel-nonemergency-stage.sip.twilio.com',
-            'from_uri': 'sip:test@direct-futel-nonemergency-stage.sip.twilio.com'}
+            'To': 'sip:5035551212@direct-futel-nonemergency-stage.sip.twilio.com',
+            'From': 'sip:test@direct-futel-nonemergency-stage.sip.twilio.com'}
         context = mock.Mock(api_host='api_host', namespace='namespace')
         env = test_util.MockDict()
         got = dial_pstn.dial_pstn(event, context, env)

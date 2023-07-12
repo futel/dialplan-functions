@@ -67,8 +67,8 @@ def filter_outgoing_number(number):
 def dial_pstn(event, context, env):
     """Return TwiML to dial PSTN number with attributes from event."""
     metric.publish('dial_pstn', event, env)
-    to_uri = event['to_uri']
-    from_uri = event['from_uri']
+    to_uri = event['To']
+    from_uri = event['From']
     response = VoiceResponse()
 
     to_number = util.sip_to_extension(to_uri)

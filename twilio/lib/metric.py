@@ -6,18 +6,18 @@ import util
 def event_to_endpoint(event):
     """
     Return an endpoint appropriate for a metric from
-    from_uri or to_number
+    From or To.
     """
-    extension = util.sip_to_extension(event['from_uri'])
+    extension = util.sip_to_extension(event['From'])
     if extension:
         # Outgoing from Twilio SIP Domain,
-        # from_uri is SIP URI to extension.
+        # From is SIP URI to extension.
         return extension
     else:
         # Incoming to Twilio phone number,
-        # to_uri is E.164 of caller.
+        # To is E.164 of caller.
         extensions = util.get_extensions()
-        return util.e164_to_extension(event['to_uri'], extensions)
+        return util.e164_to_extension(event['To'], extensions)
 
 def publish(user_event, event, env):
     channel = event_to_endpoint(event)

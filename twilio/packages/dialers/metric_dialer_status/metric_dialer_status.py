@@ -13,8 +13,8 @@ extensions = util.get_extensions()
 
 def event_to_events(event):
     """Return sequence of sns_client events from DO event."""
-    from_uri = event['from_uri']
-    to_uri = event['to_uri']
+    from_uri = event['From']
+    to_uri = event['To']
     dial_call_status = event['DialCallStatus']
     dial_event = None
     dial_status_event_base = None
@@ -47,7 +47,6 @@ def metric_dialer_status(event, context, env):
     Metric the dial status callback attributes from event,
     and return TwiML.
     """
-
     # Perform the side effects.
     event = util.twilio_event_to_event(event)
     metric.publish('metric_dialer_status', event, env)

@@ -18,8 +18,8 @@ class TestDialSip(TestCase):
     @mock.patch.object(dial_sip, 'metric')
     def test_dial_sip(self, _mock_metric):
         event = {
-            'to_uri': 'sip:%23@direct-futel-nonemergency-stage.sip.twilio.com',
-            'from_uri': 'sip:test@direct-futel-nonemergency-stage.sip.twilio.com'}
+            'To': 'sip:%23@direct-futel-nonemergency-stage.sip.twilio.com',
+            'From': 'sip:test@direct-futel-nonemergency-stage.sip.twilio.com'}
         context = mock.Mock(api_host='api_host', namespace='namespace')
         env = test_util.MockDict()
         got = dial_sip.dial_sip(event, context, env)

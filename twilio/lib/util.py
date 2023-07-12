@@ -27,12 +27,6 @@ def python_to_twilio_param(v):
         return 'false'
     raise NotImplementedError
 
-def twilio_event_to_event(event):
-    """Normalize keys in event formatted by Twilio."""
-    event['from_uri'] = event['From']
-    event['to_uri'] = event['To']
-    return event
-
 def get_instance(env):
     """Return the instance/namespace/environment name eg 'prod', 'stage', 'dev'."""
     return env['INSTANCE']

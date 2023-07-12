@@ -14,8 +14,8 @@ extensions = util.get_extensions()
 def dial_sip(event, context, env):
     """Return TwiML to dial SIP URI with attributes from event."""
     metric.publish('dial_sip', event, env)
-    from_uri = event['from_uri']
-    to_uri = event['to_uri']
+    from_uri = event['From']
+    to_uri = event['To']
 
     from_extension = util.sip_to_extension(from_uri)
     to_extension = util.sip_to_extension(to_uri)
