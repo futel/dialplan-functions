@@ -49,7 +49,7 @@ To be done once.
     
     cd twilio
 
-    for i in packages/dialers/*; do (PYTHONPATH=$PYTHONPATH:lib:test_lib python3 -m unittest discover -s $i); done
+    for i in packages/dialers/* lib; do (PYTHONPATH=$PYTHONPATH:lib:test_lib python3 -m unittest discover -s $i); done
     
 # Integration test
 
