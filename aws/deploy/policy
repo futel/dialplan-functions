@@ -1,0 +1,26 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3-object-lambda:GetObject",
+                "s3-object-lambda:GetObjectAcl",
+                "s3-object-lambda:GetObjectLegalHold",
+                "s3-object-lambda:GetObjectRetention",
+                "s3-object-lambda:GetObjectTagging",
+                "s3-object-lambda:GetObjectVersion",
+                "s3-object-lambda:GetObjectVersionAcl",
+                "s3-object-lambda:GetObjectVersionTagging",
+                "s3-object-lambda:ListBucket",
+                "s3-object-lambda:ListBucketMultipartUploads",
+                "s3-object-lambda:ListBucketVersions",
+                "s3-object-lambda:ListMultipartUploadParts",
+                "s3:DescribeJob",
+                "s3:Get*",
+                "s3:List*",
+           ],
+            "Resource": "*"
+        }
+    ]
+}

@@ -1,12 +1,8 @@
 # Testing and development
 
-XXX
-
 # Smoke test dev or stage deployment
 
-    curl https://dev.dialplans.phu73l.net/bar
-    
-XXX
+    doctl --config config.yaml serverless connect <namespace>
 
 Outgoing PSTN
 - doctl --config config.yaml serverless functions invoke dialers/dial_outgoing -p 'To:sip:5035551212@direct-futel-nonemergency-stage.sip.twilio.com' -p 'From:sip:test@direct-futel-nonemergency-stage.sip.twilio.com'
@@ -33,18 +29,29 @@ IVR
 
 # Unit test
 
-XXX
-
 ## Setup
 
 To be done once.
 
-XXX
+    virtualenv env
+    
+    source env/bin/activate
+    
+    cd twilio
+
+    # XXX We install these and hope it is a superset.
+    #     We could instead install all function requirements.
+    #     Better would be to create an env for each function and test each.
+    pip install -r packages/dialers/dial_pstn/requirements.txt
+    pip install -r packages/dialers/metric_dialer_status/requirements.txt
 
 ## Test
 
-- source venv/bin/activate
-- python3 -m unittest discover test
+    source env/bin/activate
+    
+    cd twilio
+
+    for i in packages/dialers/* lib; do (PYTHONPATH=$PYTHONPATH:lib:test_lib python3 -m unittest discover -s $i); done
     
 # Integration test
 
@@ -54,8 +61,14 @@ Test stage against google sheet testplan. Emphasize tests which are important or
 
 # Continuously deploy
 
-XXX
+    doctl serverless watch example-project
 
 # View logs
 
-    chalice logs --stage dev --follow
+This catches stderr and stdout after a raise?
+
+    doctl --config config.yaml serverless activations logs --package dialers --follow
+
+Without --follow we only get build logs?
+
+    doctl --config config.yaml serverless activations logs --function dialers/dial_pstn --limit 1
