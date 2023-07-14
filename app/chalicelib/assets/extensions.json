@@ -1,0 +1,62 @@
+{
+    "alleymaple": {
+        "outgoing": "outgoing_portland",
+        "caller_id": "+15034681337",
+        "enable_emergency": false,
+        "local_outgoing": false
+    },
+    "demo": {
+        "outgoing": "outgoing_safe",
+        "caller_id": "+15038945775",
+        "enable_emergency": false,
+        "local_outgoing": false
+    },
+    "dome-basement": {
+        "outgoing": "outgoing_safe",
+        "caller_id": "+15034681337",
+        "enable_emergency": false,
+        "local_outgoing": false
+    },
+    "dome-booth": {
+        "outgoing": "outgoing_safe",
+        "caller_id": "+15034681337",
+        "enable_emergency": false,
+        "local_outgoing": false
+    },
+    "dome-garage": {
+        "outgoing": "outgoing_portland",
+        "caller_id": "+15034681337",
+        "enable_emergency": false,
+        "local_outgoing": false
+    },
+    "dome-office": {
+        "outgoing": "outgoing_safe",
+        "caller_id": "+15034681337",
+        "enable_emergency": false,
+        "local_outgoing": false
+    },
+    "ghost-mountain": {
+        "outgoing": "outgoing_portland",
+        "caller_id": "+15034448615",
+        "enable_emergency": true,
+        "local_outgoing": false
+    },
+    "r2d2": {
+        "outgoing": "outgoing_safe",
+        "caller_id": "+15033828838",
+        "enable_emergency": true,
+        "local_outgoing": false
+    },
+    "sjac": {
+        "outgoing": "outgoing_safe",
+        "caller_id": "+15032126899",
+        "enable_emergency": false,
+        "local_outgoing": false
+    },
+    "test": {
+        "outgoing": "outgoing_safe",
+        "caller_id": "+19713512383",
+        "enable_emergency": false,
+        "local_outgoing": true
+    }
+}

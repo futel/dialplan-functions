@@ -1,0 +1,24 @@
+{
+    "version": "2.0",
+    "app_name": "app",
+    "stages": {
+        "dev": {
+            "api_gateway_stage": "api",
+            "autogen_policy": false,
+            "iam_policy_file": "policy.json",            
+            "api_gateway_custom_domain": {
+                "domain_name": "dev.dialplans.phu73l.net",
+                "certificate_arn": "arn:aws:acm:us-east-1:168594572693:certificate/dd73407e-db78-4faf-819c-5323be71cfda"
+            }
+        },
+        "stage": {
+            "api_gateway_stage": "api",
+            "autogen_policy": false,
+            "iam_policy_file": "policy.json",
+            "api_gateway_custom_domain": {
+                "domain_name": "stage.dialplans.phu73l.net",
+                "certificate_arn": "arn:aws:acm:us-east-1:168594572693:certificate/a784aa95-8757-4810-8df3-53b168235980"
+            }
+        }
+    }
+}

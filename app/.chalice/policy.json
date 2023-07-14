@@ -1,0 +1,16 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "IAMWasWhyWeNeededAFramework0",
+            "Effect": "Allow",
+            "Action": "sns:*",
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": "logs:*",
+            "Resource": "arn:aws:logs:*:*:*"
+        }
+    ]
+}

@@ -1,8 +1,10 @@
-# AWS requirements
+# Twilio requirements
 
-Other AWS components which must be set up before deploying, and local setup for them.
+XXX Other AWS components which must be set up before deploying, and local setup for them.
 
-# AWS Setup
+# Twilio Setup
+
+XXX
 
 Have AWS configuration as described in asteriskserver README-aws:
 - IAM user and groups
@@ -16,8 +18,8 @@ Have AWS configuration as described in dialplan-assets README-aws:
 
 # Setup
 
-Populate .env:
-- AWS_TOPIC_ARN
+Populate extensions.py.
 
-XXX populate .env:
-- ASSET_HOST
+# Bonus VOIP.ms setup
+
+When a phone number is added, verify the CallerID with voip.ms.

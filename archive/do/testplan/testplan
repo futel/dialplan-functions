@@ -1,3 +1,9 @@
+outgoing setup:
+Register client to Twilio SIP Domain as in twilio-sip-server README-client. Registration details will determine whether emergency calls are enabled.
+
+incoming setup:
+Register client to Twilio SIP Domain as in twilio-sip-server README-client. Register an extension which receives phone calls from a number which is configured to send calls to stage.
+
 tests for outgoing dialtone (for each extension):
 # sends to appropriate context
 0 sends to operator from dialtone
@@ -14,7 +20,7 @@ caller ID is appropriate from asterisk
 
 outgoing dialtone tests for each extension:
 (extension, #-destination, has-emergency, caller-id)
-demo outgoing_safe no demo
+demo outgoing_safe no incoming_leet
 dome-basement outging_safe no incoming_leet
 dome-booth outgoing_safe no incoming_leet
 dome-garage outgoing no incoming_leet

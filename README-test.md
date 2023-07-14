@@ -2,55 +2,40 @@
 
 # Smoke test dev or stage deployment
 
-    doctl --config config.yaml serverless connect <namespace>
-
 Outgoing PSTN
-- doctl --config config.yaml serverless functions invoke dialers/dial_outgoing -p 'To:sip:5035551212@direct-futel-nonemergency-stage.sip.twilio.com' -p 'From:sip:test@direct-futel-nonemergency-stage.sip.twilio.com'
+- curl -d "To=sip:5035551212@direct-futel-nonemergency-stage.sip.twilio.com&From=sip:test@direct-futel-nonemergency-stage.sip.twilio.com&SipDomain=direct-futel-nonemergency-dev.sip.twilio.com" -X POST https://dev.dialplans.phu73l.net/dial_outgoing
 
 Outgoing extension
-- doctl --config config.yaml serverless functions invoke dialers/dial_outgoing -p 'To:sip:%23@direct-futel-nonemergency-stage.sip.twilio.com' -p 'From:sip:test@direct-futel-nonemergency-stage.sip.twilio.com'
-- doctl --config config.yaml serverless functions invoke dialers/dial_outgoing -p 'To:sip:0@direct-futel-nonemergency-stage.sip.twilio.com' -p 'From:sip:test@direct-futel-nonemergency-stage.sip.twilio.com'
+- curl -d "To=sip:%23@direct-futel-nonemergency-stage.sip.twilio.com&From=sip:test@direct-futel-nonemergency-stage.sip.twilio.com&SipDomain=direct-futel-nonemergency-dev.sip.twilio.com" -X POST https://dev.dialplans.phu73l.net/dial_outgoing
+- curl -d "To=sip:0@direct-futel-nonemergency-stage.sip.twilio.com&From=sip:test@direct-futel-nonemergency-stage.sip.twilio.com&SipDomain=direct-futel-nonemergency-dev.sip.twilio.com" -X POST https://dev.dialplans.phu73l.net/dial_outgoing
 
 Incoming
-- doctl --config config.yaml serverless functions invoke dialers/dial_sip_e164 -p 'To:+19713512383' -p 'From:5035551212'
+- curl -d "To=19713512383&From=5035551212&SipDomain=direct-futel-nonemergency-dev.sip.twilio.com" -X POST https://dev.dialplans.phu73l.net/dial_sip_e164
 
 Resources which are redirected to by dial_outgoing and/or dial_sip_e164
-- doctl --config config.yaml serverless functions invoke dialers/dial_pstn -p 'To:sip:5035551212@direct-futel-nonemergency-stage.sip.twilio.com' -p 'From:sip:test@direct-futel-nonemergency-stage.sip.twilio.com'
-- doctl --config config.yaml serverless functions invoke dialers/dial_sip -p 'To:sip:0@direct-futel-nonemergency-stage.sip.twilio.com' -p 'From:sip:test@direct-futel-nonemergency-stage.sip.twilio.com'
-- doctl --config config.yaml serverless functions invoke dialers/metric_dialer_status -p 'From:sip:test@direct-futel-nonemergency-dev.sip.twilio.com' -p DialCallStatus:completed -p 'To:sip:5035551212@direct-futel-nonemergency-dev.sip.twilio.com'
-- doctl --config config.yaml serverless functions invoke dialers/metric_dialer_status -p 'From:sip:test@direct-futel-nonemergency-dev.sip.twilio.com' -p DialCallStatus:busy -p 'To:sip:5035551212@direct-futel-nonemergency-dev.sip.twilio.com'
-- XXX metric_dialer_status should be invoked as for outgoing and incoming, and for all DialCallStatus
+- curl -d "From=sip:dome-booth@direct-futel-nonemergency-dev.sip.twilio.com&SipDomain=direct-futel-nonemergency-dev.sip.twilio.com" -X POST https://dev.dialplans.phu73l.net/reject
+- curl -d "From=sip:dome-booth@direct-futel-nonemergency-dev.sip.twilio.com&SipDomain=direct-futel-nonemergency-dev.sip.twilio.com&To=sip:5035551212@direct-futel-nonemergency-stage.sip.twilio.com" -X POST https://dev.dialplans.phu73l.net/dial_pstn
+- curl -d "From=sip:dome-booth@direct-futel-nonemergency-dev.sip.twilio.com&SipDomain=direct-futel-nonemergency-dev.sip.twilio.com&To=sip:0@direct-futel-nonemergency-stage.sip.twilio.com" -X POST https://dev.dialplans.phu73l.net/dial_sip
+- curl -d "From=sip:dome-booth@direct-futel-nonemergency-dev.sip.twilio.com&SipDomain=direct-futel-nonemergency-dev.sip.twilio.com&To=sip:5035551212&DialCallStatus=busy@direct-futel-nonemergency-stage.sip.twilio.com" -X POST https://dev.dialplans.phu73l.net/metric_dialer_status
+- curl -d "From=sip:dome-booth@direct-futel-nonemergency-dev.sip.twilio.com&SipDomain=direct-futel-nonemergency-dev.sip.twilio.com&To=sip:5035551212&DialCallStatus=busy@direct-futel-nonemergency-stage.sip.twilio.com" -X POST https://dev.dialplans.phu73l.net/metric_dialer_status
+- XXX more status for metric_dialer_status
 
-Use the URL found in README-deploy.md.
-
-    wget --post-data 'To=sip:5035551212@direct-futel-nonemergency-stage.sip.twilio.com&From=sip:test@direct-futel-nonemergency-stage.sip.twilio.com' <host>/api/v1/web/<namespace_id>/dialers/dial_outgoing
+XXX todo
+IVR
+- doctl --config config.yaml serverless functions invoke dialers/ivr \
+  -p 'To:sip:outgoing_portland@direct-futel-nonemergency-stage.sip.twilio.com' \
+  -p 'From:sip:test@direct-futel-nonemergency-stage.sip.twilio.com'
+- XXX Digits context parent
 
 # Unit test
 
-## Setup
+- source venv/bin/activate
+- python3 -m unittest discover test
 
-To be done once.
+# Smoke integration test
 
-    virtualenv env
-    
-    source env/bin/activate
-    
-    cd twilio
+Using a SIP client, receive PSTN call, make outgoing PSTN, make outgoing '#' and '0' calls.
 
-    # XXX We install these and hope it is a superset.
-    #     We could instead install all function requirements.
-    #     Better would be to create an env for each function and test each.
-    pip install -r packages/dialers/dial_pstn/requirements.txt
-    pip install -r packages/dialers/metric_dialer_status/requirements.txt
-
-## Test
-
-    source env/bin/activate
-    
-    cd twilio
-
-    for i in packages/dialers/* lib; do (PYTHONPATH=$PYTHONPATH:lib:test_lib python3 -m unittest discover -s $i); done
-    
 # Integration test
 
 If testplan has changed since last release branch, update google sheet testplan, keeping dates of nonupdated completed tests.
@@ -59,14 +44,8 @@ Test stage against google sheet testplan. Emphasize tests which are important or
 
 # Continuously deploy
 
-    doctl serverless watch example-project
+XXX
 
 # View logs
 
-This catches stderr and stdout after a raise?
-
-    doctl --config config.yaml serverless activations logs --package dialers --follow
-
-Without --follow we only get build logs?
-
-    doctl --config config.yaml serverless activations logs --function dialers/dial_pstn --limit 1
+    chalice logs --stage dev --follow
