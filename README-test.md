@@ -21,9 +21,11 @@ Resources which are redirected to by dial_outgoing and/or dial_sip_e164
 - doctl --config config.yaml serverless functions invoke dialers/metric_dialer_status -p 'From:sip:test@direct-futel-nonemergency-dev.sip.twilio.com' -p DialCallStatus:busy -p 'To:sip:5035551212@direct-futel-nonemergency-dev.sip.twilio.com'
 - XXX metric_dialer_status should be invoked as for outgoing and incoming, and for all DialCallStatus
 
-Use the URL found in README-deploy.md.
-
-    wget --post-data 'To=sip:5035551212@direct-futel-nonemergency-stage.sip.twilio.com&From=sip:test@direct-futel-nonemergency-stage.sip.twilio.com' <host>/api/v1/web/<namespace_id>/dialers/dial_outgoing
+IVR
+- doctl --config config.yaml serverless functions invoke dialers/ivr \
+  -p 'To:sip:outgoing_portland@direct-futel-nonemergency-stage.sip.twilio.com' \
+  -p 'From:sip:test@direct-futel-nonemergency-stage.sip.twilio.com'
+- XXX Digits context parent
 
 # Unit test
 

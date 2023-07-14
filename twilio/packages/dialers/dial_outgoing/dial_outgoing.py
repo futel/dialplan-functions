@@ -17,9 +17,15 @@ def dial_outgoing(event, context, env):
     from_uri = event['From']
     to_uri = event['To']
 
+    from_extension = util.sip_to_extension(from_uri)
     to_extension = util.sip_to_extension(to_uri)
-    if to_extension in ('#', '0'):
+    if to_extension == '0':
         function = 'dial_sip'
+    elif to_extension == '#':
+        if extensions[from_extension]['local_outgoing']:
+            function = 'ivr'
+        else:
+            function = 'dial_sip'
     else:
         function = 'dial_pstn'
     params = {'To': to_uri, 'From': from_uri}

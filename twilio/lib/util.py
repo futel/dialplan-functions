@@ -2,6 +2,7 @@ from assets import extensions
 
 import os
 import re
+from twilio.twiml.voice_response import VoiceResponse
 from urllib import parse
 
 def log(msg):
@@ -9,6 +10,7 @@ def log(msg):
 
 def get_env():
     return {
+        'ASSET_HOST': os.environ['ASSET_HOST'],
         'AWS_ACCESS_KEY_ID': os.environ['AWS_ACCESS_KEY_ID'],
         'AWS_SECRET_ACCESS_KEY': os.environ['AWS_SECRET_ACCESS_KEY'],
         'AWS_TOPIC_ARN': os.environ['AWS_TOPIC_ARN'],
@@ -85,3 +87,26 @@ def normalize_number(number):
         # Assume NANPA, add country code.
         return '+1' + number
     return '+' + number
+
+def dial_sip_futel(to_extension, from_extension, context, env):
+    """Return a TwiML response to dial a SIP extension on the Futel server."""
+    instance = get_instance(env)
+
+    # The caller ID is the SIP extension we are calling from, which we assume is E.164.
+    extensions = get_extensions()
+    caller_id = extensions[from_extension]['caller_id']
+    enable_emergency = extensions[from_extension]['enable_emergency']
+    enable_emergency = python_to_twilio_param(enable_emergency)
+
+    sip_uri = (f'sip:{to_extension}@futel-{instance}.phu73l.net;'
+               f'region=us2?x-callerid={caller_id}&x-enableemergency={enable_emergency}')
+
+    response = VoiceResponse()
+    # XXX default timeLimit is 4 hours, should be smaller, in seconds
+    dial = response.dial(
+        answer_on_bridge=True,
+        action=function_url(context, 'metric_dialer_status'))
+    dial.sip(sip_uri)
+    # XXX did the Asterisk context go to the parent and hang up, leaving us here?
+    return response
+    return util.twiml_response(response)
