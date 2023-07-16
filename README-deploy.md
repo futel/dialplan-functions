@@ -16,7 +16,7 @@ doctl >= 1.93.1
 
 An instance is a DigitalOcean Function namespace. We use stage, prod, and dev instances. We create stage and dev instances, and we promote stage instances to prod.
 
-The instance type is determined by which Twilio Programmable Voice components are pointed at them, and by an environment variable. We don't replace specific instances after creation and they don't have a descriptive address, Twilio components must know the correct namespace to call. When the relevant Twilio components don't point to them, they can be deleted.
+The instance type is determined by which Twilio Programmable Voice components are pointed at them, and by an environment variable. We don't replace specific instances after creation and they don't have a descriptive address, Twilio components must know the correct instance URLs. When the relevant Twilio components don't point to them, they can be deleted.
 
 We normally don't want to create prod instances or do anything to them after promotion except delete them when they become obsolete.
 
@@ -135,7 +135,13 @@ For the Application Resources, the function is "dial_sip_e164".
 
 Receive PSTN call from a prod client. Make an outgoing PSTN call from a prod client. Make outgoing '#' and '0' calls from a prod client.
 
-## Tear down old prod
+## Tear down old instances.
+
+We should probably have recorded the previous instance.
+
+    doctl --config config.yaml serverless namespaces list
+    
+Any release (twilio_r*) branches except the most recent should be deletable.
 
 Delete the prod instance which is no longer pointed to by Twilio.
 
