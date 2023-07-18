@@ -48,7 +48,6 @@ def metric_dialer_status(event, context, env):
     and return TwiML.
     """
     # Perform the side effects.
-    event = util.twilio_event_to_event(event)
     metric.publish('metric_dialer_status', event, env)
     for e in event_to_events(event):
         sns_client.publish(e['endpoint'], e['user_event'], env)
