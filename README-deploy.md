@@ -44,7 +44,7 @@ We create a dev or stage instance by creating and deploying a namespace.
 
 ## Create or check out branch
 
-Check out or create relevant source branch <branch>. <branch> may be main for a dev branch, but should be a release branch for stage.
+Check out or create relevant source branch <branch>. <branch> may be main or anything for a dev branch, but should be a release branch for stage, and only stage and prod should be on a release branch.
 
 ## Create namespace
 
@@ -145,9 +145,7 @@ Any release (twilio_r*) branches except the most recent should be deletable.
 
 Delete the prod instance which is no longer pointed to by Twilio.
 
-    doctl --config config.yaml serverless connect <namespace>
-
-    doctl --config config.yaml serverless undeploy --all
+    doctl --config config.yaml serverless namespace delete <namespace>
 
 ---
 
