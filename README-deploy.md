@@ -4,7 +4,7 @@
 
 AWS should be set up as described in README-aws.
 
-Twilio Programmable Voice should be set up (after this component) as described in README-twilio.
+Twilio Programmable Voice should be set up (after this component) as described in twilio-sip-server README-deploy.
 
 # Requirements
 
@@ -28,7 +28,7 @@ To be done once.
 
 ## Set up environment secrets
 
-Fill twilio/.env to match .env.sample as described in README-aws. Set the INSTANCE variable to "stage".
+Fill twilio/.env to match .env.sample as described in README-aws and README-twilio. Set the INSTANCE variable to "stage".
 
 ## Set up access token
 
