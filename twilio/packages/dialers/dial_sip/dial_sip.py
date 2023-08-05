@@ -1,5 +1,5 @@
 """
-Return TwiML to dial a SIP URI for our Asterisk server.
+Return TwiML to dial a SIP URI pointing to Asterisk server.
 """
 
 # TwiML dialer suitable as the destination for a TwiML <redirect> verb.
@@ -12,11 +12,12 @@ import util
 extensions = util.get_extensions()
 
 def dial_sip(event, context, env):
-    """Return TwiML to dial SIP URI with attributes from event."""
+    """Return TwiML to dial a SIP URI pointing to Asterisk server."""
     metric.publish('dial_sip', event, env)
     from_uri = event['From']
     to_uri = event['To']
 
+    # XXX are these already sip_to_extension?
     from_extension = util.sip_to_extension(from_uri)
     to_extension = util.sip_to_extension(to_uri)
     if to_extension == "#":
