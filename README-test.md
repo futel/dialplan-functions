@@ -63,6 +63,10 @@ Test stage against google sheet testplan. Emphasize tests which are important or
 
 # View logs
 
-    doctl --config config.yaml serverless activations logs --follow
+This catches stderr and stdout after a raise?
+
+    doctl --config config.yaml serverless activations logs --package dialers --follow
+
+Without --follow we only get build logs?
 
     doctl --config config.yaml serverless activations logs --function dialers/dial_pstn --limit 1
