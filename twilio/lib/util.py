@@ -2,10 +2,11 @@ from assets import extensions
 
 import os
 import re
+import sys
 from urllib import parse
 
 def log(msg):
-    print(msg)
+    print(msg, file=sys.stderr)
 
 def get_env():
     return {
