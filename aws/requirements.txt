@@ -1,0 +1,3 @@
+aws-lambda-powertools
+boto3==1.26.133
+twilio==8.1.0
