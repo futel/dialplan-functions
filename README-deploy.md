@@ -8,8 +8,6 @@ AWS should be set up as described in README-aws.
 
 An AWS Certificate Manager certificate should be set up as described in README-ssl.
 
-Twilio Programmable Voice phone numbers should be set up as described in README-twilio.
-
 Twilio Programmable Voice SIP components should be set up (after this component) as described in twilio-sip-server README-deploy.
 
 # Requirements
@@ -18,9 +16,9 @@ Ubuntu 22 box.
 
 # Deploy and development notes
 
-We use stage, prod, and dev instances.
+We use dev, stage, and prod instances.
 
-The instance type is determined by which Twilio Programmable Voice components are pointed at them, and by an environment variable. When the relevant Twilio components don't point to it, an instance can be deleted.
+The instance type is determined by the domain and related attributes configured for it. The Twilio Programmable Voice components are pointed at URLs on the domain. An instance can be deleted when the relevant Twilio components don't point to it.
 
 ---
 
@@ -29,8 +27,6 @@ The instance type is determined by which Twilio Programmable Voice components ar
 To be done once.
 
 ## Set up environment secrets
-
-XXX
 
 Fill app/chalicelib/environment/.env to match app/chalicelib/environment/.env.sample as described in README-aws.
 
@@ -44,15 +40,13 @@ Fill app/chalicelib/environment/.env to match app/chalicelib/environment/.env.sa
 
 ---
 
-# Create and deploy a new dev or stage instance
+# Create and deploy a new instance
 
 ## Create or check out branch
 
 If deploying stage or prod, check out or create relevant source branch.
 
 ## Deploy instance
-
-No domains we will be adding later (eg dev.dialplans.phu73l.net) can point to an out of date AWS/cloudfront domain. If we are creating the instance, the domain must not exist, if we are updating, it must not point to an earlier name.
 
 Deploy the instance, eg:
 
@@ -79,33 +73,18 @@ For the SIP domains, the URL path is "/dial_outgoing".
 
 For the Application Resources, the URL path is "/dial_sip_e164".
 
-# Update an existing stage or dev instance
+# Update an existing instance
 
-This could be done for prod also, but we don't want to do that.
+eg:
 
-    chalice deploy --stage dev
+    chalice deploy --stage dev 
 
 Twilio SIP components do not need to be updated, since the URLs have not changed.
 
-# Delete a stage or dev instance
+# Delete an instance
+
+eg:
 
     chalice delete --stage dev
 
-Remove the dev.dialplans.phu73l.net CNAME using the DigitalOcean web console.
-
-
----
-
-# Test stage instance
-
-See README-test. Run the unit tests. Run the smoke tests. Run some part of the integration tests using the Twilio stage installation.
-
----
-
-# Create and deploy a new prod instance
-
-XXX
-
-## Test stage instance
-
-XXX
+Remove the dev.dialplans.phu73l.net (or stage or prod) CNAME using the DigitalOcean web console.

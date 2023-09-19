@@ -18,8 +18,8 @@ Create or renew a certificate for each of dev.dialplans.phu73l.net, stage.dialpl
  - complete certbot
  - remove txt record for dialplans.phu73l.net using digitalocean web console
 - add expiration to calendar
-- copy /etc/letsencrypt/archive/dev.dialplans.phu73l.net etc to conf
-- in dev.dialplans.phu73l.net, cat cert1.pem chain1.pem fullchain1.pem > all.pem
+- copy eg /etc/letsencrypt/archive/dev.dialplans.phu73l.net to conf
+- in eg dev.dialplans.phu73l.net, cat cert1.pem chain1.pem fullchain1.pem > all.pem
 
 # Import certificate to ACM
 
