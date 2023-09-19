@@ -108,14 +108,4 @@ XXX
 
 ## Test stage instance
 
-## XXX
-
----
-
-# Add or update configuration for a new SIP profile (extension)
-
 XXX
-
-Update the source at twilio/lib/assets/extensions.py.
-
-If the phone number is new, Twilio Programmable Voice phone numbers should be set up as described in README-twilio.
