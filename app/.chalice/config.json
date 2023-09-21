@@ -19,6 +19,15 @@
                 "domain_name": "stage.dialplans.phu73l.net",
                 "certificate_arn": "arn:aws:acm:us-east-1:168594572693:certificate/a784aa95-8757-4810-8df3-53b168235980"
             }
+        },
+        "prod": {
+            "api_gateway_stage": "api",
+            "autogen_policy": false,
+            "iam_policy_file": "policy.json",
+            "api_gateway_custom_domain": {
+                "domain_name": "prod.dialplans.phu73l.net",
+                "certificate_arn": "arn:aws:acm:us-east-1:168594572693:certificate/e43a014a-b2e1-44e2-960b-7de7cc1e107b"
+            }
         }
     }
 }
