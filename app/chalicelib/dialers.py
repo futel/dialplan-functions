@@ -47,17 +47,6 @@ def request_to_metric_events(request):
         'user_event': dial_status_user_event};
     return (dial_event, dial_status_event)
 
-# XXX no longer a dialer?
-def reject(request):
-    """Return TwiML reject call."""
-    metric.publish('reject', request)
-    response = VoiceResponse()
-    response.say(
-        "We're sorry, your call cannot be completed as dialed. "
-        "Please check the number and try again.");
-    response.reject()
-    return util.twiml_response(response)
-
 def dial_outgoing(request):
     """Return TwiML to dial SIP URI with attributes from request."""
     metric.publish('dial_outgoing', request)
@@ -121,7 +110,7 @@ def metric_dialer_status(request):
     # Return TwiML.
     response = VoiceResponse()
     if request.post_fields['DialCallStatus'] == 'failed':
-        # XXX just return reject(request)
+        # XXX just util.reject(request)
         response.say(
             "We're sorry, your call cannot be completed as dialed. "
             "Please try again later.")
