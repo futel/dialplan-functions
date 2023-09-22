@@ -56,6 +56,13 @@ def get_extensions():
     with open(filename) as f:
         return json.load(f)
 
+def get_ivrs():
+    """Return ivrs asset object."""
+    filename = os.path.join(
+        os.path.dirname(__file__), 'assets', 'ivrs.json')
+    with open(filename) as f:
+        return json.load(f)
+
 def get_instance(request):
     """Return the deployment environment name eg 'prod', 'stage', 'dev'."""
     return request.context['domainPrefix']

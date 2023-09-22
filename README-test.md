@@ -8,6 +8,11 @@ Outgoing PSTN
 Outgoing extension
 - curl -d "To=sip:%23@direct-futel-nonemergency-stage.sip.twilio.com&From=sip:test@direct-futel-nonemergency-stage.sip.twilio.com&SipDomain=direct-futel-nonemergency-dev.sip.twilio.com" -X POST https://dev.dialplans.phu73l.net/dial_outgoing
 - curl -d "To=sip:0@direct-futel-nonemergency-stage.sip.twilio.com&From=sip:test@direct-futel-nonemergency-stage.sip.twilio.com&SipDomain=direct-futel-nonemergency-dev.sip.twilio.com" -X POST https://dev.dialplans.phu73l.net/dial_outgoing
+- XXX also remote outgoing on #
+
+Outgoing IVR
+- curl -d "From=sip:test@direct-futel-nonemergency-stage.sip.twilio.com&SipDomain=direct-futel-nonemergency-dev.sip.twilio.com" -X POST https://dev.dialplans.phu73l.net/ivr
+- context Digits parent lang
 
 Incoming
 - curl -d "To=19713512383&From=5035551212&SipDomain=direct-futel-nonemergency-dev.sip.twilio.com" -X POST https://dev.dialplans.phu73l.net/dial_sip_e164

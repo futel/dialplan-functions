@@ -96,5 +96,46 @@ class TestMetricDialerStatus(TestCase):
              {'endpoint': 'test', 'user_event': 'incoming_dialstatus_completed_test'}))
 
 
+class TestIvr(TestCase):
+    @mock.patch.object(dialers.util, 'get_ivrs')
+    @mock.patch.object(dialers, 'metric')
+    def test_ivr_no_context(self, _mock_metric, _mock_get_ivrs):
+        request = mock.Mock(
+            headers={'host': 'host'},
+            post_fields={
+                'SipDomain': 'direct-futel-prod.sip.twilio.com',
+                'To': 'sip:xyzzy@direct-futel-prod.sip.twilio.com',
+                'From': 'sip:test@direct-futel-prod.sip.twilio.com'})
+        got = dialers.ivr(request, {})
+        # Smoke test.
+
+    @mock.patch.object(dialers.util, 'get_ivrs')
+    @mock.patch.object(dialers, 'metric')
+    def test_ivr_context(self, _mock_metric, _mock_get_ivrs):
+        request = mock.Mock(
+            headers={'host': 'host'},
+            post_fields={
+                'SipDomain': 'direct-futel-prod.sip.twilio.com',
+                'To': 'sip:xyzzy@direct-futel-prod.sip.twilio.com',
+                'From': 'sip:test@direct-futel-prod.sip.twilio.com',
+                'context': 'outgoing_portland'})
+        got = dialers.ivr(request, {})
+        # Smoke test.
+
+    @mock.patch.object(dialers.util, 'get_ivrs')
+    @mock.patch.object(dialers, 'metric')
+    def test_ivr_context_star(self, _mock_metric, _mock_get_ivrs):
+        request = mock.Mock(
+            headers={'host': 'host'},
+            post_fields={
+                'SipDomain': 'direct-futel-prod.sip.twilio.com',
+                'To': 'sip:xyzzy@direct-futel-prod.sip.twilio.com',
+                'From': 'sip:test@direct-futel-prod.sip.twilio.com',
+                'context': 'outgoing_portland',
+                'Digits': '*'})
+        got = dialers.ivr(request, {})
+        # Smoke test.
+
+
 if __name__ == '__main__':
     unittest.main()

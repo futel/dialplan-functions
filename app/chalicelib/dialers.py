@@ -1,5 +1,6 @@
 from twilio.twiml.voice_response import VoiceResponse
 
+from . import ivrs
 from . import metric
 from . import sns_client
 from . import util
@@ -59,8 +60,11 @@ def dial_outgoing(request, env):
         response = util.dial_sip(request, env)
         return util.twiml_response(response)
     elif to_extension == '#':
+        # XXX send to ivr here
         #if extensions[from_extension]['local_outgoing']:
-        #    function = 'ivr'
+        #response = ivr(request)
+        #return util.twiml_response(response)
+        #else:
         response = util.dial_sip(request, env)
         return util.twiml_response(response)
     response = util.dial_pstn(request, env)
@@ -95,6 +99,45 @@ def dial_sip_e164(request, env):
         caller_id=from_number,
         action=util.function_url(request, 'metric_dialer_status'))
     dial.sip(sip_uri)
+    return util.twiml_response(response)
+
+def ivr(request, env):
+    """Return TwiML to play IVR context with attributes from request."""
+    metric.publish('ivr', request, env)
+    from_uri = request.post_fields['From']
+    #to_uri = request.post_fields['To']
+    digits = request.post_fields.get('Digits')
+    c_name = request.post_fields.get('context')
+    parent_name = request.post_fields.get('parent') # Should use a session.
+    lang = request.post_fields.get('lang', 'en')
+
+    # Find the destination ivr context dict.
+    from_extension = util.sip_to_extension(from_uri)
+    extensions = util.get_extensions()
+    ivr_d = util.get_ivrs()
+    if not c_name:
+        # Presumably this is the first interaction.
+        c_name = extensions[from_extension]['outgoing']
+        dest_c_dict = ivrs.context_dict(ivr_d, c_name)
+    else:
+        # User entered a digit.
+        c_dict = ivrs.context_dict(ivr_d, c_name)
+        dest_c_name = ivrs.destination_context_name(digits, c_dict)
+        if dest_c_name == ivrs.LANG_DESTINATION:
+            dest_c_dict = c_dict # Same context.
+            lang = ivrs.swap_lang(lang)
+        elif dest_c_name == ivrs.PARENT_DESTINATION:
+            dest_c_dict = ivrs.context_dict(ivr_d, parent_name)
+        else:
+            dest_c_dict = ivrs.context_dict(ivr_d, c_name)
+        if not dest_c_dict:
+            # We don't know this context, so it's on the Asterisk server.
+            to_extension = dest_c_name
+            # XXX we lose lang! Hopefully user remembers to hit *.
+            response = util.dial_sip(request, env)
+            return util.twiml_response(response)
+
+    response = ivrs.ivr_context(dest_c_dict, lang, c_name, request, env)
     return util.twiml_response(response)
 
 def metric_dialer_status(request, env):

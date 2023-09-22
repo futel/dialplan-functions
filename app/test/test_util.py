@@ -7,6 +7,9 @@ class TestUtil(TestCase):
     def test_get_extensions(self):
         self.assertTrue(util.get_extensions().keys())
 
+    def test_get_ivrs(self):
+        self.assertTrue(util.get_ivrs().keys())
+
     def test_twiml_response(self):
         self.assertTrue(util.twiml_response('foo').body, 'foo')
 

@@ -18,6 +18,4 @@ Have AWS configuration as described in dialplan-assets README-aws:
 
 Populate .env:
 - AWS_TOPIC_ARN
-
-XXX populate .env:
 - ASSET_HOST

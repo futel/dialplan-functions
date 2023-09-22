@@ -31,6 +31,10 @@ def index():
 def index():
     return setup(dialers.dial_sip_e164)
 
+@route('/ivr')
+def index():
+    return setup(dialers.ivr)
+
 @route('/metric_dialer_status')
 def index():
     return setup(dialers.metric_dialer_status)
