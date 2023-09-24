@@ -12,7 +12,9 @@ Outgoing extension
 
 Outgoing IVR
 - curl -d "From=sip:test@direct-futel-nonemergency-stage.sip.twilio.com&SipDomain=direct-futel-nonemergency-dev.sip.twilio.com" -X POST https://dev.dialplans.phu73l.net/ivr
-- context Digits parent lang
+- curl -d "From=sip:test@direct-futel-nonemergency-stage.sip.twilio.com&SipDomain=direct-futel-nonemergency-dev.sip.twilio.com" -X POST "https://dev.dialplans.phu73l.net/ivr?context=outgoing_safe&lang=en&parent=outgoing_safe&Digits=1"
+
+- parent lang
 
 Incoming
 - curl -d "To=19713512383&From=5035551212&SipDomain=direct-futel-nonemergency-dev.sip.twilio.com" -X POST https://dev.dialplans.phu73l.net/dial_sip_e164

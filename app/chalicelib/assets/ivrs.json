@@ -46,8 +46,7 @@
             ["for-community-services", "community_services_michigan"],
             ["for-the-telecommunications-network", "network"],
             null,
-            [null, "call_911_9"],
-            ["for-the-operator", "operator"]],
+            [null, "call_911_9"]],
         "other_menu_entries": [
             ["for-the-operator", 0, "operator"]],
         "statement_dir": "outgoing"},
