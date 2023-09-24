@@ -23,6 +23,11 @@ def route(path):
     # Yes, call app.route() to return the decorator function.
     return app.route(path, methods=['POST'], content_types=['application/x-www-form-urlencoded'])
 
+# The route decorator is unexpected. It registers the function object
+# being defined with the app. We function reference that we are creating
+# here by defining it is never accessed, we throw it away. Probably fun
+# to design but needs 4 lines of comments.
+# XXX make these private to be more explicit.
 @route('/dial_outgoing')
 def index():
     return setup(dialers.dial_outgoing)
