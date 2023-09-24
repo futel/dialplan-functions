@@ -19,33 +19,23 @@ def get_sip_domain(extension, extension_map, request):
     return sip_domain_subdomain_base + '-' + util.get_instance(request) + '.' + sip_domain_suffix
 
 def request_to_metric_events(request):
-    """Return sequence of sns_client metric events from DO request."""
-    to_uri = request.post_fields['To']
+    """Return sequence of metric event names from request."""
     from_uri = request.post_fields['From']
     dial_call_status = request.post_fields['DialCallStatus']
-    dial_event = None
 
     endpoint = metric.request_to_endpoint(request)
-
     extension = util.sip_to_extension(from_uri)
     if extension:
         # Outgoing from Twilio SIP Domain,
         # from_uri is SIP URI to extension.
-        dial_user_event = "outgoing_call"
-        dial_status_user_event_base = "outgoing_dialstatus_"
+        dial_event = "outgoing_call"
+        dial_status_event_base = "outgoing_dialstatus_"
     else:
-        # Incoming to Twilio phone number,
-        # to_uri is E.164 of caller.
-        dial_user_event = "incoming_call"
-        dial_status_user_event_base = "incoming_dialstatus_"
+        # Incoming to Twilio phone number.
+        dial_event = "incoming_call"
+        dial_status_event_base = "incoming_dialstatus_"
 
-    dial_status_user_event = dial_status_user_event_base + dial_call_status + '_' + endpoint;
-    dial_event = {
-        'endpoint': endpoint,
-        'user_event': dial_user_event};
-    dial_status_event = {
-        'endpoint': endpoint,
-        'user_event': dial_status_user_event};
+    dial_status_event = dial_status_event_base + dial_call_status + '_' + endpoint
     return (dial_event, dial_status_event)
 
 def dial_outgoing(request, env):
@@ -147,8 +137,8 @@ def metric_dialer_status(request, env):
     """
     # Perform the side effects.
     metric.publish('metric_dialer_status', request, env)
-    for e in request_to_metric_events(request):
-        sns_client.publish(e['endpoint'], e['user_event'], request, env)
+    for event_name in request_to_metric_events(request):
+        metric.publish(event_name, request, env)
 
     # Return TwiML.
     response = VoiceResponse()

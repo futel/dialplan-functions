@@ -77,9 +77,7 @@ class TestMetricDialerStatus(TestCase):
                 'DialCallStatus': 'completed'})
         got = dialers.request_to_metric_events(request)
         self.assertEqual(
-            got,
-            ({'endpoint': 'test', 'user_event': 'outgoing_call'},
-             {'endpoint': 'test', 'user_event': 'outgoing_dialstatus_completed_test'}))
+            got, ('outgoing_call', 'outgoing_dialstatus_completed_test'))
 
     def test_request_to_metric_events_incoming(self):
         request = mock.Mock(
@@ -91,9 +89,7 @@ class TestMetricDialerStatus(TestCase):
                 'DialCallStatus': 'completed'})
         got = dialers.request_to_metric_events(request)
         self.assertEqual(
-            got,
-            ({'endpoint': 'test', 'user_event': 'incoming_call'},
-             {'endpoint': 'test', 'user_event': 'incoming_dialstatus_completed_test'}))
+            got, ('incoming_call', 'incoming_dialstatus_completed_test'))
 
 
 class TestIvr(TestCase):

@@ -20,6 +20,6 @@ def request_to_endpoint(request):
             request.post_fields['From'], extensions)
 
 def publish(user_event, request, env):
-    channel = request_to_endpoint(request)
-    util.log('metric {} {}'.format(channel, user_event))
-    return sns_client.publish(channel, user_event, request, env)
+    endpoint = request_to_endpoint(request)
+    util.log('metric {} {}'.format(endpoint, user_event))
+    return sns_client.publish(endpoint, user_event, request, env)
