@@ -1,3 +1,4 @@
+import dotenv
 from chalice import Response
 import json
 import os
@@ -6,6 +7,9 @@ from urllib import parse
 
 # XXX put metric calls back in dialer
 from . import metric
+
+dotenv.load_dotenv(os.path.join(
+    os.path.dirname(__file__), 'environment', '.env'))
 
 # Map of phone numbers to transform.
 transform_numbers = {'+211': '+18666986155'}
@@ -39,6 +43,11 @@ premium_nanpa_codes = [
 
 def log(msg):
     print(msg)
+
+def get_env():
+    return {
+        'ASSET_HOST': os.environ['ASSET_HOST'],
+        'AWS_TOPIC_ARN': os.environ['AWS_TOPIC_ARN']}
 
 def get_extensions():
     """Return extensions asset object."""
@@ -137,9 +146,9 @@ def python_to_twilio_param(v):
         return 'false'
     raise NotImplementedError
 
-def dial_sip(request):
+def dial_sip(request, env):
     """Return a TwiML response to dial a SIP extension on the Futel server."""
-    metric.publish('dial_sip', request)
+    metric.publish('dial_sip', request, env)
     to_uri = request.post_fields['To']
     from_uri = request.post_fields['From']
 
@@ -174,9 +183,9 @@ def dial_sip(request):
     # XXX did the Asterisk context go to the parent and hang up, leaving us here?
     return response
 
-def dial_pstn(request):
+def dial_pstn(request, env):
     """Return TwiML to dial PSTN number with attributes from request."""
-    metric.publish('dial_pstn', request)
+    metric.publish('dial_pstn', request, env)
     to_uri = request.post_fields['To']
     from_uri = request.post_fields['From']
 
@@ -199,12 +208,12 @@ def dial_pstn(request):
         answer_on_bridge=True,
         action=function_url(request, 'metric_dialer_status'))
     dial.number(to_number)
-    metric.publish('dialing', request) # We passed the filter.
+    metric.publish('dialing', request, env) # We passed the filter.
     return response
 
-def reject(request):
+def reject(request, env):
     """Return TwiML reject response."""
-    metric.publish('reject', request)
+    metric.publish('reject', request, env)
     response = VoiceResponse()
     response.say(
         "We're sorry, your call cannot be completed as dialed. "

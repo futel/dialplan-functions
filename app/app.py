@@ -2,6 +2,7 @@ from chalice import Chalice, Response
 from urllib import parse
 
 from chalicelib import dialers
+from chalicelib import util
 
 app = Chalice(app_name='app')
 
@@ -12,9 +13,10 @@ def post_fields(request):
         parse.parse_qsl(request.raw_body.decode('UTF-8')))
 
 def setup(func):
+    env = util.get_env()
     request = app.current_request
     request.post_fields = post_fields(request)
-    return func(request)
+    return func(request, env)
 
 def route(path):
     """Decorator which curries app.route"""

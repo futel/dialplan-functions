@@ -1,42 +1,49 @@
 from unittest import mock, TestCase
 
 from chalicelib import dialers
+from chalicelib import sns_client
+from chalicelib import util
+
+env = {'AWS_TOPIC_ARN': 'AWS_TOPIC_ARN'}
 
 
 class TestDialOutgoing(TestCase):
 
+    @mock.patch.object(util, 'metric')
     @mock.patch.object(dialers, 'metric')
-    def test_dial_outgoing_local(self, _mock_metric):
+    def test_dial_outgoing_local(self, _mock_metric, _mock_metric2):
         # test extension redirects to local context.
         request = mock.Mock(
             headers={'host': 'host'},
             post_fields={
                 'SipDomain': 'direct-futel-prod.sip.twilio.com',
                 'To': 'sip:%23@direct-futel-nonemergency-stage.sip.twilio.com',
-                'From': 'sip:test@direct-futel-nonemergency-stage.sip.twilio.com'})
-        got = dialers.dial_outgoing(request)
+                'From': 'sip:test@direct-futel-nonemergency-stage.sip.twilio.com'},
+            context={'domainPrefix':'prod'})
+        got = dialers.dial_outgoing(request, env)
         self.assertEqual(got.status_code, 200)
         self.assertEqual(got.headers, {'Content-Type': 'text/xml'})
         self.assertEqual(
             got.body,
             '<?xml version="1.0" encoding="UTF-8"?><Response><Dial action="https://host/metric_dialer_status" answerOnBridge="true"><Sip>sip:outgoing_safe@futel-prod.phu73l.net;region=us2?x-callerid=+19713512383&amp;x-enableemergency=false</Sip></Dial></Response>')
 
+    @mock.patch.object(util, 'metric')
     @mock.patch.object(dialers, 'metric')
-    def test_dial_outgoing_remote(self, _mock_metric):
+    def test_dial_outgoing_remote(self, _mock_metric, _mock_metric2):
         # demo extension redirects to SIP URI call.
         request = mock.Mock(
             headers={'host': 'host'},
             post_fields={
                 'SipDomain': 'direct-futel-prod.sip.twilio.com',
                 'To': 'sip:%23@direct-futel-nonemergency-stage.sip.twilio.com',
-                'From': 'sip:demo@direct-futel-nonemergency-stage.sip.twilio.com'})
-        context = mock.Mock(api_host='api_host', namespace='namespace')
-        got = dialers.dial_outgoing(request)
+                'From': 'sip:demo@direct-futel-nonemergency-stage.sip.twilio.com'},
+            context={'domainPrefix':'prod'})
+        got = dialers.dial_outgoing(request, env)
         self.assertEqual(got.status_code, 200)
         self.assertEqual(got.headers, {'Content-Type': 'text/xml'})
         self.assertEqual(
             got.body,
-            '<?xml version="1.0" encoding="UTF-8"?><Response><Dial action="https://host/metric_dialer_status" answerOnBridge="true"><Sip>sip:outgoing_safe@futel-prod.phu73l.net;region=us2?x-callerid=+15034681337&amp;x-enableemergency=false</Sip></Dial></Response>')
+            '<?xml version="1.0" encoding="UTF-8"?><Response><Dial action="https://host/metric_dialer_status" answerOnBridge="true"><Sip>sip:outgoing_safe@futel-prod.phu73l.net;region=us2?x-callerid=+15038945775&amp;x-enableemergency=false</Sip></Dial></Response>')
 
 
 class TestDialSipE164(TestCase):
@@ -48,8 +55,9 @@ class TestDialSipE164(TestCase):
             post_fields={
                 'SipDomain': 'direct-futel-prod.sip.twilio.com',
                 'To': '9713512383',
-                'From': '5035551212'})
-        got = dialers.dial_sip_e164(request)
+                'From': '5035551212'},
+            context={'domainPrefix':'prod'})
+        got = dialers.dial_sip_e164(request, {})
         self.assertEqual(got.status_code, 200)
         self.assertEqual(got.headers, {'Content-Type': 'text/xml'})
         self.assertEqual(

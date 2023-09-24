@@ -47,31 +47,31 @@ def request_to_metric_events(request):
         'user_event': dial_status_user_event};
     return (dial_event, dial_status_event)
 
-def dial_outgoing(request):
+def dial_outgoing(request, env):
     """Return TwiML to dial SIP URI with attributes from request."""
-    metric.publish('dial_outgoing', request)
+    metric.publish('dial_outgoing', request, env)
     to_uri = request.post_fields['To']
     #from_uri = request.post_fields['From']
     #from_extension = util.sip_to_extension(from_uri)
     to_extension = util.sip_to_extension(to_uri)
     extensions = util.get_extensions()
     if to_extension == '0':
-        response = util.dial_sip(request)
+        response = util.dial_sip(request, env)
         return util.twiml_response(response)
     elif to_extension == '#':
         #if extensions[from_extension]['local_outgoing']:
         #    function = 'ivr'
-        response = util.dial_sip(request)
+        response = util.dial_sip(request, env)
         return util.twiml_response(response)
-    response = util.dial_pstn(request)
+    response = util.dial_pstn(request, env)
     return util.twiml_response(response)
 
-def dial_sip_e164(request):
+def dial_sip_e164(request, env):
     """
     Return TwiML to call an extension registered to our Twilio SIP Domains, looked up by
     the given E.164 number.
     """
-    metric.publish('dial_sip_e164', request)
+    metric.publish('dial_sip_e164', request, env)
     to_number = request.post_fields['To']
     from_number = request.post_fields['From']
     to_number = util.normalize_number(to_number)
@@ -97,15 +97,15 @@ def dial_sip_e164(request):
     dial.sip(sip_uri)
     return util.twiml_response(response)
 
-def metric_dialer_status(request):
+def metric_dialer_status(request, env):
     """
     Metric the dial status callback attributes from request,
     and return TwiML.
     """
     # Perform the side effects.
-    metric.publish('metric_dialer_status', request)
+    metric.publish('metric_dialer_status', request, env)
     for e in request_to_metric_events(request):
-        sns_client.publish(e['endpoint'], e['user_event'], request)
+        sns_client.publish(e['endpoint'], e['user_event'], request, env)
 
     # Return TwiML.
     response = VoiceResponse()

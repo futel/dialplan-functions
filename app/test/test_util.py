@@ -33,10 +33,6 @@ class TestUtil(TestCase):
         self.assertEqual(
             util.e164_to_extension('+19713512383', extensions), 'test')
 
-
-
-class TestDialPstn(TestCase):
-
     def test_filter_outgoing_number(self):
         self.assertFalse(util.filter_outgoing_number('+911'))
         self.assertFalse(util.filter_outgoing_number('+15035551212'))
@@ -52,16 +48,13 @@ class TestDialPstn(TestCase):
                 'SipDomain': 'direct-futel-prod.sip.twilio.com',
                 'To': 'sip:5035551212@direct-futel-nonemergency-stage.sip.twilio.com',
                 'From': 'sip:test@direct-futel-nonemergency-stage.sip.twilio.com'})
-        response = util.dial_pstn(request)
+        response = util.dial_pstn(request, {})
         self.assertEqual(
             str(response),
             '<?xml version="1.0" encoding="UTF-8"?><Response>'
             '<Dial action="https://host/metric_dialer_status" '
             'answerOnBridge="true" callerId="+19713512383">'
             '<Number>+15035551212</Number></Dial></Response>')
-
-
-class TestDialSip(TestCase):
 
     @mock.patch.object(util, 'metric')
     def test_dial_sip(self, _mock_metric):
@@ -70,8 +63,9 @@ class TestDialSip(TestCase):
             post_fields={
                 'SipDomain': 'direct-futel-prod.sip.twilio.com',
                 'To': 'sip:%23@direct-futel-nonemergency-stage.sip.twilio.com',
-                'From': 'sip:test@direct-futel-nonemergency-stage.sip.twilio.com'})
-        response = util.dial_sip(request)
+                'From': 'sip:test@direct-futel-nonemergency-stage.sip.twilio.com'},
+        context={'domainPrefix':'prod'})
+        response = util.dial_sip(request, {})
         self.assertEqual(
             str(response),
             '<?xml version="1.0" encoding="UTF-8"?><Response><Dial action="https://host/metric_dialer_status" answerOnBridge="true"><Sip>sip:outgoing_safe@futel-prod.phu73l.net;region=us2?x-callerid=+19713512383&amp;x-enableemergency=false</Sip></Dial></Response>')

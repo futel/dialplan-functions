@@ -2,15 +2,19 @@ from unittest import mock, TestCase
 
 from chalicelib import sns_client
 
-#request = mock.Mock(raw_body=b'AccountSid=SID&ApiVersion=2010-04-01&CallSid=SID&CallStatus=ringing&Called=sip%3ANUMBER%40direct-futel-nonemergency-dev.sip.twilio.com&Caller=sip%3AEXTENSION%40direct-futel-nonemergency-dev.sip.twilio.com&Direction=inbound&From=sip%3AEXTENSION%40direct-futel-nonemergency-dev.sip.twilio.com&SipCallId=ID&SipDomain=direct-futel-nonemergency-dev.sip.twilio.com&SipDomainSid=SID&SipSourceIp=IP&To=sip%3ANUMBER%40direct-futel-nonemergency-dev.sip.twilio.com')
-request = mock.Mock(post_fields = {'SipDomain': 'direct-futel-prod.sip.twilio.com'})
+
+request = mock.Mock(
+    post_fields={'SipDomain': 'direct-futel-prod.sip.twilio.com'},
+    context={'domainPrefix':'prod'})
+env = {'AWS_TOPIC_ARN': 'AWS_TOPIC_ARN'}
+
 
 class TestSnsClient(TestCase):
 
     @mock.patch.object(sns_client, 'boto3')
     def test_publish(self, _mock_boto3):
         self.assertTrue(
-            sns_client.publish('endpoint', 'user_event', request))
+            sns_client.publish('endpoint', 'user_event', request, env))
 
     def test_event_to_message(self):
         out = {

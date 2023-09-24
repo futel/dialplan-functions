@@ -1,13 +1,8 @@
-import dotenv
 import boto3
 import datetime
 import json
-import os
 
 from . import util
-
-dotenv.load_dotenv(os.path.join(
-    os.path.dirname(__file__), 'environment', '.env'))
 
 metric_host_base = 'dialplan-functions';
 
@@ -30,11 +25,11 @@ def event_to_message(endpoint, user_event, hostname):
         'event': event}
     return message
 
-def publish(endpoint, user_event, request):
+def publish(endpoint, user_event, request, env):
     hostname = get_metric_hostname(request)
     message = event_to_message(endpoint, user_event, hostname)
     client = boto3.client('sns')
     return client.publish(
-        TargetArn=os.environ['AWS_TOPIC_ARN'],
+        TargetArn=env['AWS_TOPIC_ARN'],
         Message=json.dumps({'default': json.dumps(message)}),
         MessageStructure='json')

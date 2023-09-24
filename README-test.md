@@ -13,9 +13,6 @@ Incoming
 - curl -d "To=19713512383&From=5035551212&SipDomain=direct-futel-nonemergency-dev.sip.twilio.com" -X POST https://dev.dialplans.phu73l.net/dial_sip_e164
 
 Resources which are redirected to by dial_outgoing and/or dial_sip_e164
-- curl -d "From=sip:dome-booth@direct-futel-nonemergency-dev.sip.twilio.com&SipDomain=direct-futel-nonemergency-dev.sip.twilio.com" -X POST https://dev.dialplans.phu73l.net/reject
-- curl -d "From=sip:dome-booth@direct-futel-nonemergency-dev.sip.twilio.com&SipDomain=direct-futel-nonemergency-dev.sip.twilio.com&To=sip:5035551212@direct-futel-nonemergency-stage.sip.twilio.com" -X POST https://dev.dialplans.phu73l.net/dial_pstn
-- curl -d "From=sip:dome-booth@direct-futel-nonemergency-dev.sip.twilio.com&SipDomain=direct-futel-nonemergency-dev.sip.twilio.com&To=sip:0@direct-futel-nonemergency-stage.sip.twilio.com" -X POST https://dev.dialplans.phu73l.net/dial_sip
 - curl -d "From=sip:dome-booth@direct-futel-nonemergency-dev.sip.twilio.com&SipDomain=direct-futel-nonemergency-dev.sip.twilio.com&To=sip:5035551212&DialCallStatus=busy@direct-futel-nonemergency-stage.sip.twilio.com" -X POST https://dev.dialplans.phu73l.net/metric_dialer_status
 - curl -d "From=sip:dome-booth@direct-futel-nonemergency-dev.sip.twilio.com&SipDomain=direct-futel-nonemergency-dev.sip.twilio.com&To=sip:5035551212&DialCallStatus=busy@direct-futel-nonemergency-stage.sip.twilio.com" -X POST https://dev.dialplans.phu73l.net/metric_dialer_status
 - XXX more status for metric_dialer_status
