@@ -16,7 +16,8 @@ def setup(func):
     env = util.get_env()
     request = app.current_request
     request.post_fields = post_fields(request)
-    return func(request, env)
+    response = func(request, env)
+    return util.twiml_response(response)
 
 def route(path):
     """Decorator which curries app.route"""

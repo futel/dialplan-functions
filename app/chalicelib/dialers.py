@@ -52,18 +52,15 @@ def dial_outgoing(request, env):
     if to_extension == '0':
         # XXX Could convert to 'operator' here and send that,
         #     avoid an uwieldy dup if in dial_sip.
-        response = util.dial_sip(request, env)
-        return util.twiml_response(response)
+        return util.dial_sip(request, env)
     if to_extension == '#':
         if from_extension['local_outgoing']:
             # ivr() is also routed directly, so it marshals
             # the response for flask. We could just
             # redirect, this is hit only once per call.
             return ivr(request, env)
-        response = util.dial_sip(request, env)
-        return util.twiml_response(response)
-    response = util.dial_pstn(request, env)
-    return util.twiml_response(response)
+        return util.dial_sip(request, env)
+    return util.dial_pstn(request, env)
 
 def dial_sip_e164(request, env):
     """
@@ -78,8 +75,7 @@ def dial_sip_e164(request, env):
     to_extension = util.e164_to_extension(to_number, extensions)
     if not to_extension:
         util.log("Could not find extension for E.164 number")
-        response = util.reject(request)
-        return util.twiml_response(response)
+        return util.reject(request)
     sip_domain = get_sip_domain(to_extension, extensions, request)
     util.log(f'to_extension: {to_extension}')
     util.log(f'from_number: {from_number}')
@@ -94,7 +90,7 @@ def dial_sip_e164(request, env):
         caller_id=from_number,
         action=util.function_url(request, 'metric_dialer_status'))
     dial.sip(sip_uri)
-    return util.twiml_response(response)
+    return response
 
 def ivr(request, env):
     """Return TwiML to play IVR context with attributes from request."""
@@ -129,11 +125,9 @@ def ivr(request, env):
             # We don't know this context, so it's on the Asterisk server.
             to_extension = dest_c_name
             # XXX we lose lang! Hopefully user remembers to hit *.
-            response = util.dial_sip(request, env)
-            return util.twiml_response(response)
+            return util.dial_sip(request, env)
 
-    response = ivrs.ivr_context(dest_c_dict, lang, c_name, request, env)
-    return util.twiml_response(response)
+    return ivrs.ivr_context(dest_c_dict, lang, c_name, request, env)
 
 def metric_dialer_status(request, env):
     """
@@ -168,4 +162,4 @@ def metric_dialer_status(request, env):
         # call hung up due to a user hitting the back key from the top, otherwise we want to end.
         # If the first interation is a dialtone, we want to end.
         response.hangup()
-    return util.twiml_response(response)
+    return response

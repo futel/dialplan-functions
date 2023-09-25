@@ -25,9 +25,7 @@ class TestDialOutgoing(TestCase):
                 'From': 'sip:test@direct-futel-nonemergency-stage.sip.twilio.com'},
             context={'domainPrefix':'prod'})
         got = dialers.dial_outgoing(request, env)
-        self.assertEqual(got.status_code, 200)
-        self.assertEqual(got.headers, {'Content-Type': 'text/xml'})
-        self.assertEqual(got.body, outgoing_safe_body)
+        self.assertEqual(str(got), outgoing_safe_body)
 
     @mock.patch.object(util, 'metric')
     @mock.patch.object(dialers, 'metric')
@@ -41,10 +39,8 @@ class TestDialOutgoing(TestCase):
                 'From': 'sip:alleymaple@direct-futel-nonemergency-stage.sip.twilio.com'},
             context={'domainPrefix':'prod'})
         got = dialers.dial_outgoing(request, env)
-        self.assertEqual(got.status_code, 200)
-        self.assertEqual(got.headers, {'Content-Type': 'text/xml'})
         self.assertEqual(
-            got.body,
+            str(got),
             '<?xml version="1.0" encoding="UTF-8"?><Response><Dial action="https://host/metric_dialer_status" answerOnBridge="true"><Sip>sip:outgoing_portland@futel-prod.phu73l.net;region=us2?x-callerid=+15034681337&amp;x-enableemergency=false</Sip></Dial></Response>')
 
 
@@ -60,10 +56,8 @@ class TestDialSipE164(TestCase):
                 'From': '5035551212'},
             context={'domainPrefix':'prod'})
         got = dialers.dial_sip_e164(request, {})
-        self.assertEqual(got.status_code, 200)
-        self.assertEqual(got.headers, {'Content-Type': 'text/xml'})
         self.assertEqual(
-            got.body,
+            str(got),
             '<?xml version="1.0" encoding="UTF-8"?><Response><Dial action="https://host/metric_dialer_status" answerOnBridge="true" callerId="5035551212"><Sip>sip:test@direct-futel-nonemergency-prod.sip.twilio.com;</Sip></Dial></Response>')
 
 
