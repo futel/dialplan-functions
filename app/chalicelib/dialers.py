@@ -139,24 +139,21 @@ def metric_dialer_status(request, env):
     # Return TwiML.
     response = VoiceResponse()
     if request.post_fields['DialCallStatus'] == 'failed':
-        # XXX just util.reject(request)
-        response.say(
-            "We're sorry, your call cannot be completed as dialed. "
-            "Please try again later.")
+        return util.reject(request)
     if request.post_fields['DialCallStatus'] == 'busy':
-        response.reject(reason='busy')
+        return util.reject(reason='busy')
     if request.post_fields['DialCallStatus'] == 'no-answer':
         # This could be no pickup or not registered.
         # We should care about not registered, metric something,
         # it would be nice to fast busy also.
         # The context should have this for not registered:
         # ErrorCode "32009"
-        # ErrorMessage "Your TwiML tried to Dial a Twilio SIP Registered User that is not currently registered"
-        response.reject(reason='busy')
-    else:
-        # If the first interation on handset pickup is a local menu, we want to return to that.
-        # If the first interation is a SIP call to a remote menu, we want to SIP it again if that
-        # call hung up due to a user hitting the back key from the top, otherwise we want to end.
-        # If the first interation is a dialtone, we want to end.
-        response.hangup()
+        # ErrorMessage
+        # "Your TwiML tried to Dial a Twilio SIP Registered User that is not currently registered"
+        return util.reject(reason='busy')
+    # If the first interation on handset pickup is a local menu, we want to return to that.
+    # If the first interation is a SIP call to a remote menu, we want to SIP it again if that
+    # call hung up due to a user hitting the back key from the top, otherwise we want to end.
+    # If the first interation is a dialtone, we want to end.
+    response.hangup()
     return response

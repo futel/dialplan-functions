@@ -1,14 +1,11 @@
 import boto3
 from chalice import Chalice, Response
-import dotenv
+import os
 from urllib import parse
 
 from chalicelib import dialers
 from chalicelib import env_util
 from chalicelib import util
-
-dotenv.load_dotenv(os.path.join(
-    os.path.dirname(__file__), 'environment', '.env'))
 
 env = env_util.get_env()
 env['extensions'] = env_util.get_extensions()
@@ -23,8 +20,9 @@ def post_fields(request):
     return dict(
         parse.parse_qsl(request.raw_body.decode('UTF-8')))
 
+# Turn this into middleware.
+#https://aws.github.io/chalice/topics/middleware.html
 def setup(func):
-    env = util.get_env()
     request = app.current_request
     request.post_fields = post_fields(request)
     response = func(request, env)

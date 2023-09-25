@@ -192,12 +192,12 @@ def dial_pstn(request, env):
     metric.publish('dialing', request, env) # We passed the filter.
     return response
 
-def reject(request, env):
+def reject(request, env, reason=None):
     """Return TwiML reject response."""
     metric.publish('reject', request, env)
     response = VoiceResponse()
     response.say(
         "We're sorry, your call cannot be completed as dialed. "
         "Please check the number and try again.");
-    response.reject()
+    response.reject(reason=reason)
     return response

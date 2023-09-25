@@ -1,5 +1,9 @@
+import dotenv
 import json
 import os
+
+dotenv.load_dotenv(os.path.join(
+    os.path.dirname(__file__), 'environment', '.env'))
 
 def get_env():
     return {
