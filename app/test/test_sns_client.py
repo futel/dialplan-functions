@@ -6,13 +6,14 @@ from chalicelib import sns_client
 request = mock.Mock(
     post_fields={'SipDomain': 'direct-futel-prod.sip.twilio.com'},
     context={'domainPrefix':'prod'})
-env = {'AWS_TOPIC_ARN': 'AWS_TOPIC_ARN'}
+env = {
+    'AWS_TOPIC_ARN': 'AWS_TOPIC_ARN',
+    'sns_client': mock.Mock()}
 
 
 class TestSnsClient(TestCase):
 
-    @mock.patch.object(sns_client, 'boto3')
-    def test_publish(self, _mock_boto3):
+    def test_publish(self):
         self.assertTrue(
             sns_client.publish('endpoint', 'user_event', request, env))
 
