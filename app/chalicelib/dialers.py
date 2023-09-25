@@ -18,12 +18,12 @@ def get_sip_domain(extension, extension_map, request):
         sip_domain_subdomain_base = sip_domain_subdomain_base_non_emergency
     return sip_domain_subdomain_base + '-' + util.get_instance(request) + '.' + sip_domain_suffix
 
-def request_to_metric_events(request):
+def request_to_metric_events(request, env):
     """Return sequence of metric event names from request."""
     from_uri = request.post_fields['From']
     dial_call_status = request.post_fields['DialCallStatus']
 
-    endpoint = metric.request_to_endpoint(request)
+    endpoint = metric.request_to_endpoint(request, env)
     extension = util.sip_to_extension(from_uri)
     if extension:
         # Outgoing from Twilio SIP Domain,
@@ -47,7 +47,7 @@ def dial_outgoing(request, env):
     to_uri = request.post_fields['To']
     from_uri = request.post_fields['From']
     from_extension = util.sip_to_extension(from_uri)
-    from_extension = util.get_extensions()[from_extension]
+    from_extension = env['extensions'][from_extension]
     to_extension = util.sip_to_extension(to_uri)
     if to_extension == '0':
         # XXX Could convert to 'operator' here and send that,
@@ -71,12 +71,11 @@ def dial_sip_e164(request, env):
     to_number = request.post_fields['To']
     from_number = request.post_fields['From']
     to_number = util.normalize_number(to_number)
-    extensions = util.get_extensions()
-    to_extension = util.e164_to_extension(to_number, extensions)
+    to_extension = util.e164_to_extension(to_number, env['extensions'])
     if not to_extension:
         util.log("Could not find extension for E.164 number")
         return util.reject(request)
-    sip_domain = get_sip_domain(to_extension, extensions, request)
+    sip_domain = get_sip_domain(to_extension, env['extensions'], request)
     util.log(f'to_extension: {to_extension}')
     util.log(f'from_number: {from_number}')
     util.log(f'sip_domain: {sip_domain}')
@@ -108,19 +107,19 @@ def ivr(request, env):
     ivr_d = util.get_ivrs()
     if not c_name:
         # Presumably this is the first interaction.
-        c_name = extensions[from_extension]['outgoing']
-        dest_c_dict = ivrs.context_dict(ivr_d, c_name)
+        c_name = env['extensions'][from_extension]['outgoing']
+        dest_c_dict = ivrs.context_dict(env['ivrs'], c_name)
     else:
         # User entered a digit.
-        c_dict = ivrs.context_dict(ivr_d, c_name)
+        c_dict = ivrs.context_dict(env['ivrs'], c_name)
         dest_c_name = ivrs.destination_context_name(digits, c_dict)
         if dest_c_name == ivrs.LANG_DESTINATION:
             dest_c_dict = c_dict # Same context.
             lang = ivrs.swap_lang(lang)
         elif dest_c_name == ivrs.PARENT_DESTINATION:
-            dest_c_dict = ivrs.context_dict(ivr_d, parent_name)
+            dest_c_dict = ivrs.context_dict(env['ivrs'], parent_name)
         else:
-            dest_c_dict = ivrs.context_dict(ivr_d, c_name)
+            dest_c_dict = ivrs.context_dict(env['ivrs'], c_name)
         if not dest_c_dict:
             # We don't know this context, so it's on the Asterisk server.
             to_extension = dest_c_name
@@ -136,7 +135,7 @@ def metric_dialer_status(request, env):
     """
     # Perform the side effects.
     metric.publish('metric_dialer_status', request, env)
-    for event_name in request_to_metric_events(request):
+    for event_name in request_to_metric_events(request, env):
         metric.publish(event_name, request, env)
 
     # Return TwiML.
