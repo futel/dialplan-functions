@@ -2,6 +2,7 @@ from unittest import mock, TestCase
 
 from chalicelib import dialers
 from chalicelib import sns_client
+from chalicelib import env_util
 from chalicelib import util
 
 env = {'AWS_TOPIC_ARN': 'AWS_TOPIC_ARN',
@@ -145,9 +146,8 @@ class TestMetricDialerStatus(TestCase):
 
 
 class TestIvr(TestCase):
-    @mock.patch.object(dialers.util, 'get_ivrs')
     @mock.patch.object(dialers, 'metric')
-    def test_ivr_no_context(self, _mock_metric, _mock_get_ivrs):
+    def test_ivr_no_context(self, _mock_metric):
         request = mock.Mock(
             headers={'host': 'host'},
             post_fields={
@@ -157,9 +157,8 @@ class TestIvr(TestCase):
         got = dialers.ivr(request, env)
         # Smoke test.
 
-    @mock.patch.object(dialers.util, 'get_ivrs')
     @mock.patch.object(dialers, 'metric')
-    def test_ivr_context(self, _mock_metric, _mock_get_ivrs):
+    def test_ivr_context(self, _mock_metric):
         request = mock.Mock(
             headers={'host': 'host'},
             post_fields={
@@ -170,9 +169,8 @@ class TestIvr(TestCase):
         got = dialers.ivr(request, env)
         # Smoke test.
 
-    @mock.patch.object(dialers.util, 'get_ivrs')
     @mock.patch.object(dialers, 'metric')
-    def test_ivr_context_star(self, _mock_metric, _mock_get_ivrs):
+    def test_ivr_context_star(self, _mock_metric):
         request = mock.Mock(
             headers={'host': 'host'},
             post_fields={

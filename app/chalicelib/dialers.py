@@ -103,8 +103,6 @@ def ivr(request, env):
 
     # Find the destination ivr context dict.
     from_extension = util.sip_to_extension(from_uri)
-    extensions = util.get_extensions()
-    ivr_d = util.get_ivrs()
     if not c_name:
         # Presumably this is the first interaction.
         c_name = env['extensions'][from_extension]['outgoing']

@@ -1,18 +1,23 @@
 import boto3
 from chalice import Chalice, Response
+import dotenv
 from urllib import parse
 
 from chalicelib import dialers
+from chalicelib import env_util
 from chalicelib import util
 
-app = Chalice(app_name='app')
-env = util.get_env()
-env['extensions'] = util.get_extensions()
-env['ivrs'] = util.get_ivrs()
+dotenv.load_dotenv(os.path.join(
+    os.path.dirname(__file__), 'environment', '.env'))
+
+env = env_util.get_env()
+env['extensions'] = env_util.get_extensions()
+env['ivrs'] = env_util.get_ivrs()
 env['sns_client'] = boto3.client('sns')
 
+app = Chalice(app_name='app')
 
-#b'AccountSid=SID&ApiVersion=2010-04-01&CallSid=SID&CallStatus=ringing&Called=sip%3ANUMBER%40direct-futel-nonemergency-dev.sip.twilio.com&Caller=sip%3AEXTENSION%40direct-futel-nonemergency-dev.sip.twilio.com&Direction=inbound&From=sip%3AEXTENSION%40direct-futel-nonemergency-dev.sip.twilio.com&SipCallId=ID&SipDomain=direct-futel-nonemergency-dev.sip.twilio.com&SipDomainSid=SID&SipSourceIp=IP&To=sip%3ANUMBER%40direct-futel-nonemergency-dev.sip.twilio.com'
+
 def post_fields(request):
     """Return the fields from a POST request."""
     return dict(

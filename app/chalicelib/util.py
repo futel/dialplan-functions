@@ -1,15 +1,11 @@
 import dotenv
 from chalice import Response
-import json
 import os
 from twilio.twiml.voice_response import VoiceResponse
 from urllib import parse
 
 # XXX put metric calls back in dialer
 from . import metric
-
-dotenv.load_dotenv(os.path.join(
-    os.path.dirname(__file__), 'environment', '.env'))
 
 # Map of phone numbers to transform.
 transform_numbers = {'+211': '+18666986155'}
@@ -43,25 +39,6 @@ premium_nanpa_codes = [
 
 def log(msg):
     print(msg)
-
-def get_env():
-    return {
-        'ASSET_HOST': os.environ['ASSET_HOST'],
-        'AWS_TOPIC_ARN': os.environ['AWS_TOPIC_ARN']}
-
-def get_extensions():
-    """Return extensions asset object."""
-    filename = os.path.join(
-        os.path.dirname(__file__), 'assets', 'extensions.json')
-    with open(filename) as f:
-        return json.load(f)
-
-def get_ivrs():
-    """Return ivrs asset object."""
-    filename = os.path.join(
-        os.path.dirname(__file__), 'assets', 'ivrs.json')
-    with open(filename) as f:
-        return json.load(f)
 
 def get_instance(request):
     """Return the deployment environment name eg 'prod', 'stage', 'dev'."""
@@ -162,9 +139,8 @@ def dial_sip(request, env):
     # XXX are these already sip_to_extension?
     from_extension = sip_to_extension(from_uri)
     to_extension = sip_to_extension(to_uri)
-    extensions = get_extensions()
     if to_extension == "#":
-        to_extension = extensions[from_extension]['outgoing']
+        to_extension = env['extensions'][from_extension]['outgoing']
     elif to_extension == "0":
         to_extension = 'operator'
 
@@ -173,9 +149,8 @@ def dial_sip(request, env):
     sip_uri = f'sip:{to_extension}@{server_name}'
 
     # The caller ID is the SIP extension we are calling from, which we assume is E.164.
-    extensions = get_extensions()
-    caller_id = extensions[from_extension]['caller_id']
-    enable_emergency = extensions[from_extension]['enable_emergency']
+    caller_id = env['extensions'][from_extension]['caller_id']
+    enable_emergency = env['extensions'][from_extension]['enable_emergency']
     enable_emergency = python_to_twilio_param(enable_emergency)
 
     sip_uri = (f'{sip_uri};'
@@ -205,8 +180,7 @@ def dial_pstn(request, env):
         return reject(request)
 
     from_extension = sip_to_extension(from_uri)
-    extensions = get_extensions()
-    caller_id = extensions[from_extension]['caller_id']
+    caller_id = env['extensions'][from_extension]['caller_id']
 
     # XXX default timeLimit is 4 hours, should be smaller, in seconds
     response = VoiceResponse()
