@@ -28,6 +28,7 @@ def event_to_message(endpoint, user_event, hostname):
 def publish(endpoint, user_event, request, env):
     hostname = get_metric_hostname(request)
     message = event_to_message(endpoint, user_event, hostname)
+    # XXX use one per module
     client = boto3.client('sns')
     return client.publish(
         TargetArn=env['AWS_TOPIC_ARN'],
