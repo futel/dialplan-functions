@@ -9,7 +9,7 @@
         "outgoing": "outgoing_safe",
         "caller_id": "+15038945775",
         "enable_emergency": false,
-        "local_outgoing": false
+        "local_outgoing": true
     },
     "dome-basement": {
         "outgoing": "outgoing_safe",

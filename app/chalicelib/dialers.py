@@ -39,22 +39,27 @@ def request_to_metric_events(request):
     return (dial_event, dial_status_event)
 
 def dial_outgoing(request, env):
-    """Return TwiML to dial SIP URI with attributes from request."""
+    """
+    Return TwiML to dial SIP URI, or play IVR,
+    with attributes from request.
+    """
     metric.publish('dial_outgoing', request, env)
     to_uri = request.post_fields['To']
-    #from_uri = request.post_fields['From']
-    #from_extension = util.sip_to_extension(from_uri)
+    from_uri = request.post_fields['From']
+    from_extension = util.sip_to_extension(from_uri)
+    from_extension = util.get_extensions()[from_extension]
     to_extension = util.sip_to_extension(to_uri)
-    extensions = util.get_extensions()
     if to_extension == '0':
+        # XXX Could convert to 'operator' here and send that,
+        #     avoid an uwieldy dup if in dial_sip.
         response = util.dial_sip(request, env)
         return util.twiml_response(response)
-    elif to_extension == '#':
-        # XXX send to ivr here
-        #if extensions[from_extension]['local_outgoing']:
-        #response = ivr(request)
-        #return util.twiml_response(response)
-        #else:
+    if to_extension == '#':
+        if from_extension['local_outgoing']:
+            # ivr() is also routed directly, so it marshals
+            # the response for flask. We could just
+            # redirect, this is hit only once per call.
+            return ivr(request, env)
         response = util.dial_sip(request, env)
         return util.twiml_response(response)
     response = util.dial_pstn(request, env)
