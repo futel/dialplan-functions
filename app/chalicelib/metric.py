@@ -18,8 +18,7 @@ def request_to_endpoint(request, env):
         return util.e164_to_extension(
             request.post_fields['From'], env['extensions'])
 
-# XXX publish takes .23-.55s! Can we async?
-#     https://stackoverflow.com/questions/74589325/how-to-make-an-asynchronous-api-call-to-a-chalice-app
+# XXX publish takes .1s! Throw it in a worker queue?
 def publish(user_event, request, env):
     endpoint = request_to_endpoint(request, env)
     util.log('metric {} {}'.format(endpoint, user_event))
