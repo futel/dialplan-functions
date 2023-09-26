@@ -16,9 +16,6 @@ env = {'AWS_TOPIC_ARN': 'AWS_TOPIC_ARN',
 
 class TestUtil(TestCase):
 
-    def test_twiml_response(self):
-        self.assertTrue(util.twiml_response('foo').body, 'foo')
-
     def test_function_url(self):
         request = mock.Mock()
         request.headers = {'host': 'host'}

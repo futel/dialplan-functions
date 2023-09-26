@@ -117,12 +117,6 @@ def filter_outgoing_number(number):
             return True
     return False
 
-def twiml_response(twiml):
-    return Response(
-        body=str(twiml),
-        status_code=200,
-        headers={"Content-Type": "text/xml"})
-
 def python_to_twilio_param(v):
     if v == True:
         return 'true'
@@ -200,4 +194,4 @@ def reject(request, env, reason=None):
         "We're sorry, your call cannot be completed as dialed. "
         "Please check the number and try again.");
     response.reject(reason=reason)
-    return response
+    return str(response)

@@ -40,7 +40,7 @@ def request_to_metric_events(request, env):
 
 def dial_outgoing(request, env):
     """
-    Return TwiML to dial SIP URI, or play IVR,
+    Return TwiML string to dial SIP URI, or play IVR,
     with attributes from request.
     """
     metric.publish('dial_outgoing', request, env)
@@ -52,19 +52,19 @@ def dial_outgoing(request, env):
     if to_extension == '0':
         # XXX Could convert to 'operator' here and send that,
         #     avoid an uwieldy dup if in dial_sip.
-        return util.dial_sip(request, env)
+        return str(util.dial_sip(request, env))
     if to_extension == '#':
         if from_extension['local_outgoing']:
             # ivr() is also routed directly, so it marshals
             # the response for flask. We could just
             # redirect, this is hit only once per call.
             return ivr(request, env)
-        return util.dial_sip(request, env)
-    return util.dial_pstn(request, env)
+        return str(util.dial_sip(request, env))
+    return str(util.dial_pstn(request, env))
 
 def dial_sip_e164(request, env):
     """
-    Return TwiML to call an extension registered to our Twilio SIP Domains, looked up by
+    Return TwiML string to call an extension registered to our Twilio SIP Domains, looked up by
     the given E.164 number.
     """
     metric.publish('dial_sip_e164', request, env)
@@ -74,7 +74,7 @@ def dial_sip_e164(request, env):
     to_extension = util.e164_to_extension(to_number, env['extensions'])
     if not to_extension:
         util.log("Could not find extension for E.164 number")
-        return util.reject(request)
+        return str(util.reject(request))
     sip_domain = get_sip_domain(to_extension, env['extensions'], request)
     util.log(f'to_extension: {to_extension}')
     util.log(f'from_number: {from_number}')
@@ -89,10 +89,10 @@ def dial_sip_e164(request, env):
         caller_id=from_number,
         action=util.function_url(request, 'metric_dialer_status'))
     dial.sip(sip_uri)
-    return response
+    return str(response)
 
 def ivr(request, env):
-    """Return TwiML to play IVR context with attributes from request."""
+    """Return TwiML string to play IVR context with attributes from request."""
     metric.publish('ivr', request, env)
     from_uri = request.post_fields['From']
     #to_uri = request.post_fields['To']
@@ -122,26 +122,26 @@ def ivr(request, env):
             # We don't know this context, so it's on the Asterisk server.
             to_extension = dest_c_name
             # XXX we lose lang! Hopefully user remembers to hit *.
-            return util.dial_sip(request, env)
+            return str(util.dial_sip(request, env))
 
-    return ivrs.ivr_context(dest_c_dict, lang, c_name, request, env)
+    return str(ivrs.ivr_context(dest_c_dict, lang, c_name, request, env))
 
 def metric_dialer_status(request, env):
     """
     Metric the dial status callback attributes from request,
-    and return TwiML.
+    and return TwiML string.
     """
     # Perform the side effects.
     metric.publish('metric_dialer_status', request, env)
-    for event_name in request_to_metric_events(request, env):
+    for event_name in request_to_metric_events(request):
         metric.publish(event_name, request, env)
 
     # Return TwiML.
     response = VoiceResponse()
     if request.post_fields['DialCallStatus'] == 'failed':
-        return util.reject(request)
+        return str(util.reject(request))
     if request.post_fields['DialCallStatus'] == 'busy':
-        return util.reject(reason='busy')
+        return str(util.reject(reason='busy'))
     if request.post_fields['DialCallStatus'] == 'no-answer':
         # This could be no pickup or not registered.
         # We should care about not registered, metric something,
@@ -150,10 +150,10 @@ def metric_dialer_status(request, env):
         # ErrorCode "32009"
         # ErrorMessage
         # "Your TwiML tried to Dial a Twilio SIP Registered User that is not currently registered"
-        return util.reject(reason='busy')
+        return str(util.reject(reason='busy'))
     # If the first interation on handset pickup is a local menu, we want to return to that.
     # If the first interation is a SIP call to a remote menu, we want to SIP it again if that
     # call hung up due to a user hitting the back key from the top, otherwise we want to end.
     # If the first interation is a dialtone, we want to end.
     response.hangup()
-    return response
+    return str(response)
