@@ -60,7 +60,8 @@ env = {'AWS_TOPIC_ARN': 'AWS_TOPIC_ARN',
                    None],
                "other_menu_entries": [
                    ["for-the-operator", 0, "operator"]],
-               "statement_dir": "outgoing"}}}
+               "statement_dir": "outgoing"}},
+       'sns_client': mock.Mock()}
 
 
 
@@ -153,7 +154,8 @@ class TestIvr(TestCase):
             post_fields={
                 'SipDomain': 'direct-futel-prod.sip.twilio.com',
                 'To': 'sip:xyzzy@direct-futel-prod.sip.twilio.com',
-                'From': 'sip:test@direct-futel-prod.sip.twilio.com'})
+                'From': 'sip:test@direct-futel-prod.sip.twilio.com'},
+        context={'domainPrefix':'prod'})
         got = dialers.ivr(request, env)
         # Smoke test.
 
@@ -165,7 +167,8 @@ class TestIvr(TestCase):
                 'SipDomain': 'direct-futel-prod.sip.twilio.com',
                 'To': 'sip:xyzzy@direct-futel-prod.sip.twilio.com',
                 'From': 'sip:test@direct-futel-prod.sip.twilio.com',
-                'context': 'outgoing_portland'})
+                'context': 'outgoing_portland'},
+        context={'domainPrefix':'prod'})
         got = dialers.ivr(request, env)
         # Smoke test.
 

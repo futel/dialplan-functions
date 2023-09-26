@@ -1,7 +1,9 @@
 import os
+from twilio.twiml.voice_response import VoiceResponse
 import urllib
 
-from twilio.twiml.voice_response import VoiceResponse
+from . import metric
+
 
 menu_iterations = 10
 LANG_DESTINATION = []
@@ -159,7 +161,7 @@ def ivr_context(dest_c_dict, lang, c_name, request, env):
     """
     Return TwiML to run an IVR context.
     """
-    # XXX metric
+    metric.publish('ivr_{}'.format(dest_c_dict['name']), request, env)
     response = VoiceResponse()
     response = pre_callable(response, dest_c_dict, lang)
     response = menu(response, dest_c_dict, lang, c_name, request, env)

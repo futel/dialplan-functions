@@ -4,7 +4,6 @@ import os
 from twilio.twiml.voice_response import VoiceResponse
 from urllib import parse
 
-# XXX put metric calls back in dialer
 from . import metric
 
 # Map of phone numbers to transform.
