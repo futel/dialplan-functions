@@ -1,6 +1,3 @@
-import dotenv
-from chalice import Response
-import os
 from twilio.twiml.voice_response import VoiceResponse
 from urllib import parse
 
@@ -43,16 +40,18 @@ def get_instance(request):
     """Return the deployment environment name eg 'prod', 'stage', 'dev'."""
     return request.context['domainPrefix']
 
-def function_url(request, function_name):
+def function_url(request, function_name, params=None):
     """
     Return the URL for another function served by the same host.
     """
-    # All functions HTTPS, top-level in the path on the same host.
-    #if params:
-    #    # XXX we are putting URL arguments on a POST that may have body parameters.
-    #    params = parse.urlencode(params)
-    #    url += '?' + params
-    return 'https://' + request.headers['host'] + '/' + function_name
+    # All functions HTTPS, top-level on the same host.
+    url = 'https://' + request.headers['host'] + '/' + function_name
+    if params:
+       # XXX We are putting URL arguments on a POST that may have
+       #     body parameters.
+       params = parse.urlencode(params)
+       url += '?' + params
+    return url
 
 #sip:test@direct-futel-nonemergency-stage.sip.twilio.com
 def sip_to_extension(sip_uri):

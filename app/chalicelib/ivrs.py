@@ -1,8 +1,8 @@
-import os
 from twilio.twiml.voice_response import VoiceResponse
 import urllib
 
 from . import metric
+from . import util
 
 
 menu_iterations = 10
@@ -103,14 +103,14 @@ def menu(response, c_dict, lang, parent_c_name, request, env):
     """
     Add a TwiML response to play a menu and gather a digit
     based on c_dict and lang, sending the next request to the
-    same URL.
+    destination URL.
     """
-    # Set up the action URL: same DO function that is running
-    # us now, sending the ivr context, choice, and others.
-    # XXX use function_url
-    action = "ivr?context=" + c_dict['name']
-    action += "&lang=" + lang
-    action += "&parent=" + parent_c_name
+    action = util.function_url(
+        request,
+        'ivr',
+        {'context': c_dict['name'],
+         'lang': lang,
+         'parent': parent_c_name})
 
     gather = response.gather(
         num_digits=1, timeout=0, action=action)

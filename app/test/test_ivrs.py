@@ -2,6 +2,10 @@ from unittest import mock, TestCase
 
 from chalicelib import ivrs
 
+request = mock.Mock(
+    headers={'host': 'host'},
+    post_fields={})
+
 
 class TestIvrs(TestCase):
 
@@ -58,7 +62,7 @@ class TestIvrs(TestCase):
                 {'name':'name'},
                 'lang',
                 'parent_c_name',
-                'env',
+                request,
                 {}),
             response)
 
