@@ -50,23 +50,22 @@ def middleware(event, get_response):
 # being defined with the app. We function reference that we are creating
 # here by defining it is never accessed, we throw it away. Probably fun
 # to design but needs 4 lines of comments.
-# XXX make these private to be more explicit.
 @route('/dial_outgoing')
 @setup
-def index(request, env):
+def _index(request, env):
     return dialers.dial_outgoing(request, env)
 
 @route('/dial_sip_e164')
 @setup
-def index(request, env):
+def _index(request, env):
     return dialers.dial_sip_e164(request, env)
 
 @route('/ivr')
 @setup
-def index(request, env):
+def _index(request, env):
     return dialers.ivr(request, env)
 
 @route('/metric_dialer_status')
 @setup
-def index(request, env):
+def _index(request, env):
     return dialers.metric_dialer_status(request, env)
