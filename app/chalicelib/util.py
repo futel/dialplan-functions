@@ -36,6 +36,14 @@ premium_nanpa_codes = [
 def log(msg):
     print(msg)
 
+def log_request(request):
+    msg = ''
+    msg += 'query_params:{} '.format(request.query_params)
+    msg += 'uri_params:{} '.format(request.uri_params)
+    msg += 'path:{} '.format(request.path)
+    msg += 'raw_body:{}'.format(request.raw_body)
+    log(msg)
+
 def get_instance(request):
     """Return the deployment environment name eg 'prod', 'stage', 'dev'."""
     return request.context['domainPrefix']

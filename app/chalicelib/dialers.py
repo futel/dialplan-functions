@@ -100,13 +100,15 @@ def ivr(request, env):
     Return TwiML string to play IVR context with attributes from request.
     """
     metric.publish('ivr', request, env)
+    # Params from twilio are in the body, params from us are in the
+    # query string. We aren't supposted to combine them.
     from_uri = request.post_fields['From']
     #to_uri = request.post_fields['To']
     digits = request.post_fields.get('Digits')
-    c_name = request.post_fields.get('context')
-    parent_name = request.post_fields.get('parent') # Should use a session.
-    lang = request.post_fields.get('lang', 'en')
-
+    c_name = request.query_params.get('context')
+    parent_name = request.query_params.get('parent')
+    lang = request.query_params.get('lang', 'en')
+    util.log('c_name:{} digits:{}'.format(c_name, digits))
     # Find the destination ivr context dict.
     from_extension = util.sip_to_extension(from_uri)
     if not c_name:
@@ -125,7 +127,7 @@ def ivr(request, env):
         elif dest_c_name == ivrs.PARENT_DESTINATION:
             dest_c_dict = ivrs.context_dict(env['ivrs'], parent_name)
         else:
-            dest_c_dict = ivrs.context_dict(env['ivrs'], c_name)
+            dest_c_dict = ivrs.context_dict(env['ivrs'], dest_c_name)
         if not dest_c_dict:
             # We don't know this context, so it's on the Asterisk server.
             to_extension = dest_c_name

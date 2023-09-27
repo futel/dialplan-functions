@@ -30,17 +30,20 @@ def route(path):
         content_types=['application/x-www-form-urlencoded'])
 
 def setup(func):
-    """Decorator to pass arguments to the view function."""
+    """Decorator to log, pass arguments to the view function."""
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
+        util.log_request(app.current_request)
         return func(app.current_request, env)
     return wrapper
 
 @app.middleware('http')
-def middleware(event, get_response):
+def request_response_middleware(event, get_response):
     event.post_fields = post_fields(event)
+    event.query_params = event.query_params or {}
     # We have to bundle everyhing in the event,
     # we can't change the function signature.
+    # XXX not anymore?
     event.env = env
     response = get_response(event)
     response.headers["Content-Type"] = "text/xml"

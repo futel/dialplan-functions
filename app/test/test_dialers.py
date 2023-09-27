@@ -81,6 +81,7 @@ class TestDialOutgoing(TestCase):
                 'SipDomain': 'direct-futel-prod.sip.twilio.com',
                 'To': 'sip:%23@direct-futel-nonemergency-stage.sip.twilio.com',
                 'From': 'sip:test@direct-futel-nonemergency-stage.sip.twilio.com'},
+            query_params={},
             context={'domainPrefix':'prod'})
         got = dialers.dial_outgoing(request, env)
         self.assertEqual(str(got), outgoing_safe_body)
@@ -155,7 +156,8 @@ class TestIvr(TestCase):
                 'SipDomain': 'direct-futel-prod.sip.twilio.com',
                 'To': 'sip:xyzzy@direct-futel-prod.sip.twilio.com',
                 'From': 'sip:test@direct-futel-prod.sip.twilio.com'},
-        context={'domainPrefix':'prod'})
+            query_params={},
+            context={'domainPrefix':'prod'})
         got = dialers.ivr(request, env)
         # Smoke test.
 
@@ -166,9 +168,9 @@ class TestIvr(TestCase):
             post_fields={
                 'SipDomain': 'direct-futel-prod.sip.twilio.com',
                 'To': 'sip:xyzzy@direct-futel-prod.sip.twilio.com',
-                'From': 'sip:test@direct-futel-prod.sip.twilio.com',
-                'context': 'outgoing_portland'},
-        context={'domainPrefix':'prod'})
+                'From': 'sip:test@direct-futel-prod.sip.twilio.com'},
+            query_params={'context': 'outgoing_portland'},
+            context={'domainPrefix':'prod'})
         got = dialers.ivr(request, env)
         # Smoke test.
 

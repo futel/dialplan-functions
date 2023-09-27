@@ -1,7 +1,6 @@
 from twilio.twiml.voice_response import VoiceResponse
 import urllib
 
-from . import metric
 from . import util
 
 
@@ -40,20 +39,32 @@ def destination_context_name(digits, c_dict):
     Return the name of the IVR context indicated by c_dict with digits,
     or None.
     """
+    util.log('digits:{} c_dict:{}'.format(digits, c_dict))
     if digits == '*':
         return LANG_DESTINATION
     if digits == '#':
         return PARENT_DESTINATION
     try:
-        position = int(digits) - 1
-        menu_entries = c_dict.get('menu_entries', [])
-        try:
-            menu_entry = menu_entries[position]
-        except IndexError:
-            # Invalid digit, repeat context.
-            return c_dict['name']
-        return menu_entry[1]
-    except TypeError:
+        position = int(digits)
+        if position == 0:
+            other_menu_entries = c_dict.get('other_menu_entries', [])
+            try:
+                menu_entry = [entry for entry in other_menu_entries if entry[1] == 0][0]
+            except IndexError:
+                # Invalid digit, repeat context.
+                return c_dict['name']
+            return menu_entry[2]
+        else:
+            # Humans start with 1 when not calling the operator.
+            position -= 1
+            menu_entries = c_dict.get('menu_entries', [])
+            try:
+                menu_entry = menu_entries[position]
+            except IndexError:
+                # Invalid digit, repeat context.
+                return c_dict['name']
+            return menu_entry[1]
+    except (AttributeError, TypeError):
         # Invalid digit, repeat context.
         return c_dict['name']
 
@@ -161,7 +172,6 @@ def ivr_context(dest_c_dict, lang, c_name, request, env):
     """
     Return TwiML to run an IVR context.
     """
-    metric.publish('ivr_{}'.format(dest_c_dict['name']), request, env)
     response = VoiceResponse()
     response = pre_callable(response, dest_c_dict, lang)
     response = menu(response, dest_c_dict, lang, c_name, request, env)
