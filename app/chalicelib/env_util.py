@@ -19,7 +19,12 @@ def get_extensions():
 
 def get_ivrs():
     """Return ivrs asset object."""
-    filename = os.path.join(
-        os.path.dirname(__file__), 'assets', 'ivrs.json')
-    with open(filename) as f:
-        return json.load(f)
+    out = {}
+    srcs = ['ivrs_outgoing', 'ivrs_utilities']
+    for src in srcs:
+        path = '{}.json'.format(src)
+        path = os.path.join(
+            os.path.dirname(__file__), 'assets', path)
+        with open(path) as f:
+            out.update(json.load(f))
+    return out
