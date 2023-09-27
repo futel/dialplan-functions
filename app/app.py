@@ -34,7 +34,9 @@ def setup(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         util.log_request(app.current_request)
-        return func(app.current_request, env)
+        response = func(app.current_request, env)
+        util.log_response(response)
+        return response
     return wrapper
 
 @app.middleware('http')
