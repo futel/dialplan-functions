@@ -39,7 +39,6 @@ def destination_context_name(digits, c_dict):
     Return the name of the IVR context indicated by c_dict with digits,
     or None.
     """
-    util.log('digits:{} c_dict:{}'.format(digits, c_dict))
     if digits == '*':
         return LANG_DESTINATION
     if digits == '#':
