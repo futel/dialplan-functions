@@ -34,9 +34,7 @@ def setup(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         util.log_request(app.current_request)
-        response = func(app.current_request, env)
-        util.log_response(response)
-        return response
+        return func(app.current_request, env)
     return wrapper
 
 @app.middleware('http')
@@ -49,6 +47,7 @@ def request_response_middleware(event, get_response):
     event.env = env
     response = get_response(event)
     response.headers["Content-Type"] = "text/xml"
+    util.log_response(response)
     return response
 
 # The route decorator is unexpected. It registers the function object
