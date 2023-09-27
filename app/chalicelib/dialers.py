@@ -15,8 +15,12 @@ def get_sip_domain(extension, extension_map, request):
     if extension_map[extension]['enable_emergency']:
         sip_domain_subdomain_base = sip_domain_subdomain_base_emergency
     else:
-        sip_domain_subdomain_base = sip_domain_subdomain_base_non_emergency
-    return sip_domain_subdomain_base + '-' + util.get_instance(request) + '.' + sip_domain_suffix
+        sip_domain_subdomain_base = (
+            sip_domain_subdomain_base_non_emergency)
+    return (sip_domain_subdomain_base +
+            '-' + util.get_instance(request) +
+            '.' +
+            sip_domain_suffix)
 
 def request_to_metric_events(request, env):
     """Return sequence of metric event names from request."""
@@ -56,7 +60,7 @@ def dial_outgoing(request, env):
     if to_extension == '#':
         if from_extension['local_outgoing']:
             # ivr() is also routed directly, so it marshals
-            # the response for flask. We could just
+            # the response for flask. We should just
             # redirect, this is hit only once per call.
             return ivr(request, env)
         return str(util.dial_sip(request, env))
@@ -92,7 +96,9 @@ def dial_sip_e164(request, env):
     return str(response)
 
 def ivr(request, env):
-    """Return TwiML string to play IVR context with attributes from request."""
+    """
+    Return TwiML string to play IVR context with attributes from request.
+    """
     metric.publish('ivr', request, env)
     from_uri = request.post_fields['From']
     #to_uri = request.post_fields['To']
@@ -104,7 +110,9 @@ def ivr(request, env):
     # Find the destination ivr context dict.
     from_extension = util.sip_to_extension(from_uri)
     if not c_name:
-        # Presumably this is the first interaction.
+        # Presumably this is the first interaction, go to the
+        # default context.
+        # XXX or nonlocal, but make that explicit?
         c_name = env['extensions'][from_extension]['outgoing']
         dest_c_dict = ivrs.context_dict(env['ivrs'], c_name)
     else:
@@ -124,6 +132,7 @@ def ivr(request, env):
             # XXX we lose lang! Hopefully user remembers to hit *.
             return str(util.dial_sip(request, env))
 
+    metric.publish('ivr_{}'.format(dest_c_dict['name']), request, env)
     return str(ivrs.ivr_context(dest_c_dict, lang, c_name, request, env))
 
 def metric_dialer_status(request, env):
