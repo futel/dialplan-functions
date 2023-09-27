@@ -144,15 +144,15 @@ def metric_dialer_status(request, env):
     """
     # Perform the side effects.
     metric.publish('metric_dialer_status', request, env)
-    for event_name in request_to_metric_events(request):
+    for event_name in request_to_metric_events(request, env):
         metric.publish(event_name, request, env)
 
     # Return TwiML.
     response = VoiceResponse()
     if request.post_fields['DialCallStatus'] == 'failed':
-        return str(util.reject(request))
+        return str(util.reject(request, env))
     if request.post_fields['DialCallStatus'] == 'busy':
-        return str(util.reject(reason='busy'))
+        return str(util.reject(request, env, reason='busy'))
     if request.post_fields['DialCallStatus'] == 'no-answer':
         # This could be no pickup or not registered.
         # We should care about not registered, metric something,
@@ -161,7 +161,7 @@ def metric_dialer_status(request, env):
         # ErrorCode "32009"
         # ErrorMessage
         # "Your TwiML tried to Dial a Twilio SIP Registered User that is not currently registered"
-        return str(util.reject(reason='busy'))
+        return str(util.reject(request, env, reason='busy'))
     # If the first interation on handset pickup is a local menu, we want to return to that.
     # If the first interation is a SIP call to a remote menu, we want to SIP it again if that
     # call hung up due to a user hitting the back key from the top, otherwise we want to end.
