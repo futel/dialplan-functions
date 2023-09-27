@@ -56,14 +56,14 @@ def dial_outgoing(request, env):
     if to_extension == '0':
         # XXX Could convert to 'operator' here and send that,
         #     avoid an uwieldy dup if in dial_sip.
-        return str(util.dial_sip(request, env))
+        return str(util.dial_sip(to_extension, request, env))
     if to_extension == '#':
         if from_extension['local_outgoing']:
             # ivr() is also routed directly, so it marshals
             # the response for flask. We should just
             # redirect, this is hit only once per call.
             return ivr(request, env)
-        return str(util.dial_sip(request, env))
+        return str(util.dial_sip(to_extension, request, env))
     return str(util.dial_pstn(request, env))
 
 def dial_sip_e164(request, env):
@@ -114,7 +114,6 @@ def ivr(request, env):
     if not c_name:
         # Presumably this is the first interaction, go to the
         # default context.
-        # XXX or nonlocal, but make that explicit?
         c_name = env['extensions'][from_extension]['outgoing']
         dest_c_dict = ivrs.context_dict(env['ivrs'], c_name)
     else:
@@ -132,7 +131,7 @@ def ivr(request, env):
             # We don't know this context, so it's on the Asterisk server.
             to_extension = dest_c_name
             # XXX we lose lang! Hopefully user remembers to hit *.
-            return str(util.dial_sip(request, env))
+            return str(util.dial_sip(dest_c_name, request, env))
 
     metric.publish('ivr_{}'.format(dest_c_dict['name']), request, env)
     return str(ivrs.ivr_context(dest_c_dict, lang, c_name, request, env))
@@ -144,6 +143,7 @@ def metric_dialer_status(request, env):
     """
     # Perform the side effects.
     metric.publish('metric_dialer_status', request, env)
+    # May want to log ErrorCode ErrorMessage Direction post fields.
     for event_name in request_to_metric_events(request, env):
         metric.publish(event_name, request, env)
 

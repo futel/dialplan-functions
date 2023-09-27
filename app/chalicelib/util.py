@@ -136,23 +136,21 @@ def python_to_twilio_param(v):
         return 'false'
     raise NotImplementedError
 
-def dial_sip(request, env):
+def dial_sip(extension, request, env):
     """Return a TwiML response to dial a SIP extension on the Futel server."""
     metric.publish('dial_sip', request, env)
-    to_uri = request.post_fields['To']
+    # XXX only for pstn
     from_uri = request.post_fields['From']
 
-    # XXX are these already sip_to_extension?
     from_extension = sip_to_extension(from_uri)
-    to_extension = sip_to_extension(to_uri)
-    if to_extension == "#":
-        to_extension = env['extensions'][from_extension]['outgoing']
-    elif to_extension == "0":
-        to_extension = 'operator'
+    if extension == "#":
+        extension = env['extensions'][from_extension]['outgoing']
+    elif extension == "0":
+        extension = 'operator'
 
     instance = get_instance(request)
     server_name = f'futel-{instance}.phu73l.net'
-    sip_uri = f'sip:{to_extension}@{server_name}'
+    sip_uri = f'sip:{extension}@{server_name}'
 
     # The caller ID is the SIP extension we are calling from, which we assume is E.164.
     caller_id = env['extensions'][from_extension]['caller_id']

@@ -21,5 +21,5 @@ def request_to_endpoint(request, env):
 # XXX publish takes .1s! Throw it in a worker queue?
 def publish(user_event, request, env):
     endpoint = request_to_endpoint(request, env)
-    util.log('metric {} {}'.format(endpoint, user_event))
+    util.log('metric endpoint:{} user_event:{}'.format(endpoint, user_event))
     return sns_client.publish(endpoint, user_event, request, env)
