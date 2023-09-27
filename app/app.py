@@ -30,10 +30,9 @@ def route(path):
         content_types=['application/x-www-form-urlencoded'])
 
 def setup(func):
-    """Decorator to log, pass arguments to the view function."""
+    """Decorator to pass arguments to the view function."""
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
-        util.log_request(app.current_request)
         return func(app.current_request, env)
     return wrapper
 
@@ -45,6 +44,7 @@ def request_response_middleware(event, get_response):
     # we can't change the function signature.
     # XXX not anymore?
     event.env = env
+    util.log_request(event)
     response = get_response(event)
     response.headers["Content-Type"] = "text/xml"
     util.log_response(response)
