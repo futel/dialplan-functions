@@ -38,6 +38,7 @@ def log(msg):
 
 def log_request(request):
     msg = 'request '
+    msg += 'domain_prefix:{} '.format(request.context['domainPrefix'])
     msg += 'query_params:{} '.format(request.query_params)
     msg += 'uri_params:{} '.format(request.uri_params)
     msg += 'path:{} '.format(request.path)
@@ -51,7 +52,9 @@ def log_response(response):
     log(msg)
 
 def get_instance(request):
-    """Return the deployment environment name eg 'prod', 'stage', 'dev'."""
+    """
+    Return the deployment environment name eg 'prod', 'stage', 'dev'.
+    """
     return request.context['domainPrefix']
 
 def function_url(request, function_name, params=None):
