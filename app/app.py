@@ -1,5 +1,3 @@
-print('xxx app.py')
-
 import boto3
 from chalice import Chalice, Response
 import functools
@@ -10,15 +8,12 @@ from chalicelib import dialers
 from chalicelib import env_util
 from chalicelib import util
 
-util.log('app start')
-
 env = env_util.get_env()
 env['extensions'] = env_util.get_extensions()
 env['ivrs'] = env_util.get_ivrs()
 env['sns_client'] = boto3.client('sns')
 
 app = Chalice(app_name='app')
-
 
 def post_fields(request):
     """Return the fields from a POST request."""
@@ -77,3 +72,7 @@ def _index(request, env):
 @setup
 def _index(request, env):
     return dialers.metric_dialer_status(request, env)
+
+# All the startup work we have given lambda is done, log for timing.
+# The log before this should be the INIT message.
+util.log('app start')
