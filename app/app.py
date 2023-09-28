@@ -1,3 +1,5 @@
+print('xxx app.py')
+
 import boto3
 from chalice import Chalice, Response
 import functools
@@ -7,6 +9,8 @@ from urllib import parse
 from chalicelib import dialers
 from chalicelib import env_util
 from chalicelib import util
+
+util.log('app start')
 
 env = env_util.get_env()
 env['extensions'] = env_util.get_extensions()
