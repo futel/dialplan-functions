@@ -46,9 +46,9 @@ def destination_context_name(digits, c_dict):
     try:
         position = int(digits)
         if position == 0:
+            # Kluge for the only valid key.
             other_menu_entries = c_dict.get('other_menu_entries', [])
             try:
-                # Kluge for the only valid key.
                 menu_entry = [
                     entry for entry in other_menu_entries
                     if entry[1] == 0][0]
@@ -127,7 +127,7 @@ def menu(response, c_dict, lang, parent_c_name, request, env):
          'parent': parent_c_name})
 
     gather = response.gather(
-        num_digits=1, timeout=0, action=action)
+        num_digits=1, timeout=0, finish_on_key='', action=action)
     # Play the intro statements once.
     for statement in c_dict.get('intro_statements', []):
         gather.play(

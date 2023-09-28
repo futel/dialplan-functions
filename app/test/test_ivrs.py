@@ -87,6 +87,9 @@ class TestIvrs(TestCase):
         self.assertEqual(
             ivrs.destination_context_name('9', c_dict),
             'call_911_9')
+        self.assertEqual(
+            ivrs.destination_context_name('#', c_dict),
+            ivrs.PARENT_DESTINATION)
 
     def test_menu(self):
         response = mock.Mock()
