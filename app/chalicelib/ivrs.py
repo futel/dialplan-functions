@@ -48,7 +48,10 @@ def destination_context_name(digits, c_dict):
         if position == 0:
             other_menu_entries = c_dict.get('other_menu_entries', [])
             try:
-                menu_entry = [entry for entry in other_menu_entries if entry[1] == 0][0]
+                # Kluge for the only valid key.
+                menu_entry = [
+                    entry for entry in other_menu_entries
+                    if entry[1] == 0][0]
             except IndexError:
                 # Invalid digit, repeat context.
                 return c_dict['name']
@@ -95,7 +98,8 @@ def pre_callable(response, c_dict, lang):
         return friction(response, c_dict['name'])
     return response
 
-def sound_url(sound_name, lang, directory, request, env, sound_format='ulaw'):
+def sound_url(
+        sound_name, lang, directory, request, env, sound_format='ulaw'):
     """Return the URL for a sound."""
     name = sound_name + '.' + sound_format
     path = lang + "/" + directory + '/' + name
@@ -161,6 +165,15 @@ def menu(response, c_dict, lang, parent_c_name, request, env):
                     gather.play(
                         sound_url(
                             statement,
+                            lang,
+                            c_dict['statement_dir'],
+                            request,
+                            env))
+                    # We happen to know that it is 0 because that's
+                    # the only value in other_menu_entries.
+                    gather.play(
+                        sound_url(
+                            key_prompts[key],
                             lang,
                             c_dict['statement_dir'],
                             request,
