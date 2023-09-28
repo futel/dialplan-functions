@@ -120,10 +120,10 @@ def ivr(request, env):
         # User entered a digit.
         c_dict = ivrs.context_dict(env['ivrs'], c_name)
         dest_c_name = ivrs.destination_context_name(digits, c_dict)
-        if dest_c_name == ivrs.LANG_DESTINATION:
+        if dest_c_name is ivrs.LANG_DESTINATION:
             dest_c_dict = c_dict # Same context.
             lang = ivrs.swap_lang(lang)
-        elif dest_c_name == ivrs.PARENT_DESTINATION:
+        elif dest_c_name is ivrs.PARENT_DESTINATION:
             dest_c_dict = ivrs.context_dict(env['ivrs'], parent_name)
         else:
             dest_c_dict = ivrs.context_dict(env['ivrs'], dest_c_name)
