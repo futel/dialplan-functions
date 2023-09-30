@@ -39,10 +39,6 @@ def setup(func):
 def request_response_middleware(event, get_response):
     event.post_fields = post_fields(event)
     event.query_params = event.query_params or {}
-    # We have to bundle everyhing in the event,
-    # we can't change the function signature.
-    # XXX not anymore?
-    event.env = env
     util.log_request(event)
     response = get_response(event)
     response.headers["Content-Type"] = "text/xml"
