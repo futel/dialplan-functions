@@ -5,6 +5,12 @@
         "enable_emergency": false,
         "local_outgoing": false
     },
+    "cesar-chavez": {
+        "outgoing": "outgoing_portland",
+        "caller_id": "+15039465227",
+        "enable_emergency": true,
+        "local_outgoing": false
+    },
     "demo": {
         "outgoing": "outgoing_safe",
         "caller_id": "+15038945775",
