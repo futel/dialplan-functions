@@ -44,7 +44,7 @@ Fill app/chalicelib/environment/.env to match app/chalicelib/environment/.env.sa
 
 ## Create or check out branch
 
-If deploying stage or prod, check out or create relevant source branch.
+If deploying stage or prod, check out or create relevant release branch.
 
 ## Deploy instance
 
