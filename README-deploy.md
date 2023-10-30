@@ -77,7 +77,9 @@ For the Application Resources, the URL path is "/dial_sip_e164".
 
 eg:
 
-    chalice deploy --stage dev 
+- source venv/bin/activate
+- cd app
+- chalice deploy --stage dev 
 
 Twilio SIP components do not need to be updated, since the URLs have not changed.
 
@@ -85,6 +87,8 @@ Twilio SIP components do not need to be updated, since the URLs have not changed
 
 eg:
 
-    chalice delete --stage dev
+- source venv/bin/activate
+- cd app
+- chalice delete --stage dev
 
 Remove the dev.dialplans.phu73l.net (or stage or prod) CNAME using the DigitalOcean web console.
