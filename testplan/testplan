@@ -14,6 +14,7 @@ caller ID is appropriate from asterisk
 
 outgoing dialtone tests for each extension:
 (extension, #-destination, has-emergency, caller-id)
+cesar-chavez outgoing yes cesar-chavez
 demo outgoing_safe no demo
 dome-basement outging_safe no incoming_leet
 dome-booth outgoing_safe no incoming_leet
@@ -26,6 +27,7 @@ test outging_safe no test
 
 outgoing asterisk tests for each extension:
 (extension, has-emergency, caller-id)
+cesar-chavez yes cesar-chavez
 demo no incoming_leet
 dome-basement no incoming_leet
 dome-booth no incoming_leet
