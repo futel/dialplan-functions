@@ -4,7 +4,7 @@ Using AWS Lambda, API Gateway, and whatever the Chalice framework uses.
 
 # Meta-requirements
 
-AWS should be set up as described in README-aws.
+Other services should be set up as described in README-services.
 
 An AWS Certificate Manager certificate should be set up as described in README-ssl.
 
@@ -81,7 +81,7 @@ eg:
 - cd app
 - chalice deploy --stage dev 
 
-Twilio SIP components do not need to be updated, since the URLs have not changed.
+Twilio SIP components and DigitalOcean networking components do not need to be updated, since the URLs have not changed.
 
 # Delete an instance
 

@@ -102,7 +102,7 @@ def sound_url(
         sound_name, lang, directory, request, env, sound_format='ulaw'):
     """Return the URL for a sound."""
     name = sound_name + '.' + sound_format
-    path = lang + "/" + directory + '/' + name
+    path = lang + "." + directory + '.' + name
     host = env['ASSET_HOST']
     url = urllib.parse.urlunparse(
         ('https',               # scheme
