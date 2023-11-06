@@ -81,7 +81,7 @@ eg:
 - cd app
 - chalice deploy --stage dev 
 
-Twilio SIP components do not need to be updated, since the URLs have not changed.
+Twilio SIP components and DigitalOcean networking components do not need to be updated, since the URLs have not changed.
 
 # Delete an instance
 
