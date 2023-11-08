@@ -34,6 +34,7 @@ IVR
 # Unit test
 
 - source venv/bin/activate
+- cd app
 - python3 -m unittest discover test
 
 # Smoke integration test
