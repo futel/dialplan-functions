@@ -9,7 +9,7 @@ menu_iterations = 10
 LANG_DESTINATION = []
 PARENT_DESTINATION = []
 
-key_prompts = [
+KEY_PROMPTS = [
     "press-zero",
     "press-one",
     "press-two",
@@ -190,7 +190,7 @@ def add_menu_stanza(response, c_dict, lang, parent_c_name, iteration, request, e
                             env))
                     gather.play(
                         sound_url(
-                            key_prompts[e],
+                            KEY_PROMPTS[e],
                             lang,
                             c_dict['statement_dir'],
                             request,
@@ -210,7 +210,7 @@ def add_menu_stanza(response, c_dict, lang, parent_c_name, iteration, request, e
                     # the only value in other_menu_entries.
                     gather.play(
                         sound_url(
-                            key_prompts[key],
+                            KEY_PROMPTS[key],
                             lang,
                             c_dict['statement_dir'],
                             request,
