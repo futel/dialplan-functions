@@ -107,6 +107,7 @@ def ivr(request, env):
     digits = request.post_fields.get('Digits')
     c_name = request.query_params.get('context')
     parent_name = request.query_params.get('parent')
+    stanza = request.query_params.get('stanza')
     lang = request.query_params.get('lang', 'en')
     util.log('c_name:{} digits:{}'.format(c_name, digits))
     # Find the destination ivr context dict.
@@ -134,7 +135,8 @@ def ivr(request, env):
             return str(util.dial_sip(dest_c_name, request, env))
 
     metric.publish('ivr_{}'.format(dest_c_dict['name']), request, env)
-    return str(ivrs.ivr_context(dest_c_dict, lang, c_name, request, env))
+    stanza = ivrs.get_stanza(stanza)
+    return str(ivrs.ivr_context(dest_c_dict, lang, c_name, stanza, request, env))
 
 def metric_dialer_status(request, env):
     """

@@ -91,6 +91,18 @@ class TestIvrs(TestCase):
             ivrs.destination_context_name('#', c_dict),
             ivrs.PARENT_DESTINATION)
 
+    def test_intro(self):
+        response = mock.Mock()
+        self.assertEqual(
+            ivrs.intro(
+                response,
+                {'name':'name'},
+                'lang',
+                'parent_c_name',
+                request,
+                {}),
+            response)
+
     def test_menu(self):
         response = mock.Mock()
         self.assertEqual(

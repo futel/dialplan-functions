@@ -1,3 +1,4 @@
+import collections
 from twilio.twiml.voice_response import VoiceResponse
 import urllib
 
@@ -19,6 +20,21 @@ key_prompts = [
     "press-seven",
     "press-eight",
     "press-nine"]
+
+
+# next_value is cruft.
+Stanza = collections.namedtuple('Stanza', ['value', 'next_value'])
+INTRO_STANZA = Stanza(value='intro', next_value='menu')
+MENU_STANZA = Stanza(value='menu', next_value='menu')
+STANZAS = [INTRO_STANZA, MENU_STANZA]
+
+
+def get_stanza(value):
+    """Return the stanza for value."""
+    try:
+        return [stanza for stanza in STANZAS if stanza.value == value].pop()
+    except IndexError:
+        return INTRO_STANZA
 
 def swap_lang(lang):
     """
@@ -113,21 +129,31 @@ def sound_url(
          None))                 # fragment
     return url
 
-def menu(response, c_dict, lang, parent_c_name, request, env):
+def gather_stanza(c_dict, lang, parent_c_name, request, response):
     """
-    Add a TwiML response to play a menu and gather a digit
-    based on c_dict and lang, sending the next request to the
-    destination URL.
+    Append a gather to the TwiML Response, and return the gather.
     """
-    action = util.function_url(
+    action_url = util.function_url(
         request,
         'ivr',
         {'context': c_dict['name'],
          'lang': lang,
-         'parent': parent_c_name})
-
+         'parent': parent_c_name,
+         'stanza': MENU_STANZA.value}) # Next stanza is always menu stanza.
     gather = response.gather(
-        num_digits=1, timeout=0, finish_on_key='', action=action)
+        num_digits=1, timeout=0, finish_on_key='', action=action_url)
+    # After the gather we always send the call to the same action.
+    _redirect = response.redirect(action_url)
+    return gather
+
+def intro(response, c_dict, lang, parent_c_name, request, env):
+    """
+    Add a TwiML stanza to play intro and gather a digit
+    based on c_dict and lang, sending the next request to the
+    destination URL. Return response.
+    """
+    gather = gather_stanza(
+        c_dict, lang, parent_c_name, request, response)
     # Play the intro statements once.
     for statement in c_dict.get('intro_statements', []):
         gather.play(
@@ -137,6 +163,16 @@ def menu(response, c_dict, lang, parent_c_name, request, env):
                 c_dict['statement_dir'],
                 request,
                 env))
+    return response
+
+def menu(response, c_dict, lang, parent_c_name, request, env):
+    """
+    Add a TwiML stanza to play a menu and gather a digit
+    based on c_dict and lang, sending the next request to the
+    destination URL. Return response.
+    """
+    gather = gather_stanza(
+        c_dict, lang, parent_c_name, request, response)
     # Play the menu statements with key prompts repeatedly.
     for i in range(menu_iterations):
         for (e, menu_entry) in enumerate(
@@ -180,12 +216,18 @@ def menu(response, c_dict, lang, parent_c_name, request, env):
                             env))
     return response
 
-def ivr_context(dest_c_dict, lang, c_name, request, env):
+def ivr_context(dest_c_dict, lang, c_name, stanza, request, env):
     """
     Return TwiML to run an IVR context.
     """
     response = VoiceResponse()
-    response = pre_callable(response, dest_c_dict, lang)
-    response = menu(response, dest_c_dict, lang, c_name, request, env)
-    # XXX no input, say goodbye, hangup
+    if stanza is INTRO_STANZA:
+        response = pre_callable(response, dest_c_dict, lang)
+        # We should notice friction here and stop.
+        response = intro(
+            response, dest_c_dict, lang, c_name, request, env)
+    elif stanza is MENU_STANZA:
+        response = menu(
+            response, dest_c_dict, lang, c_name, request, env)
+    # We hope one of the stanza choices updated the response!
     return response
