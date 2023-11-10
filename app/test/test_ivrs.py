@@ -94,7 +94,7 @@ class TestIvrs(TestCase):
     def test_intro(self):
         response = mock.Mock()
         self.assertEqual(
-            ivrs.intro(
+            ivrs.add_intro_stanza(
                 response,
                 {'name':'name'},
                 'lang',
@@ -106,11 +106,12 @@ class TestIvrs(TestCase):
     def test_menu(self):
         response = mock.Mock()
         self.assertEqual(
-            ivrs.menu(
+            ivrs.add_menu_stanza(
                 response,
                 {'name':'name'},
                 'lang',
                 'parent_c_name',
+                'iteration',
                 request,
                 {}),
             response)
