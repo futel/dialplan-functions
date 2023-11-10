@@ -136,7 +136,9 @@ def ivr(request, env):
 
     metric.publish('ivr_{}'.format(dest_c_dict['name']), request, env)
     stanza = ivrs.get_stanza(stanza)
-    return str(ivrs.ivr_context(dest_c_dict, lang, c_name, stanza, request, env))
+    return str(
+        ivrs.ivr_context(
+            dest_c_dict, lang, c_name, stanza, None, request, env))
 
 def metric_dialer_status(request, env):
     """
