@@ -5,7 +5,7 @@ import urllib
 from . import util
 
 
-menu_iterations = 10
+MENU_ITERATIONS = 10
 LANG_DESTINATION = []
 PARENT_DESTINATION = []
 
@@ -166,6 +166,27 @@ def add_intro_stanza(response, c_dict, lang, parent_c_name, request, env):
                 env))
     return response
 
+def add_menu_entry_stanza(statement, e, gather, c_dict, lang, request, env):
+    """
+    Add TwiML play stanzas to gather, if appropriate. Return gather.
+    """
+    if statement:
+        gather.play(
+            sound_url(
+                statement,
+                lang,
+                c_dict['statement_dir'],
+                request,
+                env))
+        gather.play(
+            sound_url(
+                KEY_PROMPTS[e],
+                lang,
+                c_dict['statement_dir'],
+                request,
+                env))
+    return gather
+
 def add_menu_stanza(response, c_dict, lang, parent_c_name, iteration, request, env):
     """
     Add a TwiML stanza to play a menu and gather a digit
@@ -175,46 +196,18 @@ def add_menu_stanza(response, c_dict, lang, parent_c_name, iteration, request, e
     gather = add_gather_stanza(
         c_dict, lang, parent_c_name, request, response)
     # Play the menu statements with key prompts repeatedly.
-    for i in range(menu_iterations):
+    for i in range(MENU_ITERATIONS):
         for (e, menu_entry) in enumerate(
                 c_dict.get('menu_entries', []), start=1):
             if menu_entry:
                 (statement, _dest) = menu_entry
-                if statement:
-                    gather.play(
-                        sound_url(
-                            statement,
-                            lang,
-                            c_dict['statement_dir'],
-                            request,
-                            env))
-                    gather.play(
-                        sound_url(
-                            KEY_PROMPTS[e],
-                            lang,
-                            c_dict['statement_dir'],
-                            request,
-                            env))
+                gather = add_menu_entry_stanza(
+                    statement, e, gather, c_dict, lang, request, env)
         for menu_entry in c_dict.get('other_menu_entries', []):
             if menu_entry:
                 (statement, key, _dest) = menu_entry
-                if statement:
-                    gather.play(
-                        sound_url(
-                            statement,
-                            lang,
-                            c_dict['statement_dir'],
-                            request,
-                            env))
-                    # We happen to know that it is 0 because that's
-                    # the only value in other_menu_entries.
-                    gather.play(
-                        sound_url(
-                            KEY_PROMPTS[key],
-                            lang,
-                            c_dict['statement_dir'],
-                            request,
-                            env))
+                gather = add_menu_entry_stanza(
+                    statement, key, gather, c_dict, lang, request, env)
     return response
 
 def ivr_context(dest_c_dict, lang, c_name, stanza, iteration, request, env):

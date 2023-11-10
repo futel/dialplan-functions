@@ -91,7 +91,7 @@ class TestIvrs(TestCase):
             ivrs.destination_context_name('#', c_dict),
             ivrs.PARENT_DESTINATION)
 
-    def test_intro(self):
+    def test_add_intro_stanza(self):
         response = mock.Mock()
         self.assertEqual(
             ivrs.add_intro_stanza(
@@ -103,7 +103,7 @@ class TestIvrs(TestCase):
                 {}),
             response)
 
-    def test_menu(self):
+    def test_add_menu_stanza(self):
         response = mock.Mock()
         self.assertEqual(
             ivrs.add_menu_stanza(
