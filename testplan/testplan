@@ -1,4 +1,4 @@
-tests for outgoing dialtone (for each extension):
+tests to run for outgoing dialtone (for each extension):
 # sends to appropriate context
 0 sends to operator from dialtone
 emergency call acts appropriately from dialtone
@@ -7,7 +7,7 @@ caller ID is appropriate from dialtone and asterisk
 (dial 1 from asterisk prompt to test asterisk calls)
 (note that an ATA should collect/send PSTN/0/9xx numbers or autodial #, a SIP client like Linphone will need to enter the initial dial/#)
 
-tests for outgoing asterisk (for each extension):
+tests to run for outgoing asterisk (for each extension):
 0 sends to operator from asterisk
 emergency call acts appropriately from asterisk
 caller ID is appropriate from asterisk
@@ -40,6 +40,19 @@ test no test
 
 incoming call:
 Call test number from PSTN. Experience call.
+
+tests to run for ivr menus:
+all defined entries can be chosen
+undefined entries restart menu
+top menu start with language choice announcement
+* restarts menu in Spanish
+# at top menu restarts menu
+# at non-top menu goes to parent menu
+0 at top menu chooses operator
+0 at non-top menu restarts menu
+
+menu tests for each menu:
+outgoing_safe
 
 other:
 metrics are generated
