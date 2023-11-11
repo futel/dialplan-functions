@@ -53,4 +53,4 @@ XXX
 
 # View logs
 
-    chalice logs --stage dev --follow
+    chalice logs --stage stage --since 10m --follow
