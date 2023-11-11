@@ -110,6 +110,10 @@ def ivr(request, env):
     stanza = request.query_params.get('stanza')
     iteration = request.query_params.get('iteration')
     lang = request.query_params.get('lang', 'en')
+    # Deserialize.
+    stanza = ivrs.get_stanza(stanza)
+    iteration = ivrs.get_iteration(iteration)
+
     util.log('c_name:{} digits:{}'.format(c_name, digits))
     # Find the destination ivr context dict.
     from_extension = util.sip_to_extension(from_uri)
@@ -136,7 +140,6 @@ def ivr(request, env):
             return str(util.dial_sip(dest_c_name, request, env))
 
     metric.publish('ivr_{}'.format(dest_c_dict['name']), request, env)
-    stanza = ivrs.get_stanza(stanza)
     return str(
         ivrs.ivr_context(
             dest_c_dict, lang, c_name, stanza, iteration, request, env))

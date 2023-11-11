@@ -2,6 +2,24 @@ from unittest import mock, TestCase
 
 from chalicelib import ivrs
 
+c_dict = {
+    "name": "outgoing_portland",
+    "pre_callable": "friction",
+    "intro_statements": ["para-espanol", "oprima-estrella"],
+    "menu_entries": [
+        ["to-make-a-call", "outgoing-dialtone-wrapper"],
+        ["for-voicemail", "voicemail_outgoing"],
+        ["for-the-directory", "directory_portland"],
+        ["for-utilities", "utilities_portland"],
+        ["for-the-fewtel-community", "community_outgoing"],
+        ["for-community-services", "community_services_oregon"],
+    ["for-the-telecommunications-network", "network"],
+        None,
+        [None, "call_911_9"]],
+    "other_menu_entries": [
+        ["for-the-operator", 0, "operator"]],
+    "statement_dir": "outgoing"}
+
 request = mock.Mock(
     headers={'host': 'host'},
     post_fields={})
@@ -55,23 +73,6 @@ class TestIvrs(TestCase):
     #         'outgoing_portland')
 
     def test_destination_context_name(self):
-        c_dict = {
-            "name": "outgoing_portland",
-            "pre_callable": "friction",
-            "intro_statements": ["para-espanol", "oprima-estrella"],
-            "menu_entries": [
-                ["to-make-a-call", "outgoing-dialtone-wrapper"],
-                ["for-voicemail", "voicemail_outgoing"],
-                ["for-the-directory", "directory_portland"],
-                ["for-utilities", "utilities_portland"],
-                ["for-the-fewtel-community", "community_outgoing"],
-                ["for-community-services", "community_services_oregon"],
-                ["for-the-telecommunications-network", "network"],
-                None,
-                [None, "call_911_9"]],
-            "other_menu_entries": [
-                ["for-the-operator", 0, "operator"]],
-            "statement_dir": "outgoing"}
         self.assertEqual(
             ivrs.destination_context_name('0', c_dict),
             'operator')
@@ -99,6 +100,7 @@ class TestIvrs(TestCase):
                 {'name':'name'},
                 'lang',
                 'parent_c_name',
+                1,
                 request,
                 {}),
             response)
@@ -111,7 +113,7 @@ class TestIvrs(TestCase):
                 {'name':'name'},
                 'lang',
                 'parent_c_name',
-                'iteration',
+                1,
                 request,
                 {}),
             response)
@@ -125,6 +127,19 @@ class TestIvrs(TestCase):
                 'request',
                 {'ASSET_HOST':'ASSET_HOST'}),
             'https://ASSET_HOST/en/directory/hello.ulaw')
+
+
+    def test_ivr_context(self):
+        response = mock.Mock()
+        self.assertTrue(
+            ivrs.ivr_context(
+                c_dict,
+                'en',
+                'c_name',
+                ivrs.INTRO_STANZA,
+                1,
+                request,
+                {'ASSET_HOST':'ASSET_HOST'}))
 
 
 if __name__ == '__main__':

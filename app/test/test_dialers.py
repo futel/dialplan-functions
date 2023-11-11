@@ -63,7 +63,7 @@ env = {'AWS_TOPIC_ARN': 'AWS_TOPIC_ARN',
                "statement_dir": "outgoing"}},
        'sns_client': mock.Mock()}
 
-outgoing_safe_body='<?xml version="1.0" encoding="UTF-8"?><Response><Gather action="https://host/ivr?context=outgoing_safe&amp;lang=en&amp;parent=outgoing_safe&amp;stanza=menu" finishOnKey="" numDigits="1" timeout="0"><Play>https://ASSET_HOST/en/outgoing/para-espanol.ulaw</Play><Play>https://ASSET_HOST/en/outgoing/oprima-estrella.ulaw</Play></Gather><Redirect>https://host/ivr?context=outgoing_safe&amp;lang=en&amp;parent=outgoing_safe&amp;stanza=menu</Redirect></Response>'
+outgoing_safe_body='<?xml version="1.0" encoding="UTF-8"?><Response><Gather action="https://host/ivr?context=outgoing_safe&amp;lang=en&amp;parent=outgoing_safe&amp;stanza=menu&amp;iteration=0" finishOnKey="" numDigits="1" timeout="0"><Play>https://ASSET_HOST/en/outgoing/para-espanol.ulaw</Play><Play>https://ASSET_HOST/en/outgoing/oprima-estrella.ulaw</Play></Gather><Redirect>https://host/ivr?context=outgoing_safe&amp;lang=en&amp;parent=outgoing_safe&amp;stanza=menu&amp;iteration=0</Redirect></Response>'
 
 
 class TestDialOutgoing(TestCase):
