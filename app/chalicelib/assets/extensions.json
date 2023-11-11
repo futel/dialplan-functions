@@ -21,13 +21,13 @@
         "outgoing": "outgoing_safe",
         "caller_id": "+15034681337",
         "enable_emergency": false,
-        "local_outgoing": false
+        "local_outgoing": true
     },
     "dome-booth": {
         "outgoing": "outgoing_safe",
         "caller_id": "+15034681337",
         "enable_emergency": false,
-        "local_outgoing": false
+        "local_outgoing": true
     },
     "dome-garage": {
         "outgoing": "outgoing_portland",
@@ -39,7 +39,7 @@
         "outgoing": "outgoing_safe",
         "caller_id": "+15034681337",
         "enable_emergency": false,
-        "local_outgoing": false
+        "local_outgoing": true
     },
     "ghost-mountain": {
         "outgoing": "outgoing_portland",
@@ -51,13 +51,13 @@
         "outgoing": "outgoing_safe",
         "caller_id": "+15033828838",
         "enable_emergency": true,
-        "local_outgoing": false
+        "local_outgoing": true
     },
     "sjac": {
         "outgoing": "outgoing_safe",
         "caller_id": "+15032126899",
         "enable_emergency": false,
-        "local_outgoing": false
+        "local_outgoing": true
     },
     "test": {
         "outgoing": "outgoing_safe",
