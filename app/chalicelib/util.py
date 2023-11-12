@@ -146,8 +146,9 @@ def dial_sip(extension, request, env):
     from_uri = request.post_fields['From']
 
     from_extension = sip_to_extension(from_uri)
+    from_extension = env['extensions'][from_extension]
     if extension == "#":
-        extension = env['extensions'][from_extension]['outgoing']
+        extension = from_extension['outgoing']
     elif extension == "0":
         extension = 'operator'
 
@@ -155,9 +156,8 @@ def dial_sip(extension, request, env):
     server_name = f'futel-{instance}.phu73l.net'
     sip_uri = f'sip:{extension}@{server_name}'
 
-    # The caller ID is the SIP extension we are calling from, which we assume is E.164.
-    caller_id = env['extensions'][from_extension]['caller_id']
-    enable_emergency = env['extensions'][from_extension]['enable_emergency']
+    caller_id = from_extension['caller_id']
+    enable_emergency = from_extension['enable_emergency']
     enable_emergency = python_to_twilio_param(enable_emergency)
 
     sip_uri = (f'{sip_uri};'
@@ -187,7 +187,8 @@ def dial_pstn(request, env):
         return reject(request)
 
     from_extension = sip_to_extension(from_uri)
-    caller_id = env['extensions'][from_extension]['caller_id']
+    from_extension = env['extensions'][from_extension]
+    caller_id = from_extension['caller_id']
 
     # XXX default timeLimit is 4 hours, should be smaller, in seconds
     response = VoiceResponse()

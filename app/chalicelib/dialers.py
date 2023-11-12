@@ -121,10 +121,11 @@ def ivr(request, env):
     util.log('c_name:{} digits:{}'.format(c_name, digits))
     # Find the destination ivr context dict.
     from_extension = util.sip_to_extension(from_uri)
+    from_extension = env['extensions'][from_extension]
     if not c_name:
         # Presumably this is the first interaction, go to the
         # default context.
-        c_name = env['extensions'][from_extension]['outgoing']
+        c_name = from_extension['outgoing']
         dest_c_dict = ivrs.context_dict(env['ivrs'], c_name)
     else:
         # User entered a digit.
