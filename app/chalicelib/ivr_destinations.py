@@ -21,5 +21,6 @@ def enqueue_operator(extension, request, env):
     # XXX statement should be an IVR statement for consistency
     #response.play('xxx') # please hold, must expand sound_url
     response.enqueue('operator') # wait_url, action
+    return response
 
 DESTINATIONS = {'enqueue_operator': enqueue_operator}
