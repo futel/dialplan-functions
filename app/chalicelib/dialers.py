@@ -144,12 +144,12 @@ def ivr(request, env):
             # If it is an IVR destination, return the output of the function.
             destination = ivr_destinations.get_destination(dest_c_name)
             if destination:
-                # XXX metric
+                metric.publish(dest_c_name, request, env)
                 return str(destination(from_extension, request, env))
             else:
                 # We don't know this context, so it's on the Asterisk server.
                 to_extension = dest_c_name
-                # XXX metric here instead of in dial_sip.
+                metric.publish('dial_sip', request, env)
                 # XXX we lose lang! Hopefully user remembers to hit *.
                 return str(util.dial_sip(dest_c_name, request, env))
 

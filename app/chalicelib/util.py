@@ -141,7 +141,6 @@ def python_to_twilio_param(v):
 
 def dial_sip(extension, request, env):
     """Return a TwiML response to dial a SIP extension on the Futel server."""
-    metric.publish('dial_sip', request, env)
     # XXX only for pstn
     from_uri = request.post_fields['From']
 
