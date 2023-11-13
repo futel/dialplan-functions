@@ -179,8 +179,8 @@ class TestIvr(TestCase):
                 'SipDomain': 'direct-futel-prod.sip.twilio.com',
                 'To': 'sip:xyzzy@direct-futel-prod.sip.twilio.com',
                 'From': 'sip:test@direct-futel-prod.sip.twilio.com',
-                'context': 'outgoing_portland',
                 'Digits': '*'},
+            query_params={'context':'outgoing_portland'},
             context={'domainPrefix':'prod'})
 
         got = dialers.ivr(request, env)

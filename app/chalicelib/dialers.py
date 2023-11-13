@@ -5,6 +5,7 @@ Functions returning TwiML to application HTTP endpoints.
 from twilio.twiml.voice_response import VoiceResponse
 
 from . import ivrs
+from . import ivr_destinations
 from . import metric
 from . import sns_client
 from . import util
@@ -139,11 +140,20 @@ def ivr(request, env):
         else:
             dest_c_dict = ivrs.context_dict(env['ivrs'], dest_c_name)
         if not dest_c_dict:
-            # We don't know this context, so it's on the Asterisk server.
-            to_extension = dest_c_name
-            # XXX we lose lang! Hopefully user remembers to hit *.
-            return str(util.dial_sip(dest_c_name, request, env))
+            # We didn't find an IVR context.
+            # If it is an IVR destination, return the output of the function.
+            destination = ivr_destinations.get_destination(dest_c_name)
+            if destination:
+                # XXX metric
+                return str(destination(from_extension, request, env))
+            else:
+                # We don't know this context, so it's on the Asterisk server.
+                to_extension = dest_c_name
+                # XXX metric here instead of in dial_sip.
+                # XXX we lose lang! Hopefully user remembers to hit *.
+                return str(util.dial_sip(dest_c_name, request, env))
 
+    # We got this far, it's another IVR menu.
     metric.publish('ivr_{}'.format(dest_c_dict['name']), request, env)
     return str(
         ivrs.ivr_context(
