@@ -69,6 +69,11 @@ def _index(request, env):
 def _index(request, env):
     return dialers.metric_dialer_status(request, env)
 
+@route('/enqueue_operator_wait')
+@setup
+def _index(request, env):
+    return dialers.enqueue_operator_wait(request, env)
+
 # All the startup work we have given lambda is done, log for timing.
 # The log before this should be the INIT message.
 util.log('app start')

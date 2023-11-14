@@ -7,6 +7,8 @@ from chalicelib import util
 
 env = {'AWS_TOPIC_ARN': 'AWS_TOPIC_ARN',
        'ASSET_HOST': 'ASSET_HOST',
+       'TWILIO_ACCOUNT_SID': 'TWILIO_ACCOUNT_SID',
+       'TWILIO_AUTH_TOKEN': 'TWILIO_AUTH_TOKEN',
        'extensions': {
            "alleymaple": {
                "outgoing": "outgoing_portland",
@@ -184,6 +186,15 @@ class TestIvr(TestCase):
             context={'domainPrefix':'prod'})
 
         got = dialers.ivr(request, env)
+        # Smoke test.
+
+
+class TestEnqueueOperatorWait(TestCase):
+
+    @mock.patch.object(dialers, 'Client')
+    def test_enqueue_operator_wait(self, _mock_metric):
+        request = 'dummy'
+        got = dialers.enqueue_operator_wait(request, env)
         # Smoke test.
 
 

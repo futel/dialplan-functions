@@ -3,6 +3,7 @@ Functions returning TwiML to application HTTP endpoints.
 """
 
 from twilio.twiml.voice_response import VoiceResponse
+from twilio.rest import Client
 
 from . import ivrs
 from . import ivr_destinations
@@ -15,6 +16,7 @@ sip_domain_subdomain_base_non_emergency = "direct-futel-nonemergency";
 # Note that we don't use sip.us1
 # https://www.twilio.com/docs/voice/api/sip-registration
 sip_domain_suffix = "sip.twilio.com";
+
 
 def get_sip_domain(extension, extension_map, request):
     if extension_map[extension]['enable_emergency']:
@@ -46,6 +48,9 @@ def request_to_metric_events(request, env):
 
     dial_status_event = dial_status_event_base + dial_call_status + '_' + endpoint
     return (dial_event, dial_status_event)
+
+def call():
+    pass
 
 def dial_outgoing(request, env):
     """
@@ -190,4 +195,35 @@ def metric_dialer_status(request, env):
     # call hung up due to a user hitting the back key from the top, otherwise we want to end.
     # If the first interation is a dialtone, we want to end.
     response.hangup()
+    return str(response)
+
+def enqueue_operator_call(env):
+    """Call operators with a call pointing to our twiml."""
+    # XXX Probably better to do this in the module?
+    twilio_account_sid = env['TWILIO_ACCOUNT_SID']
+    twilio_auth_token = env['TWILIO_AUTH_TOKEN']
+    client = Client(twilio_account_sid, twilio_auth_token)
+
+    to_number = '+15034681337' # XXX
+    from_number = '+15034681337' # XXX
+
+    # XXX We need to send them to an ivr to accept/reject.
+    response = VoiceResponse()
+    dial = response.dial()
+    queue = dial.queue('operator')
+
+    call = client.calls.create(
+        twiml=str(response),
+        to=to_number,
+        from_=from_number)
+
+def enqueue_operator_wait(request, env):
+    """
+    Perform side effects and return TwiML string
+    for the enqueue wait callback.
+    """
+    enqueue_operator_call(env)
+    response = VoiceResponse()
+    response.play(
+        'http://com.twilio.sounds.music.s3.amazonaws.com/MARKOVICHAMP-Borghestral.mp3')
     return str(response)

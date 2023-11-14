@@ -8,7 +8,9 @@ dotenv.load_dotenv(os.path.join(
 def get_env():
     return {
         'ASSET_HOST': os.environ['ASSET_HOST'],
-        'AWS_TOPIC_ARN': os.environ['AWS_TOPIC_ARN']}
+        'AWS_TOPIC_ARN': os.environ['AWS_TOPIC_ARN'],
+        'TWILIO_ACCOUNT_SID': os.environ['TWILIO_ACCOUNT_SID'],
+        'TWILIO_AUTH_TOKEN': os.environ['TWILIO_AUTH_TOKEN']}
 
 def get_extensions():
     """Return extensions asset object."""
