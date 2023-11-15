@@ -14,7 +14,7 @@
             null,
             [null, "call_911_9"]],
         "other_menu_entries": [
-            ["for-the-operator", 0, "enqueue_operator"]],
+            ["for-the-operator", 0, "outgoing_operator_enqueue"]],
         "statement_dir": "outgoing"},
     "outgoing_ypsi":  {
         "name": "outgoing_ypsi",
@@ -31,7 +31,7 @@
             null,
             [null, "call_911_9"]],
         "other_menu_entries": [
-            ["for-the-operator", 0, "enqueue_operator"]],
+            ["for-the-operator", 0, "outgoing_operator_enqueue"]],
         "statement_dir": "outgoing"},
     "outgoing_detroit":  {
         "name": "outgoing_detroit",
@@ -48,7 +48,7 @@
             null,
             [null, "call_911_9"]],
         "other_menu_entries": [
-            ["for-the-operator", 0, "enqueue_operator"]],
+            ["for-the-operator", 0, "outgoing_operator_enqueue"]],
         "statement_dir": "outgoing"},
     "outgoing_souwester": {
         "name": "outgoing_souwester",
@@ -65,7 +65,7 @@
             null,
             [null, "call_911_9"]],
         "other_menu_entries": [
-            ["for-the-operator", 0, "enqueue_operator"]],
+            ["for-the-operator", 0, "outgoing_operator_enqueue"]],
         "statement_dir": "outgoing"},
     "outgoing_safe": {
         "name": "outgoing_safe",
@@ -82,8 +82,22 @@
             null,
             null],
         "other_menu_entries": [
-            ["for-the-operator", 0, "enqueue_operator"]],
+            ["for-the-operator", 0, "outgoing_operator_enqueue"]],
         "statement_dir": "outgoing"},
+    "outgoing_operator": {
+        "name": "outgoing_operator",
+        "intro_statements": ["incoming-fewtel-operator-call"],
+        "menu_entries": [
+            ["to-accept", "outgoing-operator-accept"],
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,            
+            null],
+        "statement_dir": "operator"},
     "community_outgoing": {
         "name": "community_outgoing",
         "menu_entries": [

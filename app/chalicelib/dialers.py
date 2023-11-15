@@ -197,33 +197,44 @@ def metric_dialer_status(request, env):
     response.hangup()
     return str(response)
 
-def enqueue_operator_call(env):
+def enqueue_operator_call(request, env):
     """Call operators with a call pointing to our twiml."""
+    metric.publish('enqueue_operator_call', request, env)
+    from_number = request.post_fields['From']
     # XXX Probably better to do this in the module?
     twilio_account_sid = env['TWILIO_ACCOUNT_SID']
     twilio_auth_token = env['TWILIO_AUTH_TOKEN']
     client = Client(twilio_account_sid, twilio_auth_token)
 
-    to_number = '+15034681337' # XXX
-    from_number = '+15034681337' # XXX
+    to_numbers = ['+15034681337'] # XXX
+    dest_c_name = 'outgoing_operator'
+    dest_c_dict = ivrs.context_dict(env['ivrs'], dest_c_name)
+    stanza = ivrs.get_stanza(None)
+    iteration = ivrs.get_iteration(None)
+    response = ivrs.ivr_context(
+        dest_c_dict,
+        'en',
+        dest_c_name,
+        stanza,
+        iteration,
+        request,
+        env)
 
-    # XXX We need to send them to an ivr to accept/reject.
-    response = VoiceResponse()
-    dial = response.dial()
-    queue = dial.queue('operator')
-
-    call = client.calls.create(
-        twiml=str(response),
-        to=to_number,
-        from_=from_number)
+    for to_number in to_numbers:
+        call = client.calls.create(
+            twiml=str(response),
+            to=to_number,
+            from_=from_number)
 
 def enqueue_operator_wait(request, env):
     """
     Perform side effects and return TwiML string
     for the enqueue wait callback.
     """
-    enqueue_operator_call(env)
+    enqueue_operator_call(request, env)
     response = VoiceResponse()
+    # XXX please hold for the next
+    # XXX We need to send them to an IVR for statement normalization.
     response.play(
         'http://com.twilio.sounds.music.s3.amazonaws.com/MARKOVICHAMP-Borghestral.mp3')
     return str(response)

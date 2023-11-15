@@ -9,60 +9,8 @@ env = {'AWS_TOPIC_ARN': 'AWS_TOPIC_ARN',
        'ASSET_HOST': 'ASSET_HOST',
        'TWILIO_ACCOUNT_SID': 'TWILIO_ACCOUNT_SID',
        'TWILIO_AUTH_TOKEN': 'TWILIO_AUTH_TOKEN',
-       'extensions': {
-           "alleymaple": {
-               "outgoing": "outgoing_portland",
-               "caller_id": "+15034681337",
-               "enable_emergency": False,
-               "local_outgoing": False
-           },
-           "demo": {
-               "outgoing": "outgoing_safe",
-               "caller_id": "+15038945775",
-               "enable_emergency": False,
-               "local_outgoing": True
-           },
-           "test": {
-               "outgoing": "outgoing_safe",
-               "caller_id": "+19713512383",
-               "enable_emergency": False,
-               "local_outgoing": True
-           }},
-       'ivrs': {
-           "outgoing_portland": {
-               "name": "outgoing_portland",
-               "pre_callable": "friction",
-               "intro_statements": ["para-espanol", "oprima-estrella"],
-               "menu_entries": [
-                   ["to-make-a-call", "outgoing-dialtone-wrapper"],
-                   ["for-voicemail", "voicemail_outgoing"],
-                   ["for-the-directory", "directory_portland"],
-                   ["for-utilities", "utilities_portland"],
-                   ["for-the-fewtel-community", "community_outgoing"],
-                   ["for-community-services", "community_services_oregon"],
-                   ["for-the-telecommunications-network", "network"],
-                   None,
-                   [None, "call_911_9"]],
-               "other_menu_entries": [
-                   ["for-the-operator", 0, "operator"]],
-               "statement_dir": "outgoing"},
-           "outgoing_safe": {
-               "name": "outgoing_safe",
-               "pre_callable": "friction",
-               "intro_statements": ["para-espanol", "oprima-estrella"],
-               "menu_entries": [
-                   ["to-make-a-call", "outgoing-dialtone-wrapper"],
-                   ["for-voicemail", "voicemail_outgoing"],
-                   ["for-the-directory", "directory_safe"],
-                   ["for-utilities", "utilities_portland"],
-                   ["for-the-fewtel-community", "community_outgoing"],
-                   ["for-the-telecommunications-network", "network"],
-                   None,
-                   None,
-                   None],
-               "other_menu_entries": [
-                   ["for-the-operator", 0, "operator"]],
-               "statement_dir": "outgoing"}},
+       'extensions': env_util.get_extensions(),
+       'ivrs': env_util.get_ivrs(),
        'sns_client': mock.Mock()}
 
 outgoing_safe_body='<?xml version="1.0" encoding="UTF-8"?><Response><Gather action="https://host/ivr?context=outgoing_safe&amp;lang=en&amp;parent=outgoing_safe&amp;stanza=menu&amp;iteration=0" finishOnKey="" numDigits="1" timeout="0"><Play>https://ASSET_HOST/en/outgoing/para-espanol.ulaw</Play><Play>https://ASSET_HOST/en/outgoing/oprima-estrella.ulaw</Play></Gather><Redirect>https://host/ivr?context=outgoing_safe&amp;lang=en&amp;parent=outgoing_safe&amp;stanza=menu&amp;iteration=0</Redirect></Response>'
@@ -193,7 +141,14 @@ class TestEnqueueOperatorWait(TestCase):
 
     @mock.patch.object(dialers, 'Client')
     def test_enqueue_operator_wait(self, _mock_metric):
-        request = 'dummy'
+        request = mock.Mock(
+            headers={'host': 'host'},
+            post_fields={
+                'SipDomain': 'direct-futel-prod.sip.twilio.com',
+                'To': 'sip:xyzzy@direct-futel-prod.sip.twilio.com',
+                'From': 'sip:test@direct-futel-prod.sip.twilio.com',
+                'Digits': '*'},
+            context={'domainPrefix':'prod'})
         got = dialers.enqueue_operator_wait(request, env)
         # Smoke test.
 
