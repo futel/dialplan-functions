@@ -1,5 +1,9 @@
 # Testing and development
 
+# Verify assets
+
+    PYTHONPATH=app python local/check_assets.py
+
 # Smoke test dev or stage deployment
 
 Outgoing PSTN
