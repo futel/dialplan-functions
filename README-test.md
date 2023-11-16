@@ -3,8 +3,7 @@
 # Unit test
 
 - source venv/bin/activate
-- cd app
-- python -m unittest discover test
+- PYTHONPATH=app python -m unittest discover test
 
 # Smoke integration test
 
