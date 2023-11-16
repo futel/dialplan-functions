@@ -1,8 +1,25 @@
 # Testing and development
 
+# Unit test
+
+- source venv/bin/activate
+- cd app
+- python -m unittest discover test
+
+# Smoke integration test
+
+Using a SIP client, receive PSTN call, make outgoing PSTN, make outgoing '#' and '0' calls.
+
+# Integration test
+
+If testplan has changed since last release branch, update google sheet testplan, keeping dates of nonupdated completed tests.
+
+Test stage against google sheet testplan. Emphasize tests which are important or have not been run for a while.
+
 # Verify assets
 
-    PYTHONPATH=app python local/check_assets.py
+- source venv/bin/activate
+- PYTHONPATH=app python local/check_assets.py
 
 # Smoke test dev or stage deployment
 
@@ -34,22 +51,6 @@ IVR
   -p 'To:sip:outgoing_portland@direct-futel-nonemergency-stage.sip.twilio.com' \
   -p 'From:sip:test@direct-futel-nonemergency-stage.sip.twilio.com'
 - XXX Digits context parent
-
-# Unit test
-
-- source venv/bin/activate
-- cd app
-- python3 -m unittest discover test
-
-# Smoke integration test
-
-Using a SIP client, receive PSTN call, make outgoing PSTN, make outgoing '#' and '0' calls.
-
-# Integration test
-
-If testplan has changed since last release branch, update google sheet testplan, keeping dates of nonupdated completed tests.
-
-Test stage against google sheet testplan. Emphasize tests which are important or have not been run for a while.
 
 # Continuously deploy
 
