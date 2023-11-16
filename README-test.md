@@ -5,6 +5,11 @@
 - source venv/bin/activate
 - PYTHONPATH=app python -m unittest discover test
 
+# Verify assets
+
+- source venv/bin/activate
+- PYTHONPATH=app python local/check_assets.py
+
 # Smoke integration test
 
 Using a SIP client, receive PSTN call, make outgoing PSTN, make outgoing '#' and '0' calls.
@@ -14,11 +19,6 @@ Using a SIP client, receive PSTN call, make outgoing PSTN, make outgoing '#' and
 If testplan has changed since last release branch, update google sheet testplan, keeping dates of nonupdated completed tests.
 
 Test stage against google sheet testplan. Emphasize tests which are important or have not been run for a while.
-
-# Verify assets
-
-- source venv/bin/activate
-- PYTHONPATH=app python local/check_assets.py
 
 # Smoke test dev or stage deployment
 
