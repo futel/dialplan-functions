@@ -5,11 +5,23 @@
         "enable_emergency": false,
         "local_outgoing": false
     },
+    "bottles-and-cans-one": {
+        "outgoing": "outgoing_portland",
+        "caller_id": "+15034681337",
+        "enable_emergency": false,
+        "local_outgoing": true
+    },
+    "bottles-and-cans-two": {
+        "outgoing": "outgoing_portland",
+        "caller_id": "+15034681337",
+        "enable_emergency": false,
+        "local_outgoing": true
+    },
     "cesar-chavez": {
         "outgoing": "outgoing_portland",
         "caller_id": "+15039465227",
         "enable_emergency": true,
-        "local_outgoing": false
+        "local_outgoing": true
     },
     "demo": {
         "outgoing": "outgoing_safe",
