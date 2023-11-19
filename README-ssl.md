@@ -40,7 +40,7 @@ Note ARN. This is needed to deploy the AWS API Gateway.
 
 # Notes
 
-The box that certbot is run on becomes a local registry for the certs, not sure what does the reminder email. Do we need the local certs when we renew or can they be thrown away after they're in ACM?
+The box that certbot is run on becomes a local registry for the certs, when we register on create/update, Let's Encrypt sends the reminder email. Do we need the local certs when we renew or can they be thrown away after they're in ACM?
 
 The cert expiry is short, this process must be repeated each time. I think the usual process is to have the infrastructure and staff, a networked box running certbot and a human to keep it running. Might be worth it to just buy 4 certs a year?
 
