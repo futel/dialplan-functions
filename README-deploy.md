@@ -56,6 +56,8 @@ Deploy the instance, eg:
 
 Note the AliasDomainName.
 
+XXX update the domain_name and certificate_arn for the instance in app/.chalice/config.json
+
 ## Update domain
 
 Using the DigitalOcean web console, add or update a CNAME record in the dialplans.phu73l.net domain.

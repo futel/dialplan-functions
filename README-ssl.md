@@ -2,15 +2,28 @@
 
 This is needed to publish dialplan documents with a custom domain name.
 
+# Meta-requirements
+
+AWS ACM console access must have been set up.
+
+DigitalOcean must have the dialplans.phu73l.net domain name set up.
+
+This project must have been set up for all of dev, stage, prod deployments as described in README-deploy.
+
 # Requirements
 
-ubuntu 22
-certbot
-openssl
+- ubuntu 22
+- certbot
+- openssl
 
-# Create or renew certificate
+# Create certificate
 
-Create or renew a certificate for each of dev.dialplans.phu73l.net, stage.dialplans.phu73l.net, prod.dialplans.phu73l.net.
+Create a certificate for the domain of each deployment:
+- dev.dialplans.phu73l.net
+- stage.dialplans.phu73l.net
+- prod.dialplans.phu73l.net
+
+Have the alias domain names. These can be found in the alias_domain_name values in the config files for each deployment, e.g. app/.chalice/deployed/dev.json.
 
 - sudo certbot certonly --manual --preferred-challenges dns
  - enter email for reminder
@@ -18,19 +31,34 @@ Create or renew a certificate for each of dev.dialplans.phu73l.net, stage.dialpl
  - complete certbot
  - remove txt record for dialplans.phu73l.net using digitalocean web console
 - add expiration to calendar
-- copy eg /etc/letsencrypt/archive/dev.dialplans.phu73l.net to conf
-- in eg dev.dialplans.phu73l.net, cat cert1.pem chain1.pem fullchain1.pem > all.pem
+- copy eg /etc/letsencrypt/live/dev.dialplans.phu73l.net to conf XXX why?
+- in eg /etc/letsencrypt/live/dev.dialplans.phu73l.net, cat cert.pem chain.pem fullchain.pem > all.pem
 
 # Import certificate to ACM
 
-- visit ACM web console
+- visit AWS ACM web console
 - change region to us-east-1
 - import a certificate
- - certificate body cert1.pem
- - certificate private key privkey1.pem
+ - certificate body cert.pem
+ - certificate private key privkey.pem
  - certificate chain all.pem
  
 Note ARN. This is needed to deploy the AWS API Gateway.
+
+# Update functions to use new certificate
+
+Update config.json to use new certificate ARN for the deployment as described in README-deploy.
+
+# Update certificate
+
+Certificates must be updated before they expire.
+
+- Renew the certificate as in create certificate
+  - keep existing key type
+
+# Renew updated certificate in ACM
+
+- Renew the certificate as in import certificate
 
 # Delete certificates
 
@@ -38,13 +66,21 @@ Note ARN. This is needed to deploy the AWS API Gateway.
 - certbot delete --cert-name dev.dialplans.phu73l.net
 - visit ACM web console
 
+# List certificates
+
+- certbot certificates
+- visit AWS ACM web console
+- change region to us-east-1
+
+# Test
+
+POST to a smoke test URL as described in README-test.
+
 # Notes
 
-The box that certbot is run on becomes a local registry for the certs, when we register on create/update, Let's Encrypt sends the reminder email. Do we need the local certs when we renew or can they be thrown away after they're in ACM?
-
+The box that certbot is run on stores the creds and becomes a local registry for the certs, when we register on create/update, Let's Encrypt sends the reminder email. Do we need the local certs when we renew or can they be thrown away after they're in ACM? Files are stored in /etc/letsencrypt.
+l0nk
 The cert expiry is short, this process must be repeated each time. I think the usual process is to have the infrastructure and staff, a networked box running certbot and a human to keep it running. Might be worth it to just buy 4 certs a year?
-
-We can't deploy the AWS API Gateway if ACM has more than one cert for the domain name we are deploying to, e.g. if *.example com exists, we can't deploy dev.example.com. To replace an existing cert for an existing deployment, we must delete the existing deployment, then the existing cert, then re-create the cert and deployment. This is a problem with prod, we probably need to be able to create a second prod? prod should be prod-foo, prod-bar, etc?
 
 https://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-custom-domains-prerequisites.html
 https://eff-certbot.readthedocs.io/en/stable/using.html#manual
