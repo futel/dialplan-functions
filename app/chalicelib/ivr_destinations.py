@@ -14,7 +14,7 @@ def get_destination(name):
     """Return the destination function for name."""
     return DESTINATIONS.get(name)
 
-def outgoing_operator_enqueue(extension, request, _env):
+def outgoing_operator_enqueue(extension, request, env):
     """
     Return TwiML to run an IVR context.
     """
