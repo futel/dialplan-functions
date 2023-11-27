@@ -9,6 +9,7 @@ from chalicelib import env_util
 from chalicelib import util
 
 env = env_util.get_env()
+# We don't always need all of this, we could be lazy?
 env['extensions'] = env_util.get_extensions()
 env['ivrs'] = env_util.get_ivrs()
 env['sns_client'] = boto3.client('sns')
