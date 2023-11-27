@@ -16,7 +16,8 @@ def get_destination(name):
 
 def outgoing_operator_enqueue(extension, request, env):
     """
-    Return TwiML to run an IVR context.
+    Return TwiML to run an IVR context to put the caller
+    in the operator queue.
     """
     caller_id = extension['caller_id']
     response = VoiceResponse()

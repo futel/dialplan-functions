@@ -78,8 +78,8 @@ def dial_outgoing(request, env):
 
 def dial_sip_e164(request, env):
     """
-    Return TwiML string to call an extension registered to our Twilio SIP Domains, looked up by
-    the given E.164 number.
+    Return TwiML string to call an extension registered to our Twilio SIP Domains,
+    looked up by the given E.164 number.
     """
     metric.publish('dial_sip_e164', request, env)
     to_number = request.post_fields['To']
@@ -107,7 +107,9 @@ def dial_sip_e164(request, env):
 
 def ivr(request, env):
     """
-    Return TwiML string to play IVR context with attributes from request.
+    Return TwiML string to play IVR context with attributes from request,
+    or send the call to the Asterisk server if we can't find it.
+    IVR TwiML can come from the IVR assets or the ivr_destinations module.
     """
     metric.publish('ivr', request, env)
     # Params from twilio are in the body, params from us are in the
@@ -207,6 +209,8 @@ def enqueue_operator_call(request, env):
     client = Client(twilio_account_sid, twilio_auth_token)
 
     to_numbers = ['+15034681337'] # XXX
+
+    # Get the TwiML to play for the operators.
     dest_c_name = 'outgoing_operator'
     dest_c_dict = ivrs.context_dict(env['ivrs'], dest_c_name)
     stanza = ivrs.get_stanza(None)
@@ -220,6 +224,7 @@ def enqueue_operator_call(request, env):
         request,
         env)
 
+    # Call each operator and play the TwiML.
     for to_number in to_numbers:
         call = client.calls.create(
             twiml=str(response),
