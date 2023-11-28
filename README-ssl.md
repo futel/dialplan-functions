@@ -18,14 +18,8 @@ This project must have been set up for all of dev, stage, prod deployments as de
 
 # Create certificate
 
-Create a certificate for the domain of each deployment:
-- dev.dialplans.phu73l.net
-- stage.dialplans.phu73l.net
-- prod.dialplans.phu73l.net
-
-Have the alias domain names. These can be found in the alias_domain_name values in the config files for each deployment, e.g. app/.chalice/deployed/dev.json.
-
 - sudo certbot certonly --manual --preferred-challenges dns
+ - domain names "*.dialplans.phu73l.net dialplans.phu73l.net phu73l.net"
  - enter email for reminder
  - add txt record for dialplans.phu73l.net using digitalocean web console
  - complete certbot
@@ -47,7 +41,7 @@ Note ARN. This is needed to deploy the AWS API Gateway.
 
 # Update functions to use new certificate
 
-Update config.json to use new certificate ARN for the deployment as described in README-deploy.
+Update config.json to use new certificate ARN for the deployment, and deploy affected stages, as described in README-deploy.
 
 # Update certificate
 

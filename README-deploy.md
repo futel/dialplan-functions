@@ -49,6 +49,8 @@ If deploying stage or prod, check out or create relevant release branch.
 
 ## Deploy instance
 
+Create a certificate as described in README-ssl. Update the domain_name and certificate_arn for the instance in app/.chalice/config.json.
+
 Deploy the instance, eg:
 
 - source venv/bin/activate
@@ -57,14 +59,14 @@ Deploy the instance, eg:
 
 Note the AliasDomainName.
 
-XXX update the domain_name and certificate_arn for the instance in app/.chalice/config.json
-
 ## Update domain
+
+Have the alias domain name, or find it in e.g. app/.chalice/deployed/dev.json.
 
 Using the DigitalOcean web console, add or update a CNAME record in the dialplans.phu73l.net domain.
 
 - hostname dev.dialplans.phu73l.net (or stage, prod)
-- alias: <AliasDomainName>
+- alias: <alias domain name>
 
 Wait for DNS to be updated with eg "nslookup dev.dialplans.phu73l.net".
 
