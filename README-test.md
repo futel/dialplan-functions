@@ -58,3 +58,8 @@ XXX
 # View logs
 
     chalice logs --stage stage --since 10m --follow
+
+# View components in AWS console
+
+- region us-west-2
+- AWS Lambda dashboard
