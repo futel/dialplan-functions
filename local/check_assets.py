@@ -2,6 +2,9 @@
 Asset population checker.
 """
 
+# XXX Also check for the universals if a menu: press-one etc.
+
+
 import pathlib
 
 from chalicelib import env_util

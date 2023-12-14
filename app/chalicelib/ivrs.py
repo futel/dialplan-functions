@@ -1,7 +1,9 @@
 import collections
+import copy
 from twilio.twiml.voice_response import VoiceResponse
 import urllib
 
+from . import ivr_destinations
 from . import util
 
 
@@ -22,11 +24,11 @@ KEY_PROMPTS = [
     "press-nine"]
 
 
-# next_value is cruft.
-Stanza = collections.namedtuple('Stanza', ['value', 'next_value'])
-INTRO_STANZA = Stanza(value='intro', next_value='menu')
-MENU_STANZA = Stanza(value='menu', next_value='menu')
-STANZAS = [INTRO_STANZA, MENU_STANZA]
+Stanza = collections.namedtuple('Stanza', ['value'])
+INTRO_STANZA = Stanza(value='intro')
+MENU_STANZA = Stanza(value='menu')
+NEXT_CONTEXT_STANZA = Stanza(value='next_context')
+STANZAS = [INTRO_STANZA, MENU_STANZA, NEXT_CONTEXT_STANZA]
 
 
 def get_stanza(value):
@@ -105,21 +107,16 @@ def destination_context_name(digits, c_dict):
 #         return dest_c_name
 #     return context_dict(dest_c_name)
 
-def friction(response, c_name):
-    # Note that this is the first interaction on handset pickup, so
-    # friction should not be configured to block or ignore possible
-    # 911 digits.
-    return response
-
-def pre_callable(response, c_dict, lang):
+def pre_callable(c_dict, request, env):
     """
     Perform side effects, if any.
     Return TwiML to preface the context TwiML, or None.
     """
     # Friction, bounce for maintenance, play random, etc.
-    if c_dict.get('pre_callable'):
-        return friction(response, c_dict['name'])
-    return response
+    function_name = c_dict.get('pre_callable')
+    if function_name:
+        destination = ivr_destinations.get_destination(function_name)
+        return destination(request, env)
 
 def sound_url(
         sound_name, lang, directory, request, env, sound_format='ulaw'):
@@ -136,21 +133,41 @@ def sound_url(
          None))                 # fragment
     return url
 
-def add_gather_stanza(c_dict, lang, parent_c_name, iteration, request, response):
+def add_gather_stanza(
+        c_name,
+        parent_c_name,
+        lang,
+        iteration,
+        request,
+        response):
     """
-    Append a gather to the TwiML Response, and return the gather.
+    Append a gather and redirect to the TwiML Response, and return the gather.
     """
+    url_params = {
+        'context': c_name,
+        'parent': parent_c_name,
+        'lang': lang,
+        'iteration': iteration}
+
+    # Create the URL that the gather will send the user to on digit entry.
+    gather_url_params = copy.copy(url_params)
+    # If a digit was entered, the user should hear the intro.
+    gather_url_params['stanza'] = INTRO_STANZA.value
     action_url = util.function_url(
         request,
         'ivr',
-        {'context': c_dict['name'],
-         'lang': lang,
-         'parent': parent_c_name,
-         'stanza': MENU_STANZA.value, # Next stanza is always menu stanza.
-         'iteration': iteration})
+        gather_url_params)
     gather = response.gather(
         num_digits=1, timeout=0, finish_on_key='', action=action_url)
-    # After the gather we always send the call to the same action.
+
+    # Create the URL that the redirect will send the user to on no digit entry.
+    redirect_url_params = copy.copy(url_params)
+    # Menu and intro both redirect to menu stanza if no digit.
+    redirect_url_params['stanza'] = MENU_STANZA.value
+    action_url = util.function_url(
+        request,
+        'ivr',
+        redirect_url_params)
     _redirect = response.redirect(action_url)
     # We should return the response instead.
     return gather
@@ -162,7 +179,7 @@ def add_intro_stanza(response, c_dict, lang, parent_c_name, iteration, request, 
     destination URL. Return response.
     """
     gather = add_gather_stanza(
-        c_dict, lang, parent_c_name, iteration, request, response)
+        c_dict['name'], parent_c_name, lang, iteration, request, response)
     # Play the intro statements once.
     for statement in c_dict.get('intro_statements', []):
         gather.play(
@@ -195,14 +212,21 @@ def add_menu_entry_stanza(statement, e, gather, c_dict, lang, request, env):
                 env))
     return gather
 
-def add_menu_stanza(response, c_dict, lang, parent_c_name, iteration, request, env):
+def add_menu_stanza(
+        response, c_dict, lang, parent_c_name, iteration, request, env):
     """
     Add a TwiML stanza to play a menu and gather a digit
     based on c_dict and lang, sending the next request to the
     destination URL. Return response.
     """
+    # The next stanza after menu is another menu, with another iteration.
     gather = add_gather_stanza(
-        c_dict, lang, parent_c_name, iteration, request, response)
+        c_dict['name'],
+        parent_c_name,
+        lang,
+        iteration,
+        request,
+        response)
     # Play the menu entries which have key prompt statements.
     for (e, menu_entry) in enumerate(
             c_dict.get('menu_entries', []), start=1):
@@ -217,22 +241,52 @@ def add_menu_stanza(response, c_dict, lang, parent_c_name, iteration, request, e
                 statement, key, gather, c_dict, lang, request, env)
     return response
 
+def has_menu_stanza(c_dict):
+    return any(c_dict.get(k) for k in ('menu_entries', 'other_menu_entries'))
+
+def has_intro_stanza(c_dict):
+    return c_dict.get('intro_statements')
+
+def has_next_context_stanza(c_dict):
+    return c_dict.get('next_context')
+
+def add_next_context_stanza(
+        response, c_dict, lang, parent_c_name, request, env):
+    next_context = c_dict['next_context']
+    action_url = util.function_url(
+        request,
+        'ivr',
+        {'context': next_context,
+         'lang': lang,
+         'parent': parent_c_name,
+         'stanza': INTRO_STANZA.value}) # First stanza is always intro stanza.
+    response.redirect(action_url)
+    return response
+
 def ivr_context(dest_c_dict, lang, c_name, stanza, iteration, request, env):
     """
     Return TwiML to run an IVR context.
     """
     response = VoiceResponse()
     if stanza is INTRO_STANZA:
-        response = pre_callable(response, dest_c_dict, lang)
-        # We should notice friction here and stop.
-        response = add_intro_stanza(
-            response, dest_c_dict, lang, c_name, iteration, request, env)
-    elif stanza is MENU_STANZA:
-        iteration += 1
-        if iteration > MENU_ITERATIONS:
-            response.hangup()
-        else:
-            response = add_menu_stanza(
+        pre_response = pre_callable(dest_c_dict, request, env)
+        if pre_response:
+            # XXX Continue to normalize and push up stringification.
+            return str(pre_response)
+        if has_intro_stanza(dest_c_dict):
+            return add_intro_stanza(
                 response, dest_c_dict, lang, c_name, iteration, request, env)
-    # We hope one of the stanza choices updated the response!
+    if stanza is not NEXT_CONTEXT_STANZA:
+        if has_menu_stanza(dest_c_dict):
+            iteration += 1
+            if iteration > MENU_ITERATIONS:
+                response.hangup()
+                return response
+            else:
+                return add_menu_stanza(
+                    response, dest_c_dict, lang, c_name, iteration, request, env)
+    if has_next_context_stanza(dest_c_dict):
+        return add_next_context_stanza(
+            response, dest_c_dict, lang, c_name, request, env)
+    response.hangup()
     return response

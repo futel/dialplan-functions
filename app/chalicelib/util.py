@@ -2,6 +2,7 @@ from twilio.twiml.voice_response import VoiceResponse
 from urllib import parse
 
 from . import metric
+from . import util
 
 # Map of phone numbers to transform.
 transform_numbers = {'+211': '+18666986155'}
@@ -143,7 +144,7 @@ def dial_sip(extension, request, env):
     """Return a TwiML response to dial a SIP extension on the Futel server."""
     # XXX only for pstn
     from_uri = request.post_fields['From']
-
+    util.log('extension:{} from_uri:{}'.format(extension, from_uri))
     from_extension = sip_to_extension(from_uri)
     from_extension = env['extensions'][from_extension]
     if extension == "#":
@@ -183,7 +184,7 @@ def dial_pstn(request, env):
     log(f'to_number: {to_number}')
     if filter_outgoing_number(to_number):
         log(f'filtered to_number: {to_number}')
-        return reject(request)
+        return reject(request, env)
 
     from_extension = sip_to_extension(from_uri)
     from_extension = env['extensions'][from_extension]

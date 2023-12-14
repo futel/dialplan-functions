@@ -28,17 +28,14 @@ request = mock.Mock(
 class TestIvrs(TestCase):
 
     def test_pre_callable_missing(self):
-        self.assertEqual(
-            ivrs.pre_callable('response', {}, 'dummy'),
-            'response')
+        self.assertIsNone(ivrs.pre_callable({}, 'request', 'env'))
 
     def test_pre_callable_friction(self):
-        self.assertEqual(
+        self.assertIsNone(
             ivrs.pre_callable(
-                'response',
                 {"name": "dummy", "pre_callable": "friction"},
-                'dummy'),
-            'response')
+                'request',
+                'env'))
 
     def test_context_dict(self):
         self.assertIsInstance(

@@ -126,42 +126,50 @@ def ivr(request, env):
     stanza = ivrs.get_stanza(stanza)
     iteration = ivrs.get_iteration(iteration)
 
-    util.log('c_name:{} digits:{}'.format(c_name, digits))
+    util.log('c_name:{} stanza:{} digits:{}'.format(c_name, stanza, digits))
     # Find the destination ivr context dict.
-    from_extension = util.sip_to_extension(from_uri)
-    from_extension = env['extensions'][from_extension]
     if not c_name:
         # Presumably this is the first interaction, go to the
         # default context.
+        from_extension = util.sip_to_extension(from_uri)
+        from_extension = env['extensions'][from_extension]
         c_name = from_extension['outgoing']
         dest_c_dict = ivrs.context_dict(env['ivrs'], c_name)
     else:
-        # User entered a digit.
         c_dict = ivrs.context_dict(env['ivrs'], c_name)
-        dest_c_name = ivrs.destination_context_name(digits, c_dict)
-        if dest_c_name is ivrs.LANG_DESTINATION:
-            dest_c_dict = c_dict # Same context.
-            lang = ivrs.swap_lang(lang)
-        elif dest_c_name is ivrs.PARENT_DESTINATION:
-            dest_c_dict = ivrs.context_dict(env['ivrs'], parent_name)
+        if not digits:
+            # There wasn't a digit, the same context is our destination.
+            dest_c_name = c_name
+            dest_c_dict = c_dict
         else:
-            dest_c_dict = ivrs.context_dict(env['ivrs'], dest_c_name)
+            dest_c_name = ivrs.destination_context_name(digits, c_dict)
+            if dest_c_name is ivrs.LANG_DESTINATION:
+                dest_c_dict = c_dict # Same context.
+                lang = ivrs.swap_lang(lang)
+            elif dest_c_name is ivrs.PARENT_DESTINATION:
+                dest_c_dict = ivrs.context_dict(env['ivrs'], parent_name)
+            else:
+                dest_c_dict = ivrs.context_dict(env['ivrs'], dest_c_name)
         if not dest_c_dict:
-            # We didn't find an IVR context.
+            # We didn't find an IVR context in the context_dict.
             # If it is an IVR destination, return the output of the function.
             destination = ivr_destinations.get_destination(dest_c_name)
             if destination:
+                # This is an ivr destination, so metric.
+                # XXX We do this each stanza and iteration, too much!
                 metric.publish(dest_c_name, request, env)
-                return str(destination(from_extension, request, env))
+                return str(destination(request, env))
             else:
                 # We don't know this context, so it's on the Asterisk server.
                 to_extension = dest_c_name
+                # This is an ivr destination, so metric.
                 metric.publish('dial_sip', request, env)
                 # XXX we lose lang! Hopefully user remembers to hit *.
                 return str(util.dial_sip(dest_c_name, request, env))
 
-    # We got this far, it's another IVR menu.
-    metric.publish('ivr_{}'.format(dest_c_dict['name']), request, env)
+    # We got this far, it's in the context_dict.
+    # This is an ivr destination, so metric.
+    metric.publish(dest_c_dict['name'], request, env)
     return str(
         ivrs.ivr_context(
             dest_c_dict, lang, c_name, stanza, iteration, request, env))
@@ -200,24 +208,29 @@ def metric_dialer_status(request, env):
     return str(response)
 
 def enqueue_operator_call(request, env):
-    """Call operators with a call pointing to our twiml."""
-    metric.publish('enqueue_operator_call', request, env)
-    from_number = request.post_fields['From']
-    # XXX Probably better to do this in the module?
+    """Call operators with twiml for the accept menu."""
+    from_uri = request.post_fields['From']
+    from_extension = util.sip_to_extension(from_uri)
+    from_extension = env['extensions'][from_extension] # XXX None
+    from_number = from_extension['caller_id']
+
     twilio_account_sid = env['TWILIO_ACCOUNT_SID']
     twilio_auth_token = env['TWILIO_AUTH_TOKEN']
     client = Client(twilio_account_sid, twilio_auth_token)
 
-    to_numbers = ['+15034681337'] # XXX
+    operator_numbers = env['operator_numbers']
 
     # Get the TwiML to play for the operators.
-    dest_c_name = 'outgoing_operator'
+    dest_c_name = 'outgoing_operator_operator'
     dest_c_dict = ivrs.context_dict(env['ivrs'], dest_c_name)
     stanza = ivrs.get_stanza(None)
     iteration = ivrs.get_iteration(None)
+    # We calculate pre_callable now, when we render the twiml, so if the
+    # caller hangs up before operator pickup, the operator still gets a menu.
+    # This twiml could instead redirect to outgoing_operator_operator?
     response = ivrs.ivr_context(
         dest_c_dict,
-        'en',
+        'en',                   # XXX Should get the real lang!
         dest_c_name,
         stanza,
         iteration,
@@ -225,21 +238,57 @@ def enqueue_operator_call(request, env):
         env)
 
     # Call each operator and play the TwiML.
-    for to_number in to_numbers:
+    for number in operator_numbers:
         call = client.calls.create(
             twiml=str(response),
-            to=to_number,
+            to=number,
             from_=from_number)
+
+def outgoing_operator_dialer_status(request, env):
+    """
+    Metric and return a TwiML string for operators who stayed on the line.
+    """
+    metric.publish('outgoing_operator_dialer_status', request, env)
+    # call_status = request.post_fields['CallStatus']
+    lang = request.query_params.get('lang', 'en')
+    # Is this documented?
+    dequeue_result = request.post_fields['DequeueResult']
+    if dequeue_result == 'bridged':
+        # The operator and caller were connected.
+        # XXX Metric this.
+        # We could remind the operator to log, since the caller hung up first,
+        # but the operator probably is the first to hang up usually.
+        response = VoiceResponse()
+        response.hangup()
+        return str(response)
+    elif dequeue_result == 'queue-empty':
+        # Too late, tell the operator.
+        dest_c_name = 'outgoing_operator_operator_empty'
+        dest_c_dict = ivrs.context_dict(env['ivrs'], dest_c_name)
+        stanza = ivrs.get_stanza(None)
+        iteration = ivrs.get_iteration(None)
+        # This is an ivr destination, so metric.
+        metric.publish(dest_c_name, request, env)
+        return str(
+            ivrs.ivr_context(
+                dest_c_dict,
+                lang,
+                dest_c_name,
+                stanza,
+                iteration,
+                request,
+                env))
+    else:
+        util.log("Unknown operator dequeue result {}".format(dequeue_result))
 
 def enqueue_operator_wait(request, env):
     """
     Perform side effects and return TwiML string
     for the enqueue wait callback.
     """
+    metric.publish('enqueue_operator_wait', request, env)
     enqueue_operator_call(request, env)
     response = VoiceResponse()
-    # XXX please hold for the next
-    # XXX We need to send them to an IVR for statement normalization.
     response.play(
         'http://com.twilio.sounds.music.s3.amazonaws.com/MARKOVICHAMP-Borghestral.mp3')
     return str(response)

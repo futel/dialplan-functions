@@ -1,6 +1,7 @@
 from unittest import mock, TestCase
 
 from chalicelib import dialers
+from chalicelib import ivr_destinations
 from chalicelib import sns_client
 from chalicelib import env_util
 from chalicelib import util
@@ -11,10 +12,10 @@ env = {'AWS_TOPIC_ARN': 'AWS_TOPIC_ARN',
        'TWILIO_AUTH_TOKEN': 'TWILIO_AUTH_TOKEN',
        'extensions': env_util.get_extensions(),
        'ivrs': env_util.get_ivrs(),
+       'operator_numbers': ['foo', 'bar'],
        'sns_client': mock.Mock()}
 
-outgoing_safe_body='<?xml version="1.0" encoding="UTF-8"?><Response><Gather action="https://host/ivr?context=outgoing_safe&amp;lang=en&amp;parent=outgoing_safe&amp;stanza=menu&amp;iteration=0" finishOnKey="" numDigits="1" timeout="0"><Play>https://ASSET_HOST/en/outgoing/para-espanol.ulaw</Play><Play>https://ASSET_HOST/en/outgoing/oprima-estrella.ulaw</Play></Gather><Redirect>https://host/ivr?context=outgoing_safe&amp;lang=en&amp;parent=outgoing_safe&amp;stanza=menu&amp;iteration=0</Redirect></Response>'
-
+outgoing_safe_body='<?xml version="1.0" encoding="UTF-8"?><Response><Gather action="https://host/ivr?context=outgoing_safe&amp;parent=outgoing_safe&amp;lang=en&amp;iteration=0&amp;stanza=intro" finishOnKey="" numDigits="1" timeout="0"><Play>https://ASSET_HOST/en/outgoing/para-espanol.ulaw</Play><Play>https://ASSET_HOST/en/outgoing/oprima-estrella.ulaw</Play></Gather><Redirect>https://host/ivr?context=outgoing_safe&amp;parent=outgoing_safe&amp;lang=en&amp;iteration=0&amp;stanza=menu</Redirect></Response>'
 
 class TestDialOutgoing(TestCase):
 
@@ -140,7 +141,8 @@ class TestIvr(TestCase):
 class TestEnqueueOperatorWait(TestCase):
 
     @mock.patch.object(dialers, 'Client')
-    def test_enqueue_operator_wait(self, _mock_metric):
+    @mock.patch.object(ivr_destinations, 'Client')
+    def test_enqueue_operator_wait(self, _mock1, _mock2):
         request = mock.Mock(
             headers={'host': 'host'},
             post_fields={
