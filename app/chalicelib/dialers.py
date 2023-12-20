@@ -64,6 +64,7 @@ def dial_outgoing(request, env):
     from_extension = env['extensions'][from_extension]
     to_extension = util.sip_to_extension(to_uri)
     if to_extension == '0':
+        # XXX This assumes operator is on the asterisk.
         # XXX Could convert to 'operator' here and send that,
         #     avoid an uwieldy dup if in dial_sip.
         return str(util.dial_sip(to_extension, request, env))
@@ -73,6 +74,7 @@ def dial_outgoing(request, env):
             # the response for flask. We should just
             # redirect, this is hit only once per call.
             return ivr(request, env)
+        # The top menu is on the asterisk.
         return str(util.dial_sip(to_extension, request, env))
     return str(util.dial_pstn(request, env))
 
@@ -155,8 +157,8 @@ def ivr(request, env):
             # If it is an IVR destination, return the output of the function.
             destination = ivr_destinations.get_destination(dest_c_name)
             if destination:
-                # This is an ivr destination, so metric.
-                # XXX We do this each stanza and iteration, too much!
+                # This is an ivr destination, so metric. We can assume this is
+                # the first stanza and iteration.
                 metric.publish(dest_c_name, request, env)
                 return str(destination(request, env))
             else:
@@ -168,8 +170,9 @@ def ivr(request, env):
                 return str(util.dial_sip(dest_c_name, request, env))
 
     # We got this far, it's in the context_dict.
-    # This is an ivr destination, so metric.
-    metric.publish(dest_c_dict['name'], request, env)
+    if stanza is ivrs.INTRO_STANZA:
+        # This is an ivr destination, so metric.
+        metric.publish(dest_c_dict['name'], request, env)
     return str(
         ivrs.ivr_context(
             dest_c_dict, lang, c_name, stanza, iteration, request, env))

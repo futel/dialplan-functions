@@ -6,7 +6,6 @@ from twilio.rest import Client
 from twilio.twiml.voice_response import VoiceResponse
 
 from . import ivrs
-from . import metric
 from . import util
 
 WAIT_FUNCTION = 'enqueue_operator_wait'
@@ -27,8 +26,6 @@ def outgoing_operator_enqueue(request, env):
     Return TwiML to run an IVR context to put the call next in line
     in the operator queue.
     """
-    # This is an ivr destination, so metric.
-    metric.publish('outgoing_operator_enqueue', request, env)
     response = VoiceResponse()
     response.enqueue(
         operator_queue_name, wait_url=util.function_url(request, WAIT_FUNCTION))
@@ -36,8 +33,6 @@ def outgoing_operator_enqueue(request, env):
 
 def outgoing_operator_accept(request, env):
     """Return TwiML to send the call to the next caller in operator queue."""
-    # This is an ivr destination, so metric.
-    metric.publish('outgoing_operator_accept', request, env)
     lang = request.query_params.get('lang', 'en')
     # Is there still a caller in the queue?
     twilio_account_sid = env['TWILIO_ACCOUNT_SID']
@@ -51,8 +46,7 @@ def outgoing_operator_accept(request, env):
                 dest_c_dict = ivrs.context_dict(env['ivrs'], dest_c_name)
                 stanza = ivrs.get_stanza(None)
                 iteration = ivrs.get_iteration(None)
-                # This is an ivr destination, so metric.
-                metric.publish(dest_c_name, request, env)
+                util.log(dest_c_name)
                 return str(
                     ivrs.ivr_context(
                         dest_c_dict,
@@ -90,8 +84,7 @@ def outgoing_operator_operator_pre(request, env):
                 dest_c_dict = ivrs.context_dict(env['ivrs'], dest_c_name)
                 stanza = ivrs.get_stanza(None)
                 iteration = ivrs.get_iteration(None)
-                # This is an ivr destination, so metric.
-                metric.publish(dest_c_name, request, env)
+                util.log(dest_c_name)
                 return str(
                     ivrs.ivr_context(
                         dest_c_dict,

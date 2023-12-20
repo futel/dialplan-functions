@@ -12,8 +12,7 @@ env = {'extensions': env_util.get_extensions(), 'operator_numbers':['foo', 'bar'
 
 class TestIvrsDestinations(TestCase):
 
-    @mock.patch.object(ivr_destinations, 'metric')
-    def test_pre_callable_missing(self, _mock_metric):
+    def test_pre_callable_missing(self):
         self.assertTrue(
             ivr_destinations.outgoing_operator_enqueue(request, env))
 
