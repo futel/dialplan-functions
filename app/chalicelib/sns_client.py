@@ -5,13 +5,13 @@ from . import util
 
 metric_host_base = 'dialplan-functions';
 
-def get_metric_hostname(request):
+def _get_metric_hostname(request):
     """
     Return the appropriate metric event endpoint name for this request.
     """
     return metric_host_base + '-' + util.get_instance(request)
 
-def event_to_message(endpoint, user_event, hostname):
+def _event_to_message(endpoint, user_event, hostname):
     date_string = datetime.datetime.now().isoformat()
     event = {
         'Event': 'UserEvent',
@@ -25,8 +25,8 @@ def event_to_message(endpoint, user_event, hostname):
     return message
 
 def publish(endpoint, user_event, request, env):
-    hostname = get_metric_hostname(request)
-    message = event_to_message(endpoint, user_event, hostname)
+    hostname = _get_metric_hostname(request)
+    message = _event_to_message(endpoint, user_event, hostname)
     return env['sns_client'].publish(
         TargetArn=env['AWS_TOPIC_ARN'],
         Message=json.dumps({'default': json.dumps(message)}),

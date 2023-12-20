@@ -26,7 +26,7 @@ class TestSnsClient(TestCase):
                 "endpoint": "endpoint",
                 "Channel": "endpoint",
                 "UserEvent": "user_event"}}
-        got = sns_client.event_to_message(
+        got = sns_client._event_to_message(
             'endpoint', 'user_event', 'hostname')
         del out['timestamp']
         del got['timestamp']

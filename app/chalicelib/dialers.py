@@ -18,7 +18,7 @@ sip_domain_subdomain_base_non_emergency = "direct-futel-nonemergency";
 sip_domain_suffix = "sip.twilio.com";
 
 
-def get_sip_domain(extension, extension_map, request):
+def _get_sip_domain(extension, extension_map, request):
     if extension_map[extension]['enable_emergency']:
         sip_domain_subdomain_base = sip_domain_subdomain_base_emergency
     else:
@@ -29,7 +29,7 @@ def get_sip_domain(extension, extension_map, request):
             '.' +
             sip_domain_suffix)
 
-def request_to_metric_events(request, env):
+def _request_to_metric_events(request, env):
     """Return sequence of metric event names from request."""
     from_uri = request.post_fields['From']
     dial_call_status = request.post_fields['DialCallStatus']
@@ -48,9 +48,6 @@ def request_to_metric_events(request, env):
 
     dial_status_event = dial_status_event_base + dial_call_status + '_' + endpoint
     return (dial_event, dial_status_event)
-
-def call():
-    pass
 
 def dial_outgoing(request, env):
     """
@@ -91,7 +88,7 @@ def dial_sip_e164(request, env):
     if not to_extension:
         util.log("Could not find extension for E.164 number")
         return str(util.reject(request))
-    sip_domain = get_sip_domain(to_extension, env['extensions'], request)
+    sip_domain = _get_sip_domain(to_extension, env['extensions'], request)
     util.log(f'to_extension: {to_extension}')
     util.log(f'from_number: {from_number}')
     util.log(f'sip_domain: {sip_domain}')
@@ -185,7 +182,7 @@ def metric_dialer_status(request, env):
     # Perform the side effects.
     metric.publish('metric_dialer_status', request, env)
     # May want to log ErrorCode ErrorMessage Direction post fields.
-    for event_name in request_to_metric_events(request, env):
+    for event_name in _request_to_metric_events(request, env):
         metric.publish(event_name, request, env)
 
     # Return TwiML.
@@ -210,7 +207,7 @@ def metric_dialer_status(request, env):
     response.hangup()
     return str(response)
 
-def enqueue_operator_call(request, env):
+def _enqueue_operator_call(request, env):
     """Call operators with twiml for the accept menu."""
     from_uri = request.post_fields['From']
     from_extension = util.sip_to_extension(from_uri)
@@ -290,7 +287,7 @@ def enqueue_operator_wait(request, env):
     for the enqueue wait callback.
     """
     metric.publish('enqueue_operator_wait', request, env)
-    enqueue_operator_call(request, env)
+    _enqueue_operator_call(request, env)
     response = VoiceResponse()
     response.play(
         'http://com.twilio.sounds.music.s3.amazonaws.com/MARKOVICHAMP-Borghestral.mp3')
