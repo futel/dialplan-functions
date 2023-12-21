@@ -73,7 +73,9 @@ def dial_outgoing(request, env):
             return ivr(request, env)
         # The top menu is on the asterisk.
         return str(util.dial_sip(to_extension, request, env))
-    return str(util.dial_pstn(request, env))
+    # It's a PSTN number.
+    (to_uri, from_uri) = util.deserialize_pstn(request)
+    return str(util.dial_pstn(to_uri, from_uri, request, env))
 
 def dial_sip_e164(request, env):
     """

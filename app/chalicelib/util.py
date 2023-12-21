@@ -66,7 +66,7 @@ def function_url(request, function_name, params=None):
     url = 'https://' + request.headers['host'] + '/' + function_name
     if params:
        # XXX We are putting URL arguments on a POST that may have
-       #     body parameters.
+       #     body parameters. Get around this by using path?
        params = parse.urlencode(params)
        url += '?' + params
     return url
@@ -172,12 +172,17 @@ def dial_sip(extension, request, env):
     # XXX did the Asterisk context go to the parent and hang up, leaving us here?
     return response
 
+def deserialize_pstn(request):
+    """Return to and from attributes from request for a dial_pstn call."""
+    #to = request.query_params.get('Digits')
+    #if not to:
+    #    to = request.post_fields['To']
+    to = request.post_fields['To']
+    return (to, request.post_fields['From'])
+
 def dial_pstn(request, env):
     """Return TwiML to dial PSTN number with attributes from request."""
     metric.publish('dial_pstn', request, env)
-    to_uri = request.post_fields['To']
-    from_uri = request.post_fields['From']
-
     to_number = sip_to_extension(to_uri)
     to_number = normalize_number(to_number)
     to_number = transform_number(to_number)
