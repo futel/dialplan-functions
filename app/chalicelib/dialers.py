@@ -86,6 +86,11 @@ def dial_outgoing(request, env):
         # The top menu is on the asterisk.
         return str(util.dial_sip(to_extension, request, env))
     # It's a PSTN number.
+    number = util.pstn_number(to_extension)
+    if not number:
+        util.log('filtered pstn number {}'.format(to_extension))
+        metric.publish('reject', request, env)
+        return str(util.reject(request, env))
     metric.publish('dial_pstn', request, env)
     return str(util.dial_pstn(to_extension, from_uri, request, env))
 

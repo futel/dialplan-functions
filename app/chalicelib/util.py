@@ -1,9 +1,6 @@
 from twilio.twiml.voice_response import VoiceResponse
 from urllib import parse
 
-from . import metric
-from . import util
-
 # Map of phone numbers to transform.
 transform_numbers = {'+211': '+18666986155'}
 # Allowed country codes.
@@ -144,7 +141,7 @@ def dial_sip(extension, request, env):
     """Return a TwiML response to dial a SIP extension on the Futel server."""
     # XXX only for pstn
     from_uri = request.post_fields['From']
-    util.log('extension:{} from_uri:{}'.format(extension, from_uri))
+    log('extension:{} from_uri:{}'.format(extension, from_uri))
     from_extension = sip_to_extension(from_uri)
     from_extension = env['extensions'][from_extension]
     if extension == "#":
@@ -179,18 +176,19 @@ def deserialize_pstn(request):
     to_number = request.post_fields.get('Digits')
     if not to_number:
         to_uri = request.post_fields['To']
-        to_number = util.sip_to_extension(to_uri)
+        to_number = sip_to_extension(to_uri)
     return (to_number, request.post_fields['From'])
+
+def pstn_number(number):
+    """Return normalized and transformed number, or None."""
+    number = normalize_number(number)
+    number = transform_number(number)
+    if filter_outgoing_number(number):
+        return None
+    return number
 
 def dial_pstn(to_number, from_uri, request, env):
     """Return TwiML to dial PSTN number with attributes from request."""
-    to_number = normalize_number(to_number)
-    to_number = transform_number(to_number)
-    log(f'to_number: {to_number}')
-    if filter_outgoing_number(to_number):
-        log(f'filtered to_number: {to_number}')
-        return reject(request, env)
-
     from_extension = sip_to_extension(from_uri)
     from_extension = env['extensions'][from_extension]
     caller_id = from_extension['caller_id']
@@ -202,7 +200,6 @@ def dial_pstn(to_number, from_uri, request, env):
         answer_on_bridge=True,
         action=function_url(request, 'metric_dialer_status'))
     dial.number(to_number)
-    metric.publish('dialing', request, env) # We passed the filter.
     return response
 
 def reject(request, env, reason=None):

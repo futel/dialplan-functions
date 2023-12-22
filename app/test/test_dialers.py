@@ -19,9 +19,8 @@ outgoing_safe_body='<?xml version="1.0" encoding="UTF-8"?><Response><Gather acti
 
 class TestDialOutgoing(TestCase):
 
-    @mock.patch.object(util, 'metric')
     @mock.patch.object(dialers, 'metric')
-    def test_dial_outgoing_local(self, _mock_metric, _mock_metric2):
+    def test_dial_outgoing_local(self, _mock_metric):
         # test extension redirects to local context.
         request = mock.Mock(
             headers={'host': 'host'},
@@ -34,9 +33,8 @@ class TestDialOutgoing(TestCase):
         got = dialers.dial_outgoing(request, env)
         self.assertEqual(str(got), outgoing_safe_body)
 
-    @mock.patch.object(util, 'metric')
     @mock.patch.object(dialers, 'metric')
-    def test_dial_outgoing_remote(self, _mock_metric, _mock_metric2):
+    def test_dial_outgoing_remote(self, _mock_metrici):
         # demo extension redirects to SIP URI call.
         request = mock.Mock(
             headers={'host': 'host'},

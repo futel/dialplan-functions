@@ -46,17 +46,17 @@ class TestUtil(TestCase):
         self.assertFalse(
             util.filter_outgoing_number('+525555536266'))
 
-    @mock.patch.object(util, 'metric')
-    def test_dial_pstn(self, _mock_metric):
+    def test_dial_pstn(self):
         request = mock.Mock(
             headers={'host': 'host'},
             query_params={},
             post_fields={
-                'SipDomain':'direct-futel-prod.sip.twilio.com',
-                'To': 'sip:5035551212@direct-futel-nonemergency-stage.sip.twilio.com',
-                'From': 'sip:test@direct-futel-nonemergency-stage.sip.twilio.com'})
-        (to_uri, from_uri) = util.deserialize_pstn(request)
-        response = util.dial_pstn(to_uri, from_uri, request, env)
+                'SipDomain':'direct-futel-prod.sip.twilio.com'})
+        response = util.dial_pstn(
+            '+15035551212',
+            'sip:test@direct-futel-nonemergency-stage.sip.twilio.com',
+            request,
+            env)
         self.assertEqual(
             str(response),
             '<?xml version="1.0" encoding="UTF-8"?><Response>'
@@ -64,8 +64,7 @@ class TestUtil(TestCase):
             'answerOnBridge="true" callerId="+19713512383">'
             '<Number>+15035551212</Number></Dial></Response>')
 
-    @mock.patch.object(util, 'metric')
-    def test_dial_sip(self, _mock_metric):
+    def test_dial_sip(self):
         request = mock.Mock(
             headers={'host': 'host'},
             post_fields={
