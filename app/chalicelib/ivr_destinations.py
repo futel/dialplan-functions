@@ -42,7 +42,7 @@ def outgoing_operator_accept(request, env):
         if queue.friendly_name == operator_queue_name:
             if not queue.current_size:
                 # Too late, tell the operator.
-                dest_c_name = 'outgoing_operator_operator_empty'
+                dest_c_name = 'outgoing_operator_empty'
                 dest_c_dict = ivrs.context_dict(env['ivrs'], dest_c_name)
                 stanza = ivrs.get_stanza(None)
                 iteration = ivrs.get_iteration(None)
@@ -65,7 +65,7 @@ def outgoing_operator_accept(request, env):
     dial.queue('operator')
     return response
 
-def outgoing_operator_operator_pre(request, env):
+def outgoing_operator_pre(request, env):
     """
     Return TwiML to notify and end the call if the operator queue is empty,
     otherwise return None.
@@ -80,7 +80,7 @@ def outgoing_operator_operator_pre(request, env):
         if queue.friendly_name == operator_queue_name:
             if not queue.current_size:
                 # Too late, tell the operator.
-                dest_c_name = 'outgoing_operator_operator_empty'
+                dest_c_name = 'outgoing_operator_empty'
                 dest_c_dict = ivrs.context_dict(env['ivrs'], dest_c_name)
                 stanza = ivrs.get_stanza(None)
                 iteration = ivrs.get_iteration(None)
@@ -115,4 +115,4 @@ DESTINATIONS = {
     'outgoing_operator_accept': outgoing_operator_accept,
     'outgoing_dialtone': outgoing_dialtone,
     'outgoing_operator_enqueue': outgoing_operator_enqueue,
-    'outgoing_operator_operator_pre': outgoing_operator_operator_pre}
+    'outgoing_operator_pre': outgoing_operator_pre}

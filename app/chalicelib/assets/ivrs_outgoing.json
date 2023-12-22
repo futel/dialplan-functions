@@ -92,7 +92,7 @@
         "statement_dir": "operator"},
     "outgoing_operator_operator": {
         "name": "outgoing_operator_operator",
-        "pre_callable": "outgoing_operator_operator_pre",
+        "pre_callable": "outgoing_operator_pre",
         "intro_statements": ["incoming-fewtel-operator-call"],
         "menu_entries": [
             ["to-accept", "outgoing_operator_accept"],
@@ -105,8 +105,8 @@
             null,            
             null],
         "statement_dir": "operator"},
-    "outgoing_operator_operator_empty": {
-        "name": "outgoing_operator_operator_empty",
+    "outgoing_operator_empty": {
+        "name": "outgoing_operator_empty",
         "intro_statements": ["thank-you", "you-are-too-late"],
         "menu_entries": [],
         "statement_dir": "operator"},

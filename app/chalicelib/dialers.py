@@ -224,7 +224,7 @@ def _enqueue_operator_call(request, env):
     """Call operators with twiml for the accept menu."""
     from_uri = request.post_fields['From']
     from_extension = util.sip_to_extension(from_uri)
-    from_extension = env['extensions'][from_extension] # XXX None
+    from_extension = env['extensions'][from_extension]
     from_number = from_extension['caller_id']
 
     twilio_account_sid = env['TWILIO_ACCOUNT_SID']
@@ -276,7 +276,7 @@ def outgoing_operator_dialer_status(request, env):
         return str(response)
     elif dequeue_result == 'queue-empty':
         # Too late, tell the operator.
-        dest_c_name = 'outgoing_operator_operator_empty'
+        dest_c_name = 'outgoing_operator_empty'
         dest_c_dict = ivrs.context_dict(env['ivrs'], dest_c_name)
         stanza = ivrs.get_stanza(None)
         iteration = ivrs.get_iteration(None)
