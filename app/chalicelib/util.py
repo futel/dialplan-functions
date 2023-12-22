@@ -208,7 +208,6 @@ def dial_pstn(to_number, from_uri, request, env):
 
 def reject(request, env, reason=None):
     """Return TwiML reject response."""
-    metric.publish('reject', request, env)
     response = VoiceResponse()
     response.say(
         "We're sorry, your call cannot be completed as dialed. "
