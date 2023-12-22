@@ -268,11 +268,11 @@ def outgoing_operator_dialer_status(request, env):
     dequeue_result = request.post_fields['DequeueResult']
     if dequeue_result == 'bridged':
         # The operator and caller were connected.
-        # XXX Metric this.
         # We could remind the operator to log, since the caller hung up first,
         # but the operator probably is the first to hang up usually.
         response = VoiceResponse()
         response.hangup()
+        metric.publish('outgoing_operator_completed', request, env)
         return str(response)
     elif dequeue_result == 'queue-empty':
         # Too late, tell the operator.
