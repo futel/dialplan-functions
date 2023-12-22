@@ -101,11 +101,10 @@ def outgoing_dialtone(request, env):
     gather = response.gather(
         finish_on_key='', action=action_url, action_on_empty_result=True)
     gather.play(
-        # XXX testing
         ivrs.sound_url(
-            'press-zero',
-            'en',
-            'operator',
+            'US_dial_tone',
+            'sound',
+            'ops',
             env))
     return response
 
