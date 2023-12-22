@@ -61,10 +61,22 @@ def dial_outgoing(request, env):
     from_extension = env['extensions'][from_extension]
     util.log('to_extension {}'.format(to_extension))
     if to_extension == '0':
-        # XXX This assumes operator is on the asterisk.
-        # XXX Could convert to 'operator' here and send that,
-        #     avoid an uwieldy dup if in dial_sip.
-        return str(util.dial_sip(to_extension, request, env))
+        # Return twiml for the outgoing operator context.
+        # This is an ivr destination, so metric.
+        dest_c_name = 'outgoing_operator_caller'
+        metric.publish(dest_c_name, request, env)
+        dest_c_dict = ivrs.context_dict(env['ivrs'], dest_c_name)
+        stanza = ivrs.get_stanza(None)
+        iteration = ivrs.get_iteration(None)
+        response = ivrs.ivr_context(
+            dest_c_dict,
+            'en',                   # XXX Should get the real lang!
+            dest_c_name,
+            stanza,
+            iteration,
+            request,
+            env)
+        return str(response)
     if to_extension == '#':
         if from_extension['local_outgoing']:
             # ivr() is also routed directly, so it marshals

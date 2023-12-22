@@ -101,6 +101,7 @@ def outgoing_dialtone(request, env):
     gather = response.gather(
         finish_on_key='', action=action_url, action_on_empty_result=True)
     gather.play(
+        # XXX This sound file is not in the ivrs structure, so it isn't checked.
         ivrs.sound_url(
             'US_dial_tone',
             'sound',
