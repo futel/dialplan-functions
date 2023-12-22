@@ -184,12 +184,12 @@ def deserialize_pstn(request):
 
 def dial_pstn(to_number, from_uri, request, env):
     """Return TwiML to dial PSTN number with attributes from request."""
-    metric.publish('dial_pstn', request, env)
     to_number = normalize_number(to_number)
     to_number = transform_number(to_number)
     log(f'to_number: {to_number}')
     if filter_outgoing_number(to_number):
         log(f'filtered to_number: {to_number}')
+        metric.publish('reject', request, env)
         return reject(request, env)
 
     from_extension = sip_to_extension(from_uri)

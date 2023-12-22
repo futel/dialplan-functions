@@ -86,6 +86,7 @@ def dial_outgoing(request, env):
         # The top menu is on the asterisk.
         return str(util.dial_sip(to_extension, request, env))
     # It's a PSTN number.
+    metric.publish('dial_pstn', request, env)
     return str(util.dial_pstn(to_extension, from_uri, request, env))
 
 def dial_sip_e164(request, env):
@@ -100,6 +101,7 @@ def dial_sip_e164(request, env):
     to_extension = util.e164_to_extension(to_number, env['extensions'])
     if not to_extension:
         util.log("Could not find extension for E.164 number")
+        metric.publish('reject', request, env)
         return str(util.reject(request))
     sip_domain = _get_sip_domain(to_extension, env['extensions'], request)
     util.log(f'to_extension: {to_extension}')
