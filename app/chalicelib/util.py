@@ -189,7 +189,6 @@ def dial_pstn(to_number, from_uri, request, env):
     log(f'to_number: {to_number}')
     if filter_outgoing_number(to_number):
         log(f'filtered to_number: {to_number}')
-        metric.publish('reject', request, env)
         return reject(request, env)
 
     from_extension = sip_to_extension(from_uri)
