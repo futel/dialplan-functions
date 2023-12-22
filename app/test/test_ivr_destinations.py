@@ -8,13 +8,20 @@ request = mock.Mock(
     headers={'host': 'host'},
     post_fields={'From':'From'})
 
-env = {'extensions': env_util.get_extensions(), 'operator_numbers':['foo', 'bar']}
+env = {
+    'ASSET_HOST':'ASSET_HOST',
+    'extensions': env_util.get_extensions(),
+    'operator_numbers':['foo', 'bar']}
 
 class TestIvrsDestinations(TestCase):
 
     def test_pre_callable_missing(self):
         self.assertTrue(
             ivr_destinations.outgoing_operator_enqueue(request, env))
+
+    def test_outgoing_dialtone(self):
+        self.assertTrue(
+            ivr_destinations.outgoing_dialtone(request, env))
 
 
 if __name__ == '__main__':

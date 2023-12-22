@@ -51,15 +51,15 @@ def _request_to_metric_events(request, env):
 
 def dial_outgoing(request, env):
     """
-    Return TwiML string to dial SIP URI, or play IVR,
+    Return TwiML string to dial PSTN, dial SIP URI, or play IVR,
     with attributes from request.
     """
     metric.publish('dial_outgoing', request, env)
-    to_uri = request.post_fields['To']
+    (to_extension, from_uri) = util.deserialize_pstn(request)
     from_uri = request.post_fields['From']
     from_extension = util.sip_to_extension(from_uri)
     from_extension = env['extensions'][from_extension]
-    to_extension = util.sip_to_extension(to_uri)
+    util.log('to_extension {}'.format(to_extension))
     if to_extension == '0':
         # XXX This assumes operator is on the asterisk.
         # XXX Could convert to 'operator' here and send that,
@@ -74,8 +74,7 @@ def dial_outgoing(request, env):
         # The top menu is on the asterisk.
         return str(util.dial_sip(to_extension, request, env))
     # It's a PSTN number.
-    (to_uri, from_uri) = util.deserialize_pstn(request)
-    return str(util.dial_pstn(to_uri, from_uri, request, env))
+    return str(util.dial_pstn(to_extension, from_uri, request, env))
 
 def dial_sip_e164(request, env):
     """

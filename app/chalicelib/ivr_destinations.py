@@ -95,8 +95,24 @@ def outgoing_operator_operator_pre(request, env):
                         request,
                         env))
 
+def outgoing_dialtone(request, env):
+    response = VoiceResponse()
+    action_url = util.function_url(request, 'dial_outgoing')
+    gather = response.gather(
+        finish_on_key='', action=action_url, action_on_empty_result=True)
+    gather.play(
+        # XXX testing
+        ivrs.sound_url(
+            'press-zero',
+            'en',
+            'operator',
+            env))
+    return response
+
+
 DESTINATIONS = {
     'friction': friction,
     'outgoing_operator_accept': outgoing_operator_accept,
+    'outgoing_dialtone': outgoing_dialtone,
     'outgoing_operator_enqueue': outgoing_operator_enqueue,
     'outgoing_operator_operator_pre': outgoing_operator_operator_pre}

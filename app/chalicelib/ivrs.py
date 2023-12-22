@@ -106,8 +106,8 @@ def pre_callable(c_dict, request, env):
         destination = ivr_destinations.get_destination(function_name)
         return destination(request, env)
 
-def _sound_url(
-        sound_name, lang, directory, request, env, sound_format='ulaw'):
+def sound_url(
+        sound_name, lang, directory, env, sound_format='ulaw'):
     """Return the URL for a sound."""
     name = sound_name + '.' + sound_format
     path = lang + "/" + directory + '/' + name
@@ -171,11 +171,10 @@ def _add_intro_stanza(response, c_dict, lang, parent_c_name, iteration, request,
     # Play the intro statements once.
     for statement in c_dict.get('intro_statements', []):
         gather.play(
-            _sound_url(
+            sound_url(
                 statement,
                 lang,
                 c_dict['statement_dir'],
-                request,
                 env))
     return response
 
@@ -185,18 +184,16 @@ def _add_menu_entry_stanza(statement, e, gather, c_dict, lang, request, env):
     """
     if statement:
         gather.play(
-            _sound_url(
+            sound_url(
                 statement,
                 lang,
                 c_dict['statement_dir'],
-                request,
                 env))
         gather.play(
-            _sound_url(
+            sound_url(
                 KEY_PROMPTS[e],
                 lang,
                 c_dict['statement_dir'],
-                request,
                 env))
     return gather
 

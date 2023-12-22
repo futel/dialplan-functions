@@ -92,11 +92,10 @@ class TestIvrs(TestCase):
 
     def test_sound_url(self):
         self.assertEqual(
-            ivrs._sound_url(
+            ivrs.sound_url(
                 'hello',
                 'en',
                 'directory',
-                'request',
                 {'ASSET_HOST':'ASSET_HOST'}),
             'https://ASSET_HOST/en/directory/hello.ulaw')
 

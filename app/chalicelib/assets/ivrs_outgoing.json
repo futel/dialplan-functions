@@ -4,7 +4,7 @@
         "pre_callable": "friction",
         "intro_statements": ["para-espanol", "oprima-estrella"],
         "menu_entries": [
-            ["to-make-a-call", "outgoing-dialtone-wrapper"],
+            ["to-make-a-call", "outgoing_dialtone"],
             ["for-voicemail", "voicemail_outgoing"],
             ["for-the-directory", "directory_portland"],
             ["for-utilities", "utilities_portland"],
@@ -21,7 +21,7 @@
         "pre_callable": "friction",
         "intro_statements": ["para-espanol", "oprima-estrella"],
         "menu_entries": [
-            ["to-make-a-call", "outgoing-dialtone-wrapper"],
+            ["to-make-a-call", "outgoing_dialtone"],
             ["for-voicemail", "voicemail_outgoing"],
             ["for-the-directory", "directory_ypsi"],
             ["for-utilities", "utilities_generic"],
@@ -38,7 +38,7 @@
         "pre_callable": "friction",
         "intro_statements": ["para-espanol", "oprima-estrella"],
         "menu_entries": [
-            ["to-make-a-call", "outgoing-dialtone-wrapper"],
+            ["to-make-a-call", "outgoing_dialtone"],
             ["for-voicemail", "voicemail_outgoing"],
             ["for-the-directory", "directory_detroit"],
             ["for-utilities", "utilities_generic"],
@@ -55,7 +55,7 @@
         "pre_callable": "friction",
         "intro_statements": ["para-espanol", "oprima-estrella"],
         "menu_entries": [
-            ["to-make-a-call", "outgoing-dialtone-wrapper"],
+            ["to-make-a-call", "outgoing_dialtone"],
             ["for-voicemail", "voicemail_outgoing"],
             ["for-the-directory", "directory_souwester"],
             ["for-utilities", "utilities_generic"],
@@ -72,7 +72,7 @@
         "pre_callable": "friction",
         "intro_statements": ["para-espanol", "oprima-estrella"],
         "menu_entries": [
-            ["to-make-a-call", "outgoing-dialtone-wrapper"],
+            ["to-make-a-call", "outgoing_dialtone"],
             ["for-voicemail", "voicemail_outgoing"],
             ["for-the-directory", "directory_safe"],
             ["for-utilities", "utilities_portland"],

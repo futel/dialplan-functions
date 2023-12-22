@@ -50,11 +50,13 @@ class TestUtil(TestCase):
     def test_dial_pstn(self, _mock_metric):
         request = mock.Mock(
             headers={'host': 'host'},
+            query_params={},
             post_fields={
-                'SipDomain': 'direct-futel-prod.sip.twilio.com',
+                'SipDomain':'direct-futel-prod.sip.twilio.com',
                 'To': 'sip:5035551212@direct-futel-nonemergency-stage.sip.twilio.com',
                 'From': 'sip:test@direct-futel-nonemergency-stage.sip.twilio.com'})
-        response = util.dial_pstn(request, env)
+        (to_uri, from_uri) = util.deserialize_pstn(request)
+        response = util.dial_pstn(to_uri, from_uri, request, env)
         self.assertEqual(
             str(response),
             '<?xml version="1.0" encoding="UTF-8"?><Response>'

@@ -174,16 +174,17 @@ def dial_sip(extension, request, env):
 
 def deserialize_pstn(request):
     """Return to and from attributes from request for a dial_pstn call."""
-    #to = request.query_params.get('Digits')
-    #if not to:
-    #    to = request.post_fields['To']
-    to = request.post_fields['To']
-    return (to, request.post_fields['From'])
+    # If there is a Digits in query_params, use that.
+    # Otherwise, use To from post_fields.
+    to_number = request.post_fields.get('Digits')
+    if not to_number:
+        to_uri = request.post_fields['To']
+        to_number = util.sip_to_extension(to_uri)
+    return (to_number, request.post_fields['From'])
 
-def dial_pstn(request, env):
+def dial_pstn(to_number, from_uri, request, env):
     """Return TwiML to dial PSTN number with attributes from request."""
     metric.publish('dial_pstn', request, env)
-    to_number = sip_to_extension(to_uri)
     to_number = normalize_number(to_number)
     to_number = transform_number(to_number)
     log(f'to_number: {to_number}')

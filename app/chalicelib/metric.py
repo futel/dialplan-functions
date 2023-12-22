@@ -4,8 +4,7 @@ from . import util
 
 def request_to_endpoint(request, env):
     """
-    Return an endpoint appropriate for a metric from
-    From or To.
+    Return an endpoint appropriate for a metric from From.
     """
     extension = util.sip_to_extension(request.post_fields['From'])
     if extension:

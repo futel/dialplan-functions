@@ -40,6 +40,7 @@ class TestDialOutgoing(TestCase):
         # demo extension redirects to SIP URI call.
         request = mock.Mock(
             headers={'host': 'host'},
+            query_params={},
             post_fields={
                 'SipDomain': 'direct-futel-prod.sip.twilio.com',
                 'To': 'sip:%23@direct-futel-nonemergency-stage.sip.twilio.com',
