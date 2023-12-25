@@ -5,6 +5,8 @@ TwiML via HTTP.
 
 # Meta-requirements
 
+AWS credentials should be set up and the us-west-2 region configured, however that is done.
+
 AWS should be set up as described in README-aws.
 
 An AWS Certificate Manager certificate should be set up as described in README-ssl.
