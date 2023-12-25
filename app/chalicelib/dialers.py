@@ -108,12 +108,13 @@ def dial_sip_e164(request, env):
         util.log("Could not find extension for E.164 number")
         metric.publish('reject', request, env)
         return str(util.reject(request))
-    sip_domain = _get_sip_domain(to_extension, env['extensions'], request)
-    util.log(f'to_extension: {to_extension}')
-    util.log(f'from_number: {from_number}')
-    util.log(f'sip_domain: {sip_domain}')
+    return _dial_sip(to_extension, from_number, request, env)
 
-    sip_uri = f'sip:{to_extension}@{sip_domain};'
+def _dial_sip(extension, from_number, request, env):
+    """Return TwiML to SIP dial a Futel extension."""
+    sip_domain = _get_sip_domain(extension, env['extensions'], request)
+    sip_uri = f'sip:{extension}@{sip_domain};'
+    util.log('sip_uri: {}'.format(sip_uri))
 
     response = VoiceResponse()
     # XXX default timeLimit is 4 hours, should be smaller, in seconds
@@ -122,7 +123,7 @@ def dial_sip_e164(request, env):
         caller_id=from_number,
         action=util.function_url(request, 'metric_dialer_status'))
     dial.sip(sip_uri)
-    return str(response)
+    return response
 
 def ivr(request, env):
     """
