@@ -79,14 +79,14 @@ def dial_outgoing(request, env):
         return str(response)
     if to_extension == '#':
         if from_extension['local_outgoing']:
-            # ivr() is also routed directly, so it marshals
+            # ivr() is also routed directly, so it mareshals
             # the response for flask. We should just
             # redirect, this is hit only once per call.
             return ivr(request, env)
         # The top menu is on the asterisk.
         return str(util.dial_sip(to_extension, request, env))
     # It's a PSTN number.
-    number = util.pstn_number(to_extension)
+    number = util.pstn_number(to_extension, from_extension['enable_emergency'])
     if not number:
         util.log('filtered pstn number {}'.format(to_extension))
         metric.publish('reject', request, env)

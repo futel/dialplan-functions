@@ -111,8 +111,10 @@ def transform_number(phone_number):
         return transform_numbers[phone_number]
     return phone_number
 
-def filter_outgoing_number(number):
+def filter_outgoing_number(number, enable_emergency):
     """Return True if number should be filtered."""
+    if number == '+911':
+        return not enable_emergency
     if len(number) == 4:
         # Allow 911, 211, etc.
         return False
@@ -179,11 +181,11 @@ def deserialize_pstn(request):
         to_number = sip_to_extension(to_uri)
     return (to_number, request.post_fields['From'])
 
-def pstn_number(number):
+def pstn_number(number, enable_emergency):
     """Return normalized and transformed number, or None."""
     number = normalize_number(number)
     number = transform_number(number)
-    if filter_outgoing_number(number):
+    if filter_outgoing_number(number, enable_emergency):
         return None
     return number
 

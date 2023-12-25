@@ -40,11 +40,11 @@ class TestUtil(TestCase):
             util.e164_to_extension('+19713512383', extensions), 'test')
 
     def test_filter_outgoing_number(self):
-        self.assertFalse(util.filter_outgoing_number('+911'))
-        self.assertFalse(util.filter_outgoing_number('+15035551212'))
+        self.assertFalse(util.filter_outgoing_number('+911', True))
+        self.assertFalse(util.filter_outgoing_number('+15035551212', True))
         # Mexico City Anthropological Museum
         self.assertFalse(
-            util.filter_outgoing_number('+525555536266'))
+            util.filter_outgoing_number('+525555536266', True))
 
     def test_dial_pstn(self):
         request = mock.Mock(
