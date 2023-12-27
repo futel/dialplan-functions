@@ -27,6 +27,7 @@ def get_ivrs():
     """Return ivrs asset object."""
     out = {}
     srcs = [
+        'ivrs_directories',
         'ivrs_operator',
         'ivrs_outgoing',
         'ivrs_utilities']
