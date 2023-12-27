@@ -1,0 +1,28 @@
+{
+    "outgoing_operator_caller": {
+        "name": "outgoing_operator_caller",
+        "intro_statements": ["please-hold", "for-the-next-available-operator"],
+        "menu_entries": [],
+        "next_context": "outgoing_operator_enqueue",
+        "statement_dir": "operator"},
+    "outgoing_operator_operator": {
+        "name": "outgoing_operator_operator",
+        "pre_callable": "outgoing_operator_pre",
+        "intro_statements": ["incoming-fewtel-operator-call"],
+        "menu_entries": [
+            ["to-accept", "outgoing_operator_accept"],
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,            
+            null],
+        "statement_dir": "operator"},
+    "outgoing_operator_empty": {
+        "name": "outgoing_operator_empty",
+        "intro_statements": ["thank-you", "you-are-too-late"],
+        "menu_entries": [],
+        "statement_dir": "operator"}
+}

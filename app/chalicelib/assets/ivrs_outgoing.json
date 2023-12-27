@@ -84,39 +84,13 @@
         "other_menu_entries": [
             ["for-the-operator", 0, "outgoing_operator_caller"]],
         "statement_dir": "outgoing"},
-    "outgoing_operator_caller": {
-        "name": "outgoing_operator_caller",
-        "intro_statements": ["please-hold", "for-the-next-available-operator"],
-        "menu_entries": [],
-        "next_context": "outgoing_operator_enqueue",
-        "statement_dir": "operator"},
-    "outgoing_operator_operator": {
-        "name": "outgoing_operator_operator",
-        "pre_callable": "outgoing_operator_pre",
-        "intro_statements": ["incoming-fewtel-operator-call"],
-        "menu_entries": [
-            ["to-accept", "outgoing_operator_accept"],
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,            
-            null],
-        "statement_dir": "operator"},
-    "outgoing_operator_empty": {
-        "name": "outgoing_operator_empty",
-        "intro_statements": ["thank-you", "you-are-too-late"],
-        "menu_entries": [],
-        "statement_dir": "operator"},
     "community_outgoing": {
         "name": "community_outgoing",
         "menu_entries": [
             ["for-the-fewtel-voice-conference", "futel-conf"],
             ["for-the-wildcard-line", "wildcard_line_outgoing"],
             ["for-the-church-of-robotron", "robotron"],
-            ["to-ring-a-fewtel-telephone", "internal-dialtone-wrapper"],
+            ["to-ring-a-fewtel-telephone", "internal_dialtone"],
             ["for-hold-the-phone", "hold_the_phone_main"],
             ["for-the-apology-service", "apology_intro"],
             ["for-more-information-about-fewtel", "information_futel"],

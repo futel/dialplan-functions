@@ -139,8 +139,8 @@ def python_to_twilio_param(v):
         return 'false'
     raise NotImplementedError
 
-def dial_sip(extension, request, env):
-    """Return a TwiML response to dial a SIP extension on the Futel server."""
+def dial_sip_asterisk(extension, request, env):
+    """Return a TwiML response to dial a SIP extension on the asterisk."""
     # XXX only for pstn
     from_uri = request.post_fields['From']
     log('extension:{} from_uri:{}'.format(extension, from_uri))

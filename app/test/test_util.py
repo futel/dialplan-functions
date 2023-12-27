@@ -72,7 +72,7 @@ class TestUtil(TestCase):
                 'To': 'sip:%23@direct-futel-nonemergency-stage.sip.twilio.com',
                 'From': 'sip:test@direct-futel-nonemergency-stage.sip.twilio.com'},
         context={'domainPrefix':'prod'})
-        response = util.dial_sip('#', request, env)
+        response = util.dial_sip_asterisk('#', request, env)
         self.assertEqual(
             str(response),
             '<?xml version="1.0" encoding="UTF-8"?><Response><Dial action="https://host/metric_dialer_status" answerOnBridge="true"><Sip>sip:outgoing_safe@futel-prod.phu73l.net;region=us2?x-callerid=+19713512383&amp;x-enableemergency=false</Sip></Dial></Response>')

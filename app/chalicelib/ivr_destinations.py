@@ -95,9 +95,10 @@ def outgoing_operator_pre(request, env):
                         request,
                         env))
 
-def outgoing_dialtone(request, env):
+def _dialtone(destination, request, env):
+    """Return TwiML for a dialtone sending input to destination."""
     response = VoiceResponse()
-    action_url = util.function_url(request, 'dial_outgoing')
+    action_url = util.function_url(request, destination)
     gather = response.gather(
         finish_on_key='', action=action_url, action_on_empty_result=True)
     gather.play(
@@ -109,9 +110,18 @@ def outgoing_dialtone(request, env):
             env))
     return response
 
+def outgoing_dialtone(request, env):
+    """Return TwiML for a dialtone for outgoing calls."""
+    return _dialtone('dial_outgoing', request, env)
+
+def internal_dialtone(request, env):
+    """Return TwiML for a dialtone for internal calls."""
+    return _dialtone('dial_sip_e164', request, env)
+
 
 DESTINATIONS = {
     'friction': friction,
+    'internal_dialtone': internal_dialtone,
     'outgoing_operator_accept': outgoing_operator_accept,
     'outgoing_dialtone': outgoing_dialtone,
     'outgoing_operator_enqueue': outgoing_operator_enqueue,

@@ -84,7 +84,8 @@ def dial_outgoing(request, env):
             # redirect, this is hit only once per call.
             return ivr(request, env)
         # The top menu is on the asterisk.
-        return str(util.dial_sip(to_extension, request, env))
+        metric.publish('dial_sip_asterisk', request, env)
+        return str(util.dial_sip_asterisk(to_extension, request, env))
     # It's a PSTN number.
     number = util.pstn_number(to_extension, from_extension['enable_emergency'])
     if not number:
@@ -96,10 +97,11 @@ def dial_outgoing(request, env):
 
 def dial_sip_e164(request, env):
     """
-    Return TwiML string to call an extension registered to our Twilio SIP Domains,
+    Return TwiML string to call an extension registered to our SIP Domains,
     looked up by the given E.164 number.
     """
     metric.publish('dial_sip_e164', request, env)
+    # XXX might be in Digits? How did we do this w/ ivr gather?
     to_number = request.post_fields['To']
     from_number = request.post_fields['From']
     to_number = util.normalize_number(to_number)
@@ -111,7 +113,7 @@ def dial_sip_e164(request, env):
     return _dial_sip(to_extension, from_number, request, env)
 
 def _dial_sip(extension, from_number, request, env):
-    """Return TwiML to SIP dial a Futel extension."""
+    """Return TwiML to dial a SIP extension on our Twilio SIP domain.."""
     sip_domain = _get_sip_domain(extension, env['extensions'], request)
     sip_uri = f'sip:{extension}@{sip_domain};'
     util.log('sip_uri: {}'.format(sip_uri))
@@ -183,9 +185,9 @@ def ivr(request, env):
                 # We don't know this context, so it's on the Asterisk server.
                 to_extension = dest_c_name
                 # This is an ivr destination, so metric.
-                metric.publish('dial_sip', request, env)
+                metric.publish('dial_sip_asterisk', request, env)
                 # XXX we lose lang! Hopefully user remembers to hit *.
-                return str(util.dial_sip(dest_c_name, request, env))
+                return str(util.dial_sip_asterisk(dest_c_name, request, env))
 
     # We got this far, it's in the context_dict.
     if stanza is ivrs.INTRO_STANZA:
