@@ -15,7 +15,8 @@ Twilio Programmable Voice SIP components should be set up (after this component)
 
 # Requirements
 
-Ubuntu 22 box.
+- Ubuntu 23 box
+- Python3.11, but this should be Python3.10
 
 # Deploy and development notes
 
