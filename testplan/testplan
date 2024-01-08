@@ -4,18 +4,22 @@ tests to run for outgoing dialtone (for each extension):
 emergency call acts appropriately from dialtone
 caller ID is appropriate from dialtone
 (dial 933 to test emergency calls)
-(note that an ATA should collect/send PSTN/0/9xx numbers or autodial #, a SIP client like Linphone will need to enter the initial dial/#)
+(note that an ATA should collect/send PSTN/0/9xx numbers or autodial #. A call from a SIP client like Linphone will need to start by entering the initial PSTN number or #)
 
 tests to run for outgoing asterisk (for each extension):
 0 sends to operator from asterisk
 emergency call acts appropriately from asterisk
 caller ID is appropriate from asterisk
 (dial 933 to test emergency calls)
-(dial 1 from asterisk prompt to test asterisk calls)
+(dial 1 from asterisk prompt to test all asterisk calls)
 
 outgoing dialtone tests for each extension:
 (extension, #-destination, has-emergency, caller-id)
-cesar-chavez outgoing yes cesar-chavez
+
+alleymaple outgoing_portland yes alleymaple
+bottles-and-cans-one outgoing_portland yes incoming_leet
+bottles-and-cans-two outgoing_portland yes incoming_leet
+cesar-chavez outgoing_portland yes cesar-chavez
 demo outgoing_safe no demo
 dome-basement outging_safe no incoming_leet
 dome-booth outgoing_safe no incoming_leet
@@ -23,11 +27,15 @@ dome-garage outgoing no incoming_leet
 dome-office outgoing_safe no incoming_leet
 ghost-mountain outgoing yes ghost-mountain
 r2d2 outging_safe yes r2d2
+ry4an-test outging_ypsi no incoming_leet
 sjac outging_safe no sjac
 test outging_safe no test
+ypsi outging_ypsi yes ypsi
 
 outgoing asterisk tests for each extension:
 (extension, has-emergency, caller-id)
+bottles-and-cans-one no incoming_leet
+bottles-and-cans-two no incoming_leet
 cesar-chavez yes cesar-chavez
 demo no incoming_leet
 dome-basement no incoming_leet
@@ -36,13 +44,15 @@ dome-garage no incoming_leet
 dome-office no incoming_leet
 ghost-mountain yes ghost-mountain
 r2d2 yes r2d2
+ry4an-test outging_ypsi no incoming_leet
 sjac no sjac
 test no test
+ypsi yes ypsi
 
 incoming call:
 Call test number from PSTN. Experience call.
 
-tests to run for ivr menus:
+tests to run for local ivr menus:
 all defined entries can be chosen
 undefined entries restart menu
 top menu start with language choice announcement
