@@ -102,6 +102,8 @@ def dial_sip_e164(request, env):
     """
     metric.publish('dial_sip_e164', request, env)
     # XXX might be in Digits? How did we do this w/ ivr gather?
+    #(to_extension, from_uri) = util.deserialize_pstn(request)
+    # XXX that was sip_to_extension, we need to normalize, etc
     to_number = request.post_fields['To']
     from_number = request.post_fields['From']
     to_number = util.normalize_number(to_number)
@@ -109,7 +111,7 @@ def dial_sip_e164(request, env):
     if not to_extension:
         util.log("Could not find extension for E.164 number")
         metric.publish('reject', request, env)
-        return str(util.reject(request))
+        return str(util.reject(request, env))
     return _dial_sip(to_extension, from_number, request, env)
 
 def _dial_sip(extension, from_number, request, env):

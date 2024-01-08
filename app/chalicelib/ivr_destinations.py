@@ -108,6 +108,7 @@ def _dialtone(destination, request, env):
             'sound',
             'ops',
             env))
+    # XXX How long was the play? Should we repeat? Play fast busy after?
     return response
 
 def outgoing_dialtone(request, env):
