@@ -65,6 +65,12 @@
         "enable_emergency": true,
         "local_outgoing": true
     },
+    "ry4an-test": {
+        "outgoing": "outgoing_ypsi",
+        "caller_id": "+15034681337",
+        "enable_emergency": false,
+        "local_outgoing": false
+    },
     "sjac": {
         "outgoing": "outgoing_safe",
         "caller_id": "+15032126899",
@@ -76,5 +82,11 @@
         "caller_id": "+19713512383",
         "enable_emergency": false,
         "local_outgoing": true
-    }
+    },
+    "ypsi": {
+        "outgoing": "outgoing_ypsi",
+        "caller_id": "+17345476651",
+        "enable_emergency": false,
+        "local_outgoing": false
+    },
 }
