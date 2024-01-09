@@ -21,7 +21,7 @@
         "outgoing": "outgoing_portland",
         "caller_id": "+15039465227",
         "enable_emergency": true,
-        "local_outgoing": true
+        "local_outgoing": false
     },
     "demo": {
         "outgoing": "outgoing_safe",
@@ -86,7 +86,7 @@
     "ypsi": {
         "outgoing": "outgoing_ypsi",
         "caller_id": "+17345476651",
-        "enable_emergency": false,
+        "enable_emergency": true,
         "local_outgoing": false
     }
 }
