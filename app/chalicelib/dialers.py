@@ -127,7 +127,7 @@ def _dial_sip(extension, from_number, request, env):
         caller_id=from_number,
         action=util.function_url(request, 'metric_dialer_status'))
     dial.sip(sip_uri)
-    return response
+    return str(response)
 
 def ivr(request, env):
     """
