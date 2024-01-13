@@ -15,7 +15,7 @@ def request_to_endpoint(request, env):
         # Incoming to Twilio phone number,
         # To is E.164 of caller.
         return util.e164_to_extension(
-            request.post_fields['From'], env['extensions'])
+            request.post_fields['To'], env['extensions'])
 
 # XXX publish takes .1s! Throw it in a worker queue?
 def publish(user_event, request, env):
