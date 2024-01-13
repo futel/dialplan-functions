@@ -26,11 +26,11 @@ dome-booth outgoing_safe no incoming_leet
 dome-garage outgoing no incoming_leet
 dome-office outgoing_safe no incoming_leet
 ghost-mountain outgoing yes ghost-mountain
+landline outging_ypsi yes ypsi
 r2d2 outging_safe yes r2d2
 ry4an-test outging_ypsi no incoming_leet
 sjac outging_safe no sjac
 test outging_safe no test
-ypsi outging_ypsi yes ypsi
 
 outgoing asterisk tests for each extension:
 (extension, has-emergency, caller-id)
@@ -47,7 +47,7 @@ r2d2 yes r2d2
 ry4an-test outging_ypsi no incoming_leet
 sjac no sjac
 test no test
-ypsi yes ypsi
+landline yes ypsi
 
 incoming call:
 Call test number from PSTN. Experience call.
