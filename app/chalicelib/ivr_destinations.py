@@ -26,6 +26,7 @@ def outgoing_operator_enqueue(request, env):
     Return TwiML to run an IVR context to put the call next in line
     in the operator queue.
     """
+    util.log('outgoing_operator_enqueue')
     response = VoiceResponse()
     response.enqueue(
         operator_queue_name, wait_url=util.function_url(request, WAIT_FUNCTION))
@@ -33,6 +34,7 @@ def outgoing_operator_enqueue(request, env):
 
 def outgoing_operator_accept(request, env):
     """Return TwiML to send the call to the next caller in operator queue."""
+    util.log('outgoing_operator_accept')
     lang = request.query_params.get('lang', 'en')
     # Is there still a caller in the queue?
     twilio_account_sid = env['TWILIO_ACCOUNT_SID']
@@ -42,6 +44,7 @@ def outgoing_operator_accept(request, env):
         if queue.friendly_name == operator_queue_name:
             if not queue.current_size:
                 # Too late, tell the operator.
+                # XXX Make a helper for this.
                 dest_c_name = 'outgoing_operator_empty'
                 dest_c_dict = ivrs.context_dict(env['ivrs'], dest_c_name)
                 stanza = ivrs.get_stanza(None)
@@ -57,7 +60,7 @@ def outgoing_operator_accept(request, env):
                         request,
                         env))
 
-    # Send the operator to the next caller in the queue.
+    # The queue is not empty. Send the operator to the next caller in the queue.
     response = VoiceResponse()
     dial = response.dial(
         timeout=3, # Connection timeout, so if the queue is empty we give up.

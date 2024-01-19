@@ -233,7 +233,10 @@ def metric_dialer_status(request, env):
     return str(response)
 
 def _enqueue_operator_call(request, env):
-    """Call operators with twiml for the accept menu."""
+    """
+    Perform side effects for the enqueued operator call.
+    Call operators with twiml for the accept menu.
+    """
     from_uri = request.post_fields['From']
     from_extension = util.sip_to_extension(from_uri)
     from_extension = env['extensions'][from_extension]
@@ -271,7 +274,8 @@ def _enqueue_operator_call(request, env):
 
 def outgoing_operator_dialer_status(request, env):
     """
-    Metric and return a TwiML string for operators who stayed on the line.
+    Perform side effects after a hopefully bridged operator call ends,
+    and return TwiML for operators who stayed on the line.
     """
     metric.publish('outgoing_operator_dialer_status', request, env)
     # call_status = request.post_fields['CallStatus']
