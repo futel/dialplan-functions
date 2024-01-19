@@ -321,3 +321,67 @@ def enqueue_operator_wait(request, env):
     response.play(
         'http://com.twilio.sounds.music.s3.amazonaws.com/MARKOVICHAMP-Borghestral.mp3')
     return str(response)
+
+def _find_operator_calls(client, extension, env):
+    """
+    Yield operator calls in progress for the call calling from extension.
+    """
+    for status in ('ringing', 'in-progress', 'queued'):
+        # Use an arbitrary limit of 20 because we need something and don't
+        # expect to have more simultaneous calls than that.
+        calls = client.calls.list(status=status, limit=20)
+        for record in calls:
+            # We want to abort any calls to operators. There wasn't any way to
+            # mark the calls on creation, so since we haven't stored anything,
+            # we need to use call attributes to find them.
+            # For an inbound SIP call, _from is the SIP URI of the caller's
+            # extension. For outbound operator calls, it is the e165 for the
+            # caller's extension.
+            caller_extension = util.e164_to_extension(
+                record._from, env['extensions'])
+            if caller_extension == extension:
+                yield record
+
+def _is_operator_queue_empty(client):
+    """Return True if operator queue is empty."""
+    for queue in client.queues.list():
+        if queue.friendly_name == ivr_destinations.operator_queue_name:
+            if not queue.current_size:
+                return True
+    return False
+
+def outgoing_operator_leave(request, env):
+    """
+    Perform side effects for a caller leaving the operator queue,
+    """
+    metric.publish('outgoing_operator_leave', request, env)
+    from_uri = request.post_fields['From']
+    from_extension = util.sip_to_extension(from_uri)
+    lang = request.query_params.get('lang', 'en')
+    # Is there still a caller in the queue?
+    twilio_account_sid = env['TWILIO_ACCOUNT_SID']
+    twilio_auth_token = env['TWILIO_AUTH_TOKEN']
+    client = Client(twilio_account_sid, twilio_auth_token)
+    if not _is_operator_queue_empty(client):
+        for record in _find_operator_calls(client, from_extension, env):
+            util.log('canceling outbound operator call')
+            # Too late, cancel or tell the operator.
+            if record.status in ('ringing', 'queued'):
+                record.update(status='canceled')
+            else:
+                # XXX Make a helper for this.
+                dest_c_name = 'outgoing_operator_empty'
+                dest_c_dict = ivrs.context_dict(env['ivrs'], dest_c_name)
+                stanza = ivrs.get_stanza(None)
+                iteration = ivrs.get_iteration(None)
+                util.log(dest_c_name)
+                response = str(
+                    ivrs.ivr_context(
+                        dest_c_dict,
+                        lang,
+                        dest_c_name,
+                        stanza,
+                        iteration,
+                        request,
+                        env))
+                record.update(twiml=response)

@@ -154,5 +154,24 @@ class TestEnqueueOperatorWait(TestCase):
         # Smoke test.
 
 
+class OutgoingOperatorLeave(TestCase):
+
+    @mock.patch.object(dialers, 'Client')
+    @mock.patch.object(ivr_destinations, 'Client')
+    def test_outgoing_operator_leave(self, _mock1, _mock2):
+        request = mock.Mock(
+            headers={'host': 'host'},
+            post_fields={
+                'CallSid': 'CallSid',
+                'SipDomain': 'direct-futel-prod.sip.twilio.com',
+                'To': 'sip:xyzzy@direct-futel-prod.sip.twilio.com',
+                'From': 'sip:test@direct-futel-prod.sip.twilio.com',
+                'Digits': '*',
+                'QueueResult': 'QueueResult'},
+            context={'domainPrefix':'prod'})
+        got = dialers.outgoing_operator_leave(request, env)
+        # Smoke test.
+
+
 if __name__ == '__main__':
     unittest.main()

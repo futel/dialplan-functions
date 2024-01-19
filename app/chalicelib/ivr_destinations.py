@@ -9,6 +9,7 @@ from . import ivrs
 from . import util
 
 WAIT_FUNCTION = 'enqueue_operator_wait'
+LEAVE_FUNCTION = 'outgoing_operator_leave'
 operator_queue_name = 'operator'
 
 def get_destination(name):
@@ -29,7 +30,9 @@ def outgoing_operator_enqueue(request, env):
     util.log('outgoing_operator_enqueue')
     response = VoiceResponse()
     response.enqueue(
-        operator_queue_name, wait_url=util.function_url(request, WAIT_FUNCTION))
+        operator_queue_name,
+        action=util.function_url(request, LEAVE_FUNCTION),
+        wait_url=util.function_url(request, WAIT_FUNCTION))
     return response
 
 def outgoing_operator_accept(request, env):
