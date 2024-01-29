@@ -28,6 +28,7 @@ def outgoing_operator_enqueue(request, env):
     in the operator queue.
     """
     util.log('outgoing_operator_enqueue')
+    lang = request.query_params.get('lang', 'en')
     response = VoiceResponse()
     response.enqueue(
         operator_queue_name,

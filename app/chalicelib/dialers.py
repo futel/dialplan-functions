@@ -17,6 +17,8 @@ sip_domain_subdomain_base_non_emergency = "direct-futel-nonemergency";
 # https://www.twilio.com/docs/voice/api/sip-registration
 sip_domain_suffix = "sip.twilio.com";
 
+operator_message_max = 60 * 15  # 15 minutes
+
 
 def _get_sip_domain(extension, extension_map, request):
     if extension_map[extension]['enable_emergency']:
@@ -318,8 +320,29 @@ def enqueue_operator_wait(request, env):
     metric.publish('enqueue_operator_wait', request, env)
     _enqueue_operator_call(request, env)
     response = VoiceResponse()
+    # Play hold music until it's time to time out.
     response.play(
-        'http://com.twilio.sounds.music.s3.amazonaws.com/MARKOVICHAMP-Borghestral.mp3')
+        # XXX This sound file is not in the ivrs structure, so it isn't checked.
+        ivrs.sound_url(
+            'operator',
+            'sound',
+            'ops',
+            env))
+    # After the hold music, leave the queue, which will then
+    # resume the twiml after the enqueue statement.
+    response.leave()
+    return str(response)
+
+def enqueue_operator_record(request, env):
+    """
+    Perform side effects and return TwiML string
+    for the enqueue recording callback.
+    """
+    metric.publish('enqueue_operator_record', request, env)
+    # This is not much notification, but the recordings are discoverable.
+    util.log("Operator message: ".format(request.post_fields['RecordingUrl']))
+    response = VoiceResponse()
+    response.hangup()
     return str(response)
 
 def _find_operator_calls(client, extension, env):
@@ -352,23 +375,29 @@ def _is_operator_queue_empty(client):
 
 def outgoing_operator_leave(request, env):
     """
-    Perform side effects for a caller leaving the operator queue,
+    Perform side effects for a caller leaving the operator queue, and continue
+    the caller's call.
     """
+    # We resume here after the wait callback caused the user to
+    # leave the queue.
     metric.publish('outgoing_operator_leave', request, env)
+    queue_result = request.post_fields['QueueResult']
+    util.log('caller left queue: {}'.format(queue_result))
     from_uri = request.post_fields['From']
     from_extension = util.sip_to_extension(from_uri)
     lang = request.query_params.get('lang', 'en')
-    # Is there still a caller in the queue?
     twilio_account_sid = env['TWILIO_ACCOUNT_SID']
     twilio_auth_token = env['TWILIO_AUTH_TOKEN']
     client = Client(twilio_account_sid, twilio_auth_token)
-    if not _is_operator_queue_empty(client):
+    if _is_operator_queue_empty(client):
+        # There is no caller in the queue. Cancel or notify all
+        # operators not yet with a caller.
         for record in _find_operator_calls(client, from_extension, env):
             util.log('canceling outbound operator call')
-            # Too late, cancel or tell the operator.
             if record.status in ('ringing', 'queued'):
                 record.update(status='canceled')
             else:
+                # Notify the operator that they are too late.
                 # XXX Make a helper for this.
                 dest_c_name = 'outgoing_operator_empty'
                 dest_c_dict = ivrs.context_dict(env['ivrs'], dest_c_name)
@@ -385,3 +414,18 @@ def outgoing_operator_leave(request, env):
                         request,
                         env))
                 record.update(twiml=response)
+    # Return TwiML to continue the caller's call.
+    response = VoiceResponse()
+    if queue_result != 'bridged':
+        # The caller was not connected to an operator.
+        response.play(
+            # XXX This sound file is not in the ivrs structure, so it isn't checked.
+            ivrs.sound_url(
+                'operators-are-currently-unavailable-please-leave-a-message-for-a-response-leave-your-voicemail-box-number',
+                lang,
+                'operator',
+                env))
+        response.record(
+            action=util.function_url(request, 'enqueue_operator_record'),
+            max_length=operator_message_max)
+    return str(response)

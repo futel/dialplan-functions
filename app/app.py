@@ -75,6 +75,11 @@ def _index(request, env):
 def _index(request, env):
     return dialers.enqueue_operator_wait(request, env)
 
+@route('/enqueue_operator_record')
+@setup
+def _index(request, env):
+    return dialers.enqueue_operator_record(request, env)
+
 @route('/outgoing_operator_dialer_status')
 @setup
 def _index(request, env):

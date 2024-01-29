@@ -168,7 +168,8 @@ class OutgoingOperatorLeave(TestCase):
                 'From': 'sip:test@direct-futel-prod.sip.twilio.com',
                 'Digits': '*',
                 'QueueResult': 'QueueResult'},
-            context={'domainPrefix':'prod'})
+            context={'domainPrefix': 'prod'},
+            query_params={'lang': 'en'})
         got = dialers.outgoing_operator_leave(request, env)
         # Smoke test.
 

@@ -6,7 +6,8 @@ from chalicelib import ivr_destinations
 request = mock.Mock(
     context={'domainPrefix':'domainPrefix'},
     headers={'host': 'host'},
-    post_fields={'From':'From'})
+    post_fields={'From':'From'},
+    query_params={'lang': 'en'})
 
 env = {
     'ASSET_HOST':'ASSET_HOST',
