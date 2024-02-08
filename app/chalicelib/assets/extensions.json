@@ -77,6 +77,12 @@
         "enable_emergency": false,
         "local_outgoing": true
     },
+    "tishbite-test": {
+        "outgoing": "outgoing_portland",
+        "caller_id": "+15034681337",
+        "enable_emergency": false,
+        "local_outgoing": true
+    },
     "test": {
         "outgoing": "outgoing_safe",
         "caller_id": "+19713512383",
