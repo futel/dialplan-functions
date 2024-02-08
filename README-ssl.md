@@ -25,14 +25,14 @@ This project must have been set up for all of dev, stage, prod deployments as de
  - complete certbot
  - remove txt record for dialplans.phu73l.net using digitalocean web console
 - add expiration to calendar
-- copy eg /etc/letsencrypt/live/dev.dialplans.phu73l.net to conf XXX why?
-- in eg /etc/letsencrypt/live/dev.dialplans.phu73l.net, cat cert.pem chain.pem fullchain.pem > all.pem
+- copy /etc/letsencrypt/live/dialplans.phu73l.net to conf XXX why?
+- in /etc/letsencrypt/live/dialplans.phu73l.net, cat cert.pem chain.pem fullchain.pem > all.pem
 
-# Import certificate to ACM
+# Import a new or reimport an existing certificate to ACM
 
 - visit AWS ACM web console
 - change region to us-east-1
-- import a certificate
+- import a certificate, or list, visit, reimport certificate
  - certificate body cert.pem
  - certificate private key privkey.pem
  - certificate chain all.pem
@@ -41,7 +41,7 @@ Note ARN. This is needed to deploy the AWS API Gateway.
 
 # Update functions to use new certificate
 
-Update config.json to use new certificate ARN for the deployment, and deploy affected stages, as described in README-deploy.
+Update app/.chalice/config.json to use new certificate ARN for the deployment, and deploy affected stages, as described in README-deploy.
 
 # Update certificate
 
@@ -49,10 +49,7 @@ Certificates must be updated before they expire.
 
 - Renew the certificate as in create certificate
   - keep existing key type
-
-# Renew updated certificate in ACM
-
-- Renew the certificate as in import certificate
+- Reimport the certificate as in import certificate
 
 # Delete certificates
 
@@ -73,8 +70,8 @@ POST to a smoke test URL as described in README-test.
 # Notes
 
 The box that certbot is run on stores the creds and becomes a local registry for the certs, when we register on create/update, Let's Encrypt sends the reminder email. Do we need the local certs when we renew or can they be thrown away after they're in ACM? Files are stored in /etc/letsencrypt.
-l0nk
-The cert expiry is short, this process must be repeated each time. I think the usual process is to have the infrastructure and staff, a networked box running certbot and a human to keep it running. Might be worth it to just buy 4 certs a year?
+
+The cert expiry is short, this process must be repeated each time. I think the usual process is to have the infrastructure and staff, a networked box running certbot and a human to keep it running? It doesn't look hard if we aren't really concerned about security, need to run it with an auth hook periodically for autoewnewal. Might be worth it to just buy 4 certs a year?
 
 https://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-custom-domains-prerequisites.html
 https://eff-certbot.readthedocs.io/en/stable/using.html#manual
