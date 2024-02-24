@@ -1,70 +1,73 @@
 tests to run for outgoing dialtone (for each extension):
-# sends to appropriate context
-0 sends to operator from dialtone XXX
-emergency call acts appropriately from dialtone
-caller ID is appropriate from dialtone
-(dial 933 to test emergency calls)
-(note that an ATA should collect/send PSTN/0/9xx numbers or autodial #. A call from a SIP client like Linphone will need to start by entering the initial PSTN number or #)
+- notes
+  - dial 933 to test emergency calls
+  - an ATA should collect/send PSTN/0/9xx numbers or autodial #. A call from a SIP client like Linphone will need to start by entering the initial PSTN number or #
+- # sends to appropriate context
+- 0 sends to operator from dialtone XXX
+- emergency call acts appropriately from dialtone
+- caller ID is appropriate from dialtone
 
 tests to run for outgoing asterisk (for each extension):
-0 sends to operator from asterisk
-emergency call acts appropriately from asterisk
-caller ID is appropriate from asterisk
-(dial 933 to test emergency calls)
-(dial 1 from asterisk prompt to test all asterisk calls)
+- notes
+  - dial 933 to test emergency calls
+  - dial 1 from asterisk prompt to test all asterisk calls
+- 0 sends to operator from asterisk
+- emergency call acts appropriately from asterisk
+- caller ID is appropriate from asterisk
 
 outgoing dialtone tests for each extension:
-(extension, #-destination, has-emergency, caller-id)
-
-alleymaple outgoing_portland yes alleymaple
-bottles-and-cans-one outgoing_portland yes incoming_leet
-bottles-and-cans-two outgoing_portland yes incoming_leet
-cesar-chavez outgoing_portland yes cesar-chavez
-demo outgoing_safe no demo
-dome-basement outging_safe no incoming_leet
-dome-booth outgoing_safe no incoming_leet
-dome-garage outgoing no incoming_leet
-dome-office outgoing_safe no incoming_leet
-ghost-mountain outgoing yes ghost-mountain
-landline outging_ypsi yes ypsi
-r2d2 outging_safe yes r2d2
-ry4an-test outging_ypsi no incoming_leet
-sjac outging_safe no sjac
-test outging_safe no test
+- notes
+  - extension, #-destination, has-emergency, caller-id
+- alleymaple outgoing_portland yes alleymaple
+- bottles-and-cans-one outgoing_portland yes incoming_leet
+- bottles-and-cans-two outgoing_portland yes incoming_leet
+- cesar-chavez outgoing_portland yes cesar-chavez
+- demo outgoing_safe no demo
+- dome-basement outging_safe no incoming_leet
+- dome-booth outgoing_safe no incoming_leet
+- dome-garage outgoing no incoming_leet
+- dome-office outgoing_safe no incoming_leet
+- ghost-mountain outgoing yes ghost-mountain
+- landline outging_ypsi yes ypsi
+- r2d2 outging_safe yes r2d2
+- ry4an-test outging_ypsi no incoming_leet
+- sjac outging_safe no sjac
+- test outging_safe no test
 
 outgoing asterisk tests for each extension:
-(extension, has-emergency, caller-id)
-bottles-and-cans-one no incoming_leet
-bottles-and-cans-two no incoming_leet
-cesar-chavez yes cesar-chavez
-demo no incoming_leet
-dome-basement no incoming_leet
-dome-booth no incoming_leet
-dome-garage no incoming_leet
-dome-office no incoming_leet
-ghost-mountain yes ghost-mountain
-r2d2 yes r2d2
-ry4an-test outging_ypsi no incoming_leet
-sjac no sjac
-test no test
-landline yes ypsi
+- notes
+  - extension, has-emergency, caller-id
+- bottles-and-cans-one no incoming_leet
+- bottles-and-cans-two no incoming_leet
+- cesar-chavez yes cesar-chavez
+- demo no incoming_leet
+- dome-basement no incoming_leet
+- dome-booth no incoming_leet
+- dome-garage no incoming_leet
+- dome-office no incoming_leet
+- ghost-mountain yes ghost-mountain
+- r2d2 yes r2d2
+- ry4an-test outging_ypsi no incoming_leet
+- sjac no sjac
+- test no test
+- landline yes ypsi
 
 incoming call:
-Call test number from PSTN. Experience call.
+- Call test number from PSTN. Experience call.
 
 tests to run for local ivr menus:
-all defined entries can be chosen
-undefined entries restart menu
-top menu start with language choice announcement
-* restarts menu in Spanish
-# at top menu restarts menu
-# at non-top menu goes to parent menu
-0 at top menu chooses operator
-0 at non-top menu restarts menu
+- all defined entries can be chosen
+- undefined entries restart menu
+- top menu start with language choice announcement
+- * restarts menu in Spanish
+- # at top menu restarts menu
+- # at non-top menu goes to parent menu
+- 0 at top menu chooses operator
+- 0 at non-top menu restarts menu
 
 menu tests for each menu:
-outgoing_safe
+- outgoing_safe
 
 other:
-metrics are generated from twilio
-metrics are generated from asterisk
+- metrics are generated from twilio
+- metrics are generated from asterisk
