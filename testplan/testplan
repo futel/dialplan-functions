@@ -1,4 +1,4 @@
-tests to run for outgoing dialtone (for each extension):
+outgoing dialtone for each extension:
 - notes
   - dial 933 to test emergency calls
   - an ATA should collect/send PSTN/0/9xx numbers or autodial #. A call from a SIP client like Linphone will need to start by entering the initial PSTN number or #
@@ -7,7 +7,7 @@ tests to run for outgoing dialtone (for each extension):
 - emergency call acts appropriately from dialtone
 - caller ID is appropriate from dialtone
 
-tests to run for outgoing asterisk (for each extension):
+outgoing asterisk for each extension:
 - notes
   - dial 933 to test emergency calls
   - dial 1 from asterisk prompt to test all asterisk calls
@@ -15,7 +15,7 @@ tests to run for outgoing asterisk (for each extension):
 - emergency call acts appropriately from asterisk
 - caller ID is appropriate from asterisk
 
-outgoing dialtone tests for each extension:
+outgoing dialtone for each extension:
 - notes
   - extension, #-destination, has-emergency, caller-id
 - alleymaple outgoing_portland yes alleymaple
@@ -34,7 +34,7 @@ outgoing dialtone tests for each extension:
 - sjac outging_safe no sjac
 - test outging_safe no test
 
-outgoing asterisk tests for each extension:
+outgoing asterisk for each extension:
 - notes
   - extension, has-emergency, caller-id
 - bottles-and-cans-one no incoming_leet
@@ -55,17 +55,16 @@ outgoing asterisk tests for each extension:
 incoming call:
 - Call test number from PSTN. Experience call.
 
-tests to run for local ivr menus:
-- all defined entries can be chosen
-- undefined entries restart menu
-- top menu start with language choice announcement
-- * restarts menu in Spanish
-- # at top menu restarts menu
-- # at non-top menu goes to parent menu
-- 0 at top menu chooses operator
-- 0 at non-top menu restarts menu
-
-menu tests for each menu:
+local ivr menus:
+- notes
+  - all defined entries can be chosen
+  - undefined entries restart menu
+  - top menu start with language choice announcement
+  - * restarts menu in Spanish
+  - # at top menu restarts menu
+  - # at non-top menu goes to parent menu
+  - 0 at top menu chooses operator
+  - 0 at non-top menu restarts menu
 - outgoing_safe
 
 other:
