@@ -1,22 +1,25 @@
+outgoing dialtone tests:
+- notes
+  - XXX many of these tests don't need to be done for each extension, just 1 dialplan, 1 asterisk
+  - valid numbers are
+    - domestic PSTN numbers (10 digit prefixed by 1, +1, 0111, or nothing)
+    - international PSTN numbers (12 digit prefixed by 52 or 01152)
+    - valid 3 digit numbers (911, 933, 211, ...XXX)
+  - Client behavior we want to test is
+    - client-provided dialtone (first client send is number)
+    - our dialtone (first client send is #, client navigates to dialtone if not there)
+  - dial 933 to test emergency calls, do not dial 911!
+- 0 sends to operator from dialtone
+- valid versions of 5035551212, 8005551212, 5555551212 send to operator
+- 911 acts appropriately (destination or notify)
+- other valid 3 digit calls call their destinations
+- caller ID is appropriate
+- # sends to default context
+- call terminates correctly after timeout XXX
+
 outgoing dialtone for each extension:
 - notes
-  - dial 933 to test emergency calls
-  - an ATA should collect/send PSTN/0/9xx numbers or autodial #. A call from a SIP client like Linphone will need to start by entering the initial PSTN number or #
-- # sends to appropriate context
-- 0 sends to operator from dialtone XXX
-- emergency call acts appropriately from dialtone
-- caller ID is appropriate from dialtone
-
-outgoing asterisk for each extension:
-- notes
-  - dial 933 to test emergency calls
-  - dial 1 from asterisk prompt to test all asterisk calls
-- 0 sends to operator from asterisk
-- emergency call acts appropriately from asterisk
-- caller ID is appropriate from asterisk
-
-outgoing dialtone for each extension:
-- notes
+  - do outgoing dialtone tests and #-destination
   - extension, #-destination, has-emergency, caller-id
 - alleymaple outgoing_portland yes alleymaple
 - bottles-and-cans-one outgoing_portland yes incoming_leet
@@ -36,6 +39,8 @@ outgoing dialtone for each extension:
 
 outgoing asterisk for each extension:
 - notes
+  - each extension gets tranfered to asterisk differently, either immediately, or when it hits a context not implemented by the dialplan
+  - once asterisk is reached, test that first context and outgoing dialtone tests work
   - extension, has-emergency, caller-id
 - bottles-and-cans-one no incoming_leet
 - bottles-and-cans-two no incoming_leet
@@ -52,20 +57,41 @@ outgoing asterisk for each extension:
 - test no test
 - landline yes ypsi
 
-incoming call:
-- Call test number from PSTN. Experience call.
+outgoing operator tests:
+- calling operator plays intro, then music while operators are called
+- calling operator dials all operators
+- answering operator call plays operator menu
+- accepting operator call connects caller with operator if one or more callers are waiting
+- accepting operator call plays message if no callers are waiting
+- accepting operator call terminates all ringing operators if no other callers are waiting
+- accepting operator call plays message for all operator menus if no other callers are waiting
+- accepting operator has no effect on other calls if other callers are waiting
+- denying operator call hangs up on operator
+- denying operator call does not affect caller
+- denying operator call does not affect ringing operators
+- denying operator call does not affect other operators hearing menu
+- caller gets operator voicemail if no operator accepts before timeout
+- caller gets hangup after voicemail ends
+- caller gets hangup after operator hangup
+- operator gets hangup after caller hangup
 
-local ivr menus:
+dialplan ivr menus:
 - notes
+  - intro plays once, then menu repeats
   - all defined entries can be chosen
   - undefined entries restart menu
-  - top menu start with language choice announcement
+  - top menu starts with language choice intro
   - * restarts menu in Spanish
   - # at top menu restarts menu
   - # at non-top menu goes to parent menu
   - 0 at top menu chooses operator
   - 0 at non-top menu restarts menu
+  - no action terminates correctly after XXX iterations
 - outgoing_safe
+- others XXX
+
+incoming call:
+- Call test number from PSTN. Experience call.
 
 other:
 - metrics are generated from twilio
