@@ -6,56 +6,20 @@ outgoing dialtone tests:
     - international PSTN numbers (12 digit prefixed by 52 or 01152)
     - valid 3 digit numbers (911, 933, 211, ...XXX)
   - Client behavior we want to test is
-    - client-provided dialtone (first client send is number)
-    - our dialtone (first client send is #, client navigates to dialtone if not there)
+    - test our dialtone
+      - first client send is #
+      - ATAs send this on pickup, SIP client starts call with #
+      - first context is either dialtone or user navigates to dialtone
+    - test client-provided dialtone
+      - first client send is number
   - dial 933 to test emergency calls, do not dial 911!
 - 0 sends to operator from dialtone
 - valid versions of 5035551212, 8005551212, 5555551212 send to operator
-- 911 acts appropriately (destination or notify)
+- 933 acts appropriately for an emergency call (destination or notify)
 - other valid 3 digit calls call their destinations
 - caller ID is appropriate
-- # sends to default context
+- # from dialtone sends to default context
 - call terminates correctly after timeout XXX
-
-outgoing dialtone for each extension:
-- notes
-  - do outgoing dialtone tests and #-destination
-  - extension, #-destination, has-emergency, caller-id
-- alleymaple outgoing_portland yes alleymaple
-- bottles-and-cans-one outgoing_portland yes incoming_leet
-- bottles-and-cans-two outgoing_portland yes incoming_leet
-- cesar-chavez outgoing_portland yes cesar-chavez
-- demo outgoing_safe no demo
-- dome-basement outging_safe no incoming_leet
-- dome-booth outgoing_safe no incoming_leet
-- dome-garage outgoing no incoming_leet
-- dome-office outgoing_safe no incoming_leet
-- ghost-mountain outgoing yes ghost-mountain
-- landline outging_ypsi yes ypsi
-- r2d2 outging_safe yes r2d2
-- ry4an-test outging_ypsi no incoming_leet
-- sjac outging_safe no sjac
-- test outging_safe no test
-
-outgoing asterisk for each extension:
-- notes
-  - each extension gets tranfered to asterisk differently, either immediately, or when it hits a context not implemented by the dialplan
-  - once asterisk is reached, test that first context and outgoing dialtone tests work
-  - extension, has-emergency, caller-id
-- bottles-and-cans-one no incoming_leet
-- bottles-and-cans-two no incoming_leet
-- cesar-chavez yes cesar-chavez
-- demo no incoming_leet
-- dome-basement no incoming_leet
-- dome-booth no incoming_leet
-- dome-garage no incoming_leet
-- dome-office no incoming_leet
-- ghost-mountain yes ghost-mountain
-- r2d2 yes r2d2
-- ry4an-test outging_ypsi no incoming_leet
-- sjac no sjac
-- test no test
-- landline yes ypsi
 
 outgoing operator tests:
 - calling operator plays intro, then music while operators are called
@@ -75,7 +39,7 @@ outgoing operator tests:
 - caller gets hangup after operator hangup
 - operator gets hangup after caller hangup
 
-dialplan ivr menus:
+dialplan ivr tests:
 - notes
   - intro plays once, then menu repeats
   - all defined entries can be chosen
@@ -87,12 +51,67 @@ dialplan ivr menus:
   - 0 at top menu chooses operator
   - 0 at non-top menu restarts menu
   - no action terminates correctly after XXX iterations
-- outgoing_safe
-- others XXX
+- contexts to test
+  - outgoing_safe
+  - XXX others
 
-incoming call:
+incoming call tests:
 - Call test number from PSTN. Experience call.
 
-other:
+other tests:
 - metrics are generated from twilio
 - metrics are generated from asterisk
+
+tests to run
+- extension tests
+  - perform tests for each extension
+    - outgoing dialtone tests
+    - outgoing operator tests
+    - outgoing asterisk tests
+- ivr tests
+  - perform tests for each context reachable on the dialplan (ie before tranfer to asterisk)
+    - dialplan ivr menus
+- incoming call
+- other
+
+outgoing dialtone for each extension:
+- notes
+  - do outgoing dialtone tests and #-destination
+  - fields: extension, #-destination, has-emergency, caller-id
+- alleymaple outgoing_portland yes alleymaple
+- bottles-and-cans-one outgoing_portland yes incoming_leet
+- bottles-and-cans-two outgoing_portland yes incoming_leet
+- cesar-chavez outgoing_portland yes cesar-chavez
+- demo outgoing_safe no demo
+- dome-basement outging_safe no incoming_leet
+- dome-booth outgoing_safe no incoming_leet
+- dome-garage outgoing no incoming_leet
+- dome-office outgoing_safe no incoming_leet
+- ghost-mountain outgoing yes ghost-mountain
+- landline outging_ypsi yes ypsi
+- r2d2 outging_safe yes r2d2
+- ry4an-test outging_ypsi no incoming_leet
+- sjac outging_safe no sjac
+- test outging_safe no test
+
+outgoing asterisk for each extension:
+- notes
+  - each extension gets tranfered to asterisk differently, either immediately, or when it hits a context not implemented by the dialplan
+  - once asterisk is reached
+    - verify first context being heard
+    - perform outgoing dialtone tests
+  - fields: extension, has-emergency, caller-id
+- bottles-and-cans-one no incoming_leet
+- bottles-and-cans-two no incoming_leet
+- cesar-chavez yes cesar-chavez
+- demo no incoming_leet
+- dome-basement no incoming_leet
+- dome-booth no incoming_leet
+- dome-garage no incoming_leet
+- dome-office no incoming_leet
+- ghost-mountain yes ghost-mountain
+- r2d2 yes r2d2
+- ry4an-test outging_ypsi no incoming_leet
+- sjac no sjac
+- test no test
+- landline yes ypsi
