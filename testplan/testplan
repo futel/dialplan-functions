@@ -1,6 +1,5 @@
 outgoing dialtone tests:
 - notes
-  - XXX many of these tests don't need to be done for each extension, just 1 dialplan, 1 asterisk
   - valid numbers are
     - domestic PSTN numbers (10 digit prefixed by 1, +1, 0111, or nothing)
     - international PSTN numbers (12 digit prefixed by 52 or 01152)
@@ -40,43 +39,45 @@ outgoing operator tests:
 - operator gets hangup after caller hangup
 
 dialplan ivr tests:
-- notes
-  - intro plays once, then menu repeats
-  - all defined entries can be chosen
-  - undefined entries restart menu
-  - top menu starts with language choice intro
-  - * restarts menu in Spanish
-  - # at top menu restarts menu
-  - # at non-top menu goes to parent menu
-  - 0 at top menu chooses operator
-  - 0 at non-top menu restarts menu
-  - no action terminates correctly after XXX iterations
-- contexts to test
-  - outgoing_safe
-  - XXX others
+- intro plays once, then menu repeats
+- all defined entries can be chosen
+- undefined entries restart menu
+- top menu starts with language choice intro
+- * restarts menu in Spanish
+- # at top menu restarts menu
+- # at non-top menu goes to parent menu
+- 0 at top menu chooses operator
+- 0 at non-top menu restarts menu
+- no action terminates correctly after XXX iterations
 
 incoming call tests:
 - Call test number from PSTN. Experience call.
+
+asterisk tests:
+- notes
+  - each extension gets tranfered to asterisk differently, either immediately, or when it hits a context not implemented by the dialplan
+- verify first context being heard
+- perform outgoing dialtone tests after navigating to dialtone
 
 other tests:
 - metrics are generated from twilio
 - metrics are generated from asterisk
 
-tests to run
+tests to run:
 - extension tests
-  - perform tests for each extension
+  - perform for each extension
     - outgoing dialtone tests
+    - # destination
     - outgoing operator tests
     - outgoing asterisk tests
 - ivr tests
-  - perform tests for each context reachable on the dialplan (ie before tranfer to asterisk)
+  - perform for each context reachable on the dialplan (ie before tranfer to asterisk)
     - dialplan ivr menus
-- incoming call
-- other
+- incoming call tests
+- other tests
 
-outgoing dialtone for each extension:
+extension attributes:
 - notes
-  - do outgoing dialtone tests and #-destination
   - fields: extension, #-destination, has-emergency, caller-id
 - alleymaple outgoing_portland yes alleymaple
 - bottles-and-cans-one outgoing_portland yes incoming_leet
@@ -93,25 +94,3 @@ outgoing dialtone for each extension:
 - ry4an-test outging_ypsi no incoming_leet
 - sjac outging_safe no sjac
 - test outging_safe no test
-
-outgoing asterisk for each extension:
-- notes
-  - each extension gets tranfered to asterisk differently, either immediately, or when it hits a context not implemented by the dialplan
-  - once asterisk is reached
-    - verify first context being heard
-    - perform outgoing dialtone tests
-  - fields: extension, has-emergency, caller-id
-- bottles-and-cans-one no incoming_leet
-- bottles-and-cans-two no incoming_leet
-- cesar-chavez yes cesar-chavez
-- demo no incoming_leet
-- dome-basement no incoming_leet
-- dome-booth no incoming_leet
-- dome-garage no incoming_leet
-- dome-office no incoming_leet
-- ghost-mountain yes ghost-mountain
-- r2d2 yes r2d2
-- ry4an-test outging_ypsi no incoming_leet
-- sjac no sjac
-- test no test
-- landline yes ypsi
