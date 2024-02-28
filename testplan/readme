@@ -1,3 +1,4 @@
+- this lives in the testplan directory of the dialplan-functions repository
 - run tests listed in testplan
 - tests are found in tests
 - run tests on stage
