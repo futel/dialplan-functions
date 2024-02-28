@@ -2,13 +2,13 @@ tests to run:
 - extension tests
   - perform for each extension
     - outgoing dialtone tests
-    - # destination
+    - outgoing # destination tests
     - outgoing operator tests
     - outgoing asterisk tests
 - ivr tests
   - perform for each context reachable on the dialplan (ie before transfer to asterisk)
     - outgoing top ivr tests  
-    - dialplan ivr tests
+    - outgoing ivr tests
 - incoming call tests
 - other tests
 

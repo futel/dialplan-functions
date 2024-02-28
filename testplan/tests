@@ -1,4 +1,4 @@
-dialplan outgoing dialtone tests:
+outgoing dialtone tests:
 - notes
   - valid numbers are
     - domestic PSTN numbers (10 digit prefixed by 1, +1, 0111, or nothing)
@@ -19,14 +19,18 @@ dialplan outgoing dialtone tests:
 
 client-provided (but still dialplan) outgoing dialtone tests:
 - notes
-  - notice that there are no tests because there are no active endpoints doing this
+  - notice that there are no tests
+  - because there are no active endpoints doing this
+  - you may stop reading this section now
   - this is the dialtone on the client side  
       - first client send is number
 - nop
 
 outgoing # destination tests
 - notes
-
+  - first client send is #
+  - ATAs send this on pickup, SIP clients send # as the first destination
+- first context after client send is appropriate
 
 outgoing operator tests:
 - notes
@@ -48,7 +52,7 @@ outgoing operator tests:
 - caller gets hangup after operator hangup
 - operator gets hangup after caller hangup
 
-dialplan ivr tests:
+outgoing ivr tests:
 - notes
   - any extension can be used
 - intro plays once, then menu repeats
@@ -62,7 +66,7 @@ dialplan ivr tests:
 - 0 at non-top menu restarts menu
 - no action terminates correctly after XXX iterations
 
-dialplan top ivr tests:
+outgoing top ivr tests:
 - notes
   - any extension can be used
 - intro is spanish selection
