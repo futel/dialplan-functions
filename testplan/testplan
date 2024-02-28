@@ -50,6 +50,13 @@ dialplan ivr tests:
 - 0 at non-top menu restarts menu
 - no action terminates correctly after XXX iterations
 
+dialplan top ivr tests:
+- intro is spanish selection
+- 9 emits silence and eventually times out
+- 9 and then 1 emits silence and eventually times out
+- do not enter 9 1 1 from top ivr! Test this only on a modified installation which calls 933 instead of 911!
+  - If modified for testing, 9 1 1  announces and then calls emergency
+
 incoming call tests:
 - Call test number from PSTN. Experience call.
 
@@ -72,7 +79,8 @@ tests to run:
     - outgoing asterisk tests
 - ivr tests
   - perform for each context reachable on the dialplan (ie before tranfer to asterisk)
-    - dialplan ivr menus
+    - outgoing top ivr tests  
+    - dialplan ivr tests
 - incoming call tests
 - other tests
 
