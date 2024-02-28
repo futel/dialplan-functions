@@ -6,7 +6,7 @@ tests to run:
     - outgoing operator tests
     - outgoing asterisk tests
 - ivr tests
-  - perform for each context reachable on the dialplan (ie before tranfer to asterisk)
+  - perform for each context reachable on the dialplan (ie before transfer to asterisk)
     - outgoing top ivr tests  
     - dialplan ivr tests
 - incoming call tests

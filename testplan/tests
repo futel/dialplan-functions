@@ -41,6 +41,8 @@ outgoing operator tests:
 - operator gets hangup after caller hangup
 
 dialplan ivr tests:
+- notes
+  - any extension can be used
 - intro plays once, then menu repeats
 - all defined entries can be chosen
 - undefined entries restart menu
@@ -53,6 +55,8 @@ dialplan ivr tests:
 - no action terminates correctly after XXX iterations
 
 dialplan top ivr tests:
+- notes
+  - any extension can be used
 - intro is spanish selection
 - 9 emits silence and eventually times out
 - 9 and then 1 emits silence and eventually times out
