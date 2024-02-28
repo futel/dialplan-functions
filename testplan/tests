@@ -68,10 +68,13 @@ outgoing ivr tests:
 
 outgoing top ivr tests:
 - notes
+  - if this is not a top ivr for an extension, proceed to the next test
   - any extension can be used
 - intro is spanish selection
 - 9 emits silence and eventually times out
 - 9 and then 1 emits silence and eventually times out
+- 9 and then anything else fails
+- 9 and then 1 and then anything else fails
 - do not enter 9 1 1 from top ivr! Test this only on a modified installation which calls 933 instead of 911!
   - If modified for testing, 9 1 1  announces and then calls emergency
 

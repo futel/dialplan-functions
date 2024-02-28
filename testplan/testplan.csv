@@ -1,0 +1,89 @@
+extension-or-ivr-or-whatever, test, date-or-fail, tester, notes
+alleymaple,
+,outgoing dialtone tests
+,outgoing # destination tests
+,outgoing operator tests
+,outgoing asterisk tests
+bottles-and-cans-one,
+,outgoing dialtone tests
+,outgoing # destination tests
+,outgoing operator tests
+,outgoing asterisk tests
+bottles-and-cans-two,
+,outgoing dialtone tests
+,outgoing # destination tests
+,outgoing operator tests
+,outgoing asterisk tests
+cesar-chavez,
+,outgoing dialtone tests
+,outgoing # destination tests
+,outgoing operator tests
+,outgoing asterisk tests
+demo,
+,outgoing dialtone tests
+,outgoing # destination tests
+,outgoing operator tests
+,outgoing asterisk tests
+dome-basement,
+,outgoing dialtone tests
+,outgoing # destination tests
+,outgoing operator tests
+,outgoing asterisk tests
+dome-booth,
+,outgoing dialtone tests
+,outgoing # destination tests
+,outgoing operator tests
+,outgoing asterisk tests
+dome-garage,
+,outgoing dialtone tests
+,outgoing # destination tests
+,outgoing operator tests
+,outgoing asterisk tests
+dome-office,
+,outgoing dialtone tests
+,outgoing # destination tests
+,outgoing operator tests
+,outgoing asterisk tests
+ghost-mountain,
+,outgoing dialtone tests
+,outgoing # destination tests
+,outgoing operator tests
+,outgoing asterisk tests
+landline,
+,outgoing dialtone tests
+,outgoing # destination tests
+,outgoing operator tests
+,outgoing asterisk tests
+r2d2,
+,outgoing dialtone tests
+,outgoing # destination tests
+,outgoing operator tests
+,outgoing asterisk tests
+ry4an-test,
+,outgoing dialtone tests
+,outgoing # destination tests
+,outgoing operator tests
+,outgoing asterisk tests
+sjac,
+,outgoing dialtone tests
+,outgoing # destination tests
+,outgoing operator tests
+,outgoing asterisk tests
+test,
+,outgoing dialtone tests
+,outgoing # destination tests
+,outgoing operator tests
+,outgoing asterisk tests
+
+outgoing_portland,
+,outgoing ivr tests
+,outgoing top ivr tests
+outgoing_safe,
+,outgoing ivr tests
+,outgoing top ivr tests
+outgoing_ypsi,
+,outgoing ivr tests
+,outgoing top ivr tests
+
+incoming call tests,
+other tests,

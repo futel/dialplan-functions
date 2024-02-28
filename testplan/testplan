@@ -5,10 +5,12 @@ tests to run:
     - outgoing # destination tests
     - outgoing operator tests
     - outgoing asterisk tests
+  - extensions to test are listed in the record sheet, the source is testplan.csv
 - ivr tests
   - perform for each context reachable on the dialplan (ie before transfer to asterisk)
-    - outgoing top ivr tests  
-    - outgoing ivr tests
+    - outgoing ivr tests  
+    - outgoing top ivr tests
+  - contexts to test are listed in the record sheet, the source is testplan.csv
 - incoming call tests
 - other tests
 
