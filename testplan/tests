@@ -1,9 +1,9 @@
-outgoing dialtone tests:
+outgoing dialtone tests
 - notes
   - valid numbers are
     - domestic PSTN numbers (10 digit prefixed by 1, +1, 0111, or nothing)
     - international PSTN numbers (12 digit prefixed by 52 or 01152)
-    - valid 3 digit numbers (911, 933, 211, ...XXX)
+    - valid 3 digit numbers (933, 211, ...XXX)
   - this is the dialtone on the dialplan side
     - first client send is #
     - ATAs send this on pickup, SIP clients send # as the first destination
@@ -17,7 +17,7 @@ outgoing dialtone tests:
 - # from dialtone sends to default context
 - call terminates correctly after timeout XXX when?
 
-client-provided (but still dialplan) outgoing dialtone tests:
+client-provided (but still dialplan) outgoing dialtone tests
 - notes
   - notice that there are no tests
   - because there are no active endpoints doing this
@@ -28,11 +28,11 @@ client-provided (but still dialplan) outgoing dialtone tests:
 
 outgoing # destination tests
 - notes
-  - first client send is #
+  - first client send is #, so this is the first context experienced
   - ATAs send this on pickup, SIP clients send # as the first destination
 - first context after client send is appropriate
 
-outgoing operator tests:
+outgoing operator tests
 - notes
   - enter 0 to navigate to operator from first menu
 - calling operator plays intro, then music while operators are called
@@ -52,11 +52,11 @@ outgoing operator tests:
 - caller gets hangup after operator hangup
 - operator gets hangup after caller hangup
 
-outgoing ivr tests:
+outgoing ivr tests
 - notes
   - any extension can be used
 - intro plays once, then menu repeats
-- all defined entries can be chosen
+- all defined entries can be chosen, including unannounced ones
 - undefined entries restart menu
 - top menu starts with language choice intro
 - * restarts menu in Spanish
@@ -66,7 +66,7 @@ outgoing ivr tests:
 - 0 at non-top menu restarts menu
 - no action terminates correctly after XXX iterations
 
-outgoing top ivr tests:
+outgoing top ivr tests
 - notes
   - if this is not a top ivr for an extension, proceed to the next test
   - any extension can be used
@@ -78,15 +78,15 @@ outgoing top ivr tests:
 - do not enter 9 1 1 from top ivr! Test this only on a modified installation which calls 933 instead of 911!
   - If modified for testing, 9 1 1  announces and then calls emergency
 
-incoming call tests:
+incoming call tests
 - Call test number from PSTN. Experience call.
 
-asterisk tests:
+asterisk tests
 - notes
   - each extension gets tranfered to asterisk differently, either immediately, or when it hits a context not implemented by the dialplan
 - verify first context being heard
 - perform outgoing dialtone tests after navigating to dialtone
 
-other tests:
+other tests
 - metrics are generated from twilio
 - metrics are generated from asterisk

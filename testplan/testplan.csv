@@ -74,6 +74,11 @@ test,
 ,outgoing # destination tests
 ,outgoing operator tests
 ,outgoing asterisk tests
+tishbite-test,
+,outgoing dialtone tests
+,outgoing # destination tests
+,outgoing operator tests
+,outgoing asterisk tests
 
 outgoing_portland,
 ,outgoing ivr tests

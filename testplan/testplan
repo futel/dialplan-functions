@@ -1,34 +1,38 @@
-tests to run:
+tests to run
 - extension tests
-  - perform for each extension
+  - perform relevant for each extension
     - outgoing dialtone tests
     - outgoing # destination tests
     - outgoing operator tests
     - outgoing asterisk tests
-  - extensions to test are listed in the record sheet, the source is testplan.csv
+  - all extensions test outgoing asterisk and outgoing # destination
+    - XXX the first-asterisk attribute describes a context where the call is sent to asterisk, but the tester must know which context is which
+    - if it's immediate-asterisk, the first context is asterisk
+  - extensions which don't go to asterisk immediately (first-asterisk is not outgoing_*) also test the other tests
 - ivr tests
   - perform for each context reachable on the dialplan (ie before transfer to asterisk)
     - outgoing ivr tests  
     - outgoing top ivr tests
+  - XXX tester must know which context is which and how to get there
   - contexts to test are listed in the record sheet, the source is testplan.csv
 - incoming call tests
 - other tests
 
-extension attributes:
+extension attributes
 - notes
-  - fields: extension, #-destination, has-emergency, caller-id
-- alleymaple outgoing_portland yes alleymaple
-- bottles-and-cans-one outgoing_portland yes incoming_leet
-- bottles-and-cans-two outgoing_portland yes incoming_leet
-- cesar-chavez outgoing_portland yes cesar-chavez
-- demo outgoing_safe no demo
-- dome-basement outging_safe no incoming_leet
-- dome-booth outgoing_safe no incoming_leet
-- dome-garage outgoing no incoming_leet
-- dome-office outgoing_safe no incoming_leet
-- ghost-mountain outgoing yes ghost-mountain
-- landline outging_ypsi yes ypsi
-- r2d2 outging_safe yes r2d2
-- ry4an-test outging_ypsi no incoming_leet
-- sjac outging_safe no sjac
-- test outging_safe no test
+  - fields: extension, #-destination, has-emergency, caller-id first-asterisk
+- alleymaple outgoing_portland yes alleymaple outgoing_portland
+- bottles-and-cans-one outgoing_portland yes incoming_leet voicemail_outgoing
+- bottles-and-cans-two outgoing_portland yes incoming_leet voicemail_outgoing
+- cesar-chavez outgoing_portland yes cesar-chavez outgoing_portland
+- demo outgoing_safe no demo outgoing_safe
+- dome-basement outging_safe no incoming_leet outgoing_safe
+- dome-booth outgoing_safe no incoming_leet outgoing_safe
+- dome-garage outgoing_safe no incoming_leet voicemail_outgoing
+- dome-office outgoing_safe no incoming_leet voicemail_outgoing
+- ghost-mountain outgoing yes ghost-mountain outgoing_portland
+- landline outging_ypsi yes ypsi outgoing_ypsi
+- r2d2 outging_safe yes r2d2 outgoing_portland
+- ry4an-test outging_ypsi no incoming_leet outgoing_ypsi
+- sjac outging_safe no sjac outgoing_safe
+- test outging_safe no test outgoing_safe
