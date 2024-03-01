@@ -126,8 +126,28 @@ def internal_dialtone(request, env):
     """Return TwiML for a dialtone for internal calls."""
     return _dialtone('dial_sip_e164', request, env)
 
+def call_911_911(request, env):
+    """Return TwiML to call 911."""
+    from_uri = request.post_fields['From']
+    return util.dial_pstn("+1911", from_uri, request, env)
+
+def call_911_9_bounce(request, env):
+    """
+    If we can't make an emergency call, return a hangup response.
+    Otherwise, return None.
+    """
+    from_uri = request.post_fields['From']
+    from_extension = util.sip_to_extension(from_uri)
+    from_extension = env['extensions'][from_extension]
+    if not from_extension['enable_emergency']:
+        response = VoiceResponse()
+        response.hangup()
+        return response
+    return None
 
 DESTINATIONS = {
+    'call_911_911': call_911_911,
+    'call_911_9_bounce': call_911_9_bounce,
     'friction': friction,
     'internal_dialtone': internal_dialtone,
     'outgoing_operator_accept': outgoing_operator_accept,

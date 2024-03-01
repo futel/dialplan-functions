@@ -90,4 +90,21 @@
             ["for-hold-the-phone", "hold_the_phone_main"],
             ["for-the-apology-service", "apology_intro"],
             ["for-more-information-about-fewtel", "information_futel"]],
-        "statement_dir": "community"}}
+        "statement_dir": "community"},
+    "call_911_9": {
+        "name": "call_911_9",
+        "pre_callable": "call_911_9_bounce",
+        "menu_entries": [
+            [null, "call_911_91"]],
+        "statement_dir": "outgoing"},
+    "call_911_91": {
+        "name": "call_911_91",
+        "menu_entries": [
+            [null, "call_911_911_notify"]],
+        "statement_dir": "outgoing"},
+    "call_911_911_notify": {
+        "name": "call_911_911_notify",
+        "intro_statements": ["dialing-nine-one-one"],
+        "next_context": "call_911_911",
+        "statement_dir": "outgoing"}
+}

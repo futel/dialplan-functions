@@ -172,14 +172,14 @@ def dial_sip_asterisk(extension, request, env):
     return response
 
 def deserialize_pstn(request):
-    """Return to and from attributes from request for a dial_pstn call."""
+    """Return to attribute from request for a dial_pstn call."""
     # If there is a Digits in query_params, use that.
     # Otherwise, use To from post_fields.
     to_number = request.post_fields.get('Digits')
     if not to_number:
         to_uri = request.post_fields['To']
         to_number = sip_to_extension(to_uri)
-    return (to_number, request.post_fields['From'])
+    return to_number
 
 def pstn_number(number, enable_emergency):
     """Return normalized and transformed number, or None."""

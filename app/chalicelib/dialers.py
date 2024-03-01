@@ -57,7 +57,7 @@ def dial_outgoing(request, env):
     with attributes from request.
     """
     metric.publish('dial_outgoing', request, env)
-    (to_extension, from_uri) = util.deserialize_pstn(request)
+    to_extension = util.deserialize_pstn(request)
     from_uri = request.post_fields['From']
     from_extension = util.sip_to_extension(from_uri)
     from_extension = env['extensions'][from_extension]
@@ -104,7 +104,7 @@ def dial_sip_e164(request, env):
     """
     metric.publish('dial_sip_e164', request, env)
     # XXX might be in Digits? How did we do this w/ ivr gather?
-    #(to_extension, from_uri) = util.deserialize_pstn(request)
+    #to_extension = util.deserialize_pstn(request)
     # XXX that was sip_to_extension, we need to normalize, etc
     to_number = request.post_fields['To']
     from_number = request.post_fields['From']
