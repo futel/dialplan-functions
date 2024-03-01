@@ -35,6 +35,10 @@ outgoing # destination tests
 outgoing operator tests
 - notes
   - enter 0 to navigate to operator from first menu
+  - the real operators are really called
+    - I hang up as soon as I know the callerid if I don't have to know more
+    - I answer quickly for tests that need an operator
+    - I enlist someone else or use 2 phones for tests that need several callers or operators
 - calling operator plays intro, then music while operators are called
 - calling operator dials all operators
 - answering operator call plays operator menu
@@ -59,7 +63,7 @@ outgoing ivr tests
 - all defined entries can be chosen, including unannounced ones
 - undefined entries restart menu
 - top menu starts with language choice intro
-- * restarts menu in Spanish
+- * toggles Spanish/English and restarts menu
 - # at top menu restarts menu
 - # at non-top menu goes to parent menu
 - 0 at top menu chooses operator
@@ -71,17 +75,21 @@ outgoing top ivr tests
   - if this is not a top ivr for an extension, proceed to the next test
   - any extension can be used
 - intro is spanish selection
-- 9 emits silence and eventually times out
-- 9 and then 1 emits silence and eventually times out
-- 9 and then anything else fails
-- 9 and then 1 and then anything else fails
-- do not enter 9 1 1 from top ivr! Test this only on a modified installation which calls 933 instead of 911!
+- if enable_emergency is true
+  - 9 is an unannounced entry
+  - 9 emits silence and eventually times out
+  - 9 and then 1 emits silence and eventually times out
+  - 9 and then anything else fails
+  - 9 and then 1 and then anything else fails
+  - do not enter 9 1 1 from top ivr! Test this only on a modified installation which calls 933 instead of 911!
   - If modified for testing, 9 1 1  announces and then calls emergency
+- if enable_emergency is false
+  - 9 is an undefined entry
 
 incoming call tests
 - Call test number from PSTN. Experience call.
 
-asterisk tests
+outgoing asterisk tests
 - notes
   - each extension gets tranfered to asterisk differently, either immediately, or when it hits a context not implemented by the dialplan
 - verify first context being heard

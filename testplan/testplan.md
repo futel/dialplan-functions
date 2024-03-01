@@ -21,6 +21,9 @@ tests to run
 extension attributes
 - notes
   - fields: extension, #-destination, has-emergency, caller-id first-asterisk
+  - XXX add enable-emergency
+  - XXX just refer to extensions.json when it can be used for these attributes
+  - XXX tester needs to reach an outgoing call from asterisk if possible
 - alleymaple outgoing_portland yes alleymaple outgoing_portland
 - bottles-and-cans-one outgoing_portland yes incoming_leet voicemail_outgoing
 - bottles-and-cans-two outgoing_portland yes incoming_leet voicemail_outgoing
