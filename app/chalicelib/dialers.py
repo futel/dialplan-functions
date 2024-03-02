@@ -65,6 +65,7 @@ def dial_outgoing(request, env):
     if to_extension == '0':
         # Return twiml for the outgoing operator context.
         # This is an ivr destination, so metric.
+        # XXX Make a helper for this.
         dest_c_name = 'outgoing_operator_caller'
         metric.publish(dest_c_name, request, env)
         dest_c_dict = ivrs.context_dict(env['ivrs'], dest_c_name)
@@ -74,7 +75,7 @@ def dial_outgoing(request, env):
             dest_c_dict,
             'en',                   # XXX Should get the real lang!
             dest_c_name,
-            stanza,
+            None,
             iteration,
             request,
             env)
@@ -251,9 +252,9 @@ def _enqueue_operator_call(request, env):
     operator_numbers = env['operator_numbers']
 
     # Get the TwiML to play for the operators.
+    # XXX Make a helper for this.
     dest_c_name = 'outgoing_operator_operator'
     dest_c_dict = ivrs.context_dict(env['ivrs'], dest_c_name)
-    stanza = ivrs.get_stanza(None)
     iteration = ivrs.get_iteration(None)
     # We calculate pre_callable now, when we render the twiml, so if the
     # caller hangs up before operator pickup, the operator still gets a menu.
@@ -262,7 +263,7 @@ def _enqueue_operator_call(request, env):
         dest_c_dict,
         'en',                   # XXX Should get the real lang!
         dest_c_name,
-        stanza,
+        None,
         iteration,
         request,
         env)
@@ -294,9 +295,9 @@ def outgoing_operator_dialer_status(request, env):
         return str(response)
     elif dequeue_result == 'queue-empty':
         # Too late, tell the operator.
+        # XXX Make a helper for this.
         dest_c_name = 'outgoing_operator_empty'
         dest_c_dict = ivrs.context_dict(env['ivrs'], dest_c_name)
-        stanza = ivrs.get_stanza(None)
         iteration = ivrs.get_iteration(None)
         # This is an ivr destination, so metric.
         metric.publish(dest_c_name, request, env)
@@ -305,7 +306,7 @@ def outgoing_operator_dialer_status(request, env):
                 dest_c_dict,
                 lang,
                 dest_c_name,
-                stanza,
+                None,
                 iteration,
                 request,
                 env))
@@ -401,15 +402,14 @@ def outgoing_operator_leave(request, env):
                 # XXX Make a helper for this.
                 dest_c_name = 'outgoing_operator_empty'
                 dest_c_dict = ivrs.context_dict(env['ivrs'], dest_c_name)
-                stanza = ivrs.get_stanza(None)
                 iteration = ivrs.get_iteration(None)
                 util.log(dest_c_name)
                 response = str(
                     ivrs.ivr_context(
-                        dest_c_dict,
+                        None,
                         lang,
                         dest_c_name,
-                        stanza,
+                        None,
                         iteration,
                         request,
                         env))

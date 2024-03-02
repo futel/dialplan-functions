@@ -50,16 +50,14 @@ def outgoing_operator_accept(request, env):
                 # Too late, tell the operator.
                 # XXX Make a helper for this.
                 dest_c_name = 'outgoing_operator_empty'
-                dest_c_dict = ivrs.context_dict(env['ivrs'], dest_c_name)
-                stanza = ivrs.get_stanza(None)
                 iteration = ivrs.get_iteration(None)
                 util.log(dest_c_name)
                 return str(
                     ivrs.ivr_context(
-                        dest_c_dict,
+                        None,
                         lang,
                         dest_c_name,
-                        stanza,
+                        None,
                         iteration,
                         request,
                         env))
@@ -87,17 +85,16 @@ def outgoing_operator_pre(request, env):
         if queue.friendly_name == operator_queue_name:
             if not queue.current_size:
                 # Too late, tell the operator.
+                # XXX Make a helper for this.
                 dest_c_name = 'outgoing_operator_empty'
-                dest_c_dict = ivrs.context_dict(env['ivrs'], dest_c_name)
-                stanza = ivrs.get_stanza(None)
                 iteration = ivrs.get_iteration(None)
                 util.log(dest_c_name)
                 return str(
                     ivrs.ivr_context(
-                        dest_c_dict,
+                        None,
                         lang,
                         dest_c_name,
-                        stanza,
+                        None,
                         iteration,
                         request,
                         env))
