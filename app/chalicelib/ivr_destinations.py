@@ -107,7 +107,7 @@ def _dialtone(destination, request, env):
     response = VoiceResponse()
     action_url = util.function_url(request, destination)
     gather = response.gather(
-        finish_on_key='', action=action_url, action_on_empty_result=True)
+        finish_on_key='', action=action_url, action_on_empty_result=False)
     gather.play(
         # XXX This sound file is not in the ivrs structure, so it isn't checked.
         ivrs.sound_url(
@@ -115,7 +115,7 @@ def _dialtone(destination, request, env):
             'sound',
             'ops',
             env))
-    # XXX How long was the play? Should we repeat? Play fast busy after?
+    response.hangup()           # We should fast busy instead.
     return response
 
 def outgoing_dialtone(request, env):
