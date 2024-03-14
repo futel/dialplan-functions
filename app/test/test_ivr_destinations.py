@@ -20,9 +20,9 @@ class TestIvrsDestinations(TestCase):
         self.assertTrue(
             ivr_destinations.outgoing_operator_enqueue(request, env))
 
-    def test_outgoing_dialtone(self):
+    def test_outgoing_dialtone_pre(self):
         self.assertTrue(
-            ivr_destinations.outgoing_dialtone(request, env))
+            ivr_destinations.outgoing_dialtone_pre(request, env))
 
 
 if __name__ == '__main__':

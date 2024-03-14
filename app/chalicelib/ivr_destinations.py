@@ -115,7 +115,7 @@ def _dialtone(destination, request, env):
     response.hangup()           # We should fast busy instead.
     return response
 
-def outgoing_dialtone(request, env):
+def outgoing_dialtone_pre(request, env):
     """Return TwiML for a dialtone for outgoing calls."""
     return _dialtone('dial_outgoing', request, env)
 
@@ -148,6 +148,6 @@ DESTINATIONS = {
     'friction': friction,
     'internal_dialtone': internal_dialtone,
     'outgoing_operator_accept': outgoing_operator_accept,
-    'outgoing_dialtone': outgoing_dialtone,
+    'outgoing_dialtone_pre': outgoing_dialtone_pre,
     'outgoing_operator_enqueue': outgoing_operator_enqueue,
     'outgoing_operator_pre': outgoing_operator_pre}
