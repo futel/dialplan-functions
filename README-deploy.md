@@ -1,4 +1,4 @@
-# Dialplan function deployment.
+># Dialplan function deployment.
 
 Uses AWS Lambda, API Gateway, and whatever the Chalice framework uses to provide
 TwiML via HTTP.
@@ -54,11 +54,11 @@ If deploying stage or prod, check out or create relevant release branch.
 
 Create a certificate as described in README-ssl. Update the domain_name and certificate_arn for the instance in app/.chalice/config.json.
 
-Deploy the instance, eg:
+Deploy the instance:
 
 - source venv/bin/activate
 - cd app
-- chalice deploy --stage dev
+- chalice deploy --stage stage
 
 Note the AliasDomainName.
 
@@ -68,10 +68,10 @@ Have the alias domain name, or find it in e.g. app/.chalice/deployed/dev.json.
 
 Using the DigitalOcean web console, add or update a CNAME record in the dialplans.phu73l.net domain.
 
-- hostname dev.dialplans.phu73l.net (or stage, prod)
+- hostname stage.dialplans.phu73l.net (or dev, prod)
 - alias: <alias domain name>
 
-Wait for DNS to be updated with eg "nslookup dev.dialplans.phu73l.net".
+Wait for DNS to be updated with eg "nslookup stage.dialplans.phu73l.net".
 
 ## Update Twilio Programmable Voice stage components to point to URLs
 
@@ -83,11 +83,9 @@ For the Application Resources, the URL path is "/dial_sip_e164".
 
 # Update an existing instance
 
-eg:
-
 - source venv/bin/activate
 - cd app
-- chalice deploy --stage dev 
+- chalice deploy --stage stage
 
 Twilio SIP components and DigitalOcean networking components do not need to be updated, since the URLs have not changed.
 
@@ -97,6 +95,6 @@ eg:
 
 - source venv/bin/activate
 - cd app
-- chalice delete --stage dev
+- chalice delete --stage stage
 
-Remove the dev.dialplans.phu73l.net (or stage or prod) CNAME using the DigitalOcean web console.
+Remove the stage.dialplans.phu73l.net (or dev or prod) CNAME using the DigitalOcean web console.
