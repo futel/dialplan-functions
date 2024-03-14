@@ -80,6 +80,9 @@
         "other_menu_entries": [
             ["for-the-operator", 0, "outgoing_operator_caller"]],
         "statement_dir": "outgoing"},
+    "outgoing_dialtone": {
+        "name": "outgoing_dialtone",
+        "pre_callable": "outgoing_dialtone_pre"},
     "community_outgoing": {
         "name": "community_outgoing",
         "menu_entries": [
