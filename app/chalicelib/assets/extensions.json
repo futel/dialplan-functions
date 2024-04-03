@@ -65,6 +65,12 @@
         "enable_emergency": true,
         "local_outgoing": false
     },
+    "landline": {
+        "outgoing": "outgoing_ypsi",
+        "caller_id": "+17345476651",
+        "enable_emergency": true,
+        "local_outgoing": false
+    },
     "r2d2": {
         "outgoing": "outgoing_safe",
         "caller_id": "+15033828838",
@@ -106,11 +112,5 @@
         "caller_id": "+19713512383",
         "enable_emergency": false,
         "local_outgoing": true
-    },
-    "landline": {
-        "outgoing": "outgoing_ypsi",
-        "caller_id": "+17345476651",
-        "enable_emergency": true,
-        "local_outgoing": false
     }
 }
