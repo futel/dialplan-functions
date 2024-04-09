@@ -3,7 +3,9 @@
 # Unit test
 
 - source venv/bin/activate
-- PYTHONPATH=app python -m unittest discover test
+- pip install pytest
+- cd app
+- py.test test
 
 # Verify assets
 
