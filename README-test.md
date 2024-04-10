@@ -20,7 +20,7 @@ Using a SIP client, receive PSTN call, make outgoing PSTN, make outgoing '#' and
 
 If testplan has changed since last release branch, update google sheet testplan, keeping dates of nonupdated completed tests.
 
-Test stage against google sheet testplan. Emphasize tests which are important or have not been run for a while.
+Using a SIP client, test stage against google sheet testplan. Emphasize tests which are important or have not been run for a while.
 
 # Smoke test dev or stage deployment
 
