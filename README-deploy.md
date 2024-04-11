@@ -91,8 +91,6 @@ Twilio SIP components and DigitalOcean networking components do not need to be u
 
 # Delete an instance
 
-eg:
-
 - source venv/bin/activate
 - cd app
 - chalice delete --stage stage
