@@ -5,7 +5,7 @@
 - source venv/bin/activate
 - pip install pytest
 - cd app
-- py.test test
+- pytest test
 
 # Verify assets
 
