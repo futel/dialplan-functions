@@ -36,7 +36,6 @@ def log(msg):
 
 def log_request(request):
     msg = 'request '
-    msg += 'domain_prefix:{} '.format(request.context['domainPrefix'])
     msg += 'query_params:{} '.format(request.query_params)
     msg += 'uri_params:{} '.format(request.uri_params)
     msg += 'path:{} '.format(request.path)
