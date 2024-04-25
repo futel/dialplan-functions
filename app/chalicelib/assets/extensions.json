@@ -65,6 +65,12 @@
         "enable_emergency": true,
         "local_outgoing": false
     },
+    "groundscore": {
+        "outgoing": "outgoing_portland",
+        "caller_id": "+15033087601",
+        "enable_emergency": true,
+        "local_outgoing": false
+    },
     "landline": {
         "outgoing": "outgoing_ypsi",
         "caller_id": "+17345476651",

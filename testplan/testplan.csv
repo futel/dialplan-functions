@@ -49,6 +49,11 @@ ghost-mountain,
 ,outgoing # destination tests
 ,outgoing operator tests
 ,outgoing asterisk tests
+groundscore,
+,outgoing dialtone tests
+,outgoing # destination tests
+,outgoing operator tests
+,outgoing asterisk tests
 landline,
 ,outgoing dialtone tests
 ,outgoing # destination tests
