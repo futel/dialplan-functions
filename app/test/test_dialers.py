@@ -27,7 +27,7 @@ class TestDialOutgoing(TestCase):
             post_fields={
                 'SipDomain': 'direct-futel-prod.sip.twilio.com',
                 'To': 'sip:%23@direct-futel-nonemergency-stage.sip.twilio.com',
-                'From': 'sip:test@direct-futel-nonemergency-stage.sip.twilio.com'},
+                'From': 'sip:test-one@direct-futel-nonemergency-stage.sip.twilio.com'},
             query_params={},
             context={'domainPrefix':'prod'})
         got = dialers.dial_outgoing(request, env)
@@ -64,7 +64,7 @@ class TestDialSipE164(TestCase):
         got = dialers.dial_sip_e164(request, env)
         self.assertEqual(
             str(got),
-            '<?xml version="1.0" encoding="UTF-8"?><Response><Dial action="https://host/metric_dialer_status" answerOnBridge="true" callerId="5035551212"><Sip>sip:test@direct-futel-nonemergency-prod.sip.twilio.com;</Sip></Dial></Response>')
+            '<?xml version="1.0" encoding="UTF-8"?><Response><Dial action="https://host/metric_dialer_status" answerOnBridge="true" callerId="5035551212"><Sip>sip:test-one@direct-futel-nonemergency-prod.sip.twilio.com;</Sip></Dial></Response>')
 
 
 class TestMetricDialerStatus(TestCase):
@@ -75,11 +75,11 @@ class TestMetricDialerStatus(TestCase):
             post_fields={
                 'SipDomain': 'direct-futel-prod.sip.twilio.com',
                 'To': 'To',
-                'From': 'sip:test@direct-futel-nonemergency-stage.sip.twilio.com',
+                'From': 'sip:test-one@direct-futel-nonemergency-stage.sip.twilio.com',
                 'DialCallStatus': 'completed'})
         got = dialers._request_to_metric_events(request, env)
         self.assertEqual(
-            got, ('outgoing_call', 'outgoing_dialstatus_completed_test'))
+            got, ('outgoing_call', 'outgoing_dialstatus_completed_test-one'))
 
     def test_request_to_metric_events_incoming(self):
         request = mock.Mock(
@@ -91,7 +91,7 @@ class TestMetricDialerStatus(TestCase):
                 'DialCallStatus': 'completed'})
         got = dialers._request_to_metric_events(request, env)
         self.assertEqual(
-            got, ('incoming_call', 'incoming_dialstatus_completed_test'))
+            got, ('incoming_call', 'incoming_dialstatus_completed_test-one'))
 
 
 class TestIvr(TestCase):
@@ -102,7 +102,7 @@ class TestIvr(TestCase):
             post_fields={
                 'SipDomain': 'direct-futel-prod.sip.twilio.com',
                 'To': 'sip:xyzzy@direct-futel-prod.sip.twilio.com',
-                'From': 'sip:test@direct-futel-prod.sip.twilio.com'},
+                'From': 'sip:test-one@direct-futel-prod.sip.twilio.com'},
             query_params={},
             context={'domainPrefix':'prod'})
         got = dialers.ivr(request, env)
@@ -115,7 +115,7 @@ class TestIvr(TestCase):
             post_fields={
                 'SipDomain': 'direct-futel-prod.sip.twilio.com',
                 'To': 'sip:xyzzy@direct-futel-prod.sip.twilio.com',
-                'From': 'sip:test@direct-futel-prod.sip.twilio.com'},
+                'From': 'sip:test-one@direct-futel-prod.sip.twilio.com'},
             query_params={'context': 'outgoing_portland'},
             context={'domainPrefix':'prod'})
         got = dialers.ivr(request, env)
@@ -128,7 +128,7 @@ class TestIvr(TestCase):
             post_fields={
                 'SipDomain': 'direct-futel-prod.sip.twilio.com',
                 'To': 'sip:xyzzy@direct-futel-prod.sip.twilio.com',
-                'From': 'sip:test@direct-futel-prod.sip.twilio.com',
+                'From': 'sip:test-one@direct-futel-prod.sip.twilio.com',
                 'Digits': '*'},
             query_params={'context':'outgoing_portland'},
             context={'domainPrefix':'prod'})
@@ -147,7 +147,7 @@ class TestEnqueueOperatorWait(TestCase):
             post_fields={
                 'SipDomain': 'direct-futel-prod.sip.twilio.com',
                 'To': 'sip:xyzzy@direct-futel-prod.sip.twilio.com',
-                'From': 'sip:test@direct-futel-prod.sip.twilio.com',
+                'From': 'sip:test-one@direct-futel-prod.sip.twilio.com',
                 'Digits': '*'},
             context={'domainPrefix':'prod'})
         got = dialers.enqueue_operator_wait(request, env)
@@ -165,7 +165,7 @@ class OutgoingOperatorLeave(TestCase):
                 'CallSid': 'CallSid',
                 'SipDomain': 'direct-futel-prod.sip.twilio.com',
                 'To': 'sip:xyzzy@direct-futel-prod.sip.twilio.com',
-                'From': 'sip:test@direct-futel-prod.sip.twilio.com',
+                'From': 'sip:test-one@direct-futel-prod.sip.twilio.com',
                 'Digits': '*',
                 'QueueResult': 'QueueResult'},
             context={'domainPrefix': 'prod'},

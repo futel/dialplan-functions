@@ -77,12 +77,6 @@
         "enable_emergency": true,
         "local_outgoing": false
     },
-    "groundscore": {
-        "outgoing": "outgoing_portland",
-        "caller_id": "+15033087601",
-        "enable_emergency": true,
-        "local_outgoing": false
-    },
     "groundscore-one": {
         "outgoing": "outgoing_portland",
         "caller_id": "+15033087601",
@@ -143,7 +137,37 @@
         "enable_emergency": false,
         "local_outgoing": true
     },
-    "test": {
+    "test-one": {
+        "outgoing": "outgoing_safe",
+        "caller_id": "+19713512383",
+        "enable_emergency": false,
+        "local_outgoing": true
+    },
+    "test-two": {
+        "outgoing": "outgoing_safe",
+        "caller_id": "+19713512383",
+        "enable_emergency": false,
+        "local_outgoing": true
+    },
+    "test-three": {
+        "outgoing": "outgoing_safe",
+        "caller_id": "+19713512383",
+        "enable_emergency": false,
+        "local_outgoing": true
+    },
+    "test-four": {
+        "outgoing": "outgoing_safe",
+        "caller_id": "+19713512383",
+        "enable_emergency": false,
+        "local_outgoing": true
+    },
+    "test-five": {
+        "outgoing": "outgoing_safe",
+        "caller_id": "+19713512383",
+        "enable_emergency": false,
+        "local_outgoing": true
+    },
+    "test-six": {
         "outgoing": "outgoing_safe",
         "caller_id": "+19713512383",
         "enable_emergency": false,

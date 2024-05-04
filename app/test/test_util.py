@@ -37,7 +37,7 @@ class TestUtil(TestCase):
     def test_e164_to_extension(self):
         extensions = env_util.get_extensions()
         self.assertEqual(
-            util.e164_to_extension('+19713512383', extensions), 'test')
+            util.e164_to_extension('+19713512383', extensions), 'test-one')
 
     def test_filter_outgoing_number(self):
         self.assertFalse(util.filter_outgoing_number('+911', True))
