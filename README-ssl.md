@@ -13,8 +13,10 @@ This project must have been set up for all of dev, stage, prod deployments as de
 # Requirements
 
 - ubuntu 22
-- certbot
 - openssl
+- certbot
+- python3-certbot-dns-digitalocean
+- DigitalOcean access token with all the domain scopes in conf/certbot-creds.ini
 
 # Create certificate
 
@@ -25,31 +27,37 @@ This project must have been set up for all of dev, stage, prod deployments as de
  - complete certbot
  - remove txt record for dialplans.phu73l.net using digitalocean web console
 - add expiration to calendar
-- copy /etc/letsencrypt/live/dialplans.phu73l.net to conf XXX why?
 - in /etc/letsencrypt/live/dialplans.phu73l.net, cat cert.pem chain.pem fullchain.pem > all.pem
 
-# Import a new or reimport an existing certificate to ACM
+XXX manual is the hard way to do certbot
+- sudo certbot certonly --dns-digitalocean --dns-digitalocean-credentials conf/certbot-creds.ini -d your_domain -d subdomain.your_domain -d '*.your_domain'
+- XXX does that set up email remindering?
 
-- visit AWS ACM web console
+# Import a new or reimport an existing certificate to AWS
+
+- visit AWS certificate manager (ACM) web console
 - change region to us-east-1
 - import a certificate, or list, visit, reimport certificate
  - certificate body cert.pem
  - certificate private key privkey.pem
  - certificate chain all.pem
  
-Note ARN. This is needed to deploy the AWS API Gateway.
+If this is a new certificate, note the ARN. This is needed to deploy the AWS API Gateway.
 
 # Update functions to use new certificate
 
-Update app/.chalice/config.json to use new certificate ARN for the deployment, and deploy affected stages, as described in README-deploy.
+If this is a new certificate, update app/.chalice/config.json to use the new certificate ARN for the deployment. Deploy affected stages as described in README-deploy.
 
-# Update certificate
+# Renew certificate
 
-Certificates must be updated before they expire.
+Certificates must be renewed before they expire.
 
-- Renew the certificate as in create certificate
-  - keep existing key type
-- Reimport the certificate as in import certificate
+sudo certbot renew --cert-name dialplans.phu73l.net --dns-digitalocean --dns-digitalocean-credentials conf/certbot-creds.ini
+
+- add expiration to calendar, "certbot certificates" to show the date
+- in /etc/letsencrypt/live/dialplans.phu73l.net, cat cert.pem chain.pem fullchain.pem > all.pem
+- Reimport the certificate as Import a new or reimport an existing certificate to ACM
+- XXX did that set up email remindering?
 
 # Delete certificates
 
