@@ -71,6 +71,12 @@
         "enable_emergency": false,
         "local_outgoing": true
     },
+    "dome-workshop": {
+        "outgoing": "outgoing_safe",
+        "caller_id": "+15034681337",
+        "enable_emergency": false,
+        "local_outgoing": true
+    },
     "ghost-mountain": {
         "outgoing": "outgoing_portland",
         "caller_id": "+15034448615",
