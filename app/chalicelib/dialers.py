@@ -44,7 +44,7 @@ def _request_to_metric_events(request, env):
         dial_event = "outgoing_call"
         dial_status_event_base = "outgoing_dialstatus_"
     else:
-        # Incoming to Twilio phone number.
+        # Incoming from Twilio phone number to SIP client.
         dial_event = "incoming_call"
         dial_status_event_base = "incoming_dialstatus_"
 
@@ -118,7 +118,7 @@ def dial_sip_e164(request, env):
     return _dial_sip(to_extension, from_number, request, env)
 
 def _dial_sip(extension, from_number, request, env):
-    """Return TwiML to dial a SIP extension on our Twilio SIP domain.."""
+    """Return TwiML to dial a SIP client on our Twilio SIP domain."""
     sip_domain = _get_sip_domain(extension, env['extensions'], request)
     sip_uri = f'sip:{extension}@{sip_domain};'
     util.log('sip_uri: {}'.format(sip_uri))
@@ -205,7 +205,7 @@ def ivr(request, env):
 def metric_dialer_status(request, env):
     """
     Metric the dial status callback attributes from request,
-    and return TwiML string.
+    and return a TwiML string used to continue the call.
     """
     # Perform the side effects.
     metric.publish('metric_dialer_status', request, env)
