@@ -11,10 +11,5 @@ We are deploying Lambda functions which will return TwiML to a POST request, wit
 is twilio downloading all sounds before starting audio?
 are the s3 not being cached?
 
-is the twilio edge correct for the api gateway edge?
-global low latency edge?
-twilio interconnect?
-
 is there sound format conversion?
 codec? opus/g.729
-
