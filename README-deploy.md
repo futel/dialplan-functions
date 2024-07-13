@@ -1,4 +1,4 @@
-># Dialplan function deployment.
+# Dialplan function deployment.
 
 Uses AWS Lambda, AWS API Gateway, and whatever else the Chalice framework creates to provide TwiML via HTTP.
 
