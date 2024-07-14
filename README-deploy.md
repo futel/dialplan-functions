@@ -4,7 +4,7 @@ Uses AWS Lambda, AWS API Gateway, and whatever else the Chalice framework create
 
 # Meta-requirements
 
-AWS credentials should be set up and the us-west-2 region configured, however that is done.
+AWS credentials should be set up, and the us-west-2 region configured, in ~/.aws/credentials.
 
 AWS should be set up as described in README-aws.
 
