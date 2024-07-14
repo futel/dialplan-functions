@@ -107,6 +107,12 @@
         "enable_emergency": true,
         "local_outgoing": false
     },
+    "monitor-one": {
+        "outgoing": "directories_detroit",
+        "caller_id": "+15034681337",
+        "enable_emergency": false,
+        "local_outgoing": true
+    },
     "r2d2": {
         "outgoing": "outgoing_safe",
         "caller_id": "+15033828838",
