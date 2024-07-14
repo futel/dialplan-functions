@@ -8,6 +8,7 @@ dotenv.load_dotenv(os.path.join(
 def get_env():
     normal_variables = {
         'ASSET_HOST': os.environ['ASSET_HOST'],
+        'AWS_DEFAULT_REGION': os.environ['AWS_DEFAULT_REGION'],
         'AWS_TOPIC_ARN': os.environ['AWS_TOPIC_ARN'],
         'TWILIO_ACCOUNT_SID': os.environ['TWILIO_ACCOUNT_SID'],
         'TWILIO_AUTH_TOKEN': os.environ['TWILIO_AUTH_TOKEN']}
