@@ -38,6 +38,7 @@ def setup(func):
 
 @app.middleware('http')
 def request_response_middleware(event, get_response):
+    """Chalice middleware function to wrap the response function."""
     event.post_fields = post_fields(event)
     event.query_params = event.query_params or {}
     util.log_request(event)
