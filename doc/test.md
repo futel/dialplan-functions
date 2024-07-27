@@ -23,6 +23,8 @@ Using a SIP client, test stage against google sheet testplan. Emphasize tests wh
 
 # Smoke test dev or stage deployment
 
+These should return XML documents and not cause any error logs.
+
 Outgoing PSTN
 - curl -d "To=sip:5035551212@direct-futel-stage.sip.twilio.com&From=sip:test-one@direct-futel-stage.sip.twilio.com&SipDomain=direct-futel-stage.sip.twilio.com" -X POST https://stage.dialplans.phu73l.net/dial_outgoing
 
