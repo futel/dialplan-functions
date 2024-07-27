@@ -14,8 +14,8 @@ Twilio Programmable Voice SIP components should be set up (after this component)
 
 # Requirements
 
-- Ubuntu 23 box
-- Python3.11, but this should be Python3.10
+- debian box (trixie, ubuntu 23)
+- Python 3.11-3.12, but this should be Python 3.10
 
 # Deploy and development notes
 
@@ -39,7 +39,7 @@ Fill app/chalicelib/environment/.env to match app/chalicelib/environment/.env.sa
 - source venv/bin/activate
 - cd app
 - pip install -r requirements.txt
-- python3 -m pip install chalice
+- python3 -m pip install chalice pytest
 
 ---
 
@@ -85,6 +85,12 @@ For the SIP domains, the URL path is "/dial_outgoing".
 For the Application Resources, the URL path is "/dial_sip_e164".
 
 # Update an existing instance
+
+## Test
+
+See test.md.
+
+## Deploy instance
 
 - source venv/bin/activate
 - cd app

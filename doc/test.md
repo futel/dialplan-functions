@@ -3,7 +3,6 @@
 # Unit test
 
 - source venv/bin/activate
-- pip install pytest
 - cd app
 - pytest test
 
@@ -52,10 +51,6 @@ IVR
   -p 'To:sip:outgoing_portland@direct-futel-nonemergency-stage.sip.twilio.com' \
   -p 'From:sip:test@direct-futel-nonemergency-stage.sip.twilio.com'
 - XXX Digits context parent
-
-# Continuously deploy
-
-XXX
 
 # View logs
 
