@@ -15,11 +15,13 @@
 
 Using a SIP client, receive PSTN call, make outgoing PSTN, make outgoing '#' and '0' calls.
 
-# Integration test
+# Acceptance test
 
-If testplan has changed since last release branch, update google sheet testplan, keeping dates of nonupdated completed tests.
+See testplan directory.
 
-Using a SIP client, test stage against google sheet testplan. Emphasize tests which are important or have not been run for a while.
+If testplan or extensions have changed since last release branch, update google sheet testplan, keeping dates of nonupdated completed tests.
+
+Set up and run acceptance tests as in testplan/setup.md and testplan/readme.md. Emphasize tests which are important or have not been run for a while.
 
 # Smoke test dev or stage deployment
 
