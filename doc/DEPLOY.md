@@ -10,7 +10,7 @@ AWS should be set up as described in aws.md.
 
 An AWS Certificate Manager certificate should be set up as described in ssl.md.
 
-Twilio Programmable Voice SIP components should be set up (after this component) as described in twilio-sip-server README-deploy.
+Twilio Programmable Voice SIP components should be set up (after this component) as described in twilio-sip-server deploy.md.
 
 # Requirements
 
@@ -31,7 +31,7 @@ To be done once.
 
 ## Set up environment secrets
 
-Fill app/chalicelib/environment/.env to match app/chalicelib/environment/.env.sample as described in README-aws.
+Fill app/chalicelib/environment/.env to match app/chalicelib/environment/.env.sample as described in awd.md.
 
 ## Create deployment virtualenv
 
@@ -49,9 +49,13 @@ Fill app/chalicelib/environment/.env to match app/chalicelib/environment/.env.sa
 
 If deploying stage or prod, check out or create relevant release branch.
 
+## Test
+
+See test.md.
+
 ## Deploy instance
 
-Create a certificate as described in README-ssl. Update the domain_name and certificate_arn for the instance in app/.chalice/config.json.
+Create a certificate as described in ssl.md. Update the domain_name and certificate_arn for the instance in app/.chalice/config.json.
 
 Deploy the instance:
 
@@ -74,7 +78,7 @@ Wait for DNS to be updated with eg "nslookup stage.dialplans.phu73l.net".
 
 ## Update Twilio Programmable Voice stage components to point to URLs
 
-Update the dev, stage, or prod TwiML Application Resources and SIP Domains to point to the URL in the updated domain as in twilio-sip-server README-deploy.
+Update the dev, stage, or prod TwiML Application Resources and SIP Domains to point to the URL in the updated domain as in twilio-sip-server deploy.md.
 
 For the SIP domains, the URL path is "/dial_outgoing".
 
