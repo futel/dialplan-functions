@@ -6,9 +6,9 @@ Uses AWS Lambda, AWS API Gateway, and whatever else the Chalice framework create
 
 AWS credentials should be set up, and the us-west-2 region configured, in ~/.aws/credentials.
 
-AWS should be set up as described in README-aws.
+AWS should be set up as described in aws.md.
 
-An AWS Certificate Manager certificate should be set up as described in README-ssl.
+An AWS Certificate Manager certificate should be set up as described in ssl.md.
 
 Twilio Programmable Voice SIP components should be set up (after this component) as described in twilio-sip-server README-deploy.
 
