@@ -8,7 +8,7 @@
             "iam_policy_file": "policy.json",            
             "api_gateway_custom_domain": {
                 "domain_name": "dev.dialplans.phu73l.net",
-                "certificate_arn": "arn:aws:acm:us-east-1:168594572693:certificate/c3aac6fc-d63b-41cd-af13-08cc6278ea72"
+                "certificate_arn": "arn:aws:acm:us-east-1:168594572693:certificate/b17b4cfe-1f9b-4c72-a552-e63a854a76f6"
             }
         },
         "stage": {
@@ -17,7 +17,7 @@
             "iam_policy_file": "policy.json",
             "api_gateway_custom_domain": {
                 "domain_name": "stage.dialplans.phu73l.net",
-                "certificate_arn": "arn:aws:acm:us-east-1:168594572693:certificate/c3aac6fc-d63b-41cd-af13-08cc6278ea72"
+                "certificate_arn": "arn:aws:acm:us-east-1:168594572693:certificate/b17b4cfe-1f9b-4c72-a552-e63a854a76f6"
             }
         },
         "prod": {
@@ -26,7 +26,7 @@
             "iam_policy_file": "policy.json",
             "api_gateway_custom_domain": {
                 "domain_name": "prod.dialplans.phu73l.net",
-                "certificate_arn": "arn:aws:acm:us-east-1:168594572693:certificate/c3aac6fc-d63b-41cd-af13-08cc6278ea72"
+                "certificate_arn": "arn:aws:acm:us-east-1:168594572693:certificate/b17b4cfe-1f9b-4c72-a552-e63a854a76f6"
             }
         }
     }
