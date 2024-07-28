@@ -1,6 +1,6 @@
 # SSL certificate
 
-This is needed to publish dialplan documents with a custom domain name.
+Certificates are needed to for AWS Lambda to publish dialplan documents with a custom domain name.
 
 # Meta-requirements
 
@@ -8,58 +8,66 @@ AWS ACM console access must have been set up.
 
 DigitalOcean must have the dialplans.phu73l.net domain name set up.
 
-This project must have been set up for all of dev, stage, prod deployments as described in README-deploy.
-
 # Requirements
 
-- ubuntu 22
-- openssl
-- certbot
+- debian box (trixie, ubuntu 23)
+- openssl (3.2.2-1)
+- certbot (2.9.0-1.1)
 - python3-certbot-dns-digitalocean
 - DigitalOcean access token with all the domain scopes in conf/certbot-creds.ini
 
+---
+
 # Create certificate
 
-- sudo certbot certonly --manual --preferred-challenges dns
- - domain names "*.dialplans.phu73l.net dialplans.phu73l.net phu73l.net"
- - enter email for reminder
- - add txt record for dialplans.phu73l.net using digitalocean web console
- - complete certbot
- - remove txt record for dialplans.phu73l.net using digitalocean web console
+This normally needs to be done once.
+
+Create a certificate manually. This is time-consuming at renewal time.
+
+- sudo certbot certonly --dns-digitalocean --dns-digitalocean-credentials conf/certbot-creds.ini -d phu73l.net -d dialplans.phu73l.net -d '*.dialplans.phu73l.net'
 - add expiration to calendar
-- in /etc/letsencrypt/live/dialplans.phu73l.net, cat cert.pem chain.pem fullchain.pem > all.pem
+- cd /etc/letsencrypt/live/phu73l.net
+- cat cert.pem chain.pem fullchain.pem > /tmp/all.pem
 
-XXX manual is the hard way to do certbot
-- sudo certbot certonly --dns-digitalocean --dns-digitalocean-credentials conf/certbot-creds.ini -d your_domain -d subdomain.your_domain -d '*.your_domain'
-- XXX does that set up email remindering?
+# Import or reimport and deploy certificate
 
-# Import a new or reimport an existing certificate to AWS
+This needs to be done after a certificate is created or renewed.
 
 - visit AWS certificate manager (ACM) web console
 - change region to us-east-1
 - import a certificate, or list, visit, reimport certificate
- - certificate body cert.pem
- - certificate private key privkey.pem
- - certificate chain all.pem
+ - certificate body /etc/letsencrypt/live/phu73l.net/cert.pem
+ - certificate private key /etc/letsencrypt/live/phu73l.net/privkey.pem
+ - certificate chain /tmp/all.pem
  
 If this is a new certificate, note the ARN. This is needed to deploy the AWS API Gateway.
 
-# Update functions to use new certificate
+# Update Lambda functions to use new certificate
 
-If this is a new certificate, update app/.chalice/config.json to use the new certificate ARN for the deployment. Deploy affected stages as described in README-deploy.
+This needs to be done after a certificate is created.
 
-# Renew certificate
+- update app/.chalice/config.json
+  - Update every certificate_arn
+- deploy affected stages as described in DEPLOY.md.
+
+---
+
+# Renew and deploy certificate
 
 Certificates must be renewed before they expire.
 
 sudo certbot renew --cert-name dialplans.phu73l.net --dns-digitalocean --dns-digitalocean-credentials conf/certbot-creds.ini
 
-- add expiration to calendar, "certbot certificates" to show the date
-- in /etc/letsencrypt/live/dialplans.phu73l.net, cat cert.pem chain.pem fullchain.pem > all.pem
-- Reimport the certificate as Import a new or reimport an existing certificate to ACM
-- XXX did that set up email remindering?
+- add expiration to calendar, "sudo certbot certificates" to show the date
+- cd /etc/letsencrypt/live/phu73l.net
+- cat cert.pem chain.pem fullchain.pem > /tmp/all.pem
+- Reimport the certificate as in Import or reimport and deploy certificate
+
+---
 
 # Delete certificates
+
+This does not normally have to be done.
 
 - certbot certificates
 - certbot delete --cert-name dev.dialplans.phu73l.net
@@ -79,7 +87,7 @@ POST to a smoke test URL as described in README-test.
 
 The box that certbot is run on stores the creds and becomes a local registry for the certs, when we register on create/update, Let's Encrypt sends the reminder email. Do we need the local certs when we renew or can they be thrown away after they're in ACM? Files are stored in /etc/letsencrypt.
 
-The cert expiry is short, this process must be repeated each time. I think the usual process is to have the infrastructure and staff, a networked box running certbot and a human to keep it running? It doesn't look hard if we aren't really concerned about security, need to run it with an auth hook periodically for autoewnewal. Might be worth it to just buy 4 certs a year?
+The cert expiry is short, this process must be repeated each time. I think the usual process is to have the infrastructure and staff, a networked box running certbot and a human to keep it running? It doesn't look hard if we aren't really concerned about security, need to run it with an auth hook periodically for autorewnewal. Might be worth it to just buy 4 certs a year?
 
 https://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-custom-domains-prerequisites.html
 https://eff-certbot.readthedocs.io/en/stable/using.html#manual
