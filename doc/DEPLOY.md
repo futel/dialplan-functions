@@ -1,4 +1,4 @@
-# Dialplan function deployment.
+# Dialplan function deployment
 
 Uses AWS Lambda, AWS API Gateway, and whatever else the Chalice framework creates to provide TwiML via HTTP.
 
@@ -17,7 +17,7 @@ Twilio Programmable Voice SIP components should be set up (after this component)
 - debian box (trixie, ubuntu 23)
 - Python 3.11-3.12, but this should be Python 3.10
 
-# Deploy and development notes
+# Deploy and development docs
 
 We use dev, stage, and prod instances.
 

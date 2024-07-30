@@ -56,6 +56,8 @@ This needs to be done after a certificate is created.
 
 Certificates must be renewed before they expire.
 
+The certificate creation method might set up automatic renewal using systemd? Notice the renewal warning email, check, and be prepared to manually renew at the end of the certificate's life. This deployment process doesn't outline requirements to make automatic renewal reliable eg it is probably running on a laptop, and we need to reimport to aws after renewal?
+
 sudo certbot renew --cert-name dialplans.phu73l.net --dns-digitalocean --dns-digitalocean-credentials conf/certbot-creds.ini
 
 - add expiration to calendar, "sudo certbot certificates" to show the date
