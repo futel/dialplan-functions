@@ -11,19 +11,11 @@
 - source venv/bin/activate
 - PYTHONPATH=app python local/check_assets.py
 
-# Smoke integration test
+# Smoke SIP client integration test
 
 Using a SIP client, receive PSTN call, make outgoing PSTN, make outgoing '#' and '0' calls.
 
-# Acceptance test
-
-See testplan directory.
-
-If testplan or extensions have changed since last release branch, update google sheet testplan, keeping dates of nonupdated completed tests.
-
-Set up and run acceptance tests as in testplan/setup.md and testplan/readme.md. Emphasize tests which are important or have not been run for a while.
-
-# Smoke test dev or stage deployment
+# Smoke API client integration test
 
 These should return XML documents and not cause any error logs.
 
@@ -38,8 +30,7 @@ Outgoing extension
 Outgoing IVR
 - curl -d "From=sip:test-one@direct-futel-stage.sip.twilio.com&SipDomain=direct-futel-stage.sip.twilio.com" -X POST https://stage.dialplans.phu73l.net/ivr
 - curl -d "From=sip:test-one@direct-futel-stage.sip.twilio.com&SipDomain=direct-futel-stage.sip.twilio.com" -X POST "https://stage.dialplans.phu73l.net/ivr?context=outgoing_safe&lang=en&parent=outgoing_safe&Digits=1"
-
-- parent lang
+- XXX parent, lang
 
 Incoming
 - curl -d "To=19713512383&From=5035551212&SipDomain=direct-futel-stage.sip.twilio.com" -X POST https://stage.dialplans.phu73l.net/dial_sip_e164
@@ -55,6 +46,14 @@ IVR
   -p 'To:sip:outgoing_portland@direct-futel-stage.sip.twilio.com' \
   -p 'From:sip:test-one@direct-futel-stage.sip.twilio.com'
 - XXX Digits context parent
+
+# Acceptance test
+
+See testplan directory.
+
+If testplan or extensions have changed since last release branch, update google sheet testplan, keeping dates of nonupdated completed tests.
+
+Set up and run acceptance tests as in testplan/setup.md and testplan/readme.md. Emphasize tests which are important or have not been run for a while.
 
 # View logs
 
