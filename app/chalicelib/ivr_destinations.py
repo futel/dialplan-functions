@@ -142,9 +142,27 @@ def call_911_9_bounce(request, env):
         return response
     return None
 
+def dial_nanpa(nanpa):
+    """Return a function to return TwiML to dial NANPA number."""
+    e164 = "+1" + nanpa
+    def curried(request, env):
+        from_uri = request.post_fields['From']
+        return util.dial_pstn(e164, from_uri, request, env)
+    return curried
+
+def dial_sisyphus(request, env):
+    """Return TwiML to dial Sisyphus."""
+    return dial_nanpa(env['nanpa_sisyphus'])(request, env)
+
 DESTINATIONS = {
     'call_911_911': call_911_911,
     'call_911_9_bounce': call_911_9_bounce,
+    'dial_3138884044': dial_nanpa("3138884044"),
+    'dial_5038234120': dial_nanpa("5038234120"),
+    'dial_8003900934': dial_nanpa("8003900934"),
+    'dial_8336287999': dial_nanpa("8336287999"),
+    'dial_8443876962': dial_nanpa("8443876962"),
+    'dial_sisyphus': dial_sisyphus,
     'friction': friction,
     'internal_dialtone': internal_dialtone,
     'outgoing_operator_accept': outgoing_operator_accept,
