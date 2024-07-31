@@ -10,6 +10,7 @@ def get_env():
         'ASSET_HOST': os.environ['ASSET_HOST'],
         'AWS_DEFAULT_REGION': os.environ['AWS_DEFAULT_REGION'],
         'AWS_TOPIC_ARN': os.environ['AWS_TOPIC_ARN'],
+        'nanpa_sisyphus': os.environ['nanpa_sisyphus'],
         'TWILIO_ACCOUNT_SID': os.environ['TWILIO_ACCOUNT_SID'],
         'TWILIO_AUTH_TOKEN': os.environ['TWILIO_AUTH_TOKEN']}
     json_variables = {
