@@ -16,6 +16,23 @@
         "other_menu_entries": [
             ["for-the-operator", 0, "outgoing_operator_caller"]],
         "statement_dir": "outgoing"},
+    "outgoing_seattle": {
+        "name": "outgoing_seattle",
+        "pre_callable": "friction",
+        "intro_statements": ["para-espanol", "oprima-estrella"],
+        "menu_entries": [
+            ["to-make-a-call", "outgoing_dialtone"],
+            ["for-voicemail", "voicemail_outgoing"],
+            ["for-the-directory", "directories_seattle"],
+            ["for-utilities", "utilities_generic"],
+            ["for-the-fewtel-community", "community_outgoing"],
+            null,
+            null,
+            null,
+            [null, "call_911_9"]],
+        "other_menu_entries": [
+            ["for-the-operator", 0, "outgoing_operator_caller"]],
+        "statement_dir": "outgoing"},
     "outgoing_ypsi":  {
         "name": "outgoing_ypsi",
         "pre_callable": "friction",
@@ -75,7 +92,7 @@
             ["to-make-a-call", "outgoing_dialtone"],
             ["for-voicemail", "voicemail_outgoing"],
             ["for-the-directory", "directories_safe"],
-            ["for-utilities", "utilities_portland"],
+            ["for-utilities", "utilities_generic"],
             ["for-the-fewtel-community", "community_outgoing"]],
         "other_menu_entries": [
             ["for-the-operator", 0, "outgoing_operator_caller"]],
