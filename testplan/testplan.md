@@ -1,10 +1,15 @@
 tests to run
 - extension tests
-  - perform relevant for each extension
+  - perform relevant tests for each extension
     - outgoing dialtone tests
+      - relevant if first outgong call interaction is a dial tone
     - outgoing # destination tests
+      - relevant for all extensions
     - outgoing operator tests
+      - relevant if first outgong call interaction is a dial tone
     - outgoing asterisk tests
+      - relevant for all extensions
+  - relevant tests for extensions are marked on the test plan sheet
   - all extensions test outgoing asterisk and outgoing # destination
     - XXX the first-asterisk attribute describes a context where the call is sent to asterisk, but the tester must know which context is which
     - if it's immediate-asterisk, the first context is asterisk

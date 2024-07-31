@@ -1,12 +1,12 @@
-outgoing dialtone tests
+dialtone tests
 - notes
   - valid numbers are
     - domestic PSTN numbers (10 digit prefixed by 1, +1, 0111, or nothing)
     - international PSTN numbers (12 digit prefixed by 52 or 01152)
-    - valid 3 digit numbers (933, 211, ...XXX)
+    - valid 3 digit numbers (933, 211, 988, ...XXX)
   - this is the dialtone on the dialplan side
-    - first client send is #
-    - ATAs send this on pickup, SIP clients send # as the first destination
+    - ie after client sends # at start of call
+    - ATAs send this on pickup, SIP clients enter # as the first destination
       - first context is either dialtone or user navigates to dialtone
   - dial 933 to test emergency calls, do not dial 911!
 - 0 sends to operator from dialtone
@@ -19,12 +19,7 @@ outgoing dialtone tests
 
 client-provided (but still dialplan) outgoing dialtone tests
 - notes
-  - notice that there are no tests
-  - because there are no active endpoints doing this
-  - you may stop reading this section now
-  - this is the dialtone on the client side  
-      - first client send is number
-- nop
+  - XXX this needs tests now! Are these the same as twilio dialtone?
 
 outgoing # destination tests
 - notes
@@ -91,8 +86,8 @@ incoming call tests
 
 outgoing asterisk tests
 - notes
-  - each extension gets tranfered to asterisk differently, either immediately, or when it hits a context not implemented by the dialplan
-- verify first context being heard
+  - each extension gets tranfered to asterisk differently, tester needs to know when the dialplan has called asterisk
+- verify first context heard
 - perform outgoing dialtone tests after navigating to dialtone
 
 other tests
