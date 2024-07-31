@@ -78,10 +78,10 @@
         "local_outgoing": true
     },
     "fortysecond": {
-        "outgoing": "outgoing_portland", 
+        "outgoing": "outgoing_seattle",
         "caller_id": "+15034681337",
         "enable_emergency": false,
-        "local_outgoing": false
+        "local_outgoing": true
     },
     "ghost-mountain": {
         "outgoing": "outgoing_portland",
