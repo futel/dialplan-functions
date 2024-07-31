@@ -1,34 +1,51 @@
 {
+    "directories_generic": {
+        "name": "directories_generic",
+        "menu_entries": [
+             ["for-the-druid-of-sissyphus-gardens", "dial_sisyphus"],
+             ["for-nature-x-x-x", "dial_+18336287999"],
+             ["for-the-office-of-night-things", "dial_+18003900934"],
+             ["for-they-might-be-giants-dial-a-song", "dial_+18443876962"]],
+        "statement_dir": "directories"},
     "directories_portland": {
         "name": "directories_portland",
         "menu_entries": [
-            ["for-the-directory", "directory_portland"],
+            ["for-the-mayor", "dial_+15038234120"],
+            ["for-the-directory", "directories_generic"],
             ["for-community-services", "community_services_oregon"],
+            ["for-the-telecommunications-network", "network"]],
+        "statement_dir": "directories"},
+    "directories_seattle": {
+        "name": "directories_seattle",
+        "menu_entries": [
+            ["for-the-directory", "directories_generic"],
             ["for-the-telecommunications-network", "network"]],
         "statement_dir": "directories"},
     "directories_ypsi": {
         "name": "directories_ypsi",
         "menu_entries": [
-            ["for-the-directory", "directory_ypsi"],
+            ["for-the-mayor", "dial_+13138884044"],
+            ["for-the-directory", "directories_generic"],
             ["for-community-services", "community_services_michigan"],
             ["for-the-telecommunications-network", "network"]],
         "statement_dir": "directories"},
     "directories_detroit": {
         "name": "directories_detroit",
         "menu_entries": [
-            ["for-the-directory", "directory_detroit"],
+            ["for-the-mayor", ""],
+            ["for-the-directory", "directories_generic"],
             ["for-community-services", "community_services_michigan"],
             ["for-the-telecommunications-network", "network"]],
         "statement_dir": "directories"},
     "directories_safe": {
         "name": "directories_safe",
         "menu_entries": [
-            ["for-the-directory", "directory_safe"],
+            ["for-the-directory", "directories_generic"],
             ["for-the-telecommunications-network", "network"]],
         "statement_dir": "directories"},
     "directories_souwester": {
         "name": "directories_souwester",
         "menu_entries": [
-            ["for-the-directory", "directory_souwester"],
+            ["for-the-directory", "directories_generic"],
             ["for-the-telecommunications-network", "network"]],
         "statement_dir": "directories"}}
