@@ -14,7 +14,7 @@ env['extensions'] = env_util.get_extensions()
 env['ivrs'] = env_util.get_ivrs()
 env['sns_client'] = boto3.client('sns')
 
-app = Chalice(app_name='app')
+app = Chalice(app_name='dialplan')
 
 def post_fields(request):
     """Return the fields from a POST request."""
