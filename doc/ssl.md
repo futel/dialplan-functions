@@ -22,8 +22,6 @@ DigitalOcean must have the dialplans.phu73l.net domain name set up.
 
 This normally needs to be done once.
 
-Create a certificate manually. This is time-consuming at renewal time.
-
 - sudo certbot certonly --dns-digitalocean --dns-digitalocean-credentials conf/certbot-creds.ini -d phu73l.net -d dialplans.phu73l.net -d '*.dialplans.phu73l.net'
 - add expiration to calendar
 - cd /etc/letsencrypt/live/phu73l.net

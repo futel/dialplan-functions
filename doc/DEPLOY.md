@@ -12,6 +12,8 @@ An AWS Certificate Manager certificate should be set up as described in ssl.md.
 
 Twilio Programmable Voice SIP components should be set up (after this component) as described in twilio-sip-server deploy.md.
 
+The dialplans.phu73l.net domain should be created with DigitalOcean.
+
 # Requirements
 
 - debian box (trixie, ubuntu 23)
@@ -19,7 +21,7 @@ Twilio Programmable Voice SIP components should be set up (after this component)
 
 # Deploy and development docs
 
-We use dev, stage, and prod instances.
+We use dev, stage, and prod instances. We will document stage here.
 
 The instance type is determined by the domain and related attributes configured for it. The Twilio Programmable Voice components are pointed at URLs on the domain. An instance can be deleted when the relevant Twilio components don't point to it.
 
@@ -67,18 +69,18 @@ Note the AliasDomainName.
 
 ## Update domain
 
-Have the alias domain name, or find it in e.g. app/.chalice/deployed/dev.json.
+Have the alias domain name, or find it in app/.chalice/deployed/stage.json.
 
 Using the DigitalOcean web console, add or update a CNAME record in the dialplans.phu73l.net domain.
 
-- hostname stage.dialplans.phu73l.net (or dev, prod)
+- hostname stage.dialplans.phu73l.net
 - alias: <alias domain name>
 
-Wait for DNS to be updated with eg "nslookup stage.dialplans.phu73l.net".
+Wait for DNS to be updated with "nslookup stage.dialplans.phu73l.net".
 
 ## Update Twilio Programmable Voice stage components to point to URLs
 
-Update the dev, stage, or prod TwiML Application Resources and SIP Domains to point to the URL in the updated domain as in twilio-sip-server deploy.md.
+Update the stage TwiML Application Resources and SIP Domains to point to the URL in the updated domain as in twilio-sip-server deploy.md.
 
 For the SIP domains, the URL path is "/dial_outgoing".
 
@@ -104,4 +106,4 @@ Twilio SIP components and DigitalOcean networking components do not need to be u
 - cd app
 - chalice delete --stage stage
 
-Remove the stage.dialplans.phu73l.net (or dev or prod) CNAME using the DigitalOcean web console.
+Remove the stage.dialplans.phu73l.net CNAME using the DigitalOcean web console.
