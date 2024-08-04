@@ -1,6 +1,9 @@
+import datetime
+
 from . import sns_client
 from . import util
 
+metric_host_base = 'dialplan-functions'
 
 def request_to_endpoint(request, env):
     """
@@ -28,8 +31,29 @@ def request_to_endpoint(request, env):
             request.post_fields['To'], request.post_fields['From']))
     return None
 
-# XXX publish takes .1s! Throw it in a worker queue?
+def _get_metric_hostname(request):
+    """
+    Return the appropriate metric event endpoint name for this request.
+    """
+    return metric_host_base + '-' + util.get_instance(request)
+
+def _event_to_message(endpoint, user_event, hostname):
+    date_string = datetime.datetime.now().isoformat()
+    event = {
+        'Event': 'UserEvent',
+        'endpoint': endpoint,
+        'Channel': endpoint,    # Can probably be removed.
+        'UserEvent': user_event}
+    message = {
+        'timestamp': date_string,
+        'hostname': hostname,
+        'event': event}
+    return message
+
+# Publish takes .1s! Throw it in a worker queue?
 def publish(user_event, request, env):
     endpoint = request_to_endpoint(request, env)
+    hostname = _get_metric_hostname(request)
+    message = _event_to_message(endpoint, user_event, hostname)
     util.log('metric endpoint:{} user_event:{}'.format(endpoint, user_event))
-    return sns_client.publish(endpoint, user_event, request, env)
+    return sns_client.publish(message, env)
