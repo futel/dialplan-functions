@@ -8,7 +8,6 @@ from twilio.rest import Client
 from . import ivrs
 from . import ivr_destinations
 from . import metric
-from . import sns_client
 from . import util
 
 sip_domain_subdomain_base_emergency = "direct-futel"
