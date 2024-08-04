@@ -13,7 +13,7 @@
 
 # Smoke SIP client integration test
 
-Using a SIP client, receive PSTN call, make outgoing PSTN, make outgoing '#' and '0' calls.
+Register SIP client to stage, reach menu with '#', make outgoing PSTN call, receive PSTN call. Note that the setup for this is not documented.
 
 # Smoke API client integration test
 
