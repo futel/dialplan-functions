@@ -1,4 +1,4 @@
-# Testing and development
+# Testing and monitoring
 
 # Unit test
 
@@ -11,21 +11,19 @@
 - source venv/bin/activate
 - PYTHONPATH=app python local/check_assets.py
 
-# Smoke SIP client integration test
+# Smoke API integration test
 
-Register SIP client to stage, reach menu with '#', make outgoing PSTN call, receive PSTN call. Note that the setup for this is not documented.
+Note that these will cause side effects like log generation.
+
+- source venv/bin/activate
+- cd app
+- pytest itest
 
 # Smoke API client integration test
 
+Note that these will cause side effects like log generation.
+
 These should return XML documents and not cause any error logs.
-
-Outgoing PSTN
-- curl -d "To=sip:5035551212@direct-futel-stage.sip.twilio.com&From=sip:test-one@direct-futel-stage.sip.twilio.com&SipDomain=direct-futel-stage.sip.twilio.com" -X POST https://stage.dialplans.phu73l.net/dial_outgoing
-
-Outgoing extension
-- curl -d "To=sip:%23@direct-futel-stage.sip.twilio.com&From=sip:test-one@direct-futel-stage.sip.twilio.com&SipDomain=direct-futel-stage.sip.twilio.com" -X POST https://stage.dialplans.phu73l.net/dial_outgoing
-- curl -d "To=sip:0@direct-futel-stage.sip.twilio.com&From=sip:test-one@direct-futel-stage.sip.twilio.com&SipDomain=direct-futel-stage.sip.twilio.com" -X POST https://stage.dialplans.phu73l.net/dial_outgoing
-- XXX also remote outgoing on #
 
 Outgoing IVR
 - curl -d "From=sip:test-one@direct-futel-stage.sip.twilio.com&SipDomain=direct-futel-stage.sip.twilio.com" -X POST https://stage.dialplans.phu73l.net/ivr
