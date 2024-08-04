@@ -20,7 +20,7 @@ DigitalOcean must have the dialplans.phu73l.net domain name set up.
 
 # Create certificate
 
-This normally needs to be done once.
+This needs to be done to create the first certificate, or to create a replacement after changing attributes.
 
 - sudo certbot certonly --dns-digitalocean --dns-digitalocean-credentials conf/certbot-creds.ini -d phu73l.net -d dialplans.phu73l.net -d '*.dialplans.phu73l.net'
 - add expiration to calendar
@@ -81,7 +81,7 @@ This does not normally have to be done.
 
 # Test
 
-POST to a smoke test URL as described in README-test.
+POST to a smoke test URL as described in test.md.
 
 # Notes
 
