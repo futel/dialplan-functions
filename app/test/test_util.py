@@ -3,7 +3,7 @@ from unittest import mock, TestCase
 from chalicelib import env_util
 from chalicelib import util
 
-env = {'AWS_TOPIC_ARN': 'AWS_TOPIC_ARN',
+env = {'AWS_METRICS_TOPIC_ARN': 'AWS_METRICS_TOPIC_ARN',
        'ASSET_HOST': 'ASSET_HOST',
        'extensions': {
            "test": {

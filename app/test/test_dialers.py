@@ -6,7 +6,7 @@ from chalicelib import sns_client
 from chalicelib import env_util
 from chalicelib import util
 
-env = {'AWS_TOPIC_ARN': 'AWS_TOPIC_ARN',
+env = {'AWS_METRICS_TOPIC_ARN': 'AWS_METRICS_TOPIC_ARN',
        'ASSET_HOST': 'ASSET_HOST',
        'TWILIO_ACCOUNT_SID': 'TWILIO_ACCOUNT_SID',
        'TWILIO_AUTH_TOKEN': 'TWILIO_AUTH_TOKEN',

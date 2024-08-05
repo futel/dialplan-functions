@@ -9,7 +9,7 @@ request = mock.Mock(
         'From': 'sip:bottles-and-cans-one@direct-futel-prod.sip.twilio.com'},
     context={'domainPrefix':'prod'})
 env = {
-    'AWS_TOPIC_ARN': 'AWS_TOPIC_ARN',
+    'AWS_METRICS_TOPIC_ARN': 'AWS_METRICS_TOPIC_ARN',
     'sns_client': mock.Mock()}
 
 
