@@ -1,5 +1,6 @@
 """
 Functions for ops HTTP endpoints.
+This should probably be an entirely separate project, but the tooling is here.
 """
 
 from . import sns_client
