@@ -56,4 +56,4 @@ def publish(user_event, request, env):
     hostname = _get_metric_hostname(request)
     message = _event_to_message(endpoint, user_event, hostname)
     util.log('metric endpoint:{} user_event:{}'.format(endpoint, user_event))
-    return sns_client.publish(message, env)
+    return sns_client.publish_metric(message, env)

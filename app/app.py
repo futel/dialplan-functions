@@ -6,6 +6,7 @@ from urllib import parse
 
 from chalicelib import dialers
 from chalicelib import env_util
+from chalicelib import ops
 from chalicelib import util
 
 env = env_util.get_env()
@@ -90,6 +91,11 @@ def _index(request, env):
 @setup
 def _index(request, env):
     return dialers.outgoing_operator_leave(request, env)
+
+@route('/ops/log')
+@setup
+def _index(request, env):
+    return ops.log(request, env)
 
 
 # All the startup work we have given lambda is done, log for timing.

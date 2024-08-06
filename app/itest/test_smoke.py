@@ -1,10 +1,13 @@
 import requests
 from unittest import mock, TestCase
 
+from chalicelib import env_util
+
+env = env_util.get_env()
 
 def check_response(response, text):
-    assert response.status_code == 200
-    assert response.text == text
+    assert response.status_code == 200, (response, response.text)
+    assert response.text == text, (response, response.text)
 
 class TestDialers(TestCase):
 
@@ -47,5 +50,7 @@ class TestOps(TestCase):
     def test_log(self):
         response = requests.post(
             "https://stage.dialplans.phu73l.net/ops/log",
-            data={"foo": "bar"})
-        check_response(response, 'xxx')
+            data={
+                "AccountSid": env['TWILIO_ACCOUNT_SID'],
+                "Payload": "{'foo': 'bar'}"})
+        check_response(response, 'null')

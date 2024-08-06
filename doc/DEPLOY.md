@@ -33,7 +33,7 @@ To be done once.
 
 ## Set up environment secrets
 
-Fill app/chalicelib/environment/.env to match app/chalicelib/environment/.env.sample as described in awd.md.
+Populate app/chalicelib/environment/.env to match app/chalicelib/environment/.env.sample as described in aws.md.
 
 ## Create deployment virtualenv
 

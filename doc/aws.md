@@ -1,21 +1,39 @@
-# AWS requirements
+# AWS deployment
 
 Other AWS components which must be set up before deploying, and local setup for them.
 
-# AWS Setup
+# Meta-requirements
 
-Have AWS configuration as described in asteriskserver README-aws:
-- IAM user and groups
-- SNS topic and SQS queue for asterisk events
-  - note that we just have one topic/queue for prod and other deployments, even though it is currenly named 'asterisk-prod-events'.
+AWS credentials should be set up, and the us-west-2 region configured, in ~/.aws/credentials.
 
-Have AWS configuration as described in dialplan-assets README-aws:
-- IAM user and groups
-- S3 bucket for assets
-  - note that we don't version S3, it must always contain prod content.
+AWS should be set up as described in asteriskserver README-aws:
+- IAM user "asteriskmanager" and related policy
+- SNS topic "asterisk-prod-events" for metric events
+  - note that we just have one topic for prod and other deployments
+
+AWS should be set up as described in dialplan-assets README-aws:
+- S3 bucket "dialplan-assets" for assets
 
 # Setup
 
-Populate .env:
-- AWS_TOPIC_ARN
-- ASSET_HOST
+## Set up topic and queue
+
+Using the AWS console:
+- be in us-west-2 region
+- create SNS topic
+  - type standard
+  - name logs
+- (note ARN)
+- create SQS queue
+  - type standard
+  - name logs
+- subscribe SQS queue to SNS topic
+
+## Set up environment secrets
+
+Populate app/chalicelib/environment/.env:
+- ASSET_HOST dialplan-assets S3 bucket URL
+- AWS_DEFAULT_REGION us-west-2
+- AWS_LOGS_TOPIC_ARN logs SNS topic ARN
+- AWS_METRICS_TOPIC_ARN asterisk-prod-events SNS topic ARN
+

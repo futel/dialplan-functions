@@ -21,6 +21,8 @@ Note that these will cause side effects like log generation.
 
 # Smoke API client integration test
 
+These manual tests are waitng to be converted to the itest tests.
+
 Note that these will cause side effects like log generation.
 
 These should return XML documents and not cause any error logs.
