@@ -9,7 +9,6 @@ AWS credentials should be set up, and the us-west-2 region configured, in ~/.aws
 AWS should be set up as described in asteriskserver README-aws:
 - IAM user "asteriskmanager" and related policy
 - SNS topic "asterisk-prod-events" for metric events
-  - note that we just have one topic for prod and other deployments
 
 AWS should be set up as described in dialplan-assets README-aws:
 - S3 bucket "dialplan-assets" for assets
