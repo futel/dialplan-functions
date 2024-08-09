@@ -20,10 +20,16 @@ def _validate(request, env):
     raise NotImplementedError
 
 def log(request, env):
-    """HTTP endpoint for sending a log message."""
+    """HTTP endpoint for doing something with a log message."""
+    # The message comes from a twilio error log webhook.
     _validate(request, env)
+    # The message is stored in a 'Payload' post param as a json repr.
     message = json.loads(request.post_fields['Payload'])
     util.log(message)
-    event = "{}-{}".format(event_prefix, message['error_code'])
+    # Turn the error code in the message into a metric key and publish it.
+    event = "{}-{}".format(event_prefix, message.get('error_code'))
     metric.publish_other(event, request, env)
+    # Publish the message to our log store.
+    # We don't document the message format, so we aren't indicating whether we
+    # are prod, stage, or another host.
     sns_client.publish_log(message, env)
