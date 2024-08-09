@@ -1,3 +1,8 @@
+"""
+Publish messages to sns. We use the same store for all sources,
+so any differentation between prod and other hosts must be in the messages.
+"""
+
 import json
 
 def _publish(message, arn, env):
