@@ -89,12 +89,19 @@ def dial_outgoing(request, env):
         metric.publish('dial_sip_asterisk', request, env)
         return str(util.dial_sip_asterisk(to_extension, request, env))
 
-    # It's an E.164 number, filter and transform.
+    # It's an E.164 number, normalize, filter, transform.
     to_number = util.pstn_number(to_extension, from_extension['enable_emergency'])
     if not to_number:
         util.log('filtered pstn number {}'.format(to_extension))
         metric.publish('reject', request, env)
         return str(util.reject(request, env))
+
+    # If it's the number of one of our extensions, SIP call it.
+    to_extension = util.e164_to_extension(to_number, env['extensions'])
+    if to_extension:
+        metric.publish('dial_sip', request, env)
+        from_number = from_extension['caller_id']
+        return _dial_sip(to_extension, from_number, request, env)
 
     # It's a PSTN number, call it.
     metric.publish('dial_pstn', request, env)
@@ -108,7 +115,8 @@ def dial_sip_e164(request, env):
     metric.publish('dial_sip_e164', request, env)
     to_number = request.post_fields['To']
     from_number = request.post_fields['From']
-    to_number = util.normalize_number(to_number)
+    # Normalize, filter, transform.
+    to_number = util.pstn_number(to_number, enable_emergency=False)
     to_extension = util.e164_to_extension(to_number, env['extensions'])
     if not to_extension:
         util.log("Could not find extension for E.164 number")
