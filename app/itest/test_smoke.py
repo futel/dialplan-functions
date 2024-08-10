@@ -11,7 +11,7 @@ def check_response(response, text):
 
 class TestDialers(TestCase):
 
-    def test_dial_outgoing_pstn(self):
+    def test_dial_outgoing_e164_pstn(self):
         response = requests.post(
             "https://stage.dialplans.phu73l.net/dial_outgoing",
             data={
@@ -20,7 +20,19 @@ class TestDialers(TestCase):
                 "SipDomain": "direct-futel-stage.sip.twilio.com"})
         check_response(
             response,
-            '<?xml version="1.0" encoding="UTF-8"?><Response><Dial action="https://stage.dialplans.phu73l.net/metric_dialer_status" answerOnBridge="true" callerId="+19713512383"><Number>5035551212</Number></Dial></Response>')
+            '<?xml version="1.0" encoding="UTF-8"?><Response><Dial action="https://stage.dialplans.phu73l.net/metric_dialer_status" answerOnBridge="true" callerId="+19713512383"><Number>+15035551212</Number></Dial></Response>')
+
+    def test_dial_outgoing_e164_sip(self):
+        response = requests.post(
+            "https://stage.dialplans.phu73l.net/dial_outgoing",
+            data={
+                # cesar-chavez
+                "To": "sip:+15039465227@direct-futel-stage.sip.twilio.com",
+                "From": "sip:test-one@direct-futel-stage.sip.twilio.com",
+                "SipDomain": "direct-futel-stage.sip.twilio.com"})
+        check_response(
+            response,
+            '<?xml version="1.0" encoding="UTF-8"?><Response><Dial action="https://stage.dialplans.phu73l.net/metric_dialer_status" answerOnBridge="true" callerId="+19713512383"><Sip>sip:cesar-chavez@direct-futel-stage.sip.twilio.com</Sip></Dial></Response>')
 
     def test_dial_outgoing_pound(self):
         response = requests.post(
@@ -52,5 +64,5 @@ class TestOps(TestCase):
             "https://stage.dialplans.phu73l.net/ops/log",
             data={
                 "AccountSid": env['TWILIO_ACCOUNT_SID'],
-                "Payload": "{'foo': 'bar'}"})
+                "Payload": '{"foo": "bar"}'})
         check_response(response, 'null')
