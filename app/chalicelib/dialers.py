@@ -221,6 +221,14 @@ def metric_dialer_status(request, env):
     for event_name in _request_to_metric_events(request, env):
         metric.publish(event_name, request, env)
 
+    error_code = request.post_fields.get('ErrorCode')
+    if error_code:
+        error_event = 'error-{}'.format(error_code)
+        metric.publish(error_event, request, env)
+    error_message = request.post_fields.get('ErrorMessage')
+    if error_message:
+        util.log(error_message)
+
     # Return TwiML.
     response = VoiceResponse()
     if request.post_fields['DialCallStatus'] == 'failed':
