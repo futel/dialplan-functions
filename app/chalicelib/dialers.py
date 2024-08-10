@@ -89,16 +89,16 @@ def dial_outgoing(request, env):
         metric.publish('dial_sip_asterisk', request, env)
         return str(util.dial_sip_asterisk(to_extension, request, env))
 
-    # It's an E.164 number, filter.
-    number = util.pstn_number(to_extension, from_extension['enable_emergency'])
-    if not number:
+    # It's an E.164 number, filter and transform.
+    to_number = util.pstn_number(to_extension, from_extension['enable_emergency'])
+    if not to_number:
         util.log('filtered pstn number {}'.format(to_extension))
         metric.publish('reject', request, env)
         return str(util.reject(request, env))
 
     # It's a PSTN number, call it.
     metric.publish('dial_pstn', request, env)
-    return str(util.dial_pstn(to_extension, from_uri, request, env))
+    return str(util.dial_pstn(to_number, from_uri, request, env))
 
 def dial_sip_e164(request, env):
     """
