@@ -56,6 +56,16 @@ class TestDialers(TestCase):
             response,
             '<?xml version="1.0" encoding="UTF-8"?><Response><Gather action="https://stage.dialplans.phu73l.net/ivr?context=outgoing_operator_caller&amp;parent=outgoing_operator_caller&amp;lang=en&amp;iteration=0&amp;stanza=intro" finishOnKey="" numDigits="1" timeout="0"><Play>https://dialplan-assets.s3.us-west-2.amazonaws.com/en/operator/please-hold.ulaw</Play><Play>https://dialplan-assets.s3.us-west-2.amazonaws.com/en/operator/for-the-next-available-operator.ulaw</Play></Gather><Redirect>https://stage.dialplans.phu73l.net/ivr?context=outgoing_operator_caller&amp;parent=outgoing_operator_caller&amp;lang=en&amp;iteration=0&amp;stanza=menu</Redirect></Response>')
 
+    def test_dial_sip_e164(self):
+        response = requests.post(
+            "https://stage.dialplans.phu73l.net/dial_sip_e164",
+            data={
+                "To": "+17345476651", # landline
+                "From": "+15034681337"})
+        check_response(
+            response,
+            '<?xml version="1.0" encoding="UTF-8"?><Response><Dial action="https://stage.dialplans.phu73l.net/metric_dialer_status" answerOnBridge="true" callerId="+15034681337"><Sip>sip:landline@direct-futel-stage.sip.twilio.com</Sip></Dial></Response>')
+
 
 class TestOps(TestCase):
 
