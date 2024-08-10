@@ -114,15 +114,16 @@ def dial_sip_e164(request, env):
     """
     metric.publish('dial_sip_e164', request, env)
     to_number = request.post_fields['To']
-    from_number = request.post_fields['From']
-    # Normalize, filter, transform.
+    from_uri = request.post_fields['From']
     to_number = util.pstn_number(to_number, enable_emergency=False)
+
     to_extension = util.e164_to_extension(to_number, env['extensions'])
-    if not to_extension:
-        util.log("Could not find extension for E.164 number")
-        metric.publish('reject', request, env)
-        return str(util.reject(request, env))
-    return _dial_sip(to_extension, from_number, request, env)
+    if to_extension:
+        return _dial_sip(to_extension, from_uri, request, env)
+
+    util.log("Could not find extension for E.164 number")
+    metric.publish('reject', request, env)
+    return str(util.reject(request, env))
 
 def _dial_sip(extension, from_number, request, env):
     """Return TwiML to dial a SIP client on our Twilio SIP domain."""
