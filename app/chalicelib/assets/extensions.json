@@ -149,6 +149,12 @@
         "enable_emergency": false,
         "local_outgoing": true
     },
+    "souwester": {
+        "outgoing": "outgoing_souwester",
+        "caller_id": "+13602282259",
+        "enable_emergency": true,
+        "local_outgoing": true
+    },
     "tishbite-test": {
         "outgoing": "outgoing_portland",
         "caller_id": "+15034681337",
