@@ -134,8 +134,7 @@ def call_911_9_bounce(request, env):
     Otherwise, return None.
     """
     from_uri = request.post_fields['From']
-    from_extension = util.sip_to_extension(from_uri)
-    from_extension = env['extensions'][from_extension]
+    from_extension = util.sip_to_extension(from_uri, env)
     if not from_extension['enable_emergency']:
         response = VoiceResponse()
         response.hangup()

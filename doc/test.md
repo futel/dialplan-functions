@@ -3,8 +3,7 @@
 # Unit test
 
 - source venv/bin/activate
-- cd app
-- pytest test
+- pytest app/test
 
 # Verify assets
 
@@ -16,12 +15,11 @@
 Note that these will cause side effects like log generation.
 
 - source venv/bin/activate
-- cd app
-- pytest itest
+- pytest app/itest
 
 # Smoke API client integration test
 
-These manual tests are waitng to be converted to the itest tests.
+These manual tests are to be converted to the itest tests.
 
 Note that these will cause side effects like log generation.
 

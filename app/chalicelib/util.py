@@ -68,14 +68,19 @@ def function_url(request, function_name, params=None):
     return url
 
 #sip:test@direct-futel-nonemergency-stage.sip.twilio.com
-def sip_to_extension(sip_uri):
-    """Return the extension from a SIP URI, or None."""
+def sip_to_user(sip_uri):
+    """Return the user from a SIP URI, or None."""
     try:
-        extension = sip_uri.split('@')[0].split(':')[1]
-        extension = parse.unquote(extension)
-        return extension
+        user = sip_uri.split('@')[0].split(':')[1]
+        user = parse.unquote(user)
+        return user
     except IndexError:
         return None
+
+def sip_to_extension(sip_uri, env):
+    """Return the extension from a SIP URI, or None."""
+    user = sip_to_user(sip_uri)
+    return env['extensions'][user]
 
 def e164_to_extension(e164, extension_map):
     """Return an extension for E.164 string, or None."""
@@ -143,8 +148,7 @@ def dial_sip_asterisk(extension, request, env):
     # XXX only for pstn
     from_uri = request.post_fields['From']
     log('extension:{} from_uri:{}'.format(extension, from_uri))
-    from_extension = sip_to_extension(from_uri)
-    from_extension = env['extensions'][from_extension]
+    from_extension = sip_to_extension(from_uri, env)
     if extension == "#":
         extension = from_extension['outgoing']
     elif extension == "0":
@@ -177,7 +181,7 @@ def deserialize_pstn(request):
     to_number = request.post_fields.get('Digits')
     if not to_number:
         to_uri = request.post_fields['To']
-        to_number = sip_to_extension(to_uri)
+        to_number = sip_to_user(to_uri)
     return to_number
 
 def pstn_number(number, enable_emergency):
@@ -190,8 +194,7 @@ def pstn_number(number, enable_emergency):
 
 def dial_pstn(to_number, from_uri, request, env):
     """Return TwiML to dial PSTN number with attributes from request."""
-    from_extension = sip_to_extension(from_uri)
-    from_extension = env['extensions'][from_extension]
+    from_extension = sip_to_extension(from_uri, env)
     caller_id = from_extension['caller_id']
 
     # XXX default timeLimit is 4 hours, should be smaller, in seconds

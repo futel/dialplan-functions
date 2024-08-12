@@ -10,7 +10,7 @@ def request_to_endpoint(request, env):
     """
     Return an endpoint appropriate for a metric from From.
     """
-    extension = util.sip_to_extension(request.post_fields['From'])
+    extension = util.sip_to_user(request.post_fields['From'])
     if extension:
         # Outgoing from Twilio SIP Domain,
         # From is SIP URI to extension.

@@ -37,8 +37,7 @@ def _request_to_metric_events(request, env):
     dial_call_status = request.post_fields['DialCallStatus']
 
     endpoint = metric.request_to_endpoint(request, env)
-    extension = util.sip_to_extension(from_uri)
-    if extension:
+    if util.sip_to_user(from_uri):
         # Outgoing from Twilio SIP Domain,
         # from_uri is SIP URI to extension.
         dial_event = "outgoing_call"
@@ -59,8 +58,7 @@ def dial_outgoing(request, env):
     metric.publish('dial_outgoing', request, env)
     to_extension = util.deserialize_pstn(request)
     from_uri = request.post_fields['From']
-    from_extension = util.sip_to_extension(from_uri)
-    from_extension = env['extensions'][from_extension]
+    from_extension = util.sip_to_extension(from_uri, env)
     util.log('to_extension {}'.format(to_extension))
     if to_extension == '0':
         # Return twiml for the outgoing operator context.
@@ -167,8 +165,7 @@ def ivr(request, env):
     if not c_name:
         # Presumably this is the first interaction, go to the
         # default context.
-        from_extension = util.sip_to_extension(from_uri)
-        from_extension = env['extensions'][from_extension]
+        from_extension = util.sip_to_extension(from_uri, env)
         c_name = from_extension['outgoing']
         dest_c_dict = ivrs.context_dict(env['ivrs'], c_name)
     else:
@@ -254,8 +251,7 @@ def _enqueue_operator_call(request, env):
     Call operators with twiml for the accept menu.
     """
     from_uri = request.post_fields['From']
-    from_extension = util.sip_to_extension(from_uri)
-    from_extension = env['extensions'][from_extension]
+    from_extension = util.sip_to_extension(from_uri, env)
     from_number = from_extension['caller_id']
 
     twilio_account_sid = env['TWILIO_ACCOUNT_SID']
@@ -398,7 +394,7 @@ def outgoing_operator_leave(request, env):
     queue_result = request.post_fields['QueueResult']
     util.log('caller left queue: {}'.format(queue_result))
     from_uri = request.post_fields['From']
-    from_extension = util.sip_to_extension(from_uri)
+    from_user = util.sip_to_user(from_uri)
     lang = request.query_params.get('lang', 'en')
     twilio_account_sid = env['TWILIO_ACCOUNT_SID']
     twilio_auth_token = env['TWILIO_AUTH_TOKEN']
@@ -406,7 +402,7 @@ def outgoing_operator_leave(request, env):
     if _is_operator_queue_empty(client):
         # There is no caller in the queue. Cancel or notify all
         # operators not yet with a caller.
-        for record in _find_operator_calls(client, from_extension, env):
+        for record in _find_operator_calls(client, from_user, env):
             util.log('canceling outbound operator call')
             if record.status in ('ringing', 'queued'):
                 record.update(status='canceled')
