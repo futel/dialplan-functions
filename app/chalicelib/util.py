@@ -149,10 +149,9 @@ def python_to_twilio_param(v):
 
 def dial_sip_asterisk(extension, request, env):
     """Return a TwiML response to dial a SIP extension on the asterisk."""
-    # XXX only for pstn
-    from_uri = request.post_fields['From']
-    log('extension:{} from_uri:{}'.format(extension, from_uri))
-    from_extension = sip_to_extension(from_uri, env)
+    user = request_to_endpoint(request, env)
+    from_extension = env['extensions'][user]
+
     if extension == "#":
         extension = from_extension['outgoing']
     elif extension == "0":
@@ -195,6 +194,32 @@ def pstn_number(number, enable_emergency):
     if filter_outgoing_number(number, enable_emergency):
         return None
     return number
+
+def request_to_endpoint(request, env):
+    """
+    Return the endpoint responsible for the request.
+    """
+    extension = sip_to_user(request.post_fields['From'])
+    if extension:
+        # Call from client to Twilio SIP Domain,
+        # From is SIP URI of caller's extension.
+        return extension
+    extension =  e164_to_extension(request.post_fields['To'], env['extensions'])
+    if extension:
+        # Incoming PSTN call to Twilio phone number,
+        # To is E.164 being called.
+        return extension
+    extension = e164_to_extension(
+        request.post_fields['From'], env['extensions'])
+    if extension:
+        # Outgoing PSTN call started by the Twilio client, where From is
+        # whatever we tell the client it is, so hopefully it is the E.164 of the
+        # "extension" "doing the thing".
+        return extension
+    # Is this an unknown state, do we want to survive this?
+    log("Can't find extension to:{} from:{}".format(
+        request.post_fields['To'], request.post_fields['From']))
+    return None
 
 def dial_pstn(to_number, from_uri, request, env):
     """Return TwiML to dial PSTN number with attributes from request."""

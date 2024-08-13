@@ -36,7 +36,7 @@ def _request_to_metric_events(request, env):
     from_uri = request.post_fields['From']
     dial_call_status = request.post_fields['DialCallStatus']
 
-    endpoint = metric.request_to_endpoint(request, env)
+    endpoint = util.request_to_endpoint(request, env)
     if util.sip_to_user(from_uri):
         # Outgoing from Twilio SIP Domain,
         # from_uri is SIP URI to extension.
@@ -198,6 +198,7 @@ def ivr(request, env):
                 # This is an ivr destination, so metric.
                 metric.publish('dial_sip_asterisk', request, env)
                 # XXX we lose lang! Hopefully user remembers to hit *.
+                # XXX move sip_to_extension up here
                 return str(util.dial_sip_asterisk(dest_c_name, request, env))
 
     # We got this far, it's in the context_dict.
