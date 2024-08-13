@@ -107,6 +107,12 @@
         "enable_emergency": true,
         "local_outgoing": false
     },
+    "hot-leet": {
+        "outgoing": "incoming_leet",
+        "caller_id": "+15034681337",
+        "enable_emergency": false,
+        "local_outgoing": true
+    },
     "landline": {
         "outgoing": "outgoing_ypsi",
         "caller_id": "+17345476651",
