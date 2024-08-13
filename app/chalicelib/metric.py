@@ -12,20 +12,21 @@ def request_to_endpoint(request, env):
     """
     extension = util.sip_to_user(request.post_fields['From'])
     if extension:
-        # Outgoing from Twilio SIP Domain,
-        # From is SIP URI to extension.
+        # Call from client to Twilio SIP Domain,
+        # From is SIP URI of caller's extension.
         return extension
     extension =  util.e164_to_extension(
         request.post_fields['To'], env['extensions'])
     if extension:
         # Incoming PSTN call to Twilio phone number,
-        # To is E.164 of caller.
+        # To is E.164 being called.
         return extension
     extension =  util.e164_to_extension(
         request.post_fields['From'], env['extensions'])
     if extension:
-        # Outgoing PSTN call started by the Twilio client.
-        # From is E.164 of caller.
+        # Outgoing PSTN call started by the Twilio client, where From is
+        # whatever we tell the client it is, so hopefully it is the E.164 of the
+        # "extension" "doing the thing".
         return extension
     util.log(
         'unknown metric extension to:{} from:{}'.format(
