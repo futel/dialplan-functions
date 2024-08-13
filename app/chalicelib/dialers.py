@@ -198,7 +198,6 @@ def ivr(request, env):
                 # This is an ivr destination, so metric.
                 metric.publish('dial_sip_asterisk', request, env)
                 # XXX we lose lang! Hopefully user remembers to hit *.
-                # XXX move sip_to_extension up here
                 return str(util.dial_sip_asterisk(dest_c_name, request, env))
 
     # We got this far, it's in the context_dict.
