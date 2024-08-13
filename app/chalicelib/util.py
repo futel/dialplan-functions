@@ -80,7 +80,7 @@ def sip_to_user(sip_uri):
 def sip_to_extension(sip_uri, env):
     """Return the extension from a SIP URI, or None."""
     user = sip_to_user(sip_uri)
-    return env['extensions'][user]
+    return env['extensions'].get(user)
 
 def e164_to_extension(e164, extension_map):
     """Return an extension key for E.164 string, or None."""
