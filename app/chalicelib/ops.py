@@ -28,7 +28,8 @@ def log(request, env):
     util.log(message)
     # Turn the error code in the message into a metric key and publish it.
     event = "{}-{}".format(event_prefix, message.get('error_code'))
-    metric.publish_other(event, request, env)
+    # The message comes from a twilio error log webhook, so metric that.
+    metric.publish_twilio_error(event, message, env)
     # Publish the message to our log store.
     # We don't document the message format, so we aren't indicating whether we
     # are prod, stage, or another host.

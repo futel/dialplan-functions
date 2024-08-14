@@ -1,3 +1,4 @@
+import json
 import requests
 from unittest import mock, TestCase
 
@@ -74,5 +75,5 @@ class TestOps(TestCase):
             "https://stage.dialplans.phu73l.net/ops/log",
             data={
                 "AccountSid": env['TWILIO_ACCOUNT_SID'],
-                "Payload": '{"foo": "bar"}'})
-        check_response(response, 'null')
+                "Payload": json.dumps({"resource_sid": "CA47172d59c087d4b182c35ba19d6e058a", "service_sid": None, "error_code": "32009", "more_info": {"Msg": "Your TwiML tried to Dial a Twilio SIP Registered User that is not currently registered", "ErrorCode": "32009,Your TwiML tried to Dial a Twilio SIP Registered User that is not currently registered", "LogLevel": "WARNING"}, "webhook": {"type": "application/json", "request": {"url": "sip:demo-one@direct-futel-stage.sip.twilio.com", "method": "INVITE", "headers": {}, "parameters": {"To": "sip:demo-one@direct-futel-stage.sip.twilio.com"}}, "response": {"status_code": None, "headers": {}, "body": None}}})})
+        check_response(response, "null")
