@@ -9,7 +9,7 @@ from . import sns_client
 from . import util
 
 # Prefix for metrics from error log webhook.
-event_prefix = "error"
+event_prefix = "twilio-error"
 
 # This is a silly way to validate. The correct way is
 # https://www.twilio.com/docs/usage/webhooks/webhooks-security#validating-signatures-from-twilio
