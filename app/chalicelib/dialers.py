@@ -42,8 +42,15 @@ def _request_to_metric_events(request, env):
         # from_uri is SIP URI to extension.
         dial_event = "outgoing_call"
         dial_status_event_base = "outgoing_dialstatus_"
+    elif endpoint == "hot-leet":
+        # from_uri is the PSTN number for hot-leet,w which we use for calls made
+        # with the twilio client.
+        dial_event = "outgoing_call"
+        dial_status_event_base = "outgoing_dialstatus_"
     else:
         # Incoming from Twilio phone number to SIP client.
+        # XXX Or any call made with the twilio client where we set the from
+        # to an E.164 number, like operator calls?
         dial_event = "incoming_call"
         dial_status_event_base = "incoming_dialstatus_"
 
@@ -278,6 +285,7 @@ def _enqueue_operator_call(request, env):
         env)
 
     # Call each operator and play the TwiML.
+    # XXX Do we need to set status_callback to metric call status?
     for number in operator_numbers:
         call = client.calls.create(
             twiml=str(response),
