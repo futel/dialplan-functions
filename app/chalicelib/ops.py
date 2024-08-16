@@ -33,4 +33,5 @@ def log(request, env):
     # Publish the message to our log store.
     # We don't document the message format, so we aren't indicating whether we
     # are prod, stage, or another host.
-    sns_client.publish_log(message, env)
+    # This is causing s3-event-writer problems, so this is disabled.
+    #sns_client.publish_log(message, env)
