@@ -2,26 +2,32 @@
 
 # Unit test
 
+These test against the local source.
+
 - source venv/bin/activate
-- pytest app/test
+- pytest app-dialplan/test
+- pytest app-ops/test
 
 # Verify assets
 
+These test against the local source.
+
 - source venv/bin/activate
-- PYTHONPATH=app python local/check_assets.py
+- PYTHONPATH=app-dialplan python local/check_assets.py
 
 # Smoke API integration test
 
-Note that these will cause side effects like log generation.
+These test against the current stage deployment. Note that these will cause side effects like log generation.
 
 - source venv/bin/activate
-- pytest app/itest
+- pytest app-dialplan/itest
+- pytest app-ops/test
 
-# Smoke API client integration test
+# Smoke dialplan API client integration test
 
 These manual tests are to be converted to the itest tests.
 
-Note that these will cause side effects like log generation.
+These test against the current stage deployment. Note that these will cause side effects like log generation.
 
 These should return XML documents and not cause any error logs.
 
@@ -44,6 +50,8 @@ IVR
 
 # Acceptance test
 
+These test against the current stage deployment. Note that these will cause side effects like log generation.
+
 See testplan directory.
 
 If testplan or extensions have changed since last release branch, update google sheet testplan, keeping dates of nonupdated completed tests.
@@ -52,7 +60,8 @@ Set up and run acceptance tests as in testplan/setup.md and testplan/readme.md. 
 
 # View logs
 
-    chalice logs --stage stage --since 10m --follow
+- cd app-dialplan # or app-ops
+- chalice logs --stage stage --since 10m --follow
 
 # View components in AWS console
 

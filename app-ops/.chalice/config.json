@@ -1,0 +1,36 @@
+{
+    "version": "2.0",
+    "app_name": "ops",
+    "stages": {
+        "dev": {
+            "environment_variables": {"stage": "dev"},
+            "api_gateway_stage": "api",
+            "autogen_policy": false,
+            "iam_policy_file": "policy.json",            
+            "api_gateway_custom_domain": {
+                "domain_name": "dev.ops.phu73l.net",
+                "certificate_arn": "arn:aws:acm:us-east-1:168594572693:certificate/b17b4cfe-1f9b-4c72-a552-e63a854a76f6"
+            }
+        },
+        "stage": {
+            "environment_variables": {"stage": "stage"},            
+            "api_gateway_stage": "api",
+            "autogen_policy": false,
+            "iam_policy_file": "policy.json",
+            "api_gateway_custom_domain": {
+                "domain_name": "stage.ops.phu73l.net",
+                "certificate_arn": "arn:aws:acm:us-east-1:168594572693:certificate/b17b4cfe-1f9b-4c72-a552-e63a854a76f6"
+            }
+        },
+        "prod": {
+            "environment_variables": {"stage": "prod"},
+            "api_gateway_stage": "api",
+            "autogen_policy": false,
+            "iam_policy_file": "policy.json",
+            "api_gateway_custom_domain": {
+                "domain_name": "prod.ops.phu73l.net",
+                "certificate_arn": "arn:aws:acm:us-east-1:168594572693:certificate/b17b4cfe-1f9b-4c72-a552-e63a854a76f6"
+            }
+        }
+    }
+}

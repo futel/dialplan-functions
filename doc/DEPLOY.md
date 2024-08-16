@@ -10,9 +10,9 @@ AWS should be set up as described in aws.md.
 
 An AWS Certificate Manager certificate should be set up as described in ssl.md.
 
-Twilio Programmable Voice SIP components should be set up (after this component) as described in twilio-sip-server deploy.md.
-
-The dialplans.phu73l.net domain should be created with DigitalOcean.
+Domains should be created with DigitalOcean:
+- dialplans.phu73l.net
+- ops.phu73l.net
 
 # Requirements
 
@@ -33,19 +33,22 @@ To be done once.
 
 ## Set up environment secrets
 
-Populate app/chalicelib/environment/.env to match app/chalicelib/environment/.env.sample as described in aws.md.
+Populate .env to match .env.sample as described in aws.md:
+
+- app-dialplan/chalicelib/environment/.env
+- app-ops/chalicelib/environment/.env
 
 ## Create deployment virtualenv
 
 - python3 -m venv venv
 - source venv/bin/activate
-- cd app
+- cd app-dialplan
 - pip install -r requirements.txt
 - python3 -m pip install chalice pytest
 
 ---
 
-# Create and deploy a new instance
+# Create and deploy new instances
 
 ## Create or check out branch
 
@@ -53,57 +56,77 @@ If deploying stage or prod, check out or create relevant release branch.
 
 ## Test
 
-See test.md.
+See test.md. Run the local tests.
 
-## Deploy instance
+## Deploy instances
 
-Create a certificate as described in ssl.md. Update the domain_name and certificate_arn for the instance in app/.chalice/config.json.
+Update the certificate_arn for the instances to match the certificate set up in the meta-requrements:
+- app-dialplan/.chalice/config.json
+- app-ops/.chalice/config.json
 
-Deploy the instance:
+Deploy the instances:
 
 - source venv/bin/activate
-- cd app
-- chalice deploy --stage stage
+- (cd app-dialplan && chalice deploy --stage stage)
+- (cd app-ops && chalice deploy --stage stage)
 
-Note the AliasDomainName.
+Note the AliasDomainNames.
 
 ## Update domain
 
-Have the alias domain name, or find it in app/.chalice/deployed/stage.json.
+Find the alias_domain_name:
+- app-dialplan/.chalice/deployed/stage.json
+- app-ops/.chalice/deployed/stage.json
 
-Using the DigitalOcean web console, add or update a CNAME record in the dialplans.phu73l.net domain.
+Using the DigitalOcean network web console, add or update CNAME records for domains:
+- dialplans.phu73l.net
+  - hostname stage.dialplans.phu73l.net
+  - alias: <alias domain name>
+- ops.phu73l.net
+  - hostname stage.ops.phu73l.net
+  - alias: <alias domain name>
 
-- hostname stage.dialplans.phu73l.net
-- alias: <alias domain name>
+Wait for DNS to be updated:
 
-Wait for DNS to be updated with "nslookup stage.dialplans.phu73l.net".
+- nslookup stage.dialplans.phu73l.net
+- nslookup stage.ops.phu73l.net
 
-## Update Twilio Programmable Voice stage components to point to URLs
+## Update Twilio Programmable Voice stage components to point to dialplan URLs
 
-Update the stage TwiML Application Resources and SIP Domains to point to the URL in the updated domain as in twilio-sip-server deploy.md.
+Update the stage TwiML Application Resources and SIP Domains to point to the dialplan URL in the updated domain as in twilio-sip-server deploy.md.
 
 For the SIP domains, the URL path is "/dial_outgoing".
 
 For the Application Resources, the URL path is "/dial_sip_e164".
 
+## Test
+
+If stage, see test.md. Run the tests against the deployed instance.
+
 # Update an existing instance
 
 ## Test
 
-See test.md.
+See test.md. Run the local tests.
 
-## Deploy instance
+## Deploy instances
 
 - source venv/bin/activate
-- cd app
-- chalice deploy --stage stage
+- (cd app-dialplan && chalice deploy --stage stage)
+- (cd app-ops && chalice deploy --stage stage)
 
 Twilio SIP components and DigitalOcean networking components do not need to be updated, since the URLs have not changed.
 
-# Delete an instance
+## Test
+
+If stage, see test.md. Run the tests against the deployed instance.
+
+# Delete instances
 
 - source venv/bin/activate
-- cd app
-- chalice delete --stage stage
+- (cd app-dialplan && chalice delete --stage stage)
+- (cd app-ops && chalice delete --stage stage)
 
-Remove the stage.dialplans.phu73l.net CNAME using the DigitalOcean web console.
+Using the DigitalOcean network web console, remove CNAME records for domains:
+- dialplans.phu73l.net
+- ops.phu73l.net

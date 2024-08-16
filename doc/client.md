@@ -2,7 +2,7 @@
 
 ## Setup
 
-Add extension entry to app/chalicelib/assets/extensions.json.
+Add extension entry to app-dialplan/chalicelib/assets/extensions.json.
 
 Deploy as described in README-deploy.
 

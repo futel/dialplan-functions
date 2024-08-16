@@ -22,7 +22,9 @@ DigitalOcean must have the dialplans.phu73l.net domain name set up.
 
 This needs to be done to create the first certificate, or to create a replacement after changing attributes.
 
-- sudo certbot certonly --dns-digitalocean --dns-digitalocean-credentials conf/certbot-creds.ini -d phu73l.net -d dialplans.phu73l.net -d '*.dialplans.phu73l.net'
+This should be done on whatever box is handling renewals. This deployment process doesn't outline requirements to make automatic renewal reliable, eg it is probably running on a laptop, so manual renewals or at least verification are assumed.
+
+- sudo certbot certonly --dns-digitalocean --dns-digitalocean-credentials conf/certbot-creds.ini -d phu73l.net -d dialplans.phu73l.net -d '*.dialplans.phu73l.net' -d ops.phu73l.net -d '*.ops.phu73l.net'
 - add expiration to calendar
 - cd /etc/letsencrypt/live/phu73l.net
 - cat cert.pem chain.pem fullchain.pem > /tmp/all.pem
@@ -33,7 +35,7 @@ This needs to be done after a certificate is created or renewed.
 
 - visit AWS certificate manager (ACM) web console
 - change region to us-east-1
-- import a certificate, or list, visit, reimport certificate
+- import a certificate, or list, visit, reimport certificate with domain phu73l.net
  - certificate body /etc/letsencrypt/live/phu73l.net/cert.pem
  - certificate private key /etc/letsencrypt/live/phu73l.net/privkey.pem
  - certificate chain /tmp/all.pem
@@ -44,7 +46,9 @@ If this is a new certificate, note the ARN. This is needed to deploy the AWS API
 
 This needs to be done after a certificate is created.
 
-- update app/.chalice/config.json
+- update config files:
+  - app-dialplan/.chalice/config.json
+  - app-ops/.chalice/config.json  
   - Update every certificate_arn
 - deploy affected stages as described in DEPLOY.md.
 
@@ -54,7 +58,7 @@ This needs to be done after a certificate is created.
 
 Certificates must be renewed before they expire.
 
-The certificate creation method might set up automatic renewal using systemd? Notice the renewal warning email, check, and be prepared to manually renew at the end of the certificate's life. This deployment process doesn't outline requirements to make automatic renewal reliable eg it is probably running on a laptop, and we need to reimport to aws after renewal?
+The certificate creation method might set up automatic renewal using systemd? Notice the renewal warning email, check, and be prepared to manually renew at the end of the certificate's life. This deployment process doesn't outline requirements to make automatic renewal reliable, eg it is probably running on a laptop, and we need to reimport to aws after renewal?
 
 sudo certbot renew --cert-name dialplans.phu73l.net --dns-digitalocean --dns-digitalocean-credentials conf/certbot-creds.ini
 
@@ -79,13 +83,14 @@ This does not normally have to be done.
 - visit AWS ACM web console
 - change region to us-east-1
 
+
 # Test
 
-POST to a smoke test URL as described in test.md.
+Run the itest tests, or POST to a smoke test URL, as described in test.md.
 
 # Notes
 
-The box that certbot is run on stores the creds and becomes a local registry for the certs, when we register on create/update, Let's Encrypt sends the reminder email. Do we need the local certs when we renew or can they be thrown away after they're in ACM? Files are stored in /etc/letsencrypt.
+The box that certbot is run on stores the creds and becomes a local registry for the certs, when we register on create/update, Let's Encrypt sends the reminder email. Do we need the local certs stored in /etc/letsencrypt when we renew or can they be thrown away after they're in ACM?
 
 The cert expiry is short, this process must be repeated each time. I think the usual process is to have the infrastructure and staff, a networked box running certbot and a human to keep it running? It doesn't look hard if we aren't really concerned about security, need to run it with an auth hook periodically for autorewnewal. Might be worth it to just buy 4 certs a year?
 

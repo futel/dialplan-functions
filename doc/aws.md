@@ -30,7 +30,10 @@ Using the AWS console:
 
 ## Set up environment secrets
 
-Populate app/chalicelib/environment/.env:
+Populate .env to match .env.sample:
+- app-dialplan/chalicelib/environment/.env
+- app-ops/chalicelib/environment/.env
+
 - ASSET_HOST dialplan-assets S3 bucket URL
 - AWS_DEFAULT_REGION us-west-2
 - AWS_LOGS_TOPIC_ARN logs SNS topic ARN
