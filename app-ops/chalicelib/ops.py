@@ -14,7 +14,12 @@ def _validate(request, env):
         return
     raise NotImplementedError
 
+# This is intended to shake out errors and other outcomes that indicate the
+# connected status of the extensions.
 def exercise(event, env):
+    """
+    Call the SIP URI of an extension and play a dialplan with the twilio API.
+    """
     util.log("exercise")
     # We could use the host header in the request instead?
     stage = env['stage']
@@ -23,6 +28,9 @@ def exercise(event, env):
     twilio_auth_token = env['TWILIO_AUTH_TOKEN']
     client = Client(twilio_account_sid, twilio_auth_token)
 
+    # Extensions of interest.
+    # Don't include extensions in workplaces or other environments where we
+    # don't want to disturb a human.
     extensions = [
         #'alleymaple',
         'bottles-and-cans-one',
@@ -52,9 +60,8 @@ def exercise(event, env):
     url = "https://{stage}.dialplans.phu73l.net/ivr?context={context}".format(
         stage=stage, context=context)
 
-    util.log(url)
-
-    # XXX Do we need to specify metric_dialer_status as the status_callback?
+    util.log("calling {}".format(extension))
+    # We need to specify a status callback such as metric_dialer_status.
     #status_callback=statusCallbackUrl,
     #status_callback_event=['initiated', 'ringing', 'answered', 'completed'],
     call = client.calls.create(
