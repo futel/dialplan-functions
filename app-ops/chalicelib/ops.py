@@ -21,8 +21,7 @@ def exercise(event, env):
     Call the SIP URI of an extension and play a dialplan with the twilio API.
     """
     util.log("exercise")
-    # We could use the host header in the request instead?
-    stage = env['stage']
+    stage = util.get_instance(env)
 
     twilio_account_sid = env['TWILIO_ACCOUNT_SID']
     twilio_auth_token = env['TWILIO_AUTH_TOKEN']
@@ -59,12 +58,14 @@ def exercise(event, env):
     # URL to return twiml for callee to experience.
     url = "https://{stage}.dialplans.phu73l.net/ivr?context={context}".format(
         stage=stage, context=context)
+    # URL to be posted with call status.
+    status_callback_url = (
+        "https://{stage}.dialplans.phu73l.net/metric_dialer_status")
 
     util.log("calling {}".format(extension))
-    # We need to specify a status callback such as metric_dialer_status.
-    #status_callback=statusCallbackUrl,
-    #status_callback_event=['initiated', 'ringing', 'answered', 'completed'],
     call = client.calls.create(
         to=to,
         from_="+15034681337",
-        url=url)
+        url=url,
+        status_callback_event='completed', #['initiated', 'ringing', 'answered']
+        status_callback=status_callback_url)

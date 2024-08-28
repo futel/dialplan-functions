@@ -1,3 +1,8 @@
+def get_instance(env):
+    # We could use the host header in the request instead?
+    #host = request.headers['host']
+    return env['stage']
+
 def log(msg):
     print(msg)
 
