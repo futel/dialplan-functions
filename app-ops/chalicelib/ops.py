@@ -2,6 +2,7 @@
 Functions for ops HTTP endpoints.
 """
 import datetime
+import random
 from twilio.rest import Client
 
 from . import util
@@ -48,9 +49,11 @@ def exercise(event, env):
     # We want to choose extensions evenly.
     # We hope not to call an extension twice in a row, so we hope we aren't
     # called twice in a minute or minute modulo the number of choices!
-    minute = datetime.datetime.fromisoformat(event.time).minute
-    choice = minute % len(extensions)
-    extension = extensions[choice]
+    # minute = datetime.datetime.fromisoformat(event.time).minute
+    # choice = minute % len(extensions)
+    # extension = extensions[choice]
+    # Bogus, we would rather be deterministic, hope the seed is correct, etc.
+    extension = random.choice(extensions)
 
     to = 'sip:{extension}@direct-futel-{stage}.sip.twilio.com'.format(
         extension=extension, stage=stage)
