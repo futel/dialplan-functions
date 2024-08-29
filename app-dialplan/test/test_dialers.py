@@ -77,7 +77,7 @@ class TestMetricDialerStatus(TestCase):
                 'To': 'To',
                 'From': 'sip:test-one@direct-futel-nonemergency-stage.sip.twilio.com',
                 'DialCallStatus': 'completed'})
-        got = dialers._request_to_metric_events(request, env)
+        got = dialers._request_to_metric_events('completed', request, env)
         self.assertEqual(
             got, ('outgoing_call', 'outgoing_dialstatus_completed_test-one'))
 
@@ -89,7 +89,7 @@ class TestMetricDialerStatus(TestCase):
                 'To': '+19713512383',
                 'From': '+19713512383',
                 'DialCallStatus': 'completed'})
-        got = dialers._request_to_metric_events(request, env)
+        got = dialers._request_to_metric_events('completed', request, env)
         self.assertEqual(
             got, ('incoming_call', 'incoming_dialstatus_completed_test-one'))
 

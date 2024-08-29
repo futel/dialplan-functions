@@ -31,15 +31,18 @@ def _get_sip_domain(extension, extension_map, request):
             '.' +
             sip_domain_suffix)
 
-def _request_to_metric_events(request, env):
+def _call_status(request):
+    """Return the call status indicated by the request."""
+    call_status = request.post_fields.get('DialCallStatus')
+    if call_status:
+        # Status callack from twilio pv running twiml on call create.
+        return call_status
+    # Status callack from twilio REST client on call create.
+    return request.post_fields.get('CallStatus')
+
+def _request_to_metric_events(call_status, request, env):
     """Return sequence of metric event names from request."""
     from_uri = request.post_fields['From']
-    # Status callack from twilio pv running twiml on call create.
-    dial_call_status = request.post_fields.get('DialCallStatus')
-    if not dial_call_status:
-        # Status callack from twilio REST client on call create.
-        dial_call_status = request.post_fields.get('CallStatus')
-
     endpoint = util.request_to_endpoint(request, env)
     if util.sip_to_user(from_uri):
         # Outgoing from Twilio SIP Domain,
@@ -58,7 +61,7 @@ def _request_to_metric_events(request, env):
         dial_event = "incoming_call"
         dial_status_event_base = "incoming_dialstatus_"
 
-    dial_status_event = dial_status_event_base + dial_call_status + '_' + endpoint
+    dial_status_event = dial_status_event_base + call_status + '_' + endpoint
     return (dial_event, dial_status_event)
 
 def dial_outgoing(request, env):
@@ -226,7 +229,8 @@ def metric_dialer_status(request, env):
     """
     # Perform the side effects of publishing metrics for call status.
     metric.publish('metric_dialer_status', request, env)
-    for event_name in _request_to_metric_events(request, env):
+    call_status = _call_status(request)
+    for event_name in _request_to_metric_events(call_status, request, env):
         metric.publish(event_name, request, env)
     # Perform the side effects of publishing metrics and logs for errors.
     error_code = request.post_fields.get('ErrorCode')
@@ -239,11 +243,11 @@ def metric_dialer_status(request, env):
 
     # Return TwiML.
     response = VoiceResponse()
-    if request.post_fields['DialCallStatus'] == 'failed':
+    if call_status == 'failed':
         return str(util.reject(request, env))
-    if request.post_fields['DialCallStatus'] == 'busy':
+    if call_status == 'busy':
         return str(util.reject(request, env, reason='busy'))
-    if request.post_fields['DialCallStatus'] == 'no-answer':
+    if call_status == 'no-answer':
         # This could be no pickup or not registered.
         return str(util.reject(request, env, reason='busy'))
     # If the first iteration on handset pickup is a local menu,
