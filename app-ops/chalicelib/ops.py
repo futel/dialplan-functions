@@ -44,13 +44,13 @@ def exercise(event, env):
         'landline',
         #'souwester'
     ]
-    # We want to hit extensions evenly.
-    # We have fewer than 24 extensions, so we find the next extension modulo
-    # the hour of the day.
-    # We assume that we aren't called twice in an hour, and every hour is
-    # represented evenly in the long run.
-    hour = datetime.datetime.fromisoformat(event.time).hour
-    extension = extensions[len(extensions) % hour]
+    # Choose the next extension to call modulo the current minute.
+    # We want to choose extensions evenly.
+    # We hope not to call an extension twice in a row, so we hope we aren't
+    # called twice in a minute or minute modulo the number of choices!
+    minute = datetime.datetime.fromisoformat(event.time).minute
+    choice = minute % len(extensions)
+    extension = extensions[choice]
 
     to = 'sip:{extension}@direct-futel-{stage}.sip.twilio.com'.format(
         extension=extension, stage=stage)

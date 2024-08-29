@@ -14,6 +14,6 @@ def post_fields(request):
     return dict(
         parse.parse_qsl(request.raw_body.decode('UTF-8')))
 
-@app.schedule(Rate(1, unit=Rate.HOURS))
+@app.schedule(Rate(10, unit=Rate.MINUTES))
 def exercise(event):
     return ops.exercise(event, env)
