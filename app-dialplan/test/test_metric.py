@@ -19,6 +19,13 @@ class TestMetric(TestCase):
         self.assertTrue(
             metric.publish('user_event', request, env))
 
+    def test_publish_twilio_error(self):
+        self.assertTrue(
+            metric.publish_twilio_error(
+                'foo-bar',
+                {'resource_sid': 'foo', 'service_sid': None, 'error_code': '21609', 'more_info': {'Msg': 'Invalid Url for callSid: bar invalid statusCallbackUrl: https://{baz}.dialplans.phu73l.net/metric_dialer_status', 'invalidStatusCallbackUrl': 'https://{baz}.dialplans.phu73l.net/metric_dialer_status', 'ErrorCode': '21609', 'LogLevel': 'WARNING'}, 'webhook': {'type': 'application/json', 'request': {'url': None, 'method': None, 'headers': {}, 'parameters': {}}, 'response': {'status_code': None, 'headers': {}, 'body': None}}},
+                env))
+
     def test_event_to_message(self):
         out = {
             "timestamp": "2023-05-11T22:36:13.000489",
