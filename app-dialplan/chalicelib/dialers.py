@@ -34,7 +34,11 @@ def _get_sip_domain(extension, extension_map, request):
 def _request_to_metric_events(request, env):
     """Return sequence of metric event names from request."""
     from_uri = request.post_fields['From']
-    dial_call_status = request.post_fields['DialCallStatus']
+    # Status callack from twilio pv running twiml on call create.
+    dial_call_status = request.post_fields.get('DialCallStatus')
+    if not dial_call_status:
+        # Status callack from twilio REST client on call create.
+        dial_call_status = request.post_fields.get('CallStatus')
 
     endpoint = util.request_to_endpoint(request, env)
     if util.sip_to_user(from_uri):
@@ -220,11 +224,11 @@ def metric_dialer_status(request, env):
     Metric the dial status callback attributes from request,
     and return a TwiML string used to continue the call.
     """
-    # Perform the side effects.
+    # Perform the side effects of publishing metrics for call status.
     metric.publish('metric_dialer_status', request, env)
     for event_name in _request_to_metric_events(request, env):
         metric.publish(event_name, request, env)
-
+    # Perform the side effects of publishing metrics and logs for errors.
     error_code = request.post_fields.get('ErrorCode')
     if error_code:
         error_event = 'error-{}'.format(error_code)
