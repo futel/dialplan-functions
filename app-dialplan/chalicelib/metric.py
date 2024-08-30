@@ -4,7 +4,7 @@ from . import sns_client
 from . import util
 
 metric_host_base = 'dialplan-functions'
-default_endpoint = "system"
+#default_endpoint = "system"
 
 def _get_metric_hostname(request):
     """
@@ -44,15 +44,12 @@ def publish_twilio_error(event, message, env):
     # The event is from a twilio error webhook.
     # 'sip:demo-one@direct-futel-stage.sip.twilio.com'
     url = message['webhook']['request']['url']
-    # XXX we care about the endpoint, this is the incoming leg to it
     # ('sip:demo-one', 'direct-futel-stage.sip.twilio.com')
-    #(endpoint, host) = url.split('@')
-    #endpoint = endpoint.split(':')[1] # 'demo-one'
-    host = url.split('@')[1]    # 'direct-futel-stage.sip.twilio.com'
+    (endpoint, host) = url.split('@')
+    endpoint = endpoint.split(':')[1] # 'demo-one'
     hostname = host.split('.')[0]      # 'direct-futel-stage'
     hostname = hostname.split('-')[-1] # 'stage'
-    # XXX Use the destination endpoint we found.
-    return _publish(event, default_endpoint, hostname, env)
+    return _publish(event, endpoint, hostname, env)
 
 # def publish_twilio_error(event, message, env):
 #     """Publish an error event."""
