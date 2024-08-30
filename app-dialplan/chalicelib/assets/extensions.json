@@ -3,7 +3,7 @@
         "outgoing": "outgoing_portland",
         "caller_id": "+15034681337",
         "enable_emergency": false,
-        "local_outgoing": false
+        "local_outgoing": true
     },
     "bottles-and-cans-one": {
         "outgoing": "outgoing_portland",
@@ -27,7 +27,7 @@
         "outgoing": "outgoing_portland",
         "caller_id": "+15034681337",
         "enable_emergency": true,
-        "local_outgoing": false
+        "local_outgoing": true
     },
     "demo-one": {
         "outgoing": "outgoing_safe",
@@ -63,7 +63,7 @@
         "outgoing": "outgoing_portland",
         "caller_id": "+15034681337",
         "enable_emergency": false,
-        "local_outgoing": false
+        "local_outgoing": true
     },
     "dome-office": {
         "outgoing": "outgoing_safe",
@@ -135,7 +135,7 @@
         "outgoing": "outgoing_ypsi",
         "caller_id": "+15034681337",
         "enable_emergency": false,
-        "local_outgoing": false
+        "local_outgoing": true
     },
     "sjac": {
         "outgoing": "outgoing_safe",
