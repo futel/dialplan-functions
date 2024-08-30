@@ -27,8 +27,8 @@ class TestMetric(TestCase):
                  'service_sid': None,
                  'error_code': '21609',
                  'more_info': {
-                     'Msg': 'Invalid Url for callSid: bar invalid statusCallbackUrl: https://{baz}.dialplans.phu73l.net/metric_dialer_status',
-                     'invalidStatusCallbackUrl': 'https://{baz}.dialplans.phu73l.net/metric_dialer_status',
+                     'Msg': 'foo',
+                     'invalidStatusCallbackUrl': 'bar',
                      'ErrorCode': '21609',
                      'LogLevel': 'WARNING'},
                  'webhook': {
