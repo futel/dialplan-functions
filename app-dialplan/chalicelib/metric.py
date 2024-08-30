@@ -44,11 +44,23 @@ def publish_twilio_error(event, message, env):
     # The event is from a twilio error webhook.
     # 'sip:demo-one@direct-futel-stage.sip.twilio.com'
     url = message['webhook']['request']['url']
-    # ('sip:demo-one', 'direct-futel-stage.sip.twilio.com')
-    (endpoint, host) = url.split('@')
-    endpoint = endpoint.split(':')[1] # 'demo-one'
-    hostname = host.split('.')[0]      # 'direct-futel-stage'
-    hostname = hostname.split('-')[-1] # 'stage'
+    if url:
+        # ('sip:demo-one', 'direct-futel-stage.sip.twilio.com')
+        (endpoint, host) = url.split('@')
+        endpoint = endpoint.split(':')[1] # 'demo-one'
+        hostname = host.split('.')[0]      # 'direct-futel-stage'
+        hostname = hostname.split('-')[-1] # 'stage'
+    else:
+        # We get an url of None when we timeout trying to call a registered
+        # endpoint, twilio error 32011.
+        # '<sip:demo-one@foo:5060>'
+        to = message['webhook']['request']['parameters']['To']
+        (endpoint, _) = to.split('@')
+        endpoint = endpoint[1:] # 'sip:demo-one'
+        # The hostname is parseable from the From paramater, but it's ugly.
+        # XXX Just assume the worst.
+        #'From': '"+15034681337" <sip:+15034681337@direct-futel-prod.sip.twilio.com>;tag=90101523_c3356d0b_8c4a3aa3-3f2a-46be-9504-09b82ef3ea6b'}
+        hostname = 'prod'
     return _publish(event, endpoint, hostname, env)
 
 # def publish_twilio_error(event, message, env):
