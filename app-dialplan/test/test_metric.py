@@ -23,7 +23,25 @@ class TestMetric(TestCase):
         self.assertTrue(
             metric.publish_twilio_error(
                 'foo-bar',
-                {'resource_sid': 'foo', 'service_sid': None, 'error_code': '21609', 'more_info': {'Msg': 'Invalid Url for callSid: bar invalid statusCallbackUrl: https://{baz}.dialplans.phu73l.net/metric_dialer_status', 'invalidStatusCallbackUrl': 'https://{baz}.dialplans.phu73l.net/metric_dialer_status', 'ErrorCode': '21609', 'LogLevel': 'WARNING'}, 'webhook': {'type': 'application/json', 'request': {'url': None, 'method': None, 'headers': {}, 'parameters': {}}, 'response': {'status_code': None, 'headers': {}, 'body': None}}},
+                {'resource_sid': 'foo',
+                 'service_sid': None,
+                 'error_code': '21609',
+                 'more_info': {
+                     'Msg': 'Invalid Url for callSid: bar invalid statusCallbackUrl: https://{baz}.dialplans.phu73l.net/metric_dialer_status',
+                     'invalidStatusCallbackUrl': 'https://{baz}.dialplans.phu73l.net/metric_dialer_status',
+                     'ErrorCode': '21609',
+                     'LogLevel': 'WARNING'},
+                 'webhook': {
+                     'type': 'application/json',
+                     'request': {
+                         'url': 'sip:demo-one@direct-futel-stage.sip.twilio.com',
+                         'method': None,
+                         'headers': {},
+                         'parameters': {}},
+                     'response': {
+                         'status_code': None,
+                         'headers': {},
+                         'body': None}}},
                 env))
 
     def test_event_to_message(self):
