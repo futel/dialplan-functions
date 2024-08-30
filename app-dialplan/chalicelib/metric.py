@@ -41,7 +41,17 @@ def publish(event, request, env):
 
 def publish_twilio_error(event, message, env):
     """Publish an error event."""
-    # The event is  from a twilio error webhook.
+    # The event is from a twilio error webhook.
+    # 'sip:demo-one@direct-futel-stage.sip.twilio.com'
+    url = message['webhook']['request']['url']
+    host = url.split('@')[1]    # 'direct-futel-stage.sip.twilio.com'
+    hostname = host.split('.')[0]      # 'direct-futel-stage'
+    hostname = hostname.split('-')[-1] # 'stage'
+    return _publish(event, default_endpoint, hostname, env)
+
+def publish_twilio_error(event, message, env):
+    """Publish an error event."""
+    # The event is from a twilio error webhook.
     # If the event was from a twilio pv dial verb call, we expect url to be a
     # sip address, like 'sip:demo-one@direct-futel-stage.sip.twilio.com'.
     url = message['webhook']['request']['url']

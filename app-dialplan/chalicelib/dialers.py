@@ -50,7 +50,7 @@ def _request_to_metric_events(call_status, request, env):
         dial_event = "outgoing_call"
         dial_status_event_base = "outgoing_dialstatus_"
     elif endpoint == "hot-leet":
-        # from_uri is the PSTN number for hot-leet,w which we use for calls made
+        # from_uri is the PSTN number for hot-leet, which we use for calls made
         # with the twilio client.
         dial_event = "outgoing_call"
         dial_status_event_base = "outgoing_dialstatus_"
@@ -293,7 +293,7 @@ def _enqueue_operator_call(request, env):
         env)
 
     # Call each operator and play the TwiML.
-    # XXX Do we need to set status_callback to metric call status?
+    # XXX We need to set status_callback for side effects like metrics.
     for number in operator_numbers:
         call = client.calls.create(
             twiml=str(response),

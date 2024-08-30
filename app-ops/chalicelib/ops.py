@@ -63,7 +63,7 @@ def exercise(event, env):
         stage=stage, context=context)
     # URL to be posted with call status.
     status_callback_url = (
-        "https://{stage}.dialplans.phu73l.net/metric_dialer_status".format(
+        "https://{stage}.dialplans.phu73l.net/ops/call_status_exercise".format(
             stage=stage))
 
     util.log("calling {}".format(extension))

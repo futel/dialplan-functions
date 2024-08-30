@@ -92,6 +92,11 @@ def _index(request, env):
 def _index(request, env):
     return dialers.outgoing_operator_leave(request, env)
 
+@route('/ops/call_status_exercise')
+@setup
+def _index(request, env):
+    return ops.call_status_exercise(request, env)
+
 @route('/ops/log')
 @setup
 def _index(request, env):
