@@ -168,13 +168,14 @@ def dial_sip_asterisk(extension, request, env):
     sip_uri = (f'{sip_uri};'
                f'region=us2?x-callerid={caller_id}&x-enableemergency={enable_emergency}')
 
+    # Create and return a response document.
     response = VoiceResponse()
-    # XXX default timeLimit is 4 hours, should be smaller, in seconds
-    dial = response.dial(
-        answer_on_bridge=True,
-        action=function_url(request, 'metric_dialer_status'))
+    # XXX Should specify timeout in seconds, default is 4h.
+    dial = response.dial(answer_on_bridge=True)
     dial.sip(sip_uri)
-    # XXX did the Asterisk context go to the parent and hang up, leaving us here?
+    # Don't specify anything after the dial. Assume the call will be hung up.
+    # Don't bother with an action callback to be called with the outcome,
+    # don't try to side effect like log or metric the outcome.
     return response
 
 def deserialize_pstn(request):
