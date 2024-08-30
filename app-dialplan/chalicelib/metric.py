@@ -41,14 +41,22 @@ def publish(event, request, env):
 
 def publish_twilio_error(event, message, env):
     """Publish an error event."""
-    # 'sip:demo-one@direct-futel-stage.sip.twilio.com'
+    # The event is  from a twilio error webhook.
+    # If the event was from a twilio pv dial verb call, we expect url to be a
+    # sip address, like 'sip:demo-one@direct-futel-stage.sip.twilio.com'.
     url = message['webhook']['request']['url']
     if url:
-        # This is an error event from a twilio error webhook.
-        host = url.split('@')[1]    # 'direct-futel-stage.sip.twilio.com'
-        hostname = host.split('.')[0]      # 'direct-futel-stage'
-        hostname = hostname.split('-')[-1] # 'stage'
+        try:
+            host = url.split('@')[1]    # 'direct-futel-stage.sip.twilio.com'
+            hostname = host.split('.')[0]      # 'direct-futel-stage'
+            hostname = hostname.split('-')[-1] # 'stage'
+        except Exception:
+            # If the event was from a twilio rest api call, we expect url to be
+            # the status_callback url, like
+            # 'https://stage.dialplans.phu73l.net/metric_dialer_status'.
+            host = url.split('//')[1] # 'stage.dialplans.phu73l.net/metric_dialer_status'
+            hostname = host.split('.')[0] # 'stage'
     else:
-        # We are confused, just assume we are on prod?
+        # We are confused, just assume the worst, we are on prod?
         hostname = "prod"
     return _publish(event, default_endpoint, hostname, env)
