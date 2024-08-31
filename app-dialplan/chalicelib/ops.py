@@ -3,6 +3,7 @@ Functions for ops HTTP endpoints.
 This should probably be an entirely separate project, but the tooling is here.
 """
 import json
+from twilio.twiml.voice_response import VoiceResponse
 
 from . import metric
 from . import sns_client
@@ -19,9 +20,16 @@ def _validate(request, env):
         return
     raise NotImplementedError
 
+def _hangup():
+    """Return twiml string that hangs up."""
+    response = VoiceResponse()
+    response.hangup()
+    return str(response)
+
 def call_status_exercise(request, env):
     """
     Peform side effects from an outgoing rest api call.
+    Return a twiml hangup document string.
     """
     # We are the callback from a twilio REST client after call create.
     # XXX Need to validate caller.
@@ -51,9 +59,12 @@ def call_status_exercise(request, env):
     if error_message:
         util.log(error_message)
 
+    return _hangup()
+
 def call_status_sip(request, env):
     """
     Peform side effects from an outgoing twilio pv sip dial call.
+    Return a twiml hangup document string.
     """
     # XXX Need to validate caller.
 
@@ -75,6 +86,8 @@ def call_status_sip(request, env):
     error_message = request.post_fields.get('ErrorMessage')
     if error_message:
         util.log(error_message)
+
+    return _hangup()
 
 def log(request, env):
     """HTTP endpoint for doing something with a log message."""
