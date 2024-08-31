@@ -97,6 +97,11 @@ def _index(request, env):
 def _index(request, env):
     return ops.call_status_exercise(request, env)
 
+@route('/ops/call_status_sip')
+@setup
+def _index(request, env):
+    return ops.call_status_sip(request, env)
+
 @route('/ops/log')
 @setup
 def _index(request, env):

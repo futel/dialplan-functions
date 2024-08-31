@@ -33,7 +33,7 @@ class TestDialers(TestCase):
                 "SipDomain": "direct-futel-stage.sip.twilio.com"})
         check_response(
             response,
-            '<?xml version="1.0" encoding="UTF-8"?><Response><Dial action="https://stage.dialplans.phu73l.net/metric_dialer_status" answerOnBridge="true" callerId="+19713512383"><Sip>sip:cesar-chavez@direct-futel-stage.sip.twilio.com</Sip></Dial></Response>')
+            '<?xml version="1.0" encoding="UTF-8"?><Response><Dial action="https://stage.dialplans.phu73l.net/ops/call_status_sip" answerOnBridge="true" callerId="+19713512383"><Sip>sip:cesar-chavez@direct-futel-stage.sip.twilio.com</Sip></Dial></Response>')
 
     def test_dial_outgoing_pound(self):
         response = requests.post(
@@ -65,7 +65,7 @@ class TestDialers(TestCase):
                 "From": "+15034681337"})
         check_response(
             response,
-            '<?xml version="1.0" encoding="UTF-8"?><Response><Dial action="https://stage.dialplans.phu73l.net/metric_dialer_status" answerOnBridge="true" callerId="+15034681337"><Sip>sip:landline@direct-futel-stage.sip.twilio.com</Sip></Dial></Response>')
+            '<?xml version="1.0" encoding="UTF-8"?><Response><Dial action="https://stage.dialplans.phu73l.net/ops/call_status_sip" answerOnBridge="true" callerId="+15034681337"><Sip>sip:landline@direct-futel-stage.sip.twilio.com</Sip></Dial></Response>')
 
 
 class TestOps(TestCase):

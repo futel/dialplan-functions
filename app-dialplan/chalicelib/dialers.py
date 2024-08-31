@@ -146,15 +146,10 @@ def _dial_sip(extension, from_number, request, env):
 
     response = VoiceResponse()
     # XXX default timeLimit is 4 hours, should be smaller, in seconds
-    # XXX We want to simplify out metric_dialer_status here with its own
-    # explicit callback?
-    # We shouldn't care who the call is coming from, it should be the default
-    # system endpoint. Implement another ops endpoint, ops/call_status_sip.
-    # Then we know calling that is to metric incoming sip status, less parsing.
     dial = response.dial(
         answer_on_bridge=True,
         caller_id=from_number,
-        action=util.function_url(request, 'metric_dialer_status'))
+        action=util.function_url(request, 'ops/call_status_sip'))
     dial.sip(sip_uri)
     return str(response)
 
