@@ -29,7 +29,9 @@ def _event_to_message(endpoint, user_event, hostname):
 
 def _publish(event, endpoint, hostname, env):
     message = _event_to_message(endpoint, event, hostname)
-    util.log('metric endpoint:{} event:{}'.format(endpoint, event))
+    util.log(
+        'metric hostname:{} endpoint:{} event:{}'.format(
+            hostname, endpoint, event))
     return sns_client.publish_metric(message, env)
 
 # Publish takes .1s! Throw it in a worker queue?
