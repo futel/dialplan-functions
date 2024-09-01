@@ -44,6 +44,8 @@ def publish(event, request, env):
 def publish_twilio_error(event, message, env):
     """Publish an error event."""
     # The event is from a twilio error webhook.
+    # Note that all webhooks post to the same prod url, we need to determine
+    # what instance/hostname it comes from.
     # 'sip:demo-one@direct-futel-stage.sip.twilio.com'
     url = message['webhook']['request']['url']
     if url:
@@ -51,6 +53,7 @@ def publish_twilio_error(event, message, env):
         (endpoint, host) = url.split('@')
         endpoint = endpoint.split(':')[1] # 'demo-one'
         hostname = host.split('.')[0]      # 'direct-futel-stage'
+        # XXX should be dialplan-functions-stage
         hostname = hostname.split('-')[-1] # 'stage'
     else:
         # We get an url of None when we timeout trying to call a registered
@@ -63,6 +66,7 @@ def publish_twilio_error(event, message, env):
         # XXX Just assume the worst.
         #'From': '"+15034681337" <sip:+15034681337@direct-futel-prod.sip.twilio.com>;tag=90101523_c3356d0b_8c4a3aa3-3f2a-46be-9504-09b82ef3ea6b'}
         hostname = 'prod'
+    hostname = metric_host_base + '-' + hostname
     return _publish(event, endpoint, hostname, env)
 
 # def publish_twilio_error(event, message, env):
