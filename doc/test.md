@@ -36,11 +36,6 @@ Outgoing IVR
 - curl -d "From=sip:test-one@direct-futel-stage.sip.twilio.com&SipDomain=direct-futel-stage.sip.twilio.com" -X POST "https://stage.dialplans.phu73l.net/ivr?context=outgoing_safe&lang=en&parent=outgoing_safe&Digits=1"
 - XXX parent, lang
 
-Resources which are redirected to by dial_outgoing and/or dial_sip_e164
-- curl -d "From=sip:dome-booth@direct-futel-stage.sip.twilio.com&SipDomain=direct-futel-stage.sip.twilio.com&To=sip:5035551212&DialCallStatus=busy@direct-futel-stage.sip.twilio.com" -X POST https://stage.dialplans.phu73l.net/metric_dialer_status
-- curl -d "From=sip:dome-booth@direct-futel-stage.sip.twilio.com&SipDomain=direct-futel-stage.sip.twilio.com&To=sip:5035551212&DialCallStatus=busy@direct-futel-stage.sip.twilio.com" -X POST https://stage.dialplans.phu73l.net/metric_dialer_status
-- XXX more status for metric_dialer_status
-
 XXX todo
 IVR
 - doctl --config config.yaml serverless functions invoke dialers/ivr \

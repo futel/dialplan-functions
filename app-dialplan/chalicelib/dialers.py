@@ -222,44 +222,6 @@ def ivr(request, env):
         ivrs.ivr_context(
             dest_c_dict, lang, c_name, stanza, iteration, request, env))
 
-def metric_dialer_status(request, env):
-    """
-    Metric the dial status callback attributes from request,
-    and return a TwiML string used to continue the call.
-    """
-    # Perform the side effects of publishing metrics for call status.
-    metric.publish('metric_dialer_status', request, env)
-    call_status = _call_status(request)
-    for event_name in _request_to_metric_events(call_status, request, env):
-        metric.publish(event_name, request, env)
-    # Perform the side effects of publishing metrics and logs for errors.
-    error_code = request.post_fields.get('ErrorCode')
-    if error_code:
-        error_event = 'error-{}'.format(error_code)
-        metric.publish(error_event, request, env)
-    error_message = request.post_fields.get('ErrorMessage')
-    if error_message:
-        util.log(error_message)
-
-    # Return TwiML.
-    response = VoiceResponse()
-    if call_status == 'failed':
-        return str(util.reject(request, env))
-    if call_status == 'busy':
-        return str(util.reject(request, env, reason='busy'))
-    if call_status == 'no-answer':
-        # This could be no pickup or not registered.
-        return str(util.reject(request, env, reason='busy'))
-    # If the first iteration on handset pickup is a local menu,
-    # we want to return to that.
-    # If the first interation is a SIP call to a remote menu,
-    # we want to SIP it again if that
-    # call hung up due to a user hitting the back key from the top,
-    # otherwise we want to end.
-    # If the first interation is a dialtone, we want to end.
-    response.hangup()
-    return str(response)
-
 def _enqueue_operator_call(request, env):
     """
     Perform side effects for the enqueued operator call.

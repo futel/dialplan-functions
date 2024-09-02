@@ -232,7 +232,7 @@ def dial_pstn(to_number, from_uri, request, env):
     dial = response.dial(
         caller_id=caller_id,
         answer_on_bridge=True,
-        action=function_url(request, 'metric_dialer_status'))
+        action=function_url(request, 'ops/call_status_pstn'))
     dial.number(to_number)
     return response
 

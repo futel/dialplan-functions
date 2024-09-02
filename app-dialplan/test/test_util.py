@@ -60,7 +60,7 @@ class TestUtil(TestCase):
         self.assertEqual(
             str(response),
             '<?xml version="1.0" encoding="UTF-8"?><Response>'
-            '<Dial action="https://host/metric_dialer_status" '
+            '<Dial action="https://host/ops/call_status_pstn" '
             'answerOnBridge="true" callerId="+19713512383">'
             '<Number>+15035551212</Number></Dial></Response>')
 

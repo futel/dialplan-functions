@@ -67,11 +67,6 @@ def _index(request, env):
 def _index(request, env):
     return dialers.ivr(request, env)
 
-@route('/metric_dialer_status')
-@setup
-def _index(request, env):
-    return dialers.metric_dialer_status(request, env)
-
 @route('/enqueue_operator_wait')
 @setup
 def _index(request, env):
@@ -96,6 +91,11 @@ def _index(request, env):
 @setup
 def _index(request, env):
     return ops.call_status_exercise(request, env)
+
+@route('/ops/call_status_pstn')
+@setup
+def _index(request, env):
+    return ops.call_status_pstn(request, env)
 
 @route('/ops/call_status_sip')
 @setup
