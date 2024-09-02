@@ -77,10 +77,9 @@ def sip_to_user(sip_uri):
     except IndexError:
         return None
 
-def sip_to_extension(sip_uri, env):
-    """Return the extension from a SIP URI, or None."""
-    user = sip_to_user(sip_uri)
-    return env['extensions'].get(user)
+def sip_to_extension(sip_user, env):
+    """Return the extension from a SIP user, or None."""
+    return env['extensions'].get(sip_user)
 
 def e164_to_extension(e164, extension_map):
     """Return an extension key for E.164 string, or None."""

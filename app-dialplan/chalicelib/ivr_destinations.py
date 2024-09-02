@@ -125,8 +125,9 @@ def internal_dialtone(request, env):
 
 def call_911_911(request, env):
     """Return TwiML to call 911."""
-    from_uri = request.post_fields['From']
-    from_extension = util.sip_to_extension(from_uri, env)
+    # This is an outgoing call from a sip client.
+    from_user = util.sip_to_user(request.post_fields['From'])
+    from_extension = util.sip_to_extension(from_user, env)
     return util.dial_pstn("+1911", from_extension, request, env)
 
 def call_911_9_bounce(request, env):
@@ -134,8 +135,9 @@ def call_911_9_bounce(request, env):
     If we can't make an emergency call, return a hangup response.
     Otherwise, return None.
     """
-    from_uri = request.post_fields['From']
-    from_extension = util.sip_to_extension(from_uri, env)
+    # This is an outgoing call from a sip client.
+    from_user = util.sip_to_user(request.post_fields['From'])
+    from_extension = util.sip_to_extension(from_user, env)
     if not from_extension['enable_emergency']:
         response = VoiceResponse()
         response.hangup()
@@ -146,8 +148,10 @@ def dial_nanpa(nanpa):
     """Return a function to return TwiML to dial NANPA number."""
     e164 = "+1" + nanpa
     def curried(request, env):
-        from_uri = request.post_fields['From']
-        from_extension = util.sip_to_extension(from_uri, env)
+        """Return twiml to dial the curried e164 number."""
+        # This is an outgoing call from a sip client.
+        from_user = util.sip_to_user(request.post_fields['From'])
+        from_extension = util.sip_to_extension(from_user, env)
         return util.dial_pstn(e164, from_extension, request, env)
     return curried
 

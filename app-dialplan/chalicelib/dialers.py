@@ -49,8 +49,7 @@ def dial_outgoing(request, env):
     from_user = util.sip_to_user(request.post_fields['From'])
     metric.publish('dial_outgoing', from_user, request, env)
     to_extension = util.deserialize_pstn(request)
-    from_uri = request.post_fields['From']
-    from_extension = util.sip_to_extension(from_uri, env)
+    from_extension = util.sip_to_extension(from_user, env)
     util.log('to_extension {}'.format(to_extension))
     if to_extension == '0':
         # Return twiml for the outgoing operator context.
@@ -146,9 +145,7 @@ def ivr(request, env):
     from_user = util.sip_to_user(request.post_fields['From'])
     metric.publish('ivr', from_user, request, env)
     # Params from twilio are in the body, params from us are in the
-    # query string. We aren't supposted to combine them.
-    from_uri = request.post_fields['From']
-
+    # query string. We aren't supposted to combine them in a request.
     digits = request.post_fields.get('Digits')
     c_name = request.query_params.get('context')
     parent_name = request.query_params.get('parent')
@@ -164,7 +161,7 @@ def ivr(request, env):
     if not c_name:
         # Presumably this is the first interaction, go to the
         # default context.
-        from_extension = util.sip_to_extension(from_uri, env)
+        from_extension = util.sip_to_extension(from_user, env)
         c_name = from_extension['outgoing']
         dest_c_dict = ivrs.context_dict(env['ivrs'], c_name)
     else:
@@ -212,8 +209,9 @@ def _enqueue_operator_call(request, env):
     Perform side effects for the enqueued operator call.
     Call operators with twiml for the accept menu.
     """
-    from_uri = request.post_fields['From']
-    from_extension = util.sip_to_extension(from_uri, env)
+    # This is an outgoing call from a sip client.
+    from_user = util.sip_to_user(request.post_fields['From'])
+    from_extension = util.sip_to_extension(from_user, env)
     from_number = from_extension['caller_id']
 
     twilio_account_sid = env['TWILIO_ACCOUNT_SID']
