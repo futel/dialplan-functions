@@ -45,7 +45,9 @@ def dial_outgoing(request, env):
     Return TwiML string to dial PSTN, dial SIP URI, or play IVR,
     with attributes from request.
     """
-    metric.publish('dial_outgoing', request, env)
+    # This is an outgoing call from a sip client.
+    from_user = util.sip_to_user(request.post_fields['From'])
+    metric.publish('dial_outgoing', from_user, request, env)
     to_extension = util.deserialize_pstn(request)
     from_uri = request.post_fields['From']
     from_extension = util.sip_to_extension(from_uri, env)
@@ -55,7 +57,7 @@ def dial_outgoing(request, env):
         # This is an ivr destination, so metric.
         # XXX Make a helper for this.
         dest_c_name = 'outgoing_operator_caller'
-        metric.publish(dest_c_name, request, env)
+        metric.publish(dest_c_name, from_user, request, env)
         dest_c_dict = ivrs.context_dict(env['ivrs'], dest_c_name)
         stanza = ivrs.get_stanza(None)
         iteration = ivrs.get_iteration(None)
@@ -74,25 +76,25 @@ def dial_outgoing(request, env):
             # the response for flask.
             return ivr(request, env)
         # The top menu is on the asterisk.
-        metric.publish('dial_sip_asterisk', request, env)
+        metric.publish('dial_sip_asterisk', from_user, request, env)
         return str(util.dial_sip_asterisk(to_extension, request, env))
 
     # It's an E.164 number, normalize, filter, transform.
     to_number = util.pstn_number(to_extension, from_extension['enable_emergency'])
     if not to_number:
         util.log('filtered pstn number {}'.format(to_extension))
-        metric.publish('reject', request, env)
+        metric.publish('reject', from_user, request, env)
         return str(util.reject(request, env))
 
     # If it's the number of one of our extensions, SIP call it.
     to_extension = util.e164_to_extension(to_number, env['extensions'])
     if to_extension:
-        metric.publish('dial_sip', request, env)
+        metric.publish('dial_sip', from_user, request, env)
         from_number = from_extension['caller_id']
         return _dial_sip(to_extension, from_number, request, env)
 
     # It's a PSTN number, call it.
-    metric.publish('dial_pstn', request, env)
+    metric.publish('dial_pstn', from_user, request, env)
     return str(util.dial_pstn(to_number, from_extension, request, env))
 
 def dial_sip_e164(request, env):
@@ -100,17 +102,22 @@ def dial_sip_e164(request, env):
     Return TwiML string to call an extension registered to our SIP Domains,
     looked up by the given E.164 number.
     """
-    metric.publish('dial_sip_e164', request, env)
+    # Is this an outgoing call from a sip client?
+    from_user = util.sip_to_user(request.post_fields['From'])
+    if not from_user:
+        # This is an incoming call to an e164 number for an extension.
+        # For the purposes of metrics it is from the generic system.
+        from_user = "hot-leet"
+    metric.publish('dial_sip_e164', from_user, request, env)
     to_number = request.post_fields['To']
-    from_uri = request.post_fields['From']
+    from_number = request.post_fields['From']
     to_number = util.pstn_number(to_number, enable_emergency=False)
 
     to_extension = util.e164_to_extension(to_number, env['extensions'])
     if to_extension:
-        return _dial_sip(to_extension, from_uri, request, env)
+        return _dial_sip(to_extension, from_number, request, env)
 
     util.log("Could not find extension for E.164 number")
-    metric.publish('reject', request, env)
     return str(util.reject(request, env))
 
 def _dial_sip(extension, from_number, request, env):
@@ -135,11 +142,13 @@ def ivr(request, env):
     or send the call to the Asterisk server if we can't find it.
     IVR TwiML can come from the IVR assets or the ivr_destinations module.
     """
-    metric.publish('ivr', request, env)
+    # This is an outgoing call from a sip client.
+    from_user = util.sip_to_user(request.post_fields['From'])
+    metric.publish('ivr', from_user, request, env)
     # Params from twilio are in the body, params from us are in the
     # query string. We aren't supposted to combine them.
     from_uri = request.post_fields['From']
-    #to_uri = request.post_fields['To']
+
     digits = request.post_fields.get('Digits')
     c_name = request.query_params.get('context')
     parent_name = request.query_params.get('parent')
@@ -180,20 +189,20 @@ def ivr(request, env):
             if destination:
                 # This is an ivr destination, so metric. We can assume this is
                 # the first stanza and iteration.
-                metric.publish(dest_c_name, request, env)
+                metric.publish(dest_c_name, from_user, request, env)
                 return str(destination(request, env))
             else:
                 # We don't know this context, so it's on the Asterisk server.
                 to_extension = dest_c_name
                 # This is an ivr destination, so metric.
-                metric.publish('dial_sip_asterisk', request, env)
+                metric.publish('dial_sip_asterisk', from_user, request, env)
                 # XXX we lose lang! Hopefully user remembers to hit *.
                 return str(util.dial_sip_asterisk(dest_c_name, request, env))
 
     # We got this far, it's in the context_dict.
     if stanza is ivrs.INTRO_STANZA:
         # This is an ivr destination, so metric.
-        metric.publish(dest_c_dict['name'], request, env)
+        metric.publish(dest_c_dict['name'], from_user, request, env)
     return str(
         ivrs.ivr_context(
             dest_c_dict, lang, c_name, stanza, iteration, request, env))
@@ -243,7 +252,9 @@ def outgoing_operator_dialer_status(request, env):
     Perform side effects after a hopefully bridged operator call ends,
     and return TwiML for operators who stayed on the line.
     """
-    metric.publish('outgoing_operator_dialer_status', request, env)
+    # This is an outgoing call from a sip client.
+    from_user = util.sip_to_user(request.post_fields['From'])
+    metric.publish('outgoing_operator_dialer_status', from_user, request, env)
     # call_status = request.post_fields['CallStatus']
     lang = request.query_params.get('lang', 'en')
     # Is this documented?
@@ -254,7 +265,7 @@ def outgoing_operator_dialer_status(request, env):
         # but the operator probably is the first to hang up usually.
         response = VoiceResponse()
         response.hangup()
-        metric.publish('outgoing_operator_completed', request, env)
+        metric.publish('outgoing_operator_completed', from_user, request, env)
         return str(response)
     elif dequeue_result == 'queue-empty':
         # Too late, tell the operator.
@@ -263,7 +274,7 @@ def outgoing_operator_dialer_status(request, env):
         dest_c_dict = ivrs.context_dict(env['ivrs'], dest_c_name)
         iteration = ivrs.get_iteration(None)
         # This is an ivr destination, so metric.
-        metric.publish(dest_c_name, request, env)
+        metric.publish(dest_c_name, from_user, request, env)
         return str(
             ivrs.ivr_context(
                 dest_c_dict,
@@ -281,7 +292,9 @@ def enqueue_operator_wait(request, env):
     Perform side effects and return TwiML string
     for the enqueue wait callback.
     """
-    metric.publish('enqueue_operator_wait', request, env)
+    # This is an outgoing call from a sip client.
+    from_user = util.sip_to_user(request.post_fields['From'])
+    metric.publish('enqueue_operator_wait', from_user, request, env)
     _enqueue_operator_call(request, env)
     response = VoiceResponse()
     # Play hold music until it's time to time out.
@@ -302,7 +315,9 @@ def enqueue_operator_record(request, env):
     Perform side effects and return TwiML string
     for the enqueue recording callback.
     """
-    metric.publish('enqueue_operator_record', request, env)
+    # This is an outgoing call from a sip client.
+    from_user = util.sip_to_user(request.post_fields['From'])
+    metric.publish('enqueue_operator_record', from_user, request, env)
     # This is not much notification, but the recordings are discoverable.
     util.log("Operator message: ".format(request.post_fields['RecordingUrl']))
     response = VoiceResponse()
@@ -344,14 +359,16 @@ def outgoing_operator_leave(request, env):
     """
     # We resume here after the wait callback caused the user to
     # leave the queue.
-    metric.publish('outgoing_operator_leave', request, env)
+    # This is an outgoing call from a sip client.
+    from_user = util.sip_to_user(request.post_fields['From'])
+    metric.publish('outgoing_operator_leave', from_user, request, env)
     queue_result = request.post_fields['QueueResult']
     util.log('caller left queue: {}'.format(queue_result))
-    from_uri = request.post_fields['From']
-    from_user = util.sip_to_user(from_uri)
     lang = request.query_params.get('lang', 'en')
     twilio_account_sid = env['TWILIO_ACCOUNT_SID']
     twilio_auth_token = env['TWILIO_AUTH_TOKEN']
+
+    # Handle side effects from caller surviving the queue wihout an operator.
     client = Client(twilio_account_sid, twilio_auth_token)
     if _is_operator_queue_empty(client):
         # There is no caller in the queue. Cancel or notify all
@@ -377,6 +394,7 @@ def outgoing_operator_leave(request, env):
                         request,
                         env))
                 record.update(twiml=response)
+
     # Return TwiML to continue the caller's call.
     response = VoiceResponse()
     if queue_result != 'bridged':

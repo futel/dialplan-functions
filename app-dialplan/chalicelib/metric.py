@@ -35,11 +35,10 @@ def _publish(event, endpoint, hostname, env):
     return sns_client.publish_metric(message, env)
 
 # Publish takes .1s! Throw it in a worker queue?
-def publish(event, request, env):
+def publish(event, user, request, env):
     """Publish an event from twilio programmable voice."""
-    endpoint = util.request_to_endpoint(request, env)
     hostname = _get_metric_hostname(request)
-    return _publish(event, endpoint, hostname, env)
+    return _publish(event, user, hostname, env)
 
 def publish_twilio_error(event, message, env):
     """Publish an error event."""
@@ -68,25 +67,3 @@ def publish_twilio_error(event, message, env):
         hostname = 'prod'
     hostname = metric_host_base + '-' + hostname
     return _publish(event, endpoint, hostname, env)
-
-# def publish_twilio_error(event, message, env):
-#     """Publish an error event."""
-#     # The event is from a twilio error webhook.
-#     # If the event was from a twilio pv dial verb call, we expect url to be a
-#     # sip address, like 'sip:demo-one@direct-futel-stage.sip.twilio.com'.
-#     url = message['webhook']['request']['url']
-#     if url:
-#         try:
-#             host = url.split('@')[1]    # 'direct-futel-stage.sip.twilio.com'
-#             hostname = host.split('.')[0]      # 'direct-futel-stage'
-#             hostname = hostname.split('-')[-1] # 'stage'
-#         except Exception:
-#             # If the event was from a twilio rest api call, we expect url to be
-#             # the status_callback url, like
-#             # 'https://stage.dialplans.phu73l.net/metric_dialer_status'.
-#             host = url.split('//')[1] # 'stage.dialplans.phu73l.net/metric_dialer_status'
-#             hostname = host.split('.')[0] # 'stage'
-#     else:
-#         # We are confused, just assume the worst, we are on prod?
-#         hostname = "prod"
-#     return _publish(event, default_endpoint, hostname, env)

@@ -17,7 +17,7 @@ class TestMetric(TestCase):
 
     def test_publish(self):
         self.assertTrue(
-            metric.publish('user_event', request, env))
+            metric.publish('user_event', "user", request, env))
 
     def test_publish_twilio_error(self):
         self.assertTrue(
