@@ -27,7 +27,7 @@
         "outgoing": "outgoing_portland",
         "caller_id": "+15039465227",
         "enable_emergency": true,
-        "local_outgoing": false
+        "local_outgoing": true
     },
     "clinton": {
         "outgoing": "outgoing_portland",
@@ -93,7 +93,7 @@
         "outgoing": "outgoing_portland",
         "caller_id": "+15034448615",
         "enable_emergency": true,
-        "local_outgoing": false
+        "local_outgoing": true
     },
     "groundscore-one": {
         "outgoing": "outgoing_portland",
@@ -123,7 +123,7 @@
         "outgoing": "outgoing_ypsi",
         "caller_id": "+17345476651",
         "enable_emergency": true,
-        "local_outgoing": false
+        "local_outgoing": true
     },
     "monitor-one": {
         "outgoing": "directories_detroit",
