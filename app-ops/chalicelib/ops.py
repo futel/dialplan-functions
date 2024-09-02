@@ -34,8 +34,8 @@ def exercise(event, env):
     extensions = [
         #'alleymaple',
         'bottles-and-cans-one',
-        'bottles-and-cans-two',
-        'breckenridge',
+        #'bottles-and-cans-two',
+        #'breckenridge',
         'cesar-chavez',
         #'clinton',
         'dome-basement',
