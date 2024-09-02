@@ -43,14 +43,14 @@ def call_status_exercise(request, env):
     dial_event = "outgoing_call"
     from_user = "hot-leet"
     dial_status_event = "outgoing_dialstatus_" + call_status + '_' + from_user
-    metric.publish(dial_event, from_user, request, env)
-    metric.publish(dial_status_event, from_user, request, env)
+    metric.publish(dial_event, from_user, env)
+    metric.publish(dial_status_event, from_user, env)
 
     # Perform the side effects of publishing metrics and logs for errors.
     error_code = request.post_fields.get('ErrorCode')
     if error_code:
         error_event = 'error-{}'.format(error_code)
-        metric.publish(error_event, from_user, request, env)
+        metric.publish(error_event, from_user, env)
     error_message = request.post_fields.get('ErrorMessage')
     if error_message:
         util.log(error_message)
@@ -73,14 +73,14 @@ def call_status_pstn(request, env):
     from_user = util.sip_to_user(request.post_fields['From'])
     dial_status_event = (
         "outgoing_dialstatus_" + call_status + '_' + from_user)
-    metric.publish(dial_event, from_user, request, env)
-    metric.publish(dial_status_event, from_user, request, env)
+    metric.publish(dial_event, from_user, env)
+    metric.publish(dial_status_event, from_user, env)
 
     # Perform the side effects of publishing metrics and logs for errors.
     error_code = request.post_fields.get('ErrorCode')
     if error_code:
         error_event = 'error-{}'.format(error_code)
-        metric.publish(error_event, from_user, request, env)
+        metric.publish(error_event, from_user, env)
     error_message = request.post_fields.get('ErrorMessage')
     if error_message:
         util.log(error_message)
@@ -104,14 +104,14 @@ def call_status_sip(request, env):
     # endpoint.
     from_user = util.sip_to_user(request.post_fields['From'])
     dial_status_event = "outgoing_dialstatus_" + call_status + '_' + from_user
-    metric.publish(dial_event, from_user, request, env)
-    metric.publish(dial_status_event, from_user, request, env)
+    metric.publish(dial_event, from_user, env)
+    metric.publish(dial_status_event, from_user, env)
 
     # Perform the side effects of publishing metrics and logs for errors.
     error_code = request.post_fields.get('ErrorCode')
     if error_code:
         error_event = 'error-{}'.format(error_code)
-        metric.publish(error_event, from_user, request, env)
+        metric.publish(error_event, from_user, env)
     error_message = request.post_fields.get('ErrorMessage')
     if error_message:
         util.log(error_message)

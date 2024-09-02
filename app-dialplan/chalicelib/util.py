@@ -48,11 +48,11 @@ def log_response(response):
     msg += 'body:{}'.format(response.body)
     log(msg)
 
-def get_instance(request):
+def get_instance(env):
     """
     Return the deployment environment name eg 'prod', 'stage', 'dev'.
     """
-    return request.context['domainPrefix']
+    return env['stage']
 
 def function_url(request, function_name, params=None):
     """
@@ -156,7 +156,7 @@ def dial_sip_asterisk(extension, request, env):
     elif extension == "0":
         extension = 'operator'
 
-    instance = get_instance(request)
+    instance = get_instance(env)
     server_name = f'futel-{instance}.phu73l.net'
     sip_uri = f'sip:{extension}@{server_name}'
 

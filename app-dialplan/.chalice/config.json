@@ -3,6 +3,7 @@
     "app_name": "dialplan",
     "stages": {
         "dev": {
+            "environment_variables": {"stage": "dev"},            
             "api_gateway_stage": "api",
             "autogen_policy": false,
             "iam_policy_file": "policy.json",            
@@ -12,6 +13,7 @@
             }
         },
         "stage": {
+            "environment_variables": {"stage": "stage"},
             "api_gateway_stage": "api",
             "autogen_policy": false,
             "iam_policy_file": "policy.json",
@@ -21,6 +23,7 @@
             }
         },
         "prod": {
+            "environment_variables": {"stage": "prod"},            
             "api_gateway_stage": "api",
             "autogen_policy": false,
             "iam_policy_file": "policy.json",

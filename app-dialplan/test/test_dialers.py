@@ -13,7 +13,8 @@ env = {'AWS_METRICS_TOPIC_ARN': 'AWS_METRICS_TOPIC_ARN',
        'extensions': env_util.get_extensions(),
        'ivrs': env_util.get_ivrs(),
        'operator_numbers': ['foo', 'bar'],
-       'sns_client': mock.Mock()}
+       'sns_client': mock.Mock(),
+       'stage':'stage'}
 
 outgoing_safe_body='<?xml version="1.0" encoding="UTF-8"?><Response><Gather action="https://host/ivr?context=outgoing_safe&amp;parent=outgoing_safe&amp;lang=en&amp;iteration=0&amp;stanza=intro" finishOnKey="" numDigits="1" timeout="0"><Play>https://ASSET_HOST/en/outgoing/para-espanol.ulaw</Play><Play>https://ASSET_HOST/en/outgoing/oprima-estrella.ulaw</Play></Gather><Redirect>https://host/ivr?context=outgoing_safe&amp;parent=outgoing_safe&amp;lang=en&amp;iteration=0&amp;stanza=menu</Redirect></Response>'
 
@@ -65,7 +66,7 @@ class TestDialSipE164(TestCase):
         got = dialers.dial_sip_e164(request, env)
         self.assertEqual(
             str(got),
-            '<?xml version="1.0" encoding="UTF-8"?><Response><Dial action="https://host/ops/call_status_sip" answerOnBridge="true" callerId="5035551212"><Sip>sip:test-one@direct-futel-nonemergency-prod.sip.twilio.com</Sip></Dial></Response>')
+            '<?xml version="1.0" encoding="UTF-8"?><Response><Dial action="https://host/ops/call_status_sip" answerOnBridge="true" callerId="5035551212"><Sip>sip:test-one@direct-futel-nonemergency-stage.sip.twilio.com</Sip></Dial></Response>')
 
 
 class TestIvr(TestCase):

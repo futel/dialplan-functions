@@ -5,6 +5,7 @@ from chalicelib import util
 
 env = {'AWS_METRICS_TOPIC_ARN': 'AWS_METRICS_TOPIC_ARN',
        'ASSET_HOST': 'ASSET_HOST',
+       'stage': 'stage',
        'extensions': {
            "test": {
                "outgoing": "outgoing_safe",
@@ -77,7 +78,7 @@ class TestUtil(TestCase):
         response = util.dial_sip_asterisk('#', request, env)
         self.assertEqual(
             str(response),
-            '<?xml version="1.0" encoding="UTF-8"?><Response><Dial answerOnBridge="true"><Sip>sip:outgoing_safe@futel-prod.phu73l.net;region=us2?x-callerid=+19713512383&amp;x-enableemergency=false</Sip></Dial></Response>')
+            '<?xml version="1.0" encoding="UTF-8"?><Response><Dial answerOnBridge="true"><Sip>sip:outgoing_safe@futel-stage.phu73l.net;region=us2?x-callerid=+19713512383&amp;x-enableemergency=false</Sip></Dial></Response>')
 
 
 if __name__ == '__main__':

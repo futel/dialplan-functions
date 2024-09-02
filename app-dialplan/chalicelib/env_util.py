@@ -12,6 +12,7 @@ def get_env():
         'AWS_LOGS_TOPIC_ARN': os.environ['AWS_LOGS_TOPIC_ARN'],
         'AWS_METRICS_TOPIC_ARN': os.environ['AWS_METRICS_TOPIC_ARN'],
         'nanpa_sisyphus': os.environ['nanpa_sisyphus'],
+        'stage': os.environ['stage'],
         'TWILIO_ACCOUNT_SID': os.environ['TWILIO_ACCOUNT_SID'],
         'TWILIO_AUTH_TOKEN': os.environ['TWILIO_AUTH_TOKEN']}
     json_variables = {

@@ -20,14 +20,15 @@ sip_domain_suffix = "sip.twilio.com"
 operator_message_max = 60 * 15  # 15 minutes
 
 
-def _get_sip_domain(extension, extension_map, request):
+def _get_sip_domain(extension, env, request):
+    extension_map = env['extensions']
     if extension_map[extension]['enable_emergency']:
         sip_domain_subdomain_base = sip_domain_subdomain_base_emergency
     else:
         sip_domain_subdomain_base = (
             sip_domain_subdomain_base_non_emergency)
     return (sip_domain_subdomain_base +
-            '-' + util.get_instance(request) +
+            '-' + util.get_instance(env) +
             '.' +
             sip_domain_suffix)
 
@@ -47,7 +48,7 @@ def dial_outgoing(request, env):
     """
     # This is an outgoing call from a sip client.
     from_user = util.sip_to_user(request.post_fields['From'])
-    metric.publish('dial_outgoing', from_user, request, env)
+    metric.publish('dial_outgoing', from_user, env)
     to_extension = util.deserialize_pstn(request)
     from_extension = util.sip_to_extension(from_user, env)
     util.log('to_extension {}'.format(to_extension))
@@ -56,7 +57,7 @@ def dial_outgoing(request, env):
         # This is an ivr destination, so metric.
         # XXX Make a helper for this.
         dest_c_name = 'outgoing_operator_caller'
-        metric.publish(dest_c_name, from_user, request, env)
+        metric.publish(dest_c_name, from_user, env)
         dest_c_dict = ivrs.context_dict(env['ivrs'], dest_c_name)
         stanza = ivrs.get_stanza(None)
         iteration = ivrs.get_iteration(None)
@@ -75,25 +76,25 @@ def dial_outgoing(request, env):
             # the response for flask.
             return ivr(request, env)
         # The top menu is on the asterisk.
-        metric.publish('dial_sip_asterisk', from_user, request, env)
+        metric.publish('dial_sip_asterisk', from_user, env)
         return str(util.dial_sip_asterisk(to_extension, request, env))
 
     # It's an E.164 number, normalize, filter, transform.
     to_number = util.pstn_number(to_extension, from_extension['enable_emergency'])
     if not to_number:
         util.log('filtered pstn number {}'.format(to_extension))
-        metric.publish('reject', from_user, request, env)
+        metric.publish('reject', from_user, env)
         return str(util.reject(request, env))
 
     # If it's the number of one of our extensions, SIP call it.
     to_extension = util.e164_to_extension(to_number, env['extensions'])
     if to_extension:
-        metric.publish('dial_sip', from_user, request, env)
+        metric.publish('dial_sip', from_user, env)
         from_number = from_extension['caller_id']
         return _dial_sip(to_extension, from_number, request, env)
 
     # It's a PSTN number, call it.
-    metric.publish('dial_pstn', from_user, request, env)
+    metric.publish('dial_pstn', from_user, env)
     return str(util.dial_pstn(to_number, from_extension, request, env))
 
 def dial_sip_e164(request, env):
@@ -107,7 +108,7 @@ def dial_sip_e164(request, env):
         # This is an incoming call to an e164 number for an extension.
         # For the purposes of metrics it is from the generic system.
         from_user = "hot-leet"
-    metric.publish('dial_sip_e164', from_user, request, env)
+    metric.publish('dial_sip_e164', from_user, env)
     to_number = request.post_fields['To']
     from_number = request.post_fields['From']
     to_number = util.pstn_number(to_number, enable_emergency=False)
@@ -121,7 +122,7 @@ def dial_sip_e164(request, env):
 
 def _dial_sip(extension, from_number, request, env):
     """Return TwiML to dial a SIP client on our Twilio SIP domain."""
-    sip_domain = _get_sip_domain(extension, env['extensions'], request)
+    sip_domain = _get_sip_domain(extension, env, request)
     #sip_uri = f'sip:{extension}@{sip_domain};{sip_edge}'
     sip_uri = f'sip:{extension}@{sip_domain}'
     util.log('sip_uri: {}'.format(sip_uri))
@@ -143,7 +144,7 @@ def ivr(request, env):
     """
     # This is an outgoing call from a sip client.
     from_user = util.sip_to_user(request.post_fields['From'])
-    metric.publish('ivr', from_user, request, env)
+    metric.publish('ivr', from_user, env)
     # Params from twilio are in the body, params from us are in the
     # query string. We aren't supposted to combine them in a request.
     digits = request.post_fields.get('Digits')
@@ -186,20 +187,20 @@ def ivr(request, env):
             if destination:
                 # This is an ivr destination, so metric. We can assume this is
                 # the first stanza and iteration.
-                metric.publish(dest_c_name, from_user, request, env)
+                metric.publish(dest_c_name, from_user, env)
                 return str(destination(request, env))
             else:
                 # We don't know this context, so it's on the Asterisk server.
                 to_extension = dest_c_name
                 # This is an ivr destination, so metric.
-                metric.publish('dial_sip_asterisk', from_user, request, env)
+                metric.publish('dial_sip_asterisk', from_user, env)
                 # XXX we lose lang! Hopefully user remembers to hit *.
                 return str(util.dial_sip_asterisk(dest_c_name, request, env))
 
     # We got this far, it's in the context_dict.
     if stanza is ivrs.INTRO_STANZA:
         # This is an ivr destination, so metric.
-        metric.publish(dest_c_dict['name'], from_user, request, env)
+        metric.publish(dest_c_dict['name'], from_user, env)
     return str(
         ivrs.ivr_context(
             dest_c_dict, lang, c_name, stanza, iteration, request, env))
@@ -252,7 +253,7 @@ def outgoing_operator_dialer_status(request, env):
     """
     # This is an outgoing call from a sip client.
     from_user = util.sip_to_user(request.post_fields['From'])
-    metric.publish('outgoing_operator_dialer_status', from_user, request, env)
+    metric.publish('outgoing_operator_dialer_status', from_user, env)
     # call_status = request.post_fields['CallStatus']
     lang = request.query_params.get('lang', 'en')
     # Is this documented?
@@ -263,7 +264,7 @@ def outgoing_operator_dialer_status(request, env):
         # but the operator probably is the first to hang up usually.
         response = VoiceResponse()
         response.hangup()
-        metric.publish('outgoing_operator_completed', from_user, request, env)
+        metric.publish('outgoing_operator_completed', from_user, env)
         return str(response)
     elif dequeue_result == 'queue-empty':
         # Too late, tell the operator.
@@ -272,7 +273,7 @@ def outgoing_operator_dialer_status(request, env):
         dest_c_dict = ivrs.context_dict(env['ivrs'], dest_c_name)
         iteration = ivrs.get_iteration(None)
         # This is an ivr destination, so metric.
-        metric.publish(dest_c_name, from_user, request, env)
+        metric.publish(dest_c_name, from_user, env)
         return str(
             ivrs.ivr_context(
                 dest_c_dict,
@@ -292,7 +293,7 @@ def enqueue_operator_wait(request, env):
     """
     # This is an outgoing call from a sip client.
     from_user = util.sip_to_user(request.post_fields['From'])
-    metric.publish('enqueue_operator_wait', from_user, request, env)
+    metric.publish('enqueue_operator_wait', from_user, env)
     _enqueue_operator_call(request, env)
     response = VoiceResponse()
     # Play hold music until it's time to time out.
@@ -315,7 +316,7 @@ def enqueue_operator_record(request, env):
     """
     # This is an outgoing call from a sip client.
     from_user = util.sip_to_user(request.post_fields['From'])
-    metric.publish('enqueue_operator_record', from_user, request, env)
+    metric.publish('enqueue_operator_record', from_user, env)
     # This is not much notification, but the recordings are discoverable.
     util.log("Operator message: ".format(request.post_fields['RecordingUrl']))
     response = VoiceResponse()
@@ -359,7 +360,7 @@ def outgoing_operator_leave(request, env):
     # leave the queue.
     # This is an outgoing call from a sip client.
     from_user = util.sip_to_user(request.post_fields['From'])
-    metric.publish('outgoing_operator_leave', from_user, request, env)
+    metric.publish('outgoing_operator_leave', from_user, env)
     queue_result = request.post_fields['QueueResult']
     util.log('caller left queue: {}'.format(queue_result))
     lang = request.query_params.get('lang', 'en')

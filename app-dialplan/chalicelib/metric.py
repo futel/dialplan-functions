@@ -6,11 +6,11 @@ from . import util
 metric_host_base = 'dialplan-functions'
 #default_endpoint = "system"
 
-def _get_metric_hostname(request):
+def _get_metric_hostname(env):
     """
-    Return the appropriate metric event endpoint name for this request.
+    Return the appropriate metric event endpoint name.
     """
-    return metric_host_base + '-' + util.get_instance(request)
+    return metric_host_base + '-' + util.get_instance(env)
 
 def _event_to_message(endpoint, user_event, hostname):
     """Package and return the attributes in an appropriate message dict."""
@@ -35,9 +35,9 @@ def _publish(event, endpoint, hostname, env):
     return sns_client.publish_metric(message, env)
 
 # Publish takes .1s! Throw it in a worker queue?
-def publish(event, user, request, env):
+def publish(event, user, env):
     """Publish an event from twilio programmable voice."""
-    hostname = _get_metric_hostname(request)
+    hostname = _get_metric_hostname(env)
     return _publish(event, user, hostname, env)
 
 def publish_twilio_error(event, message, env):

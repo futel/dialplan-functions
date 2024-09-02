@@ -10,14 +10,15 @@ request = mock.Mock(
     context={'domainPrefix':'prod'})
 env = {
     'AWS_METRICS_TOPIC_ARN': 'AWS_METRICS_TOPIC_ARN',
-    'sns_client': mock.Mock()}
+    'sns_client': mock.Mock(),
+    'stage':'stage'}
 
 
 class TestMetric(TestCase):
 
     def test_publish(self):
         self.assertTrue(
-            metric.publish('user_event', "user", request, env))
+            metric.publish('user_event', "user", env))
 
     def test_publish_twilio_error(self):
         self.assertTrue(
