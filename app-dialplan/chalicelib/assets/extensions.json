@@ -21,7 +21,7 @@
         "outgoing": "outgoing_detroit",
         "caller_id": "+13132469283",
         "enable_emergency": true,
-        "local_outgoing": false
+        "local_outgoing": true
     },
     "cesar-chavez": {
         "outgoing": "outgoing_portland",

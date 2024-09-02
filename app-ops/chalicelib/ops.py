@@ -35,6 +35,7 @@ def exercise(event, env):
         #'alleymaple',
         'bottles-and-cans-one',
         'bottles-and-cans-two',
+        'breckenridge',
         'cesar-chavez',
         #'clinton',
         'dome-basement',
