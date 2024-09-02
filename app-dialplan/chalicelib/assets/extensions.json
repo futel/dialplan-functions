@@ -17,6 +17,12 @@
         "enable_emergency": false,
         "local_outgoing": true
     },
+    "breckenridge": {
+        "outgoing": "outgoing_detroit",
+        "caller_id": "+13132469283",
+        "enable_emergency": true,
+        "local_outgoing": false
+    },
     "cesar-chavez": {
         "outgoing": "outgoing_portland",
         "caller_id": "+15039465227",

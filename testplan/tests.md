@@ -19,7 +19,7 @@ outgoing # destination tests
   - outgoing ivr tests
   - outgoing dialtone tests
   - outgoing operator tests
-- relevant asterisk contexts work after client is sent to asteirsk
+- relevant asterisk contexts work after client is sent to asterisk
   - outgoing asterisk tests
 
 outgoing operator tests
