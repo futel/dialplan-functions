@@ -149,8 +149,8 @@ def python_to_twilio_param(v):
 
 def dial_sip_asterisk(extension, request, env):
     """Return a TwiML response to dial a SIP extension on the asterisk."""
-    user = request_to_endpoint(request, env)
-    from_extension = env['extensions'][user]
+    from_user = sip_to_user(request.post_fields['From'])
+    from_extension = env['extensions'][from_user]
 
     if extension == "#":
         extension = from_extension['outgoing']
@@ -222,9 +222,8 @@ def request_to_endpoint(request, env):
         request.post_fields['To'], request.post_fields['From']))
     return None
 
-def dial_pstn(to_number, from_uri, request, env):
+def dial_pstn(to_number, from_extension, request, env):
     """Return TwiML to dial PSTN number with attributes from request."""
-    from_extension = sip_to_extension(from_uri, env)
     caller_id = from_extension['caller_id']
 
     # XXX default timeLimit is 4 hours, should be smaller, in seconds

@@ -126,7 +126,8 @@ def internal_dialtone(request, env):
 def call_911_911(request, env):
     """Return TwiML to call 911."""
     from_uri = request.post_fields['From']
-    return util.dial_pstn("+1911", from_uri, request, env)
+    from_extension = util.sip_to_extension(from_uri, env)
+    return util.dial_pstn("+1911", from_extension, request, env)
 
 def call_911_9_bounce(request, env):
     """
@@ -146,7 +147,8 @@ def dial_nanpa(nanpa):
     e164 = "+1" + nanpa
     def curried(request, env):
         from_uri = request.post_fields['From']
-        return util.dial_pstn(e164, from_uri, request, env)
+        from_extension = util.sip_to_extension(from_uri, env)
+        return util.dial_pstn(e164, from_extension, request, env)
     return curried
 
 def dial_sisyphus(request, env):
