@@ -71,10 +71,12 @@ def call_status_pstn(request, env):
     # Perform the side effects of publishing metrics for call status.
     call_status = request.post_fields.get('DialCallStatus')
     dial_event = "outgoing_call"
-    # The endpoint we can get from the request is the recipient we hope? We are
-    # documenting the recipient extension connectivity, not the sender?
-    endpoint = util.request_to_endpoint(request, env)
-    dial_status_event = "outgoing_dialstatus_" + call_status + '_' + endpoint
+    # We assume that this request is outgoing from one of our sip clients,
+    # the the from in the request is a sip url referring to the name of an
+    # endpoint.
+    from_user = util.sip_to_user(request.post_fields['From'])
+    dial_status_event = (
+        "outgoing_dialstatus_" + call_status + '_' + from_user)
     metric.publish(dial_event, request, env)
     metric.publish(dial_status_event, request, env)
 
@@ -101,10 +103,11 @@ def call_status_sip(request, env):
     # Perform the side effects of publishing metrics for call status.
     call_status = request.post_fields.get('DialCallStatus')
     dial_event = "outgoing_call"
-    # The endpoint we can get from the request is the recipient we hope? We are
-    # documenting the recipient extension connectivity, not the sender?
-    endpoint = util.request_to_endpoint(request, env)
-    dial_status_event = "outgoing_dialstatus_" + call_status + '_' + endpoint
+    # We assume that this request is outgoing from one of our sip clients,
+    # the the from in the request is a sip url referring to the name of an
+    # endpoint.
+    from_user = util.sip_to_user(request.post_fields['From'])
+    dial_status_event = "outgoing_dialstatus_" + call_status + '_' + from_user
     metric.publish(dial_event, request, env)
     metric.publish(dial_status_event, request, env)
 
