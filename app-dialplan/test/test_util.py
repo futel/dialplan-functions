@@ -47,6 +47,8 @@ class TestUtil(TestCase):
             util.filter_outgoing_number('+525555536266', True))
 
     def test_dial_pstn(self):
+        extensions = env_util.get_extensions()
+        extension = extensions['test-one']
         request = mock.Mock(
             headers={'host': 'host'},
             query_params={},
@@ -54,7 +56,7 @@ class TestUtil(TestCase):
                 'SipDomain':'direct-futel-prod.sip.twilio.com'})
         response = util.dial_pstn(
             '+15035551212',
-            'sip:test@direct-futel-nonemergency-stage.sip.twilio.com',
+            extension,
             request,
             env)
         self.assertEqual(

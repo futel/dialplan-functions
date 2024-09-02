@@ -40,30 +40,6 @@ def _call_status(request):
     # Status callack from twilio REST client on call create.
     return request.post_fields.get('CallStatus')
 
-def _request_to_metric_events(call_status, request, env):
-    """Return sequence of metric event names from request."""
-    from_uri = request.post_fields['From']
-    endpoint = util.request_to_endpoint(request, env)
-    if util.sip_to_user(from_uri):
-        # Outgoing from Twilio SIP Domain,
-        # from_uri is SIP URI to extension.
-        dial_event = "outgoing_call"
-        dial_status_event_base = "outgoing_dialstatus_"
-    elif endpoint == "hot-leet":
-        # from_uri is the PSTN number for hot-leet, which we use for calls made
-        # with the twilio client.
-        dial_event = "outgoing_call"
-        dial_status_event_base = "outgoing_dialstatus_"
-    else:
-        # Incoming from Twilio phone number to SIP client.
-        # XXX Or any call made with the twilio client where we set the from
-        # to an E.164 number, like operator calls?
-        dial_event = "incoming_call"
-        dial_status_event_base = "incoming_dialstatus_"
-
-    dial_status_event = dial_status_event_base + call_status + '_' + endpoint
-    return (dial_event, dial_status_event)
-
 def dial_outgoing(request, env):
     """
     Return TwiML string to dial PSTN, dial SIP URI, or play IVR,
@@ -117,7 +93,7 @@ def dial_outgoing(request, env):
 
     # It's a PSTN number, call it.
     metric.publish('dial_pstn', request, env)
-    return str(util.dial_pstn(to_number, from_uri, request, env))
+    return str(util.dial_pstn(to_number, from_extension, request, env))
 
 def dial_sip_e164(request, env):
     """

@@ -68,33 +68,6 @@ class TestDialSipE164(TestCase):
             '<?xml version="1.0" encoding="UTF-8"?><Response><Dial action="https://host/ops/call_status_sip" answerOnBridge="true" callerId="5035551212"><Sip>sip:test-one@direct-futel-nonemergency-prod.sip.twilio.com</Sip></Dial></Response>')
 
 
-class TestMetricDialerStatus(TestCase):
-
-    def test_request_to_metric_events_outgoing(self):
-        request = mock.Mock(
-            headers={'host': 'host'},
-            post_fields={
-                'SipDomain': 'direct-futel-prod.sip.twilio.com',
-                'To': 'To',
-                'From': 'sip:test-one@direct-futel-nonemergency-stage.sip.twilio.com',
-                'DialCallStatus': 'completed'})
-        got = dialers._request_to_metric_events('completed', request, env)
-        self.assertEqual(
-            got, ('outgoing_call', 'outgoing_dialstatus_completed_test-one'))
-
-    def test_request_to_metric_events_incoming(self):
-        request = mock.Mock(
-            headers={'host': 'host'},
-            post_fields={
-                'SipDomain': 'direct-futel-prod.sip.twilio.com',
-                'To': '+19713512383',
-                'From': '+19713512383',
-                'DialCallStatus': 'completed'})
-        got = dialers._request_to_metric_events('completed', request, env)
-        self.assertEqual(
-            got, ('incoming_call', 'incoming_dialstatus_completed_test-one'))
-
-
 class TestIvr(TestCase):
     @mock.patch.object(dialers, 'metric')
     def test_ivr_no_context(self, _mock_metric):
