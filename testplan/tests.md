@@ -17,7 +17,7 @@ outgoing # destination tests
 - all contexts work (contexts before client is sent to asterisk (if applicable))
   - outgoing top ivr tests
   - outgoing ivr tests
-  - outgoing dialtone tests
+  - dialtone tests
   - outgoing operator tests
 - relevant asterisk contexts work after client is sent to asterisk
   - outgoing asterisk tests
