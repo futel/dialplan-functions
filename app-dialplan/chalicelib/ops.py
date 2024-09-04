@@ -25,7 +25,7 @@ def _hangup():
     response.hangup()
     return str(response)
 
-def _metric_status(call_status, request, from_user, env):
+def _metric_status(call_status, from_user, env):
     """
     Perform the side effects of publishing metrics and logs for call status.
     """
@@ -56,7 +56,7 @@ def call_status_exercise(request, env):
     from_user = request.from_user
     call_status = request.post_fields.get('CallStatus')
 
-    _metric_status(call_status, request, from_user, env)
+    _metric_status(call_status, from_user, env)
     _metric_log_error(request, from_user, env)
 
     return _hangup()
@@ -70,7 +70,7 @@ def call_status_pstn(request, env):
     from_user = request.from_user
     call_status = request.post_fields.get('DialCallStatus')
 
-    _metric_status(call_status, request, from_user, env)
+    _metric_status(call_status, from_user, env)
     _metric_log_error(request, from_user, env)
 
     # We should sometimes return twiml to play to notify the caller
@@ -86,7 +86,7 @@ def call_status_sip(request, env):
     from_user = request.from_user
     call_status = request.post_fields.get('DialCallStatus')
 
-    _metric_status(call_status, request, from_user, env)
+    _metric_status(call_status, from_user, env)
     _metric_log_error(request, from_user, env)
 
     # We should sometimes return twiml to play to notify the caller
