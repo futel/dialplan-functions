@@ -35,8 +35,6 @@ def call_status_exercise(request, env):
     # that leg, we just want to notice that we are doing something as expected.
     # Any error callback hit by twilio in reaction to that call will tell us
     # about connectivity errors related to the destination extension.
-    # This is a twilio REST client outgoing call callback.
-    from_user = "hot-leet"
 
     # Perform the side effects of publishing metrics for call status.
     call_status = request.post_fields.get('CallStatus')
@@ -62,10 +60,7 @@ def call_status_pstn(request, env):
     Return a twiml hangup document string.
     """
     # XXX Need to validate caller.
-    # We don't care who the call was to, that logging happens on another leg.
-    # This is a twilio pv dial callback, which we assume uses a sip url for one
-    # our clients as the from in the request.
-    from_user = util.sip_to_user(request.post_fields['From'])
+    from_user = request.from_user
 
     # Perform the side effects of publishing metrics for call status.
     call_status = request.post_fields.get('DialCallStatus')
@@ -94,10 +89,7 @@ def call_status_sip(request, env):
     Return a twiml hangup document string.
     """
     # XXX Need to validate caller.
-    # We don't care who the call was to, that logging happens on another leg.
-    # This is a twilio pv dial callback, which we assume uses a sip url for one
-    # our clients as the from in the request.
-    from_user = util.sip_to_user(request.post_fields['From'])
+    from_user = request.from_user
 
     # Perform the side effects of publishing metrics for call status.
     call_status = request.post_fields.get('DialCallStatus')

@@ -46,8 +46,7 @@ def dial_outgoing(request, env):
     Return TwiML string to dial PSTN, dial SIP URI, or play IVR,
     with attributes from request.
     """
-    # This is an outgoing call from a sip client.
-    from_user = util.sip_to_user(request.post_fields['From'])
+    from_user = request.from_user
     metric.publish('dial_outgoing', from_user, env)
     to_extension = util.deserialize_pstn(request)
     from_extension = util.sip_to_extension(from_user, env)
@@ -102,12 +101,7 @@ def dial_sip_e164(request, env):
     Return TwiML string to call an extension registered to our SIP Domains,
     looked up by the given E.164 number.
     """
-    # Is this an outgoing call from a sip client?
-    from_user = util.sip_to_user(request.post_fields['From'])
-    if not from_user:
-        # This is an incoming call to an e164 number for an extension.
-        # For the purposes of metrics it is from the generic system.
-        from_user = "hot-leet"
+    from_user = request.from_user
     metric.publish('dial_sip_e164', from_user, env)
     to_number = request.post_fields['To']
     from_number = request.post_fields['From']
@@ -142,8 +136,7 @@ def ivr(request, env):
     or send the call to the Asterisk server if we can't find it.
     IVR TwiML can come from the IVR assets or the ivr_destinations module.
     """
-    # This is an outgoing call from a sip client.
-    from_user = util.sip_to_user(request.post_fields['From'])
+    from_user = request.from_user
     metric.publish('ivr', from_user, env)
     # Params from twilio are in the body, params from us are in the
     # query string. We aren't supposted to combine them in a request.
@@ -210,8 +203,7 @@ def _enqueue_operator_call(request, env):
     Perform side effects for the enqueued operator call.
     Call operators with twiml for the accept menu.
     """
-    # This is an outgoing call from a sip client.
-    from_user = util.sip_to_user(request.post_fields['From'])
+    from_user = request.from_user
     from_extension = util.sip_to_extension(from_user, env)
     from_number = from_extension['caller_id']
 
@@ -251,8 +243,7 @@ def outgoing_operator_dialer_status(request, env):
     Perform side effects after a hopefully bridged operator call ends,
     and return TwiML for operators who stayed on the line.
     """
-    # This is an outgoing call from a sip client.
-    from_user = util.sip_to_user(request.post_fields['From'])
+    from_user = request.from_user
     metric.publish('outgoing_operator_dialer_status', from_user, env)
     # call_status = request.post_fields['CallStatus']
     lang = request.query_params.get('lang', 'en')
@@ -291,8 +282,7 @@ def enqueue_operator_wait(request, env):
     Perform side effects and return TwiML string
     for the enqueue wait callback.
     """
-    # This is an outgoing call from a sip client.
-    from_user = util.sip_to_user(request.post_fields['From'])
+    from_user = request.from_user
     metric.publish('enqueue_operator_wait', from_user, env)
     _enqueue_operator_call(request, env)
     response = VoiceResponse()
@@ -314,8 +304,7 @@ def enqueue_operator_record(request, env):
     Perform side effects and return TwiML string
     for the enqueue recording callback.
     """
-    # This is an outgoing call from a sip client.
-    from_user = util.sip_to_user(request.post_fields['From'])
+    from_user = request.from_user
     metric.publish('enqueue_operator_record', from_user, env)
     # This is not much notification, but the recordings are discoverable.
     util.log("Operator message: ".format(request.post_fields['RecordingUrl']))
@@ -358,8 +347,7 @@ def outgoing_operator_leave(request, env):
     """
     # We resume here after the wait callback caused the user to
     # leave the queue.
-    # This is an outgoing call from a sip client.
-    from_user = util.sip_to_user(request.post_fields['From'])
+    from_user = request.from_user
     metric.publish('outgoing_operator_leave', from_user, env)
     queue_result = request.post_fields['QueueResult']
     util.log('caller left queue: {}'.format(queue_result))

@@ -25,6 +25,7 @@ class TestDialOutgoing(TestCase):
         # test extension redirects to local context.
         request = mock.Mock(
             headers={'host': 'host'},
+            from_user='test-one',
             post_fields={
                 'SipDomain': 'direct-futel-prod.sip.twilio.com',
                 'To': 'sip:%23@direct-futel-nonemergency-stage.sip.twilio.com',
@@ -73,6 +74,7 @@ class TestIvr(TestCase):
     @mock.patch.object(dialers, 'metric')
     def test_ivr_no_context(self, _mock_metric):
         request = mock.Mock(
+            from_user='test-one',
             headers={'host': 'host'},
             post_fields={
                 'SipDomain': 'direct-futel-prod.sip.twilio.com',
@@ -118,6 +120,7 @@ class TestEnqueueOperatorWait(TestCase):
     @mock.patch.object(ivr_destinations, 'Client')
     def test_enqueue_operator_wait(self, _mock1, _mock2):
         request = mock.Mock(
+            from_user='test-one',
             headers={'host': 'host'},
             post_fields={
                 'SipDomain': 'direct-futel-prod.sip.twilio.com',
@@ -135,6 +138,7 @@ class OutgoingOperatorLeave(TestCase):
     @mock.patch.object(ivr_destinations, 'Client')
     def test_outgoing_operator_leave(self, _mock1, _mock2):
         request = mock.Mock(
+            from_user='test-one',
             headers={'host': 'host'},
             post_fields={
                 'CallSid': 'CallSid',

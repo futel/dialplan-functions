@@ -43,7 +43,20 @@ def request_response_middleware(event, get_response):
     # Prepare the request event.
     event.post_fields = post_fields(event)
     event.query_params = event.query_params or {}
+    from_user = event.post_fields.get('From')
+    if from_user:
+        from_user = util.sip_to_user(from_user)
+    if from_user:
+        # This is an outgoing twilio pv call from a sip client, or a callback
+        # after one.
+        event.from_user = from_user
+    else:
+        # This is an incoming call from a twilio phone number to an e164 number
+        # for an extension, or it is an outgoing call from a twilio REST client.
+        # For the purposes of metrics it is from us, the generic system.
+        event.from_user = "hot-leet"
     util.log_request(event)
+
     response = get_response(event)
     response.headers["Content-Type"] = "text/xml"
     util.log_response(response)
