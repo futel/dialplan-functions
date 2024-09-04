@@ -25,6 +25,19 @@ def _hangup():
     response.hangup()
     return str(response)
 
+def _metric_log_ops(request, from_user, env):
+    """
+    Perform the side effects of publishing metrics and logs for errors, if
+    they are indicated by the request.
+    """
+    error_code = request.post_fields.get('ErrorCode')
+    if error_code:
+        error_event = 'error-{}'.format(error_code)
+        metric.publish(error_event, from_user, env)
+    error_message = request.post_fields.get('ErrorMessage')
+    if error_message:
+        util.log(error_message)
+
 def call_status_exercise(request, env):
     """
     Peform side effects from an outgoing rest api call.
@@ -39,18 +52,11 @@ def call_status_exercise(request, env):
     # Perform the side effects of publishing metrics for call status.
     call_status = request.post_fields.get('CallStatus')
     dial_event = "outgoing_call"
-    dial_status_event = "outgoing_dialstatus_" + call_status + '_' + from_user
+    dial_status_event = "outgoing_dialstatus_" + call_status
     metric.publish(dial_event, from_user, env)
     metric.publish(dial_status_event, from_user, env)
 
-    # Perform the side effects of publishing metrics and logs for errors.
-    error_code = request.post_fields.get('ErrorCode')
-    if error_code:
-        error_event = 'error-{}'.format(error_code)
-        metric.publish(error_event, from_user, env)
-    error_message = request.post_fields.get('ErrorMessage')
-    if error_message:
-        util.log(error_message)
+    _metric_log_ops(request, from_user, env)
 
     return _hangup()
 
@@ -65,19 +71,11 @@ def call_status_pstn(request, env):
     # Perform the side effects of publishing metrics for call status.
     call_status = request.post_fields.get('DialCallStatus')
     dial_event = "outgoing_call"
-    dial_status_event = (
-        "outgoing_dialstatus_" + call_status + '_' + from_user)
+    dial_status_event = "outgoing_dialstatus_" + call_status
     metric.publish(dial_event, from_user, env)
     metric.publish(dial_status_event, from_user, env)
 
-    # Perform the side effects of publishing metrics and logs for errors.
-    error_code = request.post_fields.get('ErrorCode')
-    if error_code:
-        error_event = 'error-{}'.format(error_code)
-        metric.publish(error_event, from_user, env)
-    error_message = request.post_fields.get('ErrorMessage')
-    if error_message:
-        util.log(error_message)
+    _metric_log_ops(request, from_user, env)
 
     # We should sometimes return twiml to play to notify the caller
     # eg str(util.reject(request, env, reason='busy'))
@@ -94,18 +92,11 @@ def call_status_sip(request, env):
     # Perform the side effects of publishing metrics for call status.
     call_status = request.post_fields.get('DialCallStatus')
     dial_event = "outgoing_call"
-    dial_status_event = "outgoing_dialstatus_" + call_status + '_' + from_user
+    dial_status_event = "outgoing_dialstatus_" + call_status
     metric.publish(dial_event, from_user, env)
     metric.publish(dial_status_event, from_user, env)
 
-    # Perform the side effects of publishing metrics and logs for errors.
-    error_code = request.post_fields.get('ErrorCode')
-    if error_code:
-        error_event = 'error-{}'.format(error_code)
-        metric.publish(error_event, from_user, env)
-    error_message = request.post_fields.get('ErrorMessage')
-    if error_message:
-        util.log(error_message)
+    _metric_log_ops(request, from_user, env)
 
     # We should sometimes return twiml to play to notify the caller
     # eg str(util.reject(request, env, reason='busy'))
