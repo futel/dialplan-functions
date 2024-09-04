@@ -30,18 +30,17 @@ def call_status_exercise(request, env):
     Peform side effects from an outgoing rest api call.
     Return a twiml hangup document string.
     """
-    # We are the callback from a twilio REST client after call create.
     # XXX Need to validate caller.
-
-    # Perform the side effects of publishing metrics for call status.
-    call_status = request.post_fields.get('CallStatus')
-    # This callback is in reaction to using the REST API for an outgoing call.
     # We are metricing the outgoing call even though we don't care so much about
     # that leg, we just want to notice that we are doing something as expected.
     # Any error callback hit by twilio in reaction to that call will tell us
     # about connectivity errors related to the destination extension.
-    dial_event = "outgoing_call"
+    # This is a twilio REST client outgoing call callback.
     from_user = "hot-leet"
+
+    # Perform the side effects of publishing metrics for call status.
+    call_status = request.post_fields.get('CallStatus')
+    dial_event = "outgoing_call"
     dial_status_event = "outgoing_dialstatus_" + call_status + '_' + from_user
     metric.publish(dial_event, from_user, env)
     metric.publish(dial_status_event, from_user, env)
@@ -63,14 +62,14 @@ def call_status_pstn(request, env):
     Return a twiml hangup document string.
     """
     # XXX Need to validate caller.
+    # We don't care who the call was to, that logging happens on another leg.
+    # This is a twilio pv dial callback, which we assume uses a sip url for one
+    # our clients as the from in the request.
+    from_user = util.sip_to_user(request.post_fields['From'])
 
     # Perform the side effects of publishing metrics for call status.
     call_status = request.post_fields.get('DialCallStatus')
     dial_event = "outgoing_call"
-    # We assume that this request is outgoing from one of our sip clients,
-    # the from in the request is a sip url referring to the name of an
-    # endpoint.
-    from_user = util.sip_to_user(request.post_fields['From'])
     dial_status_event = (
         "outgoing_dialstatus_" + call_status + '_' + from_user)
     metric.publish(dial_event, from_user, env)
@@ -95,14 +94,14 @@ def call_status_sip(request, env):
     Return a twiml hangup document string.
     """
     # XXX Need to validate caller.
+    # We don't care who the call was to, that logging happens on another leg.
+    # This is a twilio pv dial callback, which we assume uses a sip url for one
+    # our clients as the from in the request.
+    from_user = util.sip_to_user(request.post_fields['From'])
 
     # Perform the side effects of publishing metrics for call status.
     call_status = request.post_fields.get('DialCallStatus')
     dial_event = "outgoing_call"
-    # We assume that this request is outgoing from one of our sip clients,
-    # the from in the request is a sip url referring to the name of an
-    # endpoint.
-    from_user = util.sip_to_user(request.post_fields['From'])
     dial_status_event = "outgoing_dialstatus_" + call_status + '_' + from_user
     metric.publish(dial_event, from_user, env)
     metric.publish(dial_status_event, from_user, env)
