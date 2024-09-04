@@ -25,7 +25,16 @@ def _hangup():
     response.hangup()
     return str(response)
 
-def _metric_log_ops(request, from_user, env):
+def _metric_status(call_status, request, from_user, env):
+    """
+    Perform the side effects of publishing metrics and logs for call status.
+    """
+    dial_event = "outgoing_call"
+    dial_status_event = "outgoing_dialstatus_" + call_status
+    metric.publish(dial_event, from_user, env)
+    metric.publish(dial_status_event, from_user, env)
+
+def _metric_log_error(request, from_user, env):
     """
     Perform the side effects of publishing metrics and logs for errors, if
     they are indicated by the request.
@@ -44,19 +53,11 @@ def call_status_exercise(request, env):
     Return a twiml hangup document string.
     """
     # XXX Need to validate caller.
-    # We are metricing the outgoing call even though we don't care so much about
-    # that leg, we just want to notice that we are doing something as expected.
-    # Any error callback hit by twilio in reaction to that call will tell us
-    # about connectivity errors related to the destination extension.
-
-    # Perform the side effects of publishing metrics for call status.
+    from_user = request.from_user
     call_status = request.post_fields.get('CallStatus')
-    dial_event = "outgoing_call"
-    dial_status_event = "outgoing_dialstatus_" + call_status
-    metric.publish(dial_event, from_user, env)
-    metric.publish(dial_status_event, from_user, env)
 
-    _metric_log_ops(request, from_user, env)
+    _metric_status(call_status, request, from_user, env)
+    _metric_log_error(request, from_user, env)
 
     return _hangup()
 
@@ -67,15 +68,10 @@ def call_status_pstn(request, env):
     """
     # XXX Need to validate caller.
     from_user = request.from_user
-
-    # Perform the side effects of publishing metrics for call status.
     call_status = request.post_fields.get('DialCallStatus')
-    dial_event = "outgoing_call"
-    dial_status_event = "outgoing_dialstatus_" + call_status
-    metric.publish(dial_event, from_user, env)
-    metric.publish(dial_status_event, from_user, env)
 
-    _metric_log_ops(request, from_user, env)
+    _metric_status(call_status, request, from_user, env)
+    _metric_log_error(request, from_user, env)
 
     # We should sometimes return twiml to play to notify the caller
     # eg str(util.reject(request, env, reason='busy'))
@@ -88,15 +84,10 @@ def call_status_sip(request, env):
     """
     # XXX Need to validate caller.
     from_user = request.from_user
-
-    # Perform the side effects of publishing metrics for call status.
     call_status = request.post_fields.get('DialCallStatus')
-    dial_event = "outgoing_call"
-    dial_status_event = "outgoing_dialstatus_" + call_status
-    metric.publish(dial_event, from_user, env)
-    metric.publish(dial_status_event, from_user, env)
 
-    _metric_log_ops(request, from_user, env)
+    _metric_status(call_status, request, from_user, env)
+    _metric_log_error(request, from_user, env)
 
     # We should sometimes return twiml to play to notify the caller
     # eg str(util.reject(request, env, reason='busy'))
