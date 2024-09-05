@@ -45,6 +45,7 @@ def setup(func):
 def setup_request(request):
     request.post_fields = post_fields(request)
     request.query_params = request.query_params or {}
+    # We can use Direction to tell how to parse out from_user?
     from_user = request.post_fields.get('From')
     if from_user:
         from_user = util.sip_to_user(from_user)
@@ -102,6 +103,11 @@ def _index(request, env):
 @setup
 def _index(request, env):
     return dialers.outgoing_operator_leave(request, env)
+
+@route('/reject')
+@setup
+def _index(request, env):
+    return dialers.reject(request, env)
 
 @route('/ops/call_status_exercise')
 @setup

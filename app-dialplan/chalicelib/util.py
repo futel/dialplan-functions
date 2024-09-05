@@ -233,12 +233,3 @@ def dial_pstn(to_number, from_extension, request, env):
         action=function_url(request, 'ops/call_status_pstn'))
     dial.number(to_number)
     return response
-
-def reject(request, env, reason=None):
-    """Return TwiML reject response."""
-    response = VoiceResponse()
-    response.say(
-        "We're sorry, your call cannot be completed as dialed. "
-        "Please check the number and try again.");
-    response.reject(reason=reason)
-    return str(response)

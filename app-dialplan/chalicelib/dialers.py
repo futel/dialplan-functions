@@ -78,8 +78,9 @@ def dial_outgoing(request, env):
     to_number = util.pstn_number(to_extension, from_extension['enable_emergency'])
     if not to_number:
         util.log('filtered pstn number {}'.format(to_extension))
-        metric.publish('reject', from_user, env)
-        return str(util.reject(request, env))
+        response = VoiceResponse()
+        response.redirect('/reject')
+        return str(response)
 
     # If it's the number of one of our extensions, SIP call it.
     to_extension = util.e164_to_extension(to_number, env['extensions'])
@@ -108,7 +109,9 @@ def dial_sip_e164(request, env):
         return _dial_sip(to_extension, from_number, request, env)
 
     util.log("Could not find extension for E.164 number")
-    return str(util.reject(request, env))
+    response = VoiceResponse()
+    response.redirect('/reject')
+    return str(response)
 
 def _dial_sip(extension, from_number, request, env):
     """Return TwiML to dial a SIP client on our Twilio SIP domain."""
@@ -392,4 +395,14 @@ def outgoing_operator_leave(request, env):
         response.record(
             action=util.function_url(request, 'enqueue_operator_record'),
             max_length=operator_message_max)
+    return str(response)
+
+def reject(request, env):
+    """
+    Return TwiML string to hang up the call.
+    """
+    from_user = request.from_user
+    metric.publish('reject', from_user, env)
+    response = VoiceResponse()
+    response.reject(reason="busy")
     return str(response)
