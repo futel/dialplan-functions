@@ -31,35 +31,37 @@ def route(path):
         content_types=['application/x-www-form-urlencoded'])
 
 def setup(func):
-    """Decorator to pass arguments to the view function."""
+    """Decorator to set up request and response of the view function."""
     @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        return func(app.current_request, env)
+    def wrapper():
+        request = setup_request(app.current_request)
+        util.log_request(request)
+        response = func(request, env)
+        response = setup_response(response)
+        util.log_response(response)
+        return response
     return wrapper
 
-@app.middleware('http')
-def request_response_middleware(event, get_response):
-    """Chalice middleware function to wrap the response function."""
-    # Prepare the request event.
-    event.post_fields = post_fields(event)
-    event.query_params = event.query_params or {}
-    from_user = event.post_fields.get('From')
+def setup_request(request):
+    request.post_fields = post_fields(request)
+    request.query_params = request.query_params or {}
+    from_user = request.post_fields.get('From')
     if from_user:
         from_user = util.sip_to_user(from_user)
     if from_user:
         # This is an outgoing twilio pv call from a sip client, or a callback
         # after one.
-        event.from_user = from_user
+        request.from_user = from_user
     else:
         # This is an incoming call from a twilio phone number to an e164 number
         # for an extension, or it is an outgoing call from a twilio REST client.
         # For the purposes of metrics it is from us, the generic system.
-        event.from_user = "hot-leet"
-    util.log_request(event)
+        request.from_user = "hot-leet"
+    return request
 
-    response = get_response(event)
+def setup_response(response):
+    response = Response(response)
     response.headers["Content-Type"] = "text/xml"
-    util.log_response(response)
     return response
 
 # The route decorator is unexpected. It registers the function object
