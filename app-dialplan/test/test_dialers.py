@@ -16,7 +16,7 @@ env = {'AWS_METRICS_TOPIC_ARN': 'AWS_METRICS_TOPIC_ARN',
        'sns_client': mock.Mock(),
        'stage':'stage'}
 
-outgoing_safe_body='<?xml version="1.0" encoding="UTF-8"?><Response><Gather action="https://host/ivr?context=outgoing_safe&amp;parent=outgoing_safe&amp;lang=en&amp;iteration=0&amp;stanza=intro" finishOnKey="" numDigits="1" timeout="0"><Play>https://ASSET_HOST/en/outgoing/para-espanol.ulaw</Play><Play>https://ASSET_HOST/en/outgoing/oprima-estrella.ulaw</Play></Gather><Redirect>https://host/ivr?context=outgoing_safe&amp;parent=outgoing_safe&amp;lang=en&amp;iteration=0&amp;stanza=menu</Redirect></Response>'
+outgoing_safe_body = '<?xml version="1.0" encoding="UTF-8"?><Response><Redirect>/ivr</Redirect></Response>'
 
 class TestDialOutgoing(TestCase):
 

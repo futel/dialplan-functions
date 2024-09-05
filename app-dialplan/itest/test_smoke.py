@@ -44,7 +44,7 @@ class TestDialers(TestCase):
                 "SipDomain": "direct-futel-stage.sip.twilio.com"})
         check_response(
             response,
-            '<?xml version="1.0" encoding="UTF-8"?><Response><Gather action="https://stage.dialplans.phu73l.net/ivr?context=outgoing_safe&amp;parent=outgoing_safe&amp;lang=en&amp;iteration=0&amp;stanza=intro" finishOnKey="" numDigits="1" timeout="0"><Play>https://dialplan-assets.s3.us-west-2.amazonaws.com/en/outgoing/para-espanol.ulaw</Play><Play>https://dialplan-assets.s3.us-west-2.amazonaws.com/en/outgoing/oprima-estrella.ulaw</Play></Gather><Redirect>https://stage.dialplans.phu73l.net/ivr?context=outgoing_safe&amp;parent=outgoing_safe&amp;lang=en&amp;iteration=0&amp;stanza=menu</Redirect></Response>')
+            '<?xml version="1.0" encoding="UTF-8"?><Response><Redirect>/ivr</Redirect></Response>')
 
     def test_dial_outgoing_zero(self):
         response = requests.post(

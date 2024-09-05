@@ -70,9 +70,9 @@ def dial_outgoing(request, env):
             env)
         return str(response)
     if to_extension == '#':
-        # ivr() is also routed directly, so it marshals
-        # the response for flask.
-        return ivr(request, env)
+        response = VoiceResponse()
+        response.redirect('/ivr')
+        return str(response)
 
     # It's an E.164 number, normalize, filter, transform.
     to_number = util.pstn_number(to_extension, from_extension['enable_emergency'])
