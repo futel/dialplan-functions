@@ -2,211 +2,176 @@
     "alleymaple": {
         "outgoing": "outgoing_portland",
         "caller_id": "+15034681337",
-        "enable_emergency": false,
-        "local_outgoing": true
+        "enable_emergency": false
     },
     "bottles-and-cans-one": {
         "outgoing": "outgoing_portland",
         "caller_id": "+15034681337",
-        "enable_emergency": false,
-        "local_outgoing": true
+        "enable_emergency": false
     },
     "bottles-and-cans-two": {
         "outgoing": "outgoing_portland",
         "caller_id": "+15034681337",
-        "enable_emergency": false,
-        "local_outgoing": true
+        "enable_emergency": false
     },
     "breckenridge": {
         "outgoing": "outgoing_detroit",
         "caller_id": "+13132469283",
-        "enable_emergency": true,
-        "local_outgoing": true
+        "enable_emergency": true
     },
     "cesar-chavez": {
         "outgoing": "outgoing_portland",
         "caller_id": "+15039465227",
-        "enable_emergency": true,
-        "local_outgoing": true
+        "enable_emergency": true
     },
     "clinton": {
         "outgoing": "outgoing_portland",
         "caller_id": "+15034681337",
-        "enable_emergency": true,
-        "local_outgoing": true
+        "enable_emergency": true
     },
     "demo-one": {
         "outgoing": "outgoing_safe",
         "caller_id": "+15038945775",
-        "enable_emergency": false,
-        "local_outgoing": true
+        "enable_emergency": false
     },
     "demo-two": {
         "outgoing": "outgoing_safe",
         "caller_id": "+15038945775",
-        "enable_emergency": false,
-        "local_outgoing": true
+        "enable_emergency": false
     },
     "demo-three": {
         "outgoing": "outgoing_safe",
         "caller_id": "+15038945775",
-        "enable_emergency": false,
-        "local_outgoing": true
+        "enable_emergency": false
     },
     "dome-basement": {
         "outgoing": "outgoing_safe",
         "caller_id": "+15034681337",
-        "enable_emergency": false,
-        "local_outgoing": true
+        "enable_emergency": false
     },
     "dome-booth": {
         "outgoing": "outgoing_safe",
         "caller_id": "+15034681337",
-        "enable_emergency": false,
-        "local_outgoing": true
+        "enable_emergency": false
     },
     "dome-garage": {
         "outgoing": "outgoing_portland",
         "caller_id": "+15034681337",
-        "enable_emergency": false,
-        "local_outgoing": true
+        "enable_emergency": false
     },
     "dome-office": {
         "outgoing": "outgoing_safe",
         "caller_id": "+15034681337",
-        "enable_emergency": false,
-        "local_outgoing": true
+        "enable_emergency": false
     },
     "dome-workshop": {
         "outgoing": "outgoing_safe",
         "caller_id": "+15034681337",
-        "enable_emergency": false,
-        "local_outgoing": true
+        "enable_emergency": false
     },
     "fortysecond": {
         "outgoing": "outgoing_seattle",
         "caller_id": "+15034681337",
-        "enable_emergency": false,
-        "local_outgoing": true
+        "enable_emergency": false
     },
     "ghost-mountain": {
         "outgoing": "outgoing_portland",
         "caller_id": "+15034448615",
-        "enable_emergency": true,
-        "local_outgoing": true
+        "enable_emergency": true
     },
     "groundscore-one": {
         "outgoing": "outgoing_portland",
         "caller_id": "+15033087601",
-        "enable_emergency": true,
-        "local_outgoing": false
+        "enable_emergency": true
     },
     "groundscore-two": {
         "outgoing": "outgoing_portland",
         "caller_id": "+15033087601",
-        "enable_emergency": true,
-        "local_outgoing": false
+        "enable_emergency": true
     },
     "groundscore-three": {
         "outgoing": "outgoing_portland",
         "caller_id": "+15033087601",
-        "enable_emergency": true,
-        "local_outgoing": false
+        "enable_emergency": true
     },
     "hot-leet": {
         "outgoing": "incoming_leet",
         "caller_id": "+15034681337",
-        "enable_emergency": false,
-        "local_outgoing": true
+        "enable_emergency": false
     },
     "landline": {
         "outgoing": "outgoing_ypsi",
         "caller_id": "+17345476651",
-        "enable_emergency": true,
-        "local_outgoing": true
+        "enable_emergency": true
     },
     "monitor-one": {
         "outgoing": "directories_detroit",
         "caller_id": "+15034681337",
-        "enable_emergency": false,
-        "local_outgoing": true
+        "enable_emergency": false
     },
     "r2d2": {
         "outgoing": "outgoing_safe",
         "caller_id": "+15033828838",
-        "enable_emergency": true,
-        "local_outgoing": true
+        "enable_emergency": true
     },
     "ry4an-test": {
         "outgoing": "outgoing_ypsi",
         "caller_id": "+15034681337",
-        "enable_emergency": false,
-        "local_outgoing": true
+        "enable_emergency": false
     },
     "sjac": {
         "outgoing": "outgoing_safe",
         "caller_id": "+15032126899",
-        "enable_emergency": false,
-        "local_outgoing": true
+        "enable_emergency": false
     },
     "street-books-one": {
         "outgoing": "outgoing_portland",
         "caller_id": "+15034681337",
-        "enable_emergency": false,
-        "local_outgoing": true
+        "enable_emergency": false
     },
     "street-books-two": {
         "outgoing": "outgoing_dialtone",
         "caller_id": "+15034681337",
-        "enable_emergency": false,
-        "local_outgoing": true
+        "enable_emergency": false
     },
     "souwester": {
         "outgoing": "outgoing_souwester",
         "caller_id": "+13602282259",
-        "enable_emergency": true,
-        "local_outgoing": true
+        "enable_emergency": true
     },
     "tishbite-test": {
         "outgoing": "outgoing_portland",
         "caller_id": "+15034681337",
-        "enable_emergency": false,
-        "local_outgoing": true
+        "enable_emergency": false
     },
     "test-one": {
         "outgoing": "outgoing_safe",
         "caller_id": "+19713512383",
-        "enable_emergency": false,
-        "local_outgoing": true
+        "enable_emergency": false
     },
     "test-two": {
         "outgoing": "outgoing_safe",
         "caller_id": "+19713512383",
-        "enable_emergency": false,
-        "local_outgoing": true
+        "enable_emergency": false
     },
     "test-three": {
         "outgoing": "outgoing_safe",
         "caller_id": "+19713512383",
-        "enable_emergency": false,
-        "local_outgoing": true
+        "enable_emergency": false
     },
     "test-four": {
         "outgoing": "outgoing_safe",
         "caller_id": "+19713512383",
-        "enable_emergency": false,
-        "local_outgoing": true
+        "enable_emergency": false
     },
     "test-five": {
         "outgoing": "outgoing_safe",
         "caller_id": "+19713512383",
-        "enable_emergency": false,
-        "local_outgoing": true
+        "enable_emergency": false
     },
     "test-six": {
         "outgoing": "outgoing_safe",
         "caller_id": "+19713512383",
-        "enable_emergency": false,
-        "local_outgoing": true
+        "enable_emergency": false
     }
 }

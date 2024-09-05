@@ -70,13 +70,9 @@ def dial_outgoing(request, env):
             env)
         return str(response)
     if to_extension == '#':
-        if from_extension['local_outgoing']:
-            # ivr() is also routed directly, so it marshals
-            # the response for flask.
-            return ivr(request, env)
-        # The top menu is on the asterisk.
-        metric.publish('dial_sip_asterisk', from_user, env)
-        return str(util.dial_sip_asterisk(to_extension, request, env))
+        # ivr() is also routed directly, so it marshals
+        # the response for flask.
+        return ivr(request, env)
 
     # It's an E.164 number, normalize, filter, transform.
     to_number = util.pstn_number(to_extension, from_extension['enable_emergency'])
