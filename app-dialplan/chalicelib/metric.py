@@ -52,7 +52,6 @@ def publish_twilio_error(event, message, env):
         (endpoint, host) = url.split('@')
         endpoint = endpoint.split(':')[1] # 'demo-one'
         hostname = host.split('.')[0]      # 'direct-futel-stage'
-        # XXX should be dialplan-functions-stage
         hostname = hostname.split('-')[-1] # 'stage'
     else:
         # We get an url of None when we timeout trying to call a registered
