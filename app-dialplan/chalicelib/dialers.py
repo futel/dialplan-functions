@@ -70,6 +70,7 @@ def dial_outgoing(request, env):
             env)
         return str(response)
     if to_extension == '#':
+        # Redirect to the top ivr context.
         response = VoiceResponse()
         response.redirect('/ivr')
         return str(response)
@@ -129,7 +130,7 @@ def _dial_sip(extension, from_number, request, env):
     dial.sip(sip_uri)
     return str(response)
 
-def ivr(request, env):
+def ivr(context_name, request, env):
     """
     Return TwiML string to play IVR context with attributes from request,
     or send the call to the Asterisk server if we can't find it.
@@ -140,7 +141,11 @@ def ivr(request, env):
     # Params from twilio are in the body, params from us are in the
     # query string. We aren't supposted to combine them in a request.
     digits = request.post_fields.get('Digits')
-    c_name = request.query_params.get('context')
+    # if context_name:
+    #     c_name = context_name
+    # else:
+    #     c_name = request.query_params.get('context')
+    c_name = request.query_params.get('context') # XXX
     parent_name = request.query_params.get('parent')
     stanza = request.query_params.get('stanza')
     iteration = request.query_params.get('iteration')
