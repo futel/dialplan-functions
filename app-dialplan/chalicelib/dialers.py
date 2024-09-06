@@ -141,11 +141,6 @@ def ivr(context_name, request, env):
     # Params from twilio are in the body, params from us are in the
     # query string. We aren't supposted to combine them in a request.
     digits = request.post_fields.get('Digits')
-    # if context_name:
-    #     c_name = context_name
-    # else:
-    #     c_name = request.query_params.get('context')
-    c_name = request.query_params.get('context') # XXX
     parent_name = request.query_params.get('parent')
     stanza = request.query_params.get('stanza')
     iteration = request.query_params.get('iteration')
@@ -154,19 +149,19 @@ def ivr(context_name, request, env):
     stanza = ivrs.get_stanza(stanza)
     iteration = ivrs.get_iteration(iteration)
 
-    util.log('c_name:{} stanza:{} digits:{}'.format(c_name, stanza, digits))
+    util.log('context_name:{} stanza:{} digits:{}'.format(context_name, stanza, digits))
     # Find the destination ivr context dict.
-    if not c_name:
+    if not context_name:
         # Presumably this is the first interaction, go to the
         # default context.
         from_extension = util.sip_to_extension(from_user, env)
-        c_name = from_extension['outgoing']
-        dest_c_dict = ivrs.context_dict(env['ivrs'], c_name)
+        context_name = from_extension['outgoing']
+        dest_c_dict = ivrs.context_dict(env['ivrs'], context_name)
     else:
-        c_dict = ivrs.context_dict(env['ivrs'], c_name)
+        c_dict = ivrs.context_dict(env['ivrs'], context_name)
         if not digits:
             # There wasn't a digit, the same context is our destination.
-            dest_c_name = c_name
+            dest_c_name = context_name
             dest_c_dict = c_dict
         else:
             dest_c_name = ivrs.destination_context_name(digits, c_dict)
@@ -200,7 +195,7 @@ def ivr(context_name, request, env):
         metric.publish(dest_c_dict['name'], from_user, env)
     return str(
         ivrs.ivr_context(
-            dest_c_dict, lang, c_name, stanza, iteration, request, env))
+            dest_c_dict, lang, context_name, stanza, iteration, request, env))
 
 def _enqueue_operator_call(request, env):
     """

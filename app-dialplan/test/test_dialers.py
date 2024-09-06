@@ -91,11 +91,11 @@ class TestIvr(TestCase):
             headers={'host': 'host'},
             post_fields={
                 'SipDomain': 'direct-futel-prod.sip.twilio.com',
-                'To': 'sip:xyzzy@direct-futel-prod.sip.twilio.com',
+                'To': 'sip:outgoing_portland@direct-futel-prod.sip.twilio.com',
                 'From': 'sip:test-one@direct-futel-prod.sip.twilio.com'},
-            query_params={'context': 'outgoing_portland'},
+            query_params={},
             context={'domainPrefix':'prod'})
-        got = dialers.ivr('xxx', request, env)
+        got = dialers.ivr('outgoing_portland', request, env)
         # Smoke test.
 
     @mock.patch.object(dialers, 'metric')
@@ -107,10 +107,9 @@ class TestIvr(TestCase):
                 'To': 'sip:xyzzy@direct-futel-prod.sip.twilio.com',
                 'From': 'sip:test-one@direct-futel-prod.sip.twilio.com',
                 'Digits': '*'},
-            query_params={'context':'outgoing_portland'},
             context={'domainPrefix':'prod'})
 
-        got = dialers.ivr(None, request, env)
+        got = dialers.ivr('outgoing_portland', request, env)
         # Smoke test.
 
 

@@ -133,7 +133,6 @@ def _add_gather_stanza(
     """
     path = "ivr/{}".format(c_name)
     url_params = {
-        'context': c_name,
         'parent': parent_c_name,
         'lang': lang,
         'iteration': iteration}
@@ -239,12 +238,12 @@ def _has_next_context_stanza(c_dict):
 def _add_next_context_stanza(
         response, c_dict, lang, parent_c_name, request, env):
     next_context = c_dict['next_context']
-    path = "ivr/{}".format(parent_c_name)
+    #path = "ivr/{}".format(parent_c_name)
+    path = "ivr/{}".format(next_context)
     action_url = util.function_url(
         request,
         path,
-        {'context': next_context,
-         'lang': lang,
+        {'lang': lang,
          'parent': parent_c_name,
          'stanza': INTRO_STANZA.value}) # First stanza is always intro stanza.
     response.redirect(action_url)
