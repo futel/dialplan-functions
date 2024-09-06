@@ -179,8 +179,8 @@ def dial_sip_asterisk(extension, request, env):
 
 def deserialize_pstn(request):
     """Return to attribute from request for a dial_pstn call."""
-    # If there is a Digits in query_params, use that.
-    # Otherwise, use To from post_fields.
+    # If there is a Digits in post_fields, use that.
+    # Otherwise, extract from SIP URI in To from post_fields.
     to_number = request.post_fields.get('Digits')
     if not to_number:
         to_uri = request.post_fields['To']
