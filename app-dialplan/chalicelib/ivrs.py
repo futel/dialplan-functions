@@ -131,6 +131,7 @@ def _add_gather_stanza(
     """
     Append a gather and redirect to the TwiML Response, and return the gather.
     """
+    path = "ivr/{}".format(c_name)
     url_params = {
         'context': c_name,
         'parent': parent_c_name,
@@ -143,7 +144,7 @@ def _add_gather_stanza(
     gather_url_params['stanza'] = INTRO_STANZA.value
     action_url = util.function_url(
         request,
-        'ivr',
+        path,
         gather_url_params)
     gather = response.gather(
         num_digits=1, timeout=0, finish_on_key='', action=action_url)
@@ -154,7 +155,7 @@ def _add_gather_stanza(
     redirect_url_params['stanza'] = MENU_STANZA.value
     action_url = util.function_url(
         request,
-        'ivr',
+        path,
         redirect_url_params)
     _redirect = response.redirect(action_url)
     # We should return the response instead.
@@ -238,9 +239,10 @@ def _has_next_context_stanza(c_dict):
 def _add_next_context_stanza(
         response, c_dict, lang, parent_c_name, request, env):
     next_context = c_dict['next_context']
+    path = "ivr/{}".format(parent_c_name)
     action_url = util.function_url(
         request,
-        'ivr',
+        path,
         {'context': next_context,
          'lang': lang,
          'parent': parent_c_name,
