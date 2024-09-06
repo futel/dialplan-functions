@@ -52,22 +52,9 @@ def dial_outgoing(request, env):
     from_extension = util.sip_to_extension(from_user, env)
     util.log('to_extension {}'.format(to_extension))
     if to_extension == '0':
-        # Return twiml for the outgoing operator context.
-        # This is an ivr destination, so metric.
-        # XXX Make a helper for this.
-        dest_c_name = 'outgoing_operator_caller'
-        metric.publish(dest_c_name, from_user, env)
-        dest_c_dict = ivrs.context_dict(env['ivrs'], dest_c_name)
-        stanza = ivrs.get_stanza(None)
-        iteration = ivrs.get_iteration(None)
-        response = ivrs.ivr_context(
-            dest_c_dict,
-            'en',                   # XXX Should get the real lang!
-            dest_c_name,
-            None,
-            iteration,
-            request,
-            env)
+        # Redirect to the top ivr context.
+        response = VoiceResponse()
+        response.redirect('/ivr/outgoing_operator_caller')
         return str(response)
     if to_extension == '#':
         # Redirect to the top ivr context.
@@ -75,7 +62,7 @@ def dial_outgoing(request, env):
         response.redirect('/ivr')
         return str(response)
 
-    # It's an E.164 number, normalize, filter, transform.
+    # It's a number to dial from a dialtone. Normalize, transform, filter.
     to_number = util.pstn_number(to_extension, from_extension['enable_emergency'])
     if not to_number:
         util.log('filtered pstn number {}'.format(to_extension))
