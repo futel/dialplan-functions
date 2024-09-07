@@ -48,8 +48,8 @@ def dial_outgoing(request, env):
     """
     from_user = request.from_user
     metric.publish('dial_outgoing', from_user, env)
-    to_extension = util.deserialize_pstn(request)
     from_extension = util.sip_to_extension(from_user, env)
+    to_extension = util.deserialize_pstn(request) # XXX different from dial_sip_e164
     util.log('to_extension {}'.format(to_extension))
     if to_extension == '0':
         # Redirect to the top ivr context.
@@ -74,7 +74,7 @@ def dial_outgoing(request, env):
     to_extension = util.e164_to_extension(to_number, env['extensions'])
     if to_extension:
         metric.publish('dial_sip', from_user, env)
-        from_number = from_extension['caller_id']
+        from_number = from_extension['caller_id'] # XXX different from dial_sip_e164
         return _dial_sip(to_extension, from_number, request, env)
 
     # It's a PSTN number, call it.
@@ -88,12 +88,13 @@ def dial_sip_e164(request, env):
     """
     from_user = request.from_user
     metric.publish('dial_sip_e164', from_user, env)
+    from_extension = util.sip_to_extension(from_user, env)
     to_number = request.post_fields['To']
-    from_number = request.post_fields['From']
-    to_number = util.pstn_number(to_number, enable_emergency=False)
+    to_number = util.pstn_number(to_number, from_extension['enable_emergency'])
 
     to_extension = util.e164_to_extension(to_number, env['extensions'])
     if to_extension:
+        from_number = request.post_fields['From'] # XXX different from dial_outgoing
         return _dial_sip(to_extension, from_number, request, env)
 
     util.log("Could not find extension for E.164 number")

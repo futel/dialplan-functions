@@ -204,7 +204,7 @@ def request_to_endpoint(request, env):
         # Call from client to Twilio SIP Domain,
         # From is SIP URI of caller's extension.
         return extension
-    extension =  e164_to_extension(request.post_fields['To'], env['extensions'])
+    extension = e164_to_extension(request.post_fields['To'], env['extensions'])
     if extension:
         # Incoming PSTN call to Twilio phone number,
         # To is E.164 being called.
