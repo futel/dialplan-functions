@@ -41,6 +41,30 @@ def _call_status(request):
     # Status callack from twilio REST client on call create.
     return request.post_fields.get('CallStatus')
 
+def dial_number(request, env):
+    """
+    Return TwiML string to PSTN dial a number with attributes from request.
+    """
+    from_user = request.from_user
+    metric.publish('dial_number', from_user, env)
+    from_extension = util.sip_to_extension(from_user, env)
+    # XXX different from dial_sip_e164
+    to_extension = util.deserialize_pstn(request)
+
+    # Normalize, transform, filter.
+    to_number = util.pstn_number(
+        to_extension, from_extension['enable_emergency'])
+    if not to_number:
+        util.log('filtered pstn number {}'.format(to_extension))
+        response = VoiceResponse()
+        response.redirect('/reject')
+        return str(response)
+
+    # Here is where we would look up and directly SIP call if its our extension.
+
+    # It's a PSTN number, call it.
+    return str(util.dial_pstn(to_number, from_extension, request, env))
+
 def dial_outgoing(request, env):
     """
     Return TwiML string to dial PSTN, dial SIP URI, or play IVR,
@@ -49,7 +73,8 @@ def dial_outgoing(request, env):
     from_user = request.from_user
     metric.publish('dial_outgoing', from_user, env)
     from_extension = util.sip_to_extension(from_user, env)
-    to_extension = util.deserialize_pstn(request) # XXX different from dial_sip_e164
+    # XXX different from dial_sip_e164
+    to_extension = util.deserialize_pstn(request)
     util.log('to_extension {}'.format(to_extension))
     if to_extension == '0':
         # Redirect to the top ivr context.
@@ -78,8 +103,9 @@ def dial_outgoing(request, env):
         return _dial_sip(to_extension, from_number, request, env)
 
     # It's a PSTN number, call it.
-    metric.publish('dial_pstn', from_user, env)
-    return str(util.dial_pstn(to_number, from_extension, request, env))
+    response = VoiceResponse()
+    response.redirect('/dial_number')
+    return str(response)
 
 def dial_sip_e164(request, env):
     """
