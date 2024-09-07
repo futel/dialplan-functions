@@ -58,6 +58,7 @@ class TestDialSipE164(TestCase):
     @mock.patch.object(dialers, 'metric')
     def test_dial_sip_e164(self, _mock_metric):
         request = mock.Mock(
+            from_user='hot-leet',
             headers={'host': 'host'},
             post_fields={
                 'SipDomain': 'direct-futel-prod.sip.twilio.com',
