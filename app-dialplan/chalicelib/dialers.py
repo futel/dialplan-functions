@@ -65,6 +65,16 @@ def _call_status(request):
 #     # It's a PSTN number, call it.
 #     return str(util.dial_pstn(to_number, from_extension, request, env))
 
+def dial_extension(extension_name, request, env):
+    """
+    Return TwiML string to call extension.
+    """
+    from_user = request.from_user
+    metric.publish('dial_extension', from_user, env)
+    from_extension = util.sip_to_extension(from_user, env)
+    from_number = from_extension['caller_id'] # XXX different from dial_sip_e164
+    return _dial_sip(extension_name, from_number, request, env)
+
 def dial_outgoing(request, env):
     """
     Return TwiML string to dial PSTN, dial SIP URI, or play IVR,
@@ -98,9 +108,9 @@ def dial_outgoing(request, env):
     # If it's the number of one of our extensions, SIP call it.
     to_extension = util.e164_to_extension(to_number, env['extensions'])
     if to_extension:
-        metric.publish('dial_sip', from_user, env)
-        from_number = from_extension['caller_id'] # XXX different from dial_sip_e164
-        return _dial_sip(to_extension, from_number, request, env)
+        response = VoiceResponse()
+        response.redirect('/dial_extension/{}'.format(to_extension))
+        return str(response)
 
     # It's a PSTN number, call it.
     metric.publish('dial_pstn', from_user, env)
