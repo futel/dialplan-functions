@@ -11,7 +11,8 @@ request = mock.Mock(
 env = {
     'AWS_METRICS_TOPIC_ARN': 'AWS_METRICS_TOPIC_ARN',
     'sns_client': mock.Mock(),
-    'stage':'stage'}
+    'stage':'prod'}
+
 
 
 class TestMetric(TestCase):
