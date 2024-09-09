@@ -12,17 +12,6 @@ def check_response(response, text):
 
 class TestDialers(TestCase):
 
-    def test_dial_number_e164_pstn(self):
-        response = requests.post(
-            "https://stage.dialplans.phu73l.net/dial_number",
-            data={
-                "To": "sip:5035551212@direct-futel-stage.sip.twilio.com",
-                "From": "sip:test-one@direct-futel-stage.sip.twilio.com",
-                "SipDomain": "direct-futel-stage.sip.twilio.com"})
-        check_response(
-            response,
-            '<?xml version="1.0" encoding="UTF-8"?><Response><Dial action="https://stage.dialplans.phu73l.net/ops/call_status_pstn" answerOnBridge="true" callerId="+19713512383"><Number>+15035551212</Number></Dial></Response>')
-
     def test_dial_outgoing_e164_pstn(self):
         response = requests.post(
             "https://stage.dialplans.phu73l.net/dial_outgoing",
@@ -32,7 +21,7 @@ class TestDialers(TestCase):
                 "SipDomain": "direct-futel-stage.sip.twilio.com"})
         check_response(
             response,
-            '<?xml version="1.0" encoding="UTF-8"?><Response><Redirect>/dial_number</Redirect></Response>')
+            '<?xml version="1.0" encoding="UTF-8"?><Response><Dial action="https://stage.dialplans.phu73l.net/ops/call_status_pstn" answerOnBridge="true" callerId="+19713512383"><Number>+15035551212</Number></Dial></Response>')
 
     def test_dial_outgoing_e164_sip(self):
         response = requests.post(
@@ -44,7 +33,7 @@ class TestDialers(TestCase):
                 "SipDomain": "direct-futel-stage.sip.twilio.com"})
         check_response(
             response,
-            '<?xml version="1.0" encoding="UTF-8"?><Response><Dial action="https://stage.dialplans.phu73l.net/ops/call_status_sip" answerOnBridge="true" callerId="+19713512383"><Sip>sip:cesar-chavez@direct-futel-stage.sip.twilio.com</Sip></Dial></Response>')
+            '<?xml version="1.0" encoding="UTF-8"?><Response><Redirect>/dial_extension/cesar-chavez</Redirect></Response>')
 
     def test_dial_outgoing_pound(self):
         response = requests.post(
