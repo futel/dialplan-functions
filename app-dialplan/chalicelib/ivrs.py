@@ -126,6 +126,7 @@ def _add_gather_stanza(
         parent_c_name,
         lang,
         iteration,
+        timeout,
         request,
         response):
     """
@@ -136,6 +137,8 @@ def _add_gather_stanza(
         'parent': parent_c_name,
         'lang': lang,
         'iteration': iteration}
+    if timeout is None:
+        timeout = 2
 
     # Create the URL that the gather will send the user to on digit entry.
     gather_url_params = copy.copy(url_params)
@@ -146,7 +149,7 @@ def _add_gather_stanza(
         path,
         gather_url_params)
     gather = response.gather(
-        num_digits=1, timeout=0, finish_on_key='', action=action_url)
+        num_digits=1, timeout=timeout, finish_on_key='', action=action_url)
 
     # Create the URL that the redirect will send the user to on no digit entry.
     redirect_url_params = copy.copy(url_params)
@@ -167,7 +170,13 @@ def _add_intro_stanza(response, c_dict, lang, parent_c_name, iteration, request,
     destination URL. Return response.
     """
     gather = _add_gather_stanza(
-        c_dict['name'], parent_c_name, lang, iteration, request, response)
+        c_dict['name'],
+        parent_c_name,
+        lang,
+        iteration,
+        timeout=0,
+        request=request,
+        response=response)
     # Play the intro statements once.
     for statement in c_dict.get('intro_statements', []):
         gather.play(
@@ -210,8 +219,9 @@ def _add_menu_stanza(
         parent_c_name,
         lang,
         iteration,
-        request,
-        response)
+        timeout=None,
+        request=request,
+        response=response)
     # Play the menu entries which have key prompt statements.
     for (e, menu_entry) in enumerate(
             c_dict.get('menu_entries', []), start=1):
@@ -278,5 +288,6 @@ def ivr_context(dest_c_dict, lang, c_name, stanza, iteration, request, env):
     if _has_next_context_stanza(dest_c_dict):
         return _add_next_context_stanza(
             response, dest_c_dict, lang, c_name, request, env)
+    # XXX Is this an expected state, do we want to survive this?
     response.hangup()
     return response
