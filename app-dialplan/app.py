@@ -60,11 +60,11 @@ def setup_response(response):
 # here by defining it is never accessed, we throw it away. Probably fun
 # to design but needs 4 lines of comments.
 
-@route('/dial_number')
-def _index():
-    request = setup_request(app.current_request)
-    response = dialers.number(request, env)
-    return setup_response(response)
+# @route('/dial_number')
+# def _index():
+#     request = setup_request(app.current_request)
+#     response = dialers.number(request, env)
+#     return setup_response(response)
 
 @route('/dial_outgoing')
 def _index():
