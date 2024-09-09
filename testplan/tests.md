@@ -69,8 +69,7 @@ dialtone tests
 - domestic PSTN numbers call (10 digit prefixed by 1, +1, 0111, or nothing)
 - international PSTN numbers call (12 digit prefixed by 52 or 01152)
 - 933 acts appropriately for an emergency call (call destination or notify)
-- valid 3 digit numbers (933, 211, 988, ...XXX)
-- other valid 3 digit calls call their destinations
+- other valid 3 digit numbers (211, 988, ...XXX) act appropriately
 - 0 sends to operator from dialtone
 - valid versions of 5035551212, 8005551212, 5555551212 send to operator
 - caller ID is appropriate
@@ -85,7 +84,6 @@ outgoing ivr tests
 - undefined entries restart menu
 - * toggles Spanish/English and restarts menu
 - # goes to parent menu
-- 0 restarts menu
 - no action terminates correctly after XXX iterations
 
 outgoing top ivr tests
@@ -97,7 +95,7 @@ outgoing top ivr tests
   - 9 and then anything else fails
   - 9 and then 1 and then anything else fails
   - do not enter 9 1 1 from top ivr! Test this only on a modified installation which calls 933 instead of 911!
-  - If modified for testing, 9 1 1  announces and then calls emergency
+  - If modified for testing, 9 1 1 announces and then calls emergency
 - if enable_emergency is false
   - 9 is an undefined entry
 - # restarts menu
