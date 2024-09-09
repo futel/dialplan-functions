@@ -41,7 +41,7 @@ def exercise(event, env):
         'dome-basement',
         'dome-booth',
         'dome-workshop',
-        #'fortysecond',
+        'fortysecond',
         'ghost-mountain',
         'landline',
         #'souwester'
