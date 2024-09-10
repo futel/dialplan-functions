@@ -41,30 +41,6 @@ def _call_status(request):
     # Status callack from twilio REST client on call create.
     return request.post_fields.get('CallStatus')
 
-# def dial_number(request, env):
-#     """
-#     Return TwiML string to PSTN dial a number with attributes from request.
-#     """
-#     from_user = request.from_user
-#     metric.publish('dial_number', from_user, env)
-#     from_extension = util.sip_to_extension(from_user, env)
-#     # XXX different from dial_sip_e164
-#     to_extension = util.deserialize_pstn(request)
-
-#     # Normalize, transform, filter.
-#     to_number = util.pstn_number(
-#         to_extension, from_extension['enable_emergency'])
-#     if not to_number:
-#         util.log('filtered pstn number {}'.format(to_extension))
-#         response = VoiceResponse()
-#         response.redirect('/reject')
-#         return str(response)
-
-#     # Here is where we would look up and directly SIP call if its our extension.
-
-#     # It's a PSTN number, call it.
-#     return str(util.dial_pstn(to_number, from_extension, request, env))
-
 def dial_extension(extension_name, request, env):
     """
     Return TwiML string to call extension.

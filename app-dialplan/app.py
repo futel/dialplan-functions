@@ -72,12 +72,6 @@ def _index():
     response = dialers.dial_e164_extension(request, env)
     return setup_response(response)
 
-# @route('/dial_number')
-# def _index():
-#     request = setup_request(app.current_request)
-#     response = dialers.number(request, env)
-#     return setup_response(response)
-
 @route('/dial_outgoing')
 def _index():
     request = setup_request(app.current_request)
