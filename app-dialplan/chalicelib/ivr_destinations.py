@@ -121,7 +121,7 @@ def outgoing_dialtone_pre(request, env):
 
 def internal_dialtone(request, env):
     """Return TwiML for a dialtone for internal calls."""
-    return _dialtone('dial_sip_e164', request, env)
+    return _dialtone('dial_e164_extension', request, env)
 
 def call_911_911(request, env):
     """Return TwiML to call 911."""

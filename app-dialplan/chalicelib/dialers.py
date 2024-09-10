@@ -75,6 +75,27 @@ def dial_extension(extension_name, request, env):
     from_number = from_extension['caller_id'] # XXX different from dial_sip_e164
     return _dial_sip(extension_name, from_number, request, env)
 
+def dial_e164_extension(request, env):
+    """
+    Return TwiML string to call an extension registered to our SIP Domains,
+    looked up by the E.164 number in the Digits of the request.
+    """
+    from_user = request.from_user
+    metric.publish('dial_e164_extension', from_user, env)
+    to_number = request.post_fields['Digits']
+    to_number = util.normalize_number(to_number)
+    to_extension = util.e164_to_extension(to_number, env['extensions'])
+
+    if to_extension:
+        response = VoiceResponse()
+        response.redirect('/dial_extension/{}'.format(to_extension))
+        return str(response)
+
+    # It didn't match the number of one of our SIP extensions.
+    response = VoiceResponse()
+    response.redirect('/reject')
+    return str(response)
+
 def dial_outgoing(request, env):
     """
     Return TwiML string to dial PSTN, dial SIP URI, or play IVR,
@@ -86,6 +107,7 @@ def dial_outgoing(request, env):
     # XXX different from dial_sip_e164
     to_extension = util.deserialize_pstn(request)
     util.log('to_extension {}'.format(to_extension))
+
     if to_extension == '0':
         # Redirect to the top ivr context.
         response = VoiceResponse()
@@ -116,16 +138,19 @@ def dial_outgoing(request, env):
     metric.publish('dial_pstn', from_user, env)
     return str(util.dial_pstn(to_number, from_extension, request, env))
 
+# This might more normally named dial_incoming_e164.
 def dial_sip_e164(request, env):
     """
     Return TwiML string to call an extension registered to our SIP Domains,
-    looked up by the given E.164 number.
+    looked up by the E.164 number in the To of the request.
     """
+    # We only expect to be taking calls from external numbers, so we could
+    # just normalize to "hot-leet". We don't want to metric external from
+    # numbers, and that's the only reason we need a user.
     from_user = request.from_user
     metric.publish('dial_sip_e164', from_user, env)
-    from_extension = util.sip_to_extension(from_user, env)
     to_number = request.post_fields['To']
-    to_number = util.pstn_number(to_number, from_extension['enable_emergency'])
+    to_number = util.normalize_number(to_number)
 
     to_extension = util.e164_to_extension(to_number, env['extensions'])
     if to_extension:
@@ -427,5 +452,6 @@ def reject(request, env):
     from_user = request.from_user
     metric.publish('reject', from_user, env)
     response = VoiceResponse()
+    # Is this playing a busy signal as documented?
     response.reject(reason="busy")
     return str(response)
