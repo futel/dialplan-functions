@@ -31,21 +31,45 @@ def route(path):
         content_types=['application/x-www-form-urlencoded'])
 
 def setup_request(request):
+    """
+    Update request.
+    Fill post_fields and query_params attributes.
+    If post_fields has a From that parses to an extension name, fill from_user.
+    Otherwise, fill from_user with the hot-leet placeholder, and optionally
+    fill from_number.
+    """
     request.post_fields = post_fields(request)
     request.query_params = request.query_params or {}
-    # We can use Direction to tell how to parse out from_user?
+
     from_user = request.post_fields.get('From')
-    if from_user:
-        from_user = util.sip_to_user(from_user)
-    if from_user:
-        # This is an outgoing twilio pv call from a sip client, or a callback
-        # after one.
-        request.from_user = from_user
-    else:
-        # This is an incoming call from a twilio phone number to an e164 number
-        # for an extension, or it is an outgoing call from a twilio REST client.
-        # For the purposes of metrics it is from us, the generic system.
+    if not from_user:
+        # This is a callback call from a twilio call error.
+        # For the purposes of metrics the from user is us, the generic system.
         request.from_user = "hot-leet"
+        # We shouldn't be accessing this attribute again, it's only here
+        # because we are mixing up codebases.
+        request.from_number = None
+    else:
+        from_user = util.sip_to_user(from_user)
+        if from_user:
+            # This is an outgoing twilio pv call from a sip client, or a
+            # callback after one.
+            request.from_user = from_user
+            # There may or may not be a phone number associated with this user.
+            # Since this is an outgoing call, if we want to associate a
+            # caller id later, we will have to look it up then.
+            request.from_number = None
+        else:
+            # This is an incoming call from a twilio phone number to an e164
+            # number for an extension, or it is an outgoing call from a
+            # twilio REST client.
+            # The Direction post_field could be used to determine which it is.
+            # For the purposes of metrics the from user is us.
+            request.from_user = "hot-leet"
+            # The From field is the number the caller gave us. We don't want it
+            # in a metric or other non-ephemeral storage down the line.
+            request.from_number = request.post_fields.get('From')
+
     util.log_request(request)
     return request
 
