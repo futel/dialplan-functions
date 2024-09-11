@@ -20,7 +20,7 @@ sip_domain_suffix = "sip.twilio.com"
 operator_message_max = 60 * 15  # 15 minutes
 
 
-def _get_sip_domain(extension, env, request):
+def _get_sip_domain(extension, env):
     extension_map = env['extensions']
     if extension_map[extension]['enable_emergency']:
         sip_domain_subdomain_base = sip_domain_subdomain_base_emergency
@@ -140,7 +140,7 @@ def dial_sip_e164(request, env):
 
 def _dial_sip(extension, from_number, request, env):
     """Return TwiML to dial a SIP client on our Twilio SIP domain."""
-    sip_domain = _get_sip_domain(extension, env, request)
+    sip_domain = _get_sip_domain(extension, env)
     #sip_uri = f'sip:{extension}@{sip_domain};{sip_edge}'
     sip_uri = f'sip:{extension}@{sip_domain}'
     util.log('sip_uri: {}'.format(sip_uri))
