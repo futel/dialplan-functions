@@ -47,8 +47,14 @@ def dial_extension(extension_name, request, env):
     """
     from_user = request.from_user
     metric.publish('dial_extension', from_user, env)
-    from_extension = util.sip_to_extension(from_user, env)
-    from_number = from_extension['caller_id'] # XXX different from dial_sip_e164
+    if from_user is 'hot-leet':
+        # We are an incoming call, or an outgoing call from a twilio REST
+        # client.
+        from_number = request.from_number
+    else:
+        # We are an outgoing call, find out what to tell it.
+        from_extension = util.sip_to_extension(from_user, env)
+        from_number = from_extension['caller_id']
     return _dial_sip(extension_name, from_number, request, env)
 
 def dial_e164_extension(request, env):
@@ -130,8 +136,9 @@ def dial_sip_e164(request, env):
     to_extension = util.e164_to_extension(to_number, env['extensions'])
 
     if to_extension:
-        from_number = request.post_fields['From'] # XXX different from dial_outgoing
-        return _dial_sip(to_extension, from_number, request, env)
+        response = VoiceResponse()
+        response.redirect('/dial_extension/{}'.format(to_extension))
+        return str(response)
 
     # It didn't match the number of one of our SIP extensions.
     response = VoiceResponse()
