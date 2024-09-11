@@ -32,15 +32,6 @@ def _get_sip_domain(extension, env):
             '.' +
             sip_domain_suffix)
 
-def _call_status(request):
-    """Return the call status indicated by the request."""
-    call_status = request.post_fields.get('DialCallStatus')
-    if call_status:
-        # Status callack from twilio pv running twiml on call create.
-        return call_status
-    # Status callack from twilio REST client on call create.
-    return request.post_fields.get('CallStatus')
-
 def dial_extension(extension_name, request, env):
     """
     Return TwiML string to call extension.
