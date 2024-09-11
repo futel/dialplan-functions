@@ -43,7 +43,7 @@ def setup_request(request):
 
     from_user = request.post_fields.get('From')
     if not from_user:
-        # This is a callback call from a twilio call error.
+        # This is a callback after a twilio call error.
         # For the purposes of metrics the from user is us, the generic system.
         request.from_user = "hot-leet"
         # We shouldn't be accessing this attribute again, it's only here
@@ -53,7 +53,7 @@ def setup_request(request):
         from_user = util.sip_to_user(from_user)
         if from_user:
             # This is an outgoing twilio pv call from a sip client, or a
-            # callback after one.
+            # status callback after one.
             request.from_user = from_user
             # There may or may not be a phone number associated with this user.
             # Since this is an outgoing call, if we want to associate a
