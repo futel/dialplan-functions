@@ -120,20 +120,20 @@ def dial_sip_e164(request, env):
     Return TwiML string to call an extension registered to our SIP Domains,
     looked up by the E.164 number in the To of the request.
     """
-    # We only expect to be taking calls from external numbers, so we could
-    # just normalize to "hot-leet". We don't want to metric external from
+    # We only expect to be taking incoming calls from external numbers, so we
+    # could just normalize to "hot-leet". We don't want to metric external from
     # numbers, and that's the only reason we need a user.
     from_user = request.from_user
     metric.publish('dial_sip_e164', from_user, env)
     to_number = request.post_fields['To']
     to_number = util.normalize_number(to_number)
-
     to_extension = util.e164_to_extension(to_number, env['extensions'])
+
     if to_extension:
         from_number = request.post_fields['From'] # XXX different from dial_outgoing
         return _dial_sip(to_extension, from_number, request, env)
 
-    util.log("Could not find extension for E.164 number")
+    # It didn't match the number of one of our SIP extensions.
     response = VoiceResponse()
     response.redirect('/reject')
     return str(response)
