@@ -68,7 +68,7 @@ class TestDialSipE164(TestCase):
         got = dialers.dial_sip_e164(request, env)
         self.assertEqual(
             str(got),
-            '<?xml version="1.0" encoding="UTF-8"?><Response><Dial action="https://host/ops/call_status_sip" answerOnBridge="true" callerId="5035551212"><Sip>sip:test-one@direct-futel-nonemergency-stage.sip.twilio.com</Sip></Dial></Response>')
+            '<?xml version="1.0" encoding="UTF-8"?><Response><Redirect>/dial_extension/test-one</Redirect></Response>')
 
 
 class TestIvr(TestCase):
