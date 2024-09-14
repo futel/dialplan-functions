@@ -48,8 +48,21 @@ def publish_twilio_error(event, message, env):
     # 'sip:demo-one@direct-futel-stage.sip.twilio.com'
     url = message['webhook']['request']['url']
     if url:
-        # ('sip:demo-one', 'direct-futel-stage.sip.twilio.com')
-        (endpoint, host) = url.split('@')
+        try:
+            # ('sip:demo-one', 'direct-futel-stage.sip.twilio.com')
+            (endpoint, host) = url.split('@')
+        except ValueError:
+            to = message['webhook']['request']['parameters']['To']
+            try:
+                (endpoint, host) = to.split('@')
+            except ValueError:
+                from_ = message['webhook']['request']['parameters']['From']
+                try:
+                    (endpoint, host) = from_.split('@')
+                except ValueError:
+                    # Who know's what's going on?
+                    raise
+        # We got to here, hooray.
         endpoint = endpoint.split(':')[1] # 'demo-one'
         hostname = host.split('.')[0]      # 'direct-futel-stage'
         hostname = hostname.split('-')[-1] # 'stage'
