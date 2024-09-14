@@ -65,7 +65,7 @@ class TestDialers(TestCase):
                 "From": "+15034681337"})
         check_response(
             response,
-            '<?xml version="1.0" encoding="UTF-8"?><Response><Dial action="https://stage.dialplans.phu73l.net/ops/call_status_sip" answerOnBridge="true" callerId="+15034681337"><Sip>sip:landline@direct-futel-stage.sip.twilio.com</Sip></Dial></Response>')
+            '<?xml version="1.0" encoding="UTF-8"?><Response><Redirect>/dial_extension/landline</Redirect></Response>')
 
 
 class TestOps(TestCase):
