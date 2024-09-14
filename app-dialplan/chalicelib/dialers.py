@@ -209,7 +209,7 @@ def ivr(context_name, request, env):
                 # This is an ivr destination, so metric.
                 metric.publish('dial_sip_asterisk', from_user, env)
                 # XXX we lose lang! Hopefully user remembers to hit *.
-                return str(util.dial_sip_asterisk(dest_c_name, request, env))
+                return str(util.dial_sip_asterisk(dest_c_name, from_user, env))
 
     # We got this far, it's in the context_dict.
     if stanza is ivrs.INTRO_STANZA:

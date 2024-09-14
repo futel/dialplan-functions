@@ -59,6 +59,7 @@ def function_url(request, function_name, params=None):
     Return the URL for another function served by the same host.
     """
     # All functions HTTPS, top-level on the same host.
+    # Do we need this, isn't this the default?
     url = 'https://' + request.headers['host'] + '/' + function_name
     if params:
        # XXX We are putting URL arguments on a POST that may have
@@ -146,9 +147,8 @@ def python_to_twilio_param(v):
         return 'false'
     raise NotImplementedError
 
-def dial_sip_asterisk(extension, request, env):
+def dial_sip_asterisk(extension, from_user, env):
     """Return a TwiML response to dial a SIP extension on the asterisk."""
-    from_user = sip_to_user(request.post_fields['From'])
     from_extension = env['extensions'][from_user]
 
     if extension == "#":
