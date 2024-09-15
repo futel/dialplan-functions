@@ -1,6 +1,6 @@
 # Tests
 
-Extension tests for each extension
+Outgoing extension tests for each extension
 - callerid on outgoing dialtone is correct
 - emergency service on outgoing dialtone is correct
 - top level extension is correct
@@ -15,11 +15,6 @@ General context tests, once for all contexts
 - # repeats context if top level
 - # plays previous context if not top level
 - * switches language
-
-Context tests for each context
-- each listed entry goes to appropriate context
-- each unlisted entry goes to appropriate context
-- each unavailable entry repeats context
 
 Specific context tests
 - outgoing operator
@@ -37,3 +32,8 @@ Specific context tests
   - 1 from next level announces, calls emergency (don't let the call happen!)
 - top level emergency call when disabled by extension
   - 9 from top level restarts menu
+
+Context tests for each context
+- each listed entry goes to appropriate context
+- each unlisted entry goes to appropriate context
+- each unavailable entry repeats context
