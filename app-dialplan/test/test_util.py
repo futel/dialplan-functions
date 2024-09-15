@@ -7,11 +7,10 @@ env = {'AWS_METRICS_TOPIC_ARN': 'AWS_METRICS_TOPIC_ARN',
        'ASSET_HOST': 'ASSET_HOST',
        'stage': 'stage',
        'extensions': {
-           "test": {
+           "test-one": {
                "outgoing": "outgoing_safe",
                "caller_id": "+19713512383",
-               "enable_emergency": False,
-               "local_outgoing": True
+               "enable_emergency": False
            }}}
 
 
@@ -67,15 +66,8 @@ class TestUtil(TestCase):
             'answerOnBridge="true" callerId="+19713512383">'
             '<Number>+15035551212</Number></Dial></Response>')
 
-    def test_dial_sip(self):
-        request = mock.Mock(
-            headers={'host': 'host'},
-            post_fields={
-                'SipDomain': 'direct-futel-prod.sip.twilio.com',
-                'To': 'sip:%23@direct-futel-nonemergency-stage.sip.twilio.com',
-                'From': 'sip:test@direct-futel-nonemergency-stage.sip.twilio.com'},
-        context={'domainPrefix':'prod'})
-        response = util.dial_sip_asterisk('#', request, env)
+    def test_dial_sip_asterisk(self):
+        response = util.dial_sip_asterisk('#', 'test-one', env)
         self.assertEqual(
             str(response),
             '<?xml version="1.0" encoding="UTF-8"?><Response><Dial answerOnBridge="true"><Sip>sip:outgoing_safe@futel-stage.phu73l.net;region=us2?x-callerid=+19713512383&amp;x-enableemergency=false</Sip></Dial></Response>')
