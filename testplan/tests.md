@@ -3,9 +3,12 @@
 Outgoing extension tests for each extension
 - callerid on outgoing dialtone is correct
 - emergency service on outgoing dialtone is correct
+  - dial 933
 - top level extension is correct
-- callerid on menu dialtone
+  - # from linphone, pickup from ata
+- callerid on menu dialtone is correct
 - emergency service on menu dialtone is correct
+  - dial 933
 - first asterisk context reached is correct
 
 Incoming call tests for each extension configured to take stage incoming call

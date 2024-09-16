@@ -1,7 +1,8 @@
 how to run the testplan
 - setup what is necessary for the tests to be run, see setup document
 - run tests listed on the google sheet
-- tests are found in tests document
+- tests are found in tests.md
+- so for every extension and context listed in the sheet, run the tests listed in tests.md
 - run tests on stage
 - update the record of tests on the google sheet
   - for passed tests, mark date
