@@ -15,19 +15,8 @@ def _validate(request, env):
         return
     raise NotImplementedError
 
-# This is intended to shake out errors and other outcomes that indicate the
-# connected status of the extensions.
-def exercise(event, env):
-    """
-    Call the SIP URI of an extension and play a dialplan with the twilio API.
-    """
-    util.log("exercise")
-    stage = util.get_instance(env)
-
-    twilio_account_sid = env['TWILIO_ACCOUNT_SID']
-    twilio_auth_token = env['TWILIO_AUTH_TOKEN']
-    client = Client(twilio_account_sid, twilio_auth_token)
-
+def _extension():
+    """ Return an extension for the exerciser to call. """
     # Extensions of interest.
     # Don't include extensions in workplaces or other environments where we
     # don't want to disturb a human.
@@ -37,7 +26,7 @@ def exercise(event, env):
         #'bottles-and-cans-two',
         #'breckenridge',
         'cesar-chavez',
-        #'clinton',
+        'clinton',
         'dome-basement',
         'dome-booth',
         'dome-workshop',
@@ -55,12 +44,31 @@ def exercise(event, env):
     # extension = extensions[choice]
     # Bogus, we would rather be deterministic, hope the seed is correct, etc.
     extension = random.choice(extensions)
+    return extension
 
+# This is intended to shake out errors and other outcomes that indicate the
+# connected status of the extensions.
+def exercise(event, env):
+    """
+    SIP call an extension with the twilio API and play a dialplan.
+    """
+    util.log("exercise")
+    stage = util.get_instance(env)
+    extension = _extension()
+    _exercise(stage, extension, env)
+
+def _exercise(stage, extension, env):
+    """
+    SIP call extension with the twilio API and play a dialplan.
+    """
+    client = Client(
+        env['TWILIO_ACCOUNT_SID'],
+        env['TWILIO_AUTH_TOKEN'])
     to = 'sip:{extension}@direct-futel-{stage}.sip.twilio.com'.format(
         extension=extension, stage=stage)
     context = "community_outgoing"
     # URL to return twiml for callee to experience.
-    url = "https://{stage}.dialplans.phu73l.net/ivr?context={context}".format(
+    url = "https://{stage}.dialplans.phu73l.net/ivr/{context}".format(
         stage=stage, context=context)
     # URL to be posted with call status.
     status_callback_url = (
@@ -68,7 +76,7 @@ def exercise(event, env):
             stage=stage))
 
     util.log("calling {}".format(extension))
-    call = client.calls.create(
+    return client.calls.create(
         to=to,
         from_="+15034681337",
         url=url,
