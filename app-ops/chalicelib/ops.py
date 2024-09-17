@@ -24,6 +24,7 @@ def _extension():
         #'alleymaple',
         'bottles-and-cans-one',
         #'bottles-and-cans-two',
+        "brazee",
         #'breckenridge',
         'cesar-chavez',
         'clinton',
@@ -76,6 +77,7 @@ def _exercise(stage, extension, env):
             stage=stage))
 
     util.log("calling {}".format(extension))
+    #util.log("calling {}".format(to))
     return client.calls.create(
         to=to,
         from_="+15034681337",
