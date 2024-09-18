@@ -62,7 +62,7 @@ class TestUtil(TestCase):
         self.assertEqual(
             str(response),
             '<?xml version="1.0" encoding="UTF-8"?><Response>'
-            '<Dial action="https://host/ops/call_status_pstn" '
+            '<Dial action="https://host/ops/call_status_outgoing" '
             'answerOnBridge="true" callerId="+19713512383">'
             '<Number>+15035551212</Number></Dial></Response>')
 

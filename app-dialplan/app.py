@@ -156,16 +156,10 @@ def _index():
     response = ops.call_status_exercise(request, env)
     return setup_response(response)
 
-@route('/ops/call_status_pstn')
+@route('/ops/call_status_outgoing')
 def _index():
     request = setup_request(app.current_request)
-    response = ops.call_status_pstn(request, env)
-    return setup_response(response)
-
-@route('/ops/call_status_sip')
-def _index():
-    request = setup_request(app.current_request)
-    response = ops.call_status_sip(request, env)
+    response = ops.call_status_outgoing(request, env)
     return setup_response(response)
 
 @route('/ops/log')

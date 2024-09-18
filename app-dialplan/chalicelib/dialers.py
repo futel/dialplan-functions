@@ -148,7 +148,7 @@ def _dial_sip(extension, from_number, request, env):
     dial = response.dial(
         answer_on_bridge=True,
         caller_id=from_number,
-        action=util.function_url(request, 'ops/call_status_sip'))
+        action=util.function_url(request, 'ops/call_status_outgoing'))
     dial.sip(sip_uri)
     return str(response)
 

@@ -61,25 +61,9 @@ def call_status_exercise(request, env):
 
     return _hangup()
 
-def call_status_pstn(request, env):
+def call_status_outgoing(request, env):
     """
-    Peform side effects from an outgoing twilio pv pstn dial call.
-    Return a twiml hangup document string.
-    """
-    # XXX Need to validate caller.
-    from_user = request.from_user
-    call_status = request.post_fields.get('DialCallStatus')
-
-    _metric_status(call_status, from_user, env)
-    _metric_log_error(request, from_user, env)
-
-    # We should sometimes return twiml to play to notify the caller
-    # eg str(util.reject(request, env, reason='busy'))
-    return _hangup()
-
-def call_status_sip(request, env):
-    """
-    Peform side effects from an outgoing twilio pv sip dial call.
+    Peform side effects from an outgoing twilio pv call.
     Return a twiml hangup document string.
     """
     # XXX Need to validate caller.

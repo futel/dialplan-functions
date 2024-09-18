@@ -204,6 +204,6 @@ def dial_pstn(to_number, from_extension, request, env):
     dial = response.dial(
         caller_id=caller_id,
         answer_on_bridge=True,
-        action=function_url(request, 'ops/call_status_pstn'))
+        action=function_url(request, 'ops/call_status_outgoing'))
     dial.number(to_number)
     return response
