@@ -68,7 +68,7 @@ def function_url(request, function_name, params=None):
        url += '?' + params
     return url
 
-#sip:test@direct-futel-nonemergency-stage.sip.twilio.com
+#sip:test@direct-futel-stage.sip.twilio.com
 def sip_to_user(sip_uri):
     """Return the user from a SIP URI, or None."""
     try:

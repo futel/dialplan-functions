@@ -28,8 +28,8 @@ class TestDialOutgoing(TestCase):
             from_user='test-one',
             post_fields={
                 'SipDomain': 'direct-futel-prod.sip.twilio.com',
-                'To': 'sip:%23@direct-futel-nonemergency-stage.sip.twilio.com',
-                'From': 'sip:test-one@direct-futel-nonemergency-stage.sip.twilio.com'},
+                'To': 'sip:%23@direct-futel-stage.sip.twilio.com',
+                'From': 'sip:test-one@direct-futel-stage.sip.twilio.com'},
             query_params={},
             context={'domainPrefix':'prod'})
         got = dialers.dial_outgoing(request, env)
@@ -44,8 +44,8 @@ class TestDialOutgoing(TestCase):
     #         query_params={},
     #         post_fields={
     #             'SipDomain': 'direct-futel-prod.sip.twilio.com',
-    #             'To': 'sip:%23@direct-futel-nonemergency-stage.sip.twilio.com',
-    #             'From': 'sip:alleymaple@direct-futel-nonemergency-stage.sip.twilio.com'},
+    #             'To': 'sip:%23@direct-futel-stage.sip.twilio.com',
+    #             'From': 'sip:alleymaple@direct-futel-stage.sip.twilio.com'},
     #         context={'domainPrefix':'prod'})
     #     got = dialers.dial_outgoing(request, env)
     #     self.assertEqual(
