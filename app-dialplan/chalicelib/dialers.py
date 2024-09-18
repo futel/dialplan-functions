@@ -32,7 +32,7 @@ def dial_extension(extension_name, request, env):
     """
     from_user = request.from_user
     metric.publish('dial_extension', from_user, env)
-    if from_user is 'hot-leet':
+    if from_user == 'hot-leet':
         # We are an incoming call, or an outgoing call from a twilio REST
         # client.
         from_number = request.from_number
