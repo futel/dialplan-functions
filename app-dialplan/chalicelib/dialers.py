@@ -103,7 +103,7 @@ def dial_outgoing(request, env):
 
     # It's a PSTN number, call it.
     metric.publish('dial_pstn', from_user, env)
-    return str(util.dial_pstn(to_number, from_extension, request, env))
+    return str(util.dial_pstn(to_number, from_extension, request))
 
 # This might more normally named dial_incoming_e164.
 def dial_sip_e164(request, env):

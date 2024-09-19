@@ -128,7 +128,7 @@ def call_911_911(request, env):
     # This is an outgoing call from a sip client.
     from_user = util.sip_to_user(request.post_fields['From'])
     from_extension = util.sip_to_extension(from_user, env)
-    return util.dial_pstn("+1911", from_extension, request, env)
+    return util.dial_pstn("+1911", from_extension, request)
 
 def call_911_9_bounce(request, env):
     """
@@ -152,7 +152,7 @@ def dial_nanpa(nanpa):
         # This is an outgoing call from a sip client.
         from_user = util.sip_to_user(request.post_fields['From'])
         from_extension = util.sip_to_extension(from_user, env)
-        return util.dial_pstn(e164, from_extension, request, env)
+        return util.dial_pstn(e164, from_extension, request)
     return curried
 
 def dial_sisyphus(request, env):

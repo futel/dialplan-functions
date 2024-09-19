@@ -195,7 +195,7 @@ def pstn_number(number, enable_emergency):
         return None
     return number
 
-def dial_pstn(to_number, from_extension, request, env):
+def dial_pstn(to_number, from_extension, request):
     """Return TwiML to dial PSTN number with attributes from request."""
     caller_id = from_extension['caller_id']
 
