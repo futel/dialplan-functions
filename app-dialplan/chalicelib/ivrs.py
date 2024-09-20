@@ -132,7 +132,7 @@ def _add_gather_stanza(
     """
     Append a gather and redirect to the TwiML Response, and return the gather.
     """
-    path = "ivr/{}".format(c_name)
+    path = "/ivr/{}".format(c_name)
     url_params = {
         'parent': parent_c_name,
         'lang': lang,
@@ -145,7 +145,6 @@ def _add_gather_stanza(
     # If a digit was entered, the user should hear the intro.
     gather_url_params['stanza'] = INTRO_STANZA.value
     action_url = util.function_url(
-        request,
         path,
         gather_url_params)
     gather = response.gather(
@@ -156,7 +155,6 @@ def _add_gather_stanza(
     # Menu and intro both redirect to menu stanza if no digit.
     redirect_url_params['stanza'] = MENU_STANZA.value
     action_url = util.function_url(
-        request,
         path,
         redirect_url_params)
     _redirect = response.redirect(action_url)
@@ -248,10 +246,8 @@ def _has_next_context_stanza(c_dict):
 def _add_next_context_stanza(
         response, c_dict, lang, parent_c_name, request, env):
     next_context = c_dict['next_context']
-    #path = "ivr/{}".format(parent_c_name)
-    path = "ivr/{}".format(next_context)
+    path = "/ivr/{}".format(next_context)
     action_url = util.function_url(
-        request,
         path,
         {'lang': lang,
          'parent': parent_c_name,

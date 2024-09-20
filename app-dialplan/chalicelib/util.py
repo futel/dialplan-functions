@@ -54,13 +54,11 @@ def get_instance(env):
     """
     return env['stage']
 
-def function_url(request, function_name, params=None):
+def function_url(function_name, params=None):
     """
     Return the URL for another function served by the same host.
     """
-    # All functions HTTPS, top-level on the same host.
-    # Do we need this, isn't this the default?
-    url = 'https://' + request.headers['host'] + '/' + function_name
+    url = function_name
     if params:
        # XXX We are putting URL arguments on a POST that may have
        #     body parameters. Get around this by using path?

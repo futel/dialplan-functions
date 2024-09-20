@@ -16,15 +16,6 @@ env = {'AWS_METRICS_TOPIC_ARN': 'AWS_METRICS_TOPIC_ARN',
 
 class TestUtil(TestCase):
 
-    def test_function_url(self):
-        request = mock.Mock()
-        request.headers = {'host': 'host'}
-        request.post_fields = {
-            'SipDomain': 'direct-futel-prod.sip.twilio.com'}
-        self.assertEqual(
-            util.function_url(request, 'foo'),
-            'https://host/foo')
-
     def test_normalize_number(self):
         self.assertEqual(util.normalize_number('+15035551212'), '+15035551212')
         self.assertEqual(util.normalize_number('15035551212'), '+15035551212')
@@ -51,6 +42,7 @@ class TestUtil(TestCase):
         extension = extensions['test-one']
         request = mock.Mock(
             headers={'host': 'host'},
+
             query_params={},
             post_fields={
                 'SipDomain':'direct-futel-prod.sip.twilio.com'})
