@@ -57,12 +57,11 @@ class TestUtil(TestCase):
         response = util.dial_pstn(
             '+15035551212',
             extension,
-            request,
-            env)
+            request)
         self.assertEqual(
             str(response),
             '<?xml version="1.0" encoding="UTF-8"?><Response>'
-            '<Dial action="https://host/ops/call_status_outgoing" '
+            '<Dial action="/ops/call_status_outgoing" '
             'answerOnBridge="true" callerId="+19713512383">'
             '<Number>+15035551212</Number></Dial></Response>')
 
