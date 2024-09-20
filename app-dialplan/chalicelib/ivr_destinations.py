@@ -8,8 +8,8 @@ from twilio.twiml.voice_response import VoiceResponse
 from . import ivrs
 from . import util
 
-WAIT_FUNCTION = 'enqueue_operator_wait'
-LEAVE_FUNCTION = 'outgoing_operator_leave'
+WAIT_FUNCTION = '/enqueue_operator_wait'
+LEAVE_FUNCTION = '/outgoing_operator_leave'
 operator_queue_name = 'operator'
 
 def get_destination(name):
@@ -32,8 +32,8 @@ def outgoing_operator_enqueue(request, env):
     response = VoiceResponse()
     response.enqueue(
         operator_queue_name,
-        action=util.function_url(request, LEAVE_FUNCTION),
-        wait_url=util.function_url(request, WAIT_FUNCTION))
+        action=LEAVE_FUNCTION,
+        wait_url=WAIT_FUNCTION)
     return response
 
 def outgoing_operator_accept(request, env):
@@ -66,7 +66,7 @@ def outgoing_operator_accept(request, env):
     response = VoiceResponse()
     dial = response.dial(
         timeout=3, # Connection timeout, so if the queue is empty we give up.
-        action=util.function_url(request, 'outgoing_operator_dialer_status'))
+        action='/outgoing_operator_dialer_status')
     dial.queue('operator')
     return response
 
