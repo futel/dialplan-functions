@@ -71,7 +71,6 @@ def dial_outgoing(request, env):
     from_user = request.from_user
     metric.publish('dial_outgoing', from_user, env)
     from_extension = util.sip_to_extension(from_user, env)
-    # XXX different from dial_sip_e164
     to_extension = util.deserialize_pstn(request)
     util.log('to_extension {}'.format(to_extension))
 
@@ -102,6 +101,8 @@ def dial_outgoing(request, env):
         return str(response)
 
     # It's a PSTN number, call it.
+    # We can't redirect here beucase we don't know if we got to_number from
+    # Digits or not. We need to preserve Digits if we have it.
     metric.publish('dial_pstn', from_user, env)
     return str(util.dial_pstn(to_number, from_extension, request))
 
@@ -141,7 +142,7 @@ def _dial_sip(extension, from_number, request, env):
     dial = response.dial(
         answer_on_bridge=True,
         caller_id=from_number,
-        action=util.function_url(request, 'ops/call_status_outgoing'))
+        action='/ops/call_status_outgoing')
     dial.sip(sip_uri)
     return str(response)
 
@@ -408,7 +409,7 @@ def outgoing_operator_leave(request, env):
                 'operator',
                 env))
         response.record(
-            action=util.function_url(request, 'enqueue_operator_record'),
+            action='/enqueue_operator_record',
             max_length=operator_message_max)
     return str(response)
 
