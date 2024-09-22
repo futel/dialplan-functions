@@ -18,7 +18,7 @@ def post_fields(request):
 # is unlikely to hit one extension several times in a row, and runs often.
 # We assueme that there isn't a problem with resources being used by the calls.
 # Every half an hour will handle up to 24 extensions if they are selected
-# randomly.
+# evenly.
 @app.schedule(Rate(30, unit=Rate.MINUTES))
 def exercise(event):
     return ops.exercise(event, env)
