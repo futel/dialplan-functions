@@ -29,7 +29,7 @@ def _extension():
         'cesar-chavez',
         'clinton',
         'dome-basement',
-        'dome-booth',
+        #'dome-booth',
         'dome-workshop',
         'fortysecond',
         'ghost-mountain',
@@ -38,12 +38,14 @@ def _extension():
     ]
     # Choose the next extension to call modulo the current minute.
     # We want to choose extensions evenly.
-    # We hope not to call an extension twice in a row, so we hope we aren't
-    # called twice in a minute or minute modulo the number of choices!
+    # We hope to not call an extension twice in a row, so we hope we aren't
+    # called twice in a minute modulo the number of choices!
+    # We hope to not call an extension at the same time every day.
     # minute = datetime.datetime.fromisoformat(event.time).minute
     # choice = minute % len(extensions)
     # extension = extensions[choice]
-    # Bogus, we would rather be deterministic, hope the seed is correct, etc.
+    # Q&D but not correct way is to just randomly choose.
+    # We would rather be deterministic, hope the seed is correct, etc.
     extension = random.choice(extensions)
     return extension
 
