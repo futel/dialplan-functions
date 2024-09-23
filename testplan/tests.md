@@ -10,6 +10,7 @@ Outgoing extension tests for each extension
 - emergency service on menu dialtone is correct
   - dial 933
 - first asterisk context reached is correct
+  - check voicemail and get mailbox prompt
 
 Incoming call tests for each extension configured to take stage incoming call
 - extension rings
