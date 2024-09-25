@@ -230,7 +230,7 @@ def _enqueue_operator_call(request, env):
 
     # Get the TwiML to play for the operators.
     # Client.calls.create isn't a continuation, we can't give a relative URL
-    # in the url argument or in twiml that we return. The client refses or bugs.
+    # in the url argument or in twiml that we return.
     stage = util.get_instance(env)
     context = "outgoing_operator_operator"
     url = "https://{stage}.dialplans.phu73l.net/ivr/{context}".format(
@@ -366,27 +366,21 @@ def outgoing_operator_leave(request, env):
     if _is_operator_queue_empty(client):
         # There is no caller in the queue. Cancel or notify all
         # operators not yet with a caller.
+        # Get the TwiML to play for the operators.
+        # Client.calls.create isn't a continuation,
+        # we can't give a relative URL
+        # in the url argument or in twiml that we return.
+        stage = util.get_instance(env)
+        context = 'outgoing_operator_empty'
+        url = "https://{stage}.dialplans.phu73l.net/ivr/{context}".format(
+            stage=stage, context=context)
+
         for record in _find_operator_calls(client, from_user, env):
             util.log('canceling outbound operator call')
             if record.status in ('ringing', 'queued'):
                 record.update(status='canceled')
             else:
-                # Notify the operator that they are too late.
-                # XXX Redirect instead.
-                dest_c_name = 'outgoing_operator_empty'
-                dest_c_dict = ivrs.context_dict(env['ivrs'], dest_c_name)
-                iteration = ivrs.get_iteration(None)
-                util.log(dest_c_name)
-                response = str(
-                    ivrs.ivr_context(
-                        None,
-                        lang,
-                        dest_c_name,
-                        None,
-                        iteration,
-                        request,
-                        env))
-                record.update(twiml=response)
+                record.update(url=url)
 
     # Return TwiML to continue the caller's call.
     response = VoiceResponse()
