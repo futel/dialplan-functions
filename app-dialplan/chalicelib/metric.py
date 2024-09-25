@@ -60,9 +60,14 @@ def publish_twilio_error(event, message, env):
                 try:
                     (endpoint, host) = from_.split('@')
                 except ValueError:
-                    # Who know's what's going on?
-                    raise
-        # We got to here, hooray.
+                    # XXX Who knows what's going on?
+                    #     Error 11200 from a 5xx response?
+                    #     Assume something bad so we don't pollute whatever
+                    #     errors we are trying to notice.
+                    endpoint = 'sip:hot-leet'
+                    host = 'prod'
+
+        # We got this far, hooray.
         endpoint = endpoint.split(':')[1] # 'demo-one'
         hostname = host.split('.')[0]      # 'direct-futel-stage'
         hostname = hostname.split('-')[-1] # 'stage'
