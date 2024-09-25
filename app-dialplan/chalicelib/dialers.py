@@ -229,27 +229,18 @@ def _enqueue_operator_call(request, env):
     operator_numbers = env['operator_numbers']
 
     # Get the TwiML to play for the operators.
-    # XXX Make a helper for this.
-    dest_c_name = 'outgoing_operator_operator'
-    dest_c_dict = ivrs.context_dict(env['ivrs'], dest_c_name)
-    iteration = ivrs.get_iteration(None)
-    # We calculate pre_callable now, when we render the twiml, so if the
-    # caller hangs up before operator pickup, the operator still gets a menu.
-    # This twiml could instead redirect to outgoing_operator_operator?
-    response = ivrs.ivr_context(
-        dest_c_dict,
-        'en',                   # XXX Should get the real lang!
-        dest_c_name,
-        None,
-        iteration,
-        request,
-        env)
+    # Client.calls.create isn't a continuation, we can't give a relative URL
+    # in the url argument or in twiml that we return. The client refses or bugs.
+    stage = util.get_instance(env)
+    context = "outgoing_operator_operator"
+    url = "https://{stage}.dialplans.phu73l.net/ivr/{context}".format(
+        stage=stage, context=context)
 
     # Call each operator and play the TwiML.
     # XXX We need to set status_callback for side effects like metrics.
     for number in operator_numbers:
         call = client.calls.create(
-            twiml=str(response),
+            url=url,
             to=number,
             from_=from_number)
 
@@ -381,7 +372,7 @@ def outgoing_operator_leave(request, env):
                 record.update(status='canceled')
             else:
                 # Notify the operator that they are too late.
-                # XXX Make a helper for this.
+                # XXX Redirect instead.
                 dest_c_name = 'outgoing_operator_empty'
                 dest_c_dict = ivrs.context_dict(env['ivrs'], dest_c_name)
                 iteration = ivrs.get_iteration(None)
