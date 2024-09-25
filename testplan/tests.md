@@ -5,7 +5,7 @@ Outgoing extension tests for each extension
 - emergency service on outgoing dialtone is correct
   - dial 933
 - top level extension is correct
-  - # from linphone, pickup from ata
+  - dial # from linphone, off hook from ata
 - callerid on menu dialtone is correct
 - emergency service on menu dialtone is correct
   - dial 933
