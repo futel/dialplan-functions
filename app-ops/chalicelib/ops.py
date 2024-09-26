@@ -21,15 +21,13 @@ def _extension():
     # Don't include extensions in workplaces or other environments where we
     # don't want to disturb a human.
     extensions = [
-        #'alleymaple',
+        'alleymaple',
         'bottles-and-cans-one',
         #'bottles-and-cans-two',
         "brazee",
         #'breckenridge',
         'cesar-chavez',
         'clinton',
-        'dome-basement',
-        #'dome-booth',
         'dome-workshop',
         'fortysecond',
         'ghost-mountain',
@@ -44,8 +42,9 @@ def _extension():
     # minute = datetime.datetime.fromisoformat(event.time).minute
     # choice = minute % len(extensions)
     # extension = extensions[choice]
-    # Q&D but not correct way is to just randomly choose.
-    # We would rather be deterministic, hope the seed is correct, etc.
+    # Q&D but incorrect way is to just randomly choose.
+    # Deterministic would be much better, same amount of calls per period, etc.
+    # Is this random enough when run by lambda? What's the seed?
     extension = random.choice(extensions)
     return extension
 
