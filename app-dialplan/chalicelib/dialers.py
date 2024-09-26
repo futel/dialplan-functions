@@ -265,21 +265,9 @@ def outgoing_operator_dialer_status(request, env):
         return str(response)
     elif dequeue_result == 'queue-empty':
         # Too late, tell the operator.
-        # XXX Make a helper for this.
-        dest_c_name = 'outgoing_operator_empty'
-        dest_c_dict = ivrs.context_dict(env['ivrs'], dest_c_name)
-        iteration = ivrs.get_iteration(None)
-        # This is an ivr destination, so metric.
-        metric.publish(dest_c_name, from_user, env)
-        return str(
-            ivrs.ivr_context(
-                dest_c_dict,
-                lang,
-                dest_c_name,
-                None,
-                iteration,
-                request,
-                env))
+        response = VoiceResponse()
+        response.redirect('/ivrs/outgoing_operator_empty')
+        return str(response)
     else:
         util.log("Unknown operator dequeue result {}".format(dequeue_result))
 

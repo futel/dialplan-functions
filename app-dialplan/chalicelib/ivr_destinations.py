@@ -48,19 +48,9 @@ def outgoing_operator_accept(request, env):
         if queue.friendly_name == operator_queue_name:
             if not queue.current_size:
                 # Too late, tell the operator.
-                # XXX Make a helper for this.
-                dest_c_name = 'outgoing_operator_empty'
-                iteration = ivrs.get_iteration(None)
-                util.log(dest_c_name)
-                return str(
-                    ivrs.ivr_context(
-                        None,
-                        lang,
-                        dest_c_name,
-                        None,
-                        iteration,
-                        request,
-                        env))
+                response = VoiceResponse()
+                response.redirect('/ivrs/outgoing_operator_empty')
+                return str(response)
 
     # The queue is not empty. Send the operator to the next caller in the queue.
     response = VoiceResponse()
@@ -80,24 +70,15 @@ def outgoing_operator_pre(request, env):
     twilio_account_sid = env['TWILIO_ACCOUNT_SID']
     twilio_auth_token = env['TWILIO_AUTH_TOKEN']
     client = Client(twilio_account_sid, twilio_auth_token)
-    # Is there still a caller in the queue?
+    # If there are no callers in the operator queue, notify the operator and end
+    # the call.
     for queue in client.queues.list():
         if queue.friendly_name == operator_queue_name:
             if not queue.current_size:
-                # Too late, tell the operator.
-                # XXX Make a helper for this.
-                dest_c_name = 'outgoing_operator_empty'
-                iteration = ivrs.get_iteration(None)
-                util.log(dest_c_name)
-                return str(
-                    ivrs.ivr_context(
-                        None,
-                        lang,
-                        dest_c_name,
-                        None,
-                        iteration,
-                        request,
-                        env))
+                # Too late, tell the operator, ending the call.
+                response = VoiceResponse()
+                response.redirect('/ivrs/outgoing_operator_empty')
+                return str(response)
 
 def _dialtone(destination, request, env):
     """Return TwiML for a dialtone sending input to destination."""
