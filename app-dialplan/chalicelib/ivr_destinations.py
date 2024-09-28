@@ -2,7 +2,6 @@
 Functions reached by IVR menu choices.
 """
 
-from twilio.rest import Client
 from twilio.twiml.voice_response import VoiceResponse
 
 from . import ivrs
@@ -40,10 +39,8 @@ def outgoing_operator_accept(request, env):
     """Return TwiML to send the call to the next caller in operator queue."""
     util.log('outgoing_operator_accept')
     lang = request.query_params.get('lang', 'en')
+    client = env['twilio_client']
     # Is there still a caller in the queue?
-    twilio_account_sid = env['TWILIO_ACCOUNT_SID']
-    twilio_auth_token = env['TWILIO_AUTH_TOKEN']
-    client = Client(twilio_account_sid, twilio_auth_token)
     for queue in client.queues.list():
         if queue.friendly_name == operator_queue_name:
             if not queue.current_size:
@@ -67,9 +64,7 @@ def outgoing_operator_pre(request, env):
     """
     util.log('outgoing_operator_pre')
     lang = request.query_params.get('lang', 'en')
-    twilio_account_sid = env['TWILIO_ACCOUNT_SID']
-    twilio_auth_token = env['TWILIO_AUTH_TOKEN']
-    client = Client(twilio_account_sid, twilio_auth_token)
+    client = env['twilio_client']
     # If there are no callers in the operator queue, notify the operator and end
     # the call.
     for queue in client.queues.list():

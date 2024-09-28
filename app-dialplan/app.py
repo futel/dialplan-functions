@@ -4,7 +4,6 @@ to get the request, run a single view function, and return the result. There may
 be other actions enabled by chalice, like scheduled tasks.
 """
 
-import boto3
 from chalice import Chalice, Response
 import functools
 import os
@@ -16,10 +15,6 @@ from chalicelib import ops
 from chalicelib import util
 
 env = env_util.get_env()
-env['extensions'] = env_util.get_extensions()
-env['ivrs'] = env_util.get_ivrs()
-env['sns_client'] = boto3.client('sns')
-
 app = Chalice(app_name='dialplan')
 
 def post_fields(request):
@@ -84,7 +79,9 @@ def setup_response(response):
     util.log_response(response)
     return response
 
-# Decorator to set up the view request and response.
+# Decorator to set up the view request and response. We need to do this when
+# after the app has set up the global request, so this has to be during the call
+# to the view, we implement it in a decorator.
 def setup(f):
     @functools.wraps(f)
     def decorated(*args, **kwargs):

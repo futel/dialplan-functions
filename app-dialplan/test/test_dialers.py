@@ -6,15 +6,18 @@ from chalicelib import sns_client
 from chalicelib import env_util
 from chalicelib import util
 
+# Mock a client with unpopulated operator queues, ie an empty iterator.
+twilio_client = mock.Mock()
+twilio_client.queues = mock.MagicMock()
+
 env = {'AWS_METRICS_TOPIC_ARN': 'AWS_METRICS_TOPIC_ARN',
        'ASSET_HOST': 'ASSET_HOST',
-       'TWILIO_ACCOUNT_SID': 'TWILIO_ACCOUNT_SID',
-       'TWILIO_AUTH_TOKEN': 'TWILIO_AUTH_TOKEN',
-       'extensions': env_util.get_extensions(),
-       'ivrs': env_util.get_ivrs(),
+       'extensions': env_util._get_extensions(),
+       'ivrs': env_util._get_ivrs(),
        'operator_numbers': ['foo', 'bar'],
        'sns_client': mock.Mock(),
-       'stage':'stage'}
+       'stage':'stage',
+       'twilio_client': twilio_client}
 
 outgoing_safe_body = '<?xml version="1.0" encoding="UTF-8"?><Response><Redirect>/ivr</Redirect></Response>'
 
@@ -116,9 +119,7 @@ class TestIvr(TestCase):
 
 class TestEnqueueOperatorWait(TestCase):
 
-    @mock.patch.object(dialers, 'Client')
-    @mock.patch.object(ivr_destinations, 'Client')
-    def test_enqueue_operator_wait(self, _mock1, _mock2):
+    def test_enqueue_operator_wait(self):
         request = mock.Mock(
             from_user='test-one',
             headers={'host': 'host'},
@@ -134,9 +135,7 @@ class TestEnqueueOperatorWait(TestCase):
 
 class OutgoingOperatorLeave(TestCase):
 
-    @mock.patch.object(dialers, 'Client')
-    @mock.patch.object(ivr_destinations, 'Client')
-    def test_outgoing_operator_leave(self, _mock1, _mock2):
+    def test_outgoing_operator_leave(self):
         request = mock.Mock(
             from_user='test-one',
             headers={'host': 'host'},

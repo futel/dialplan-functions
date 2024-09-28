@@ -3,7 +3,6 @@ Functions returning TwiML to application HTTP endpoints.
 """
 
 from twilio.twiml.voice_response import VoiceResponse
-from twilio.rest import Client
 
 from . import ivrs
 from . import ivr_destinations
@@ -221,10 +220,7 @@ def _enqueue_operator_call(request, env):
     from_user = request.from_user
     from_extension = util.sip_to_extension(from_user, env)
     from_number = from_extension['caller_id']
-
-    twilio_account_sid = env['TWILIO_ACCOUNT_SID']
-    twilio_auth_token = env['TWILIO_AUTH_TOKEN']
-    client = Client(twilio_account_sid, twilio_auth_token)
+    client = env['twilio_client']
 
     operator_numbers = env['operator_numbers']
 
@@ -346,11 +342,9 @@ def outgoing_operator_leave(request, env):
     queue_result = request.post_fields['QueueResult']
     util.log('caller left queue: {}'.format(queue_result))
     lang = request.query_params.get('lang', 'en')
-    twilio_account_sid = env['TWILIO_ACCOUNT_SID']
-    twilio_auth_token = env['TWILIO_AUTH_TOKEN']
+    client = env['twilio_client']
 
     # Handle side effects from caller surviving the queue wihout an operator.
-    client = Client(twilio_account_sid, twilio_auth_token)
     if _is_operator_queue_empty(client):
         # There is no caller in the queue. Cancel or notify all
         # operators not yet with a caller.

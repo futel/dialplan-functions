@@ -11,7 +11,7 @@ request = mock.Mock(
 
 env = {
     'ASSET_HOST':'ASSET_HOST',
-    'extensions': env_util.get_extensions(),
+    'extensions': env_util._get_extensions(),
     'operator_numbers':['foo', 'bar']}
 
 class TestIvrsDestinations(TestCase):
