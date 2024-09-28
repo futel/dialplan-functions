@@ -1,3 +1,9 @@
+"""
+Chalice top level module. For a HTTP interactoin, this exists to start the app
+to get the request, run a single view function, and return the result. There may
+be other actions enabled by chalice, like scheduled tasks.
+"""
+
 import boto3
 from chalice import Chalice, Response
 import functools
@@ -10,7 +16,6 @@ from chalicelib import ops
 from chalicelib import util
 
 env = env_util.get_env()
-# We don't always need all of this, we could be lazy?
 env['extensions'] = env_util.get_extensions()
 env['ivrs'] = env_util.get_ivrs()
 env['sns_client'] = boto3.client('sns')
@@ -79,94 +84,92 @@ def setup_response(response):
     util.log_response(response)
     return response
 
+# Decorator to set up the view request and response.
+def setup(f):
+    @functools.wraps(f)
+    def decorated(*args, **kwargs):
+        # By now the global app has been set up with its request,
+        # so we can modify it.
+        request = setup_request(app.current_request)
+        response = f(request, *args, **kwargs)
+        return setup_response(response)
+    return decorated
+
+
 # The route decorator is unexpected. It registers the function object
 # being defined with the app. The function reference that we are creating
 # here by defining it is never accessed, we throw it away. Probably fun
 # to design but needs 4 lines of comments.
 
 @route('/dial_extension/{extension_name}')
-def _index(extension_name):
-    request = setup_request(app.current_request)
-    response = dialers.dial_extension(extension_name, request, env)
-    return setup_response(response)
+@setup
+def _index(request, extension_name):
+    return dialers.dial_extension(extension_name, request, env)
 
 @route('/dial_e164_extension')
-def _index():
-    request = setup_request(app.current_request)
-    response = dialers.dial_e164_extension(request, env)
-    return setup_response(response)
+@setup
+def _index(request):
+    return dialers.dial_e164_extension(request, env)
 
 @route('/dial_outgoing')
-def _index():
-    request = setup_request(app.current_request)
-    response = dialers.dial_outgoing(request, env)
-    return setup_response(response)
+@setup
+def _index(request):
+    return dialers.dial_outgoing(request, env)
 
 @route('/dial_sip_e164')
-def _index():
-    request = setup_request(app.current_request)
-    response = dialers.dial_sip_e164(request, env)
-    return setup_response(response)
+@setup
+def _index(request):
+    return dialers.dial_sip_e164(request, env)
 
 @route('/ivr')
-def _index():
-    request = setup_request(app.current_request)
-    response = dialers.ivr(None, request, env)
-    return setup_response(response)
+@setup
+def _index(request):
+    return dialers.ivr(None, request, env)
 
 @route('/ivr/{context_name}')
-def _index(context_name):
-    request = setup_request(app.current_request)
-    response = dialers.ivr(context_name, request, env)
-    return setup_response(response)
+@setup
+def _index(request, context_name):
+    return dialers.ivr(context_name, request, env)
 
 @route('/enqueue_operator_wait')
-def _index():
-    request = setup_request(app.current_request)
-    response = dialers.enqueue_operator_wait(request, env)
-    return setup_response(response)
+@setup
+def _index(request):
+    return dialers.enqueue_operator_wait(request, env)
 
 @route('/enqueue_operator_record')
-def _index():
-    request = setup_request(app.current_request)
-    response = dialers.enqueue_operator_record(request, env)
-    return setup_response(response)
+@setup
+def _index(request):
+    return dialers.enqueue_operator_record(request, env)
 
 @route('/outgoing_operator_dialer_status')
-def _index():
-    request = setup_request(app.current_request)
-    response = dialers.outgoing_operator_dialer_status(request, env)
-    return setup_response(response)
+@setup
+def _index(request):
+    return dialers.outgoing_operator_dialer_status(request, env)
 
 @route('/outgoing_operator_leave')
-def _index():
-    request = setup_request(app.current_request)
-    response = dialers.outgoing_operator_leave(request, env)
-    return setup_response(response)
+@setup
+def _index(request):
+    return dialers.outgoing_operator_leave(request, env)
 
 @route('/reject')
-def _index():
-    request = setup_request(app.current_request)
-    response = dialers.reject(request, env)
-    return setup_response(response)
+@setup
+def _index(request):
+    return dialers.reject(request, env)
 
 @route('/ops/call_status_exercise')
-def _index():
-    request = setup_request(app.current_request)
-    response = ops.call_status_exercise(request, env)
-    return setup_response(response)
+@setup
+def _index(request):
+    return ops.call_status_exercise(request, env)
 
 @route('/ops/call_status_outgoing')
-def _index():
-    request = setup_request(app.current_request)
-    response = ops.call_status_outgoing(request, env)
-    return setup_response(response)
+@setup
+def _index(request):
+    return ops.call_status_outgoing(request, env)
 
 @route('/ops/log')
-def _index():
-    request = setup_request(app.current_request)
-    response = ops.log(request, env)
-    return setup_response(response)
+@setup
+def _index(request):
+    return ops.log(request, env)
 
 
 # All the startup work we have given lambda is done, log for timing.
