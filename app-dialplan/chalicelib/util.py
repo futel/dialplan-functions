@@ -118,7 +118,11 @@ def transform_number(phone_number):
     return phone_number
 
 def filter_outgoing_number(number, enable_emergency):
-    """Return True if number should be filtered."""
+    """
+    Return True if number should be filtered.
+    Number can be E.164 or a 3 digit service number formatted with the E.164
+    plus prefix.
+    """
     if number == '+911':
         return not enable_emergency
     if len(number) == 4:
