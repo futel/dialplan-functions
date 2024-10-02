@@ -74,7 +74,7 @@ def dial_outgoing(request, env):
     util.log('to_extension {}'.format(to_extension))
 
     if to_extension == '0':
-        # Redirect to the top ivr context.
+        # Redirect to the outgoing operator context.
         response = VoiceResponse()
         response.redirect('/ivr/outgoing_operator_caller')
         return str(response)
