@@ -11,7 +11,7 @@ def get_env():
     env = _get_env_attributes()
     env['extensions'] = _get_extensions()
     env['ivrs'] = _get_ivrs()
-    env['twilio_client'] = _get_twilio_client()
+    env['twilio_client'] = _get_twilio_client(env)
     env['sns_client'] = boto3.client('sns')
     return env
 
@@ -23,15 +23,17 @@ def _get_env_attributes():
         'AWS_LOGS_TOPIC_ARN': os.environ['AWS_LOGS_TOPIC_ARN'],
         'AWS_METRICS_TOPIC_ARN': os.environ['AWS_METRICS_TOPIC_ARN'],
         'nanpa_sisyphus': os.environ['nanpa_sisyphus'],
-        'stage': os.environ['stage']}
+        'stage': os.environ['stage'],
+        'TWILIO_ACCOUNT_SID': os.environ['TWILIO_ACCOUNT_SID'],
+        'TWILIO_AUTH_TOKEN': os.environ['TWILIO_AUTH_TOKEN']}
     json_variables = {
         'operator_numbers': os.environ['operator_numbers']}
     json_variables = {k:json.loads(v) for (k,v) in json_variables.items()}
     return {**normal_variables, **json_variables}
 
-def _get_twilio_client():
-    twilio_account_sid = os.environ['TWILIO_ACCOUNT_SID']
-    twilio_auth_token = os.environ['TWILIO_AUTH_TOKEN']
+def _get_twilio_client(env):
+    twilio_account_sid = env['TWILIO_ACCOUNT_SID']
+    twilio_auth_token = env['TWILIO_AUTH_TOKEN']
     client = Client(twilio_account_sid, twilio_auth_token)
     return client
 
