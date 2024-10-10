@@ -9,4 +9,4 @@ env = env_util.get_env()
 class TestOps(TestCase):
 
     def test_exercise(self):
-        call = ops._exercise("stage", "clinton", env)
+        call = ops.exercise_one("stage", "clinton", env)

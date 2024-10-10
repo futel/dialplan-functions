@@ -57,9 +57,9 @@ def exercise(event, env):
     util.log("exercise")
     stage = util.get_instance(env)
     extension = _extension()
-    _exercise(stage, extension, env)
+    exercise_one(stage, extension, env)
 
-def _exercise(stage, extension, env):
+def exercise_one(stage, extension, env):
     """
     SIP call extension with the twilio API and play a dialplan.
     """
