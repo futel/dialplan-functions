@@ -21,7 +21,7 @@ These test against the current stage deployment. Note that these will cause side
 
 - source venv/bin/activate
 - pytest app-dialplan/itest
-- pytest app-ops/test
+- pytest app-ops/itest
 
 # Smoke dialplan API client integration test
 
