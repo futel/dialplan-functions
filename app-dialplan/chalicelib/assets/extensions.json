@@ -16,8 +16,8 @@
     },
     "brazee": {
         "outgoing": "outgoing_portland",
-        "caller_id": "+15034681337",
-        "enable_emergency": false
+        "caller_id": "+19712932956",
+        "enable_emergency": true
     },
     "breckenridge": {
         "outgoing": "outgoing_detroit",
