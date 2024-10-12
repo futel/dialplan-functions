@@ -26,7 +26,17 @@
     },
     "cesar-chavez": {
         "outgoing": "outgoing_portland",
+        "caller_id": "+15034681337",
+        "enable_emergency": true
+    },
+    "cesar-chavez-one": {
+        "outgoing": "outgoing_portland",
         "caller_id": "+15039465227",
+        "enable_emergency": true
+    },
+    "cesar-chavez-two": {
+        "outgoing": "outgoing_portland",
+        "caller_id": "+15034681337",
         "enable_emergency": true
     },
     "clinton": {

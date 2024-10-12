@@ -26,13 +26,13 @@ class TestDialers(TestCase):
         response = requests.post(
             "https://stage.dialplans.phu73l.net/dial_outgoing",
             data={
-                # cesar-chavez
+                # cesar-chavez-one
                 "To": "sip:+15039465227@direct-futel-stage.sip.twilio.com",
                 "From": "sip:test-one@direct-futel-stage.sip.twilio.com",
                 "SipDomain": "direct-futel-stage.sip.twilio.com"})
         check_response(
             response,
-            '<?xml version="1.0" encoding="UTF-8"?><Response><Redirect>/dial_extension/cesar-chavez</Redirect></Response>')
+            '<?xml version="1.0" encoding="UTF-8"?><Response><Redirect>/dial_extension/cesar-chavez-one</Redirect></Response>')
 
     def test_dial_outgoing_pound(self):
         response = requests.post(
