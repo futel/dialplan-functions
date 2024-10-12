@@ -26,7 +26,7 @@ def _extension():
         #'bottles-and-cans-two',
         "brazee",
         #'breckenridge',
-        'cesar-chavez',
+        'cesar-chavez-one',
         'clinton',
         'dome-workshop',
         'fortysecond',
