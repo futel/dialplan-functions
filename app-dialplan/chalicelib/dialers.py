@@ -48,10 +48,11 @@ def dial_e164_extension(request, env):
     """
     from_user = request.from_user
     metric.publish('dial_e164_extension', from_user, env)
+
+    # Find the extension to call, and redirect to call it.
     to_number = request.post_fields['Digits']
     to_number = util.normalize_number(to_number)
     to_extension = util.e164_to_extension(to_number, env['extensions'])
-
     if to_extension:
         response = VoiceResponse()
         response.redirect('/dial_extension/{}'.format(to_extension))
@@ -92,7 +93,15 @@ def dial_outgoing(request, env):
         response.redirect('/reject')
         return str(response)
 
-    # If it's the number of one of our extensions, SIP call it.
+    # # If it's an incoming IVR number,
+    # # redirect to play that IVR instead of continuing to PSTN call it.
+    # if to_number == "+15034681337":
+    #     response = VoiceResponse()
+    #     response.redirect('/ivrs/incoming_leet')
+    #     return str(response)
+
+    # If it's the number of one of our extensions,
+    # redirect to SIP call it instead of PSTN calling it.
     to_extension = util.e164_to_extension(to_number, env['extensions'])
     if to_extension:
         response = VoiceResponse()
@@ -111,15 +120,19 @@ def dial_sip_e164(request, env):
     Return TwiML string to call an extension registered to our SIP Domains,
     looked up by the E.164 number in the To of the request.
     """
+    # Find the calling user.
     # We only expect to be taking incoming calls from external numbers, so we
     # could just normalize to "hot-leet". We don't want to metric external from
     # numbers, and that's the only reason we need a user.
     from_user = request.from_user
     metric.publish('dial_sip_e164', from_user, env)
+
+    # Find the number being called.
     to_number = request.post_fields['To']
     to_number = util.normalize_number(to_number)
-    to_extension = util.e164_to_extension(to_number, env['extensions'])
 
+    # Find the extension to call, and redirect to call it.
+    to_extension = util.e164_to_extension(to_number, env['extensions'])
     if to_extension:
         response = VoiceResponse()
         response.redirect('/dial_extension/{}'.format(to_extension))
@@ -315,11 +328,15 @@ def _find_operator_calls(client, extension, env):
             # mark the calls on creation, so since we haven't stored anything,
             # we need to use call attributes to find them.
             # For an inbound SIP call, _from is the SIP URI of the caller's
-            # extension. For outbound operator calls, it is the e165 for the
-            # caller's extension.
+            # extension, so we assume we are not inbound?
+            # For outbound operator calls, _from is the e165 for the caller's
+            # extension, so that's the one we're looking for.
+            # XXX If the caller's extension has hot-leet as the caller id,
+            # we won't find it.
             caller_extension = util.e164_to_extension(
                 record._from, env['extensions'])
             if caller_extension == extension:
+                # We found a call coming from extension, that must be it.
                 yield record
 
 def _is_operator_queue_empty(client):
