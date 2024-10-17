@@ -81,14 +81,18 @@ def sip_to_extension(sip_user, env):
     return env['extensions'].get(sip_user)
 
 def e164_to_extension(e164, extension_map):
-    """Return an extension key for E.164 string, or None."""
-    # These are attributes of the implicit incoming extension.
+    """
+    Return the key for the extension matching the given E.164 string, or None.
+    """
     if e164 == "+15034681337":
-        return "hot-leet"
+        # The incoming number that we don't want to match. Extensions use this
+        # for their caller id when they don't have one.
+        return None
     for key in extension_map:
         if extension_map[key]['caller_id'] == e164:
             return key
-    # Are we in an unknown state if we get here?
+    # Are we in an unknown state if we get here? We didn't expect to look up a
+    # callerid without finding one?
     return None
 
 # Return normalized string, if it can be.
