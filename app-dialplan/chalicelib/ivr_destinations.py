@@ -144,7 +144,6 @@ DESTINATIONS = {
     'dial_8443876962': dial_nanpa("8443876962"),
     'dial_sisyphus': dial_sisyphus,
     'friction': friction,
-    'internal_dialtone': internal_dialtone,
     'outgoing_operator_accept': outgoing_operator_accept,
     'outgoing_dialtone_pre': outgoing_dialtone_pre,
     'outgoing_operator_enqueue': outgoing_operator_enqueue,
