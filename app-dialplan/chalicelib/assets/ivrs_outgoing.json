@@ -106,7 +106,6 @@
             ["for-the-fewtel-voice-conference", "futel-conf"],
             ["for-the-wildcard-line", "wildcard_line_outgoing"],
             ["for-the-church-of-robotron", "robotron"],
-            ["to-ring-a-fewtel-telephone", "internal_dialtone"],
             ["for-hold-the-phone", "hold_the_phone_main"],
             ["for-the-apology-service", "apology_intro"],
             ["for-more-information-about-fewtel", "information_futel"]],
