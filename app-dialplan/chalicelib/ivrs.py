@@ -257,11 +257,9 @@ def _add_next_context_stanza(
 
 def ivr_context(dest_c_dict, lang, c_name, stanza, iteration, request, env):
     """
-    Return TwiML to run an IVR context.
+    Return TwiML to play an IVR context based on dest_c_dict.
     """
     response = VoiceResponse()
-    #if dest_c_dict is None:
-    #    dest_c_dict = context_dict(env['ivrs'], dest_c_name)
     if stanza is None:
         stanza = get_stanza(stanza)
     if stanza is INTRO_STANZA:
