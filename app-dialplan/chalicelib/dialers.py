@@ -177,45 +177,49 @@ def ivr(context_name, request, env):
     stanza = ivrs.get_stanza(stanza)
     iteration = ivrs.get_iteration(iteration)
 
-    util.log('context_name:{} stanza:{} digits:{}'.format(context_name, stanza, digits))
-    # Find the destination ivr context dict.
+    util.log('context_name:{} stanza:{} digits:{}'.format(
+        context_name, stanza, digits))
+
+    # Where are we coming from?
     if not context_name:
-        # Presumably this is the first interaction, go to the
-        # default context.
+        # We don't know where we are coming from, so we are coming from the
+        # default context, presumably this is the first interaction.
         from_extension = util.sip_to_extension(from_user, env)
         context_name = from_extension['outgoing']
-        dest_c_dict = ivrs.context_dict(env['ivrs'], context_name)
+    c_dict = ivrs.context_dict(env['ivrs'], context_name)
+
+    # What destination should we play?
+    if digits:
+        dest_c_name = ivrs.destination_context_name(digits, c_dict)
     else:
-        c_dict = ivrs.context_dict(env['ivrs'], context_name)
-        if not digits:
-            # There wasn't a digit, the same context is our destination.
-            dest_c_name = context_name
-            dest_c_dict = c_dict
+        # There wasn't a digit, the same context is our destination.
+        dest_c_name = context_name
+
+    # Get the lang and source dict for the destination to play.
+    if dest_c_name is ivrs.LANG_DESTINATION:
+        dest_c_dict = c_dict # Same context.
+        lang = ivrs.swap_lang(lang)
+    elif dest_c_name is ivrs.PARENT_DESTINATION:
+        dest_c_dict = ivrs.context_dict(env['ivrs'], parent_name)
+    else:
+        dest_c_dict = ivrs.context_dict(env['ivrs'], dest_c_name)
+
+    if not dest_c_dict:
+        # We didn't find an IVR context in the context_dict.
+        # If it is an IVR destination, return the output of the function.
+        destination = ivr_destinations.get_destination(dest_c_name)
+        if destination:
+            # This is an ivr destination, so metric. We can assume this is
+            # the first stanza and iteration.
+            metric.publish(dest_c_name, from_user, env)
+            return str(destination(request, env))
         else:
-            dest_c_name = ivrs.destination_context_name(digits, c_dict)
-            if dest_c_name is ivrs.LANG_DESTINATION:
-                dest_c_dict = c_dict # Same context.
-                lang = ivrs.swap_lang(lang)
-            elif dest_c_name is ivrs.PARENT_DESTINATION:
-                dest_c_dict = ivrs.context_dict(env['ivrs'], parent_name)
-            else:
-                dest_c_dict = ivrs.context_dict(env['ivrs'], dest_c_name)
-        if not dest_c_dict:
-            # We didn't find an IVR context in the context_dict.
-            # If it is an IVR destination, return the output of the function.
-            destination = ivr_destinations.get_destination(dest_c_name)
-            if destination:
-                # This is an ivr destination, so metric. We can assume this is
-                # the first stanza and iteration.
-                metric.publish(dest_c_name, from_user, env)
-                return str(destination(request, env))
-            else:
-                # We don't know this context, so it's on the Asterisk server.
-                to_extension = dest_c_name
-                # This is an ivr destination, so metric.
-                metric.publish('dial_sip_asterisk', from_user, env)
-                # XXX we lose lang! Hopefully user remembers to hit *.
-                return str(util.dial_sip_asterisk(dest_c_name, from_user, env))
+            # We don't know this context, so it's on the Asterisk server.
+            to_extension = dest_c_name
+            # This is an ivr destination, so metric.
+            metric.publish('dial_sip_asterisk', from_user, env)
+            # XXX we lose lang! Hopefully user remembers to hit *.
+            return str(util.dial_sip_asterisk(dest_c_name, from_user, env))
 
     # We got this far, it's in the context_dict.
     if stanza is ivrs.INTRO_STANZA:
