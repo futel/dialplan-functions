@@ -60,7 +60,7 @@ def function_url(function_name, params=None):
     """
     url = function_name
     if params:
-       # XXX We are putting URL arguments on a POST that may have
+       # XXX We are putting URL arguments on what may be a POST with
        #     body parameters. Get around this by using path?
        params = parse.urlencode(params)
        url += '?' + params
