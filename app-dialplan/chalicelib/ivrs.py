@@ -8,8 +8,8 @@ from . import util
 
 
 MENU_ITERATIONS = 10
-LANG_DESTINATION = []
-PARENT_DESTINATION = []
+LANG_DESTINATION = '*'
+PARENT_DESTINATION = '#'
 
 KEY_PROMPTS = [
     "press-zero",
@@ -64,10 +64,6 @@ def destination_context_name(digits, c_dict):
     Return the name of the IVR context indicated by c_dict with digits,
     or None.
     """
-    if digits == '*':
-        return LANG_DESTINATION
-    if digits == '#':
-        return PARENT_DESTINATION
     try:
         position = int(digits)
         if position == 0:

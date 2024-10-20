@@ -97,7 +97,7 @@ def dial_outgoing(request, env):
     # # redirect to play that IVR instead of continuing to PSTN call it.
     # if to_number == "+15034681337":
     #     response = VoiceResponse()
-    #     response.redirect('/ivrs/incoming_leet')
+    #     response.redirect('/ivr/incoming_leet')
     #     return str(response)
 
     # If it's the number of one of our extensions,
@@ -186,24 +186,31 @@ def ivr(context_name, request, env):
         # default context, presumably this is the first interaction.
         from_extension = util.sip_to_extension(from_user, env)
         context_name = from_extension['outgoing']
-    c_dict = ivrs.context_dict(env['ivrs'], context_name)
+
+    if digits == ivrs.LANG_DESTINATION:
+        lang = ivrs.swap_lang(lang)
+        response = VoiceResponse()
+        path = '/ivr/{}'.format(context_name)
+        path = util.function_url(path, {'lang':lang})
+        response.redirect(path)
+        return str(response)
+    elif digits == ivrs.PARENT_DESTINATION:
+        lang = ivrs.swap_lang(lang)
+        response = VoiceResponse()
+        path = '/ivr/{}'.format(parent_name)
+        response.redirect(path)
+        return str(response)
 
     # What destination should we play?
     if digits:
+        c_dict = ivrs.context_dict(env['ivrs'], context_name)
         dest_c_name = ivrs.destination_context_name(digits, c_dict)
     else:
         # There wasn't a digit, the same context is our destination.
         dest_c_name = context_name
 
-    # Get the lang and source dict for the destination to play.
-    if dest_c_name is ivrs.LANG_DESTINATION:
-        dest_c_dict = c_dict # Same context.
-        lang = ivrs.swap_lang(lang)
-    elif dest_c_name is ivrs.PARENT_DESTINATION:
-        dest_c_dict = ivrs.context_dict(env['ivrs'], parent_name)
-    else:
-        dest_c_dict = ivrs.context_dict(env['ivrs'], dest_c_name)
-
+    # Get the source dict for the destination to play.
+    dest_c_dict = ivrs.context_dict(env['ivrs'], dest_c_name)
     if not dest_c_dict:
         # We didn't find an IVR context in the context_dict.
         # If it is an IVR destination, return the output of the function.
@@ -279,7 +286,7 @@ def outgoing_operator_dialer_status(request, env):
     elif dequeue_result == 'queue-empty':
         # Too late, tell the operator.
         response = VoiceResponse()
-        response.redirect('/ivrs/outgoing_operator_empty')
+        response.redirect('/ivr/outgoing_operator_empty')
         return str(response)
     else:
         util.log("Unknown operator dequeue result {}".format(dequeue_result))
