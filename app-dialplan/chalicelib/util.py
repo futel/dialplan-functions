@@ -60,10 +60,12 @@ def function_url(function_name, params=None):
     """
     url = function_name
     if params:
-       # XXX We are putting URL arguments on what may be a POST with
-       #     body parameters. Get around this by using path?
-       params = parse.urlencode(params)
-       url += '?' + params
+        # Don't serialize Nones.
+        params = {k:v for (k,v) in params.items() if v is not None}
+        # XXX We are putting URL arguments on what may be a POST with
+        #     body parameters. Get around this by using path?
+        params = parse.urlencode(params)
+        url += '?' + params
     return url
 
 #sip:test@direct-futel-stage.sip.twilio.com
