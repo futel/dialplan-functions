@@ -4,6 +4,11 @@
         "caller_id": "+15034681337",
         "enable_emergency": false
     },
+    "alleytwentyseventh": {
+        "outgoing": "outgoing_portland",
+        "caller_id": "+15039288465",
+        "enable_emergency": true
+    },
     "bottles-and-cans-one": {
         "outgoing": "outgoing_portland",
         "caller_id": "+15034681337",
