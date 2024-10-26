@@ -19,8 +19,8 @@ def _get_env_attributes():
     """Return a map of attributes from the environment."""
     normal_variables = {
         'ASSET_HOST': os.environ['ASSET_HOST'],
-        'AWS_DEFAULT_REGION': os.environ['AWS_DEFAULT_REGION'],
-        'AWS_LOGS_TOPIC_ARN': os.environ['AWS_LOGS_TOPIC_ARN'],
+        #'AWS_DEFAULT_REGION': os.environ['AWS_DEFAULT_REGION'],
+        #'AWS_LOGS_TOPIC_ARN': os.environ['AWS_LOGS_TOPIC_ARN'],
         'AWS_METRICS_TOPIC_ARN': os.environ['AWS_METRICS_TOPIC_ARN'],
         'nanpa_sisyphus': os.environ['nanpa_sisyphus'],
         'stage': os.environ['stage'],
