@@ -180,53 +180,48 @@ def ivr(context_name, request, env):
     util.log('context_name:{} stanza:{} digits:{}'.format(
         context_name, stanza, digits))
 
-    # Where are we coming from?
     if not context_name:
-        # We don't know where we are coming from, so we are coming from the
-        # default context, presumably this is the first interaction.
+        # Use the default context, presumably this is the first interaction.
         from_extension = util.sip_to_extension(from_user, env)
         context_name = from_extension['outgoing']
 
-    if digits == ivrs.LANG_DESTINATION:
-        lang = ivrs.swap_lang(lang)
+    if digits:
+        if digits == ivrs.LANG_DESTINATION:
+            # Redirect to the same context with lang swapped.
+            lang = ivrs.swap_lang(lang)
+        elif digits == ivrs.PARENT_DESTINATION:
+            # Redirect to the parent context.
+            context_name = parent_name
+            parent_name = None  # User gets to go up one parent.
+        else:
+            # Redirect to the context indicated by the digit.
+            parent_name = context_name
+            c_dict = ivrs.context_dict(env['ivrs'], context_name)
+            context_name = ivrs.destination_context_name(digits, c_dict)
         response = VoiceResponse()
         path = '/ivr/{}'.format(context_name)
-        path = util.function_url(path, {'lang':lang})
-        response.redirect(path)
-        return str(response)
-    elif digits == ivrs.PARENT_DESTINATION:
-        lang = ivrs.swap_lang(lang)
-        response = VoiceResponse()
-        path = '/ivr/{}'.format(parent_name)
+        path = util.function_url(path, {'lang': lang, 'parent': parent_name})
         response.redirect(path)
         return str(response)
 
-    # What destination should we play?
-    if digits:
-        c_dict = ivrs.context_dict(env['ivrs'], context_name)
-        dest_c_name = ivrs.destination_context_name(digits, c_dict)
-    else:
-        # There wasn't a digit, the same context is our destination.
-        dest_c_name = context_name
-
+    # There is no digit.
     # Get the source dict for the destination to play.
-    dest_c_dict = ivrs.context_dict(env['ivrs'], dest_c_name)
+    dest_c_dict = ivrs.context_dict(env['ivrs'], context_name)
     if not dest_c_dict:
         # We didn't find an IVR context in the context_dict.
         # If it is an IVR destination, return the output of the function.
-        destination = ivr_destinations.get_destination(dest_c_name)
+        destination = ivr_destinations.get_destination(context_name)
         if destination:
             # This is an ivr destination, so metric. We can assume this is
             # the first stanza and iteration.
-            metric.publish(dest_c_name, from_user, env)
+            metric.publish(context_name, from_user, env)
             return str(destination(request, env))
         else:
             # We don't know this context, so it's on the Asterisk server.
-            to_extension = dest_c_name
             # This is an ivr destination, so metric.
             metric.publish('dial_sip_asterisk', from_user, env)
             # XXX we lose lang! Hopefully user remembers to hit *.
-            return str(util.dial_sip_asterisk(dest_c_name, from_user, env))
+            return str(util.dial_sip_asterisk(context_name, from_user, env))
 
     # We got this far, it's in the context_dict.
     if stanza is ivrs.INTRO_STANZA:
