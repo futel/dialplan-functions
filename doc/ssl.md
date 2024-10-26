@@ -1,37 +1,47 @@
 # SSL certificate
 
-Certificates are needed to for AWS Lambda to publish dialplan documents with a custom domain name.
+Certificates are needed to for AWS Lambda to publish HTTPS with a custom domain name.
 
 # Meta-requirements
 
 AWS ACM console access must have been set up.
 
-DigitalOcean must have the dialplans.phu73l.net domain name set up.
+Domains should be created with DigitalOcean:
+- dialplans.phu73l.net
+- ops.phu73l.net
 
 # Requirements
 
+
 - debian box (trixie, ubuntu 23)
 - openssl (3.2.2-1)
-- certbot (2.9.0-1.1)
-- python3-certbot-dns-digitalocean
+- snapd apt package
+  - sudo apd install snapd
+- snapd snap package
+  - sudo snap install snapd
+- certbot and plugin snap (2.11.0)
+  - sudo snap install --classic certbot
+  - sudo ln -s /snap/bin/certbot /usr/bin/certbot
+  - sudo snap set certbot trust-plugin-with-root=ok
+  - sudo snap install certbot-dns-digitalocean
 - DigitalOcean access token with all the domain scopes in conf/certbot-creds.ini
 
 ---
 
 # Create certificate
 
-This needs to be done to create the first certificate, or to create a replacement after changing attributes.
+This needs to be done when the certificate doesn't exist yet or after attributes have changed. The certificate is registered with let's encrypt, but not yet used to publish HTTPS.
 
-This should be done on whatever box is handling renewals. This deployment process doesn't outline requirements to make automatic renewal reliable, eg it is probably running on a laptop, so manual renewals or at least verification are assumed.
+This is done on whatever box will handle renewals. This deployment process doesn't include requirements to make automatic renewal reliable, it is probably running on a laptop, so manual renewals or at least verification of automatic renewals are assumed.
 
 - sudo certbot certonly --dns-digitalocean --dns-digitalocean-credentials conf/certbot-creds.ini -d phu73l.net -d dialplans.phu73l.net -d '*.dialplans.phu73l.net' -d ops.phu73l.net -d '*.ops.phu73l.net'
-- add expiration to calendar
-- cd /etc/letsencrypt/live/phu73l.net
-- cat cert.pem chain.pem fullchain.pem > /tmp/all.pem
+  - answer questions
+- add expiration to a human's calendar
+- sudo cat /etc/letsencrypt/live/phu73l.net/cert.pem /etc/letsencrypt/live/phu73l.net/chain.pem /etc/letsencrypt/live/phu73l.net/fullchain.pem >/tmp/all.pem
 
 # Import or reimport and deploy certificate
 
-This needs to be done after a certificate is created or renewed.
+This needs to be done after a certificate is created or renewed. The certificate is given to AWS, but not yet used to publish HTTPS.
 
 - visit AWS certificate manager (ACM) web console
 - change region to us-east-1
@@ -44,7 +54,7 @@ If this is a new certificate, note the ARN. This is needed to deploy the AWS API
 
 # Update Lambda functions to use new certificate
 
-This needs to be done after a certificate is created.
+This needs to be done after a certificate is created or replaced, not after reimport. The certificate is used by AWS to publish HTTPS.
 
 - update config files:
   - app-dialplan/.chalice/config.json
@@ -58,13 +68,12 @@ This needs to be done after a certificate is created.
 
 Certificates must be renewed before they expire.
 
-The certificate creation method might set up automatic renewal using systemd? Notice the renewal warning email, check, and be prepared to manually renew at the end of the certificate's life. This deployment process doesn't outline requirements to make automatic renewal reliable, eg it is probably running on a laptop, and we need to reimport to aws after renewal?
+This should have been set up by the certificate creation method using systemd, but hasn't been tested. Notice the renewal warning email, check, and be prepared to manually renew at the end of the certificate's life. This deployment process doesn't include requirements to make automatic renewal reliable, it is probably running on a laptop, and we need to reimport to aws after renewal?
 
-sudo certbot renew --cert-name dialplans.phu73l.net --dns-digitalocean --dns-digitalocean-credentials conf/certbot-creds.ini
+sudo certbot renew --cert-name phu73l.net --dns-digitalocean --dns-digitalocean-credentials conf/certbot-creds.ini
 
 - add expiration to calendar, "sudo certbot certificates" to show the date
-- cd /etc/letsencrypt/live/phu73l.net
-- cat cert.pem chain.pem fullchain.pem > /tmp/all.pem
+- sudo cat /etc/letsencrypt/live/phu73l.net/cert.pem /etc/letsencrypt/live/phu73l.net/chain.pem /etc/letsencrypt/live/phu73l.net/fullchain.pem >/tmp/all.pem
 - Reimport the certificate as in Import or reimport and deploy certificate
 
 ---
