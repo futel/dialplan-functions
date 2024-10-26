@@ -36,6 +36,6 @@ def missing_paths(paths, base):
 
 if __name__ == '__main__':
     base = '../dialplan-assets/assets'
-    i_dicts = env_util.get_ivrs()
+    i_dicts = env_util._get_ivrs()
     for p in set(missing_paths(paths(i_dicts), base)):
         print(p)
