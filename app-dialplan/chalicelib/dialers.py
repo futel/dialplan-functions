@@ -316,7 +316,7 @@ def enqueue_operator_record(request, env):
     from_user = request.from_user
     metric.publish('enqueue_operator_record', from_user, env)
     # This is not much notification, but the recordings are discoverable.
-    util.log("Operator message: ".format(request.post_fields['RecordingUrl']))
+    util.log("Operator message: {}".format(request.post_fields['RecordingUrl']))
     response = VoiceResponse()
     response.hangup()
     return str(response)
