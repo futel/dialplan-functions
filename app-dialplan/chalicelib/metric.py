@@ -40,23 +40,23 @@ def publish(event, user, env):
     hostname = _get_metric_hostname(env)
     return _publish(event, user, hostname, env)
 
-def publish_twilio_error(event, message, env):
+def publish_twilio_error(event, webhook_request, env):
     """Publish an error event."""
     # The event is from a twilio error webhook.
     # Note that all webhooks post to the same prod url, we need to determine
     # what instance/hostname it comes from.
     # 'sip:demo-one@direct-futel-stage.sip.twilio.com'
-    url = message['webhook']['request']['url']
+    url = webhook_request['url']
     if url:
         try:
             # ('sip:demo-one', 'direct-futel-stage.sip.twilio.com')
             (endpoint, host) = url.split('@')
         except ValueError:
-            to = message['webhook']['request']['parameters']['To']
+            to = webhook_request['parameters']['To']
             try:
                 (endpoint, host) = to.split('@')
             except ValueError:
-                from_ = message['webhook']['request']['parameters']['From']
+                from_ = webhook_request['parameters']['From']
                 try:
                     (endpoint, host) = from_.split('@')
                 except ValueError:
@@ -75,7 +75,7 @@ def publish_twilio_error(event, message, env):
         # We get an url of None when we timeout trying to call a registered
         # endpoint, twilio error 32011.
         # '<sip:demo-one@foo:5060>'
-        to = message['webhook']['request']['parameters']['To']
+        to = webhook_request['parameters']['To']
         (endpoint, _) = to.split('@')
         endpoint = endpoint[1:] # 'sip:demo-one'
         # The hostname is parseable from the From paramater, but it's ugly.

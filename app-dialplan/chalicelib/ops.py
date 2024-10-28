@@ -88,10 +88,19 @@ def log(request, env):
     # The message is stored in a 'Payload' post param as a json repr.
     message = json.loads(request.post_fields['Payload'])
     util.log(message)
+
+    # Are we coming from a twilio error log webhook?
+    try:
+        webhook_request = message['webhook']['request']
+    except:
+        # Whatever, twilio gives us only one webhook, and errors and warnings
+        # from all kinds of projects go here.
+        return
+
     # Turn the error code in the message into a metric key and publish it.
     event = "{}-{}".format(event_prefix, message.get('error_code'))
     # The message comes from a twilio error log webhook, so metric that.
-    metric.publish_twilio_error(event, message, env)
+    metric.publish_twilio_error(event, webhook_request, env)
     # Publish the message to our log store.
     # We don't document the message format, so we aren't indicating whether we
     # are prod, stage, or another host.
