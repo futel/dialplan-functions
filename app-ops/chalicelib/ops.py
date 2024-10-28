@@ -22,8 +22,8 @@ def _extension():
     # don't want to disturb a human.
     extensions = [
         'alleymaple',
+        'alleytwentyseventh',
         'bottles-and-cans-one',
-        #'bottles-and-cans-two',
         "brazee",
         #'breckenridge',
         'cesar-chavez-one',
@@ -31,8 +31,7 @@ def _extension():
         'dome-workshop',
         'fortysecond',
         'ghost-mountain',
-        'landline',
-        #'souwester'
+        'landline'
     ]
     # Choose the next extension to call modulo the current minute.
     # We want to choose extensions evenly.
