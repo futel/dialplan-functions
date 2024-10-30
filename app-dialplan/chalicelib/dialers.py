@@ -15,7 +15,8 @@ sip_domain_subdomain_base = "direct-futel"
 sip_domain_suffix = "sip.twilio.com"
 #sip_edge = "edge=umatilla"
 
-operator_message_max = 60 * 15  # 15 minutes
+operator_message_max = 60 * 15  # 15 minutes in seconds
+dial_max = 60 * 60              # 60 minutes in seconds
 
 
 def _get_sip_domain(extension, env):
@@ -150,10 +151,10 @@ def _dial_sip(extension, from_number, request, env):
     util.log('sip_uri: {}'.format(sip_uri))
 
     response = VoiceResponse()
-    # XXX default timeLimit is 4 hours, should be smaller, in seconds
     dial = response.dial(
         answer_on_bridge=True,
         caller_id=from_number,
+        time_limit=dial_max,
         action='/ops/call_status_outgoing')
     dial.sip(sip_uri)
     return str(response)

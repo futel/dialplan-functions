@@ -54,14 +54,14 @@ class TestUtil(TestCase):
             str(response),
             '<?xml version="1.0" encoding="UTF-8"?><Response>'
             '<Dial action="/ops/call_status_outgoing" '
-            'answerOnBridge="true" callerId="+19713512383">'
+            'answerOnBridge="true" callerId="+19713512383" timeLimit="3600">'
             '<Number>+15035551212</Number></Dial></Response>')
 
     def test_dial_sip_asterisk(self):
         response = util.dial_sip_asterisk('#', 'test-one', env)
         self.assertEqual(
             str(response),
-            '<?xml version="1.0" encoding="UTF-8"?><Response><Dial answerOnBridge="true"><Sip>sip:outgoing_safe@futel-stage.phu73l.net;region=us2?x-callerid=+19713512383&amp;x-enableemergency=false</Sip></Dial></Response>')
+            '<?xml version="1.0" encoding="UTF-8"?><Response><Dial answerOnBridge="true" timeLimit="3600"><Sip>sip:outgoing_safe@futel-stage.phu73l.net;region=us2?x-callerid=+19713512383&amp;x-enableemergency=false</Sip></Dial></Response>')
 
 
 if __name__ == '__main__':

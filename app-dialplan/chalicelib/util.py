@@ -31,6 +31,8 @@ premium_nanpa_codes = [
     '869',
     '876']
 
+dial_max = 60 * 60              # 60 minutes in seconds
+
 def log(msg):
     print(msg)
 
@@ -177,8 +179,9 @@ def dial_sip_asterisk(extension, from_user, env):
 
     # Create and return a response document.
     response = VoiceResponse()
-    # XXX Should specify timeout in seconds, default is 4h.
-    dial = response.dial(answer_on_bridge=True)
+    dial = response.dial(
+        answer_on_bridge=True,
+        time_limit=dial_max)
     dial.sip(sip_uri)
     # Don't specify anything after the dial. Assume the call will be hung up.
     # Don't bother with an action callback to be called with the outcome,
@@ -207,11 +210,11 @@ def dial_pstn(to_number, from_extension, request):
     """Return TwiML to dial PSTN number with attributes from request."""
     caller_id = from_extension['caller_id']
 
-    # XXX default timeLimit is 4 hours, should be smaller, in seconds
     response = VoiceResponse()
     dial = response.dial(
         caller_id=caller_id,
         answer_on_bridge=True,
+        time_limit=dial_max,
         action='/ops/call_status_outgoing')
     dial.number(to_number)
     return response

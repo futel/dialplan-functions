@@ -70,8 +70,10 @@ def exercise_one(stage, extension, env):
     to = 'sip:{extension}@direct-futel-{stage}.sip.twilio.com'.format(
         extension=extension, stage=stage)
     context = "community_outgoing"
-    # Timeout in seconds, twilio may add 5s? 20s should give us 4 rings.
+    # Ring timeout in seconds, twilio may add 5s? 20s should give us 4 rings.
     timeout = 20
+    # Call time limit in seconds.
+    time_limit = 30 * 60
     # URL to return twiml for callee to experience.
     url = "https://{stage}.dialplans.phu73l.net/ivr/{context}".format(
         stage=stage, context=context)
@@ -81,11 +83,11 @@ def exercise_one(stage, extension, env):
             stage=stage))
 
     util.log("calling {}".format(extension))
-    #util.log("calling {}".format(to))
     return client.calls.create(
         to=to,
         from_="+15034681337",
         url=url,
         timeout=timeout,
+        time_limit=time_limit,
         status_callback_event='completed', #['initiated', 'ringing', 'answered']
         status_callback=status_callback_url)
