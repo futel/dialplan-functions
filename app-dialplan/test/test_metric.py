@@ -25,29 +25,14 @@ class TestMetric(TestCase):
         self.assertTrue(
             metric.publish_twilio_error(
                 'foo-bar',
-                {'resource_sid': 'foo',
-                 'service_sid': None,
-                 'error_code': '21609',
-                 'more_info': {
-                     'Msg': 'foo',
-                     'invalidStatusCallbackUrl': 'bar',
-                     'ErrorCode': '21609',
-                     'LogLevel': 'WARNING'},
-                 'webhook': {
-                     'type': 'application/json',
-                     'request': {
-                         'url': 'sip:demo-one@direct-futel-stage.sip.twilio.com',
-                         'method': None,
-                         'headers': {},
-                         'parameters': {}},
-                     'response': {
-                         'status_code': None,
-                         'headers': {},
-                         'body': None}}},
+                {'url': 'sip:demo-one@direct-futel-stage.sip.twilio.com',
+                 'method': None,
+                 'headers': {},
+                 'parameters': {}},
                 env))
 
     def test_publish_twilio_error_bar(self):
-        message = {'resource_sid': 'CA96ec5e33405afd1a43935f0039d1a0af', 'service_sid': None, 'error_code': '11200', 'more_info': {'Msg': 'Got HTTP 502 response to http://10.209.67.130:8080/ivr/outgoing_operator_operator?parent=outgoing_operator_operator&lang=en&iteration=0&stanza=menu', 'ErrorCode': '11200', 'LogLevel': 'ERROR'}, 'webhook': {'type': 'application/json', 'request': {'url': 'http://10.209.67.130:8080/ivr/outgoing_operator_operator?parent=outgoing_operator_operator&lang=en&iteration=0&stanza=menu', 'method': 'POST', 'headers': {}, 'parameters': {'ApiVersion': '2010-04-01', 'CalledZip': '97114', 'Called': '+1503xxxxxxx', 'CallStatus': 'in-progress', 'CalledCity': 'CARLTON', 'From': '+15034448615', 'ToState': 'OR', 'CallerCountry': 'US', 'Direction': 'outbound-api', 'AccountSid': 'ACccee506a7e232c9b6b17175c9e54860c', 'CalledCountry': 'US', 'CallerCity': 'BEAVERTON', 'CallerState': 'OR', 'Caller': '+15034448615', 'FromCountry': 'US', 'ToCity': 'CARLTON', 'ToZip': '97114', 'FromCity': 'BEAVERTON', 'CalledState': 'OR', 'To': '+1503xxxxxxx', 'CallSid': 'CA96ec5e33405afd1a43935f0039d1a0af', 'FromZip': '97229', 'ToCountry': 'US', 'CallerZip': '97229', 'FromState': 'OR'}}, 'response': {'status_code': None, 'headers': {'x-envoy-upstream-service-time': '2', 'x-twilio-reason': 'Blacklisted IP', 'Server': 'envoy', 'Content-Length': '539', 'x-twilio-webhookattempt': '1', 'Date': 'Tue, 24 Sep 2024 23:37:55 GMT', 'Content-Type': 'text/html'}, 'body': 'Twilio was unable to fetch content from: http://10.209.67.130:8080/ivr/outgoing_operator_operator?parent=outgoing_operator_operator&lang=en&iteration=0&stanza=menu\nError: Blacklisted IP 10.209.67.130\nAccount SID: ACccee506a7e232c9b6b17175c9e54860c\nSID: CA96ec5e33405afd1a43935f0039d1a0af\nRequest ID: aa1776c7-a8f2-4adf-9a46-dbb91a97786f\nRemote Host: 10.209.67.130\nRequest Method: POST\nRequest URI: http://10.209.67.130:8080/ivr/outgoing_operator_operator?parent=outgoing_operator_operator&lang=en&iteration=0&stanza=menu\nURL Fragment: true'}}}
+        message = {'url': 'http://10.209.67.130:8080/ivr/outgoing_operator_operator?parent=outgoing_operator_operator&lang=en&iteration=0&stanza=menu', 'method': 'POST', 'headers': {}, 'parameters': {'ApiVersion': '2010-04-01', 'CalledZip': '97114', 'Called': '+1503xxxxxxx', 'CallStatus': 'in-progress', 'CalledCity': 'CARLTON', 'From': '+15034448615', 'ToState': 'OR', 'CallerCountry': 'US', 'Direction': 'outbound-api', 'AccountSid': 'ACccee506a7e232c9b6b17175c9e54860c', 'CalledCountry': 'US', 'CallerCity': 'BEAVERTON', 'CallerState': 'OR', 'Caller': '+15034448615', 'FromCountry': 'US', 'ToCity': 'CARLTON', 'ToZip': '97114', 'FromCity': 'BEAVERTON', 'CalledState': 'OR', 'To': '+1503xxxxxxx', 'CallSid': 'CA96ec5e33405afd1a43935f0039d1a0af', 'FromZip': '97229', 'ToCountry': 'US', 'CallerZip': '97229', 'FromState': 'OR'}}
         self.assertTrue(
             metric.publish_twilio_error(
                 'foo-bar',
