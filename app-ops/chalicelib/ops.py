@@ -23,9 +23,9 @@ def _extension():
     extensions = [
         'alleymaple',
         'alleytwentyseventh',
-        'bottles-and-cans-one',
+        # bottles-and-cans-one is only on 12p-9p
+        #'bottles-and-cans-one',
         "brazee",
-        #'breckenridge',
         'cesar-chavez-one',
         'clinton',
         'dome-workshop',
@@ -33,6 +33,7 @@ def _extension():
         'ghost-mountain',
         'landline'
     ]
+
     # Choose the next extension to call modulo the current minute.
     # We want to choose extensions evenly.
     # We hope to not call an extension twice in a row, so we hope we aren't
@@ -41,6 +42,7 @@ def _extension():
     # minute = datetime.datetime.fromisoformat(event.time).minute
     # choice = minute % len(extensions)
     # extension = extensions[choice]
+
     # Q&D but incorrect way is to just randomly choose.
     # Deterministic would be much better, same amount of calls per period, etc.
     # Is this random enough when run by lambda? What's the seed?
