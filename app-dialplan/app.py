@@ -7,6 +7,8 @@ be other actions enabled by chalice, like scheduled tasks.
 from chalice import Chalice, Response
 import functools
 import os
+import requests
+from twilio.request_validator import RequestValidator
 from urllib import parse
 
 from chalicelib import dialers
@@ -30,9 +32,27 @@ def route(path):
         methods=['POST'],
         content_types=['application/x-www-form-urlencoded'])
 
+def validate_request(request, env):
+    validator = RequestValidator(env['TWILIO_AUTH_TOKEN'])
+    # XXX We need to reconstruct the URL that we were called with, and we're
+    #     doing it wrong! Either we or twilio are not assembling query params
+    #     properly when we make the signature.
+    host = request.headers['host']
+    path = request.context['path']
+    url = 'https://' + host + path
+    # post_fields = {
+    #     requests.utils.quote(v) for (k,v) in request.post_fields.items()}
+    post_fields = request.post_fields
+    url += '?' + parse.urlencode(request.query_params)
+    # Assume it is a POST request.
+    return validator.validate(
+        url,
+        post_fields,
+        request.headers.get('X-TWILIO-SIGNATURE', ''))
+
 def setup_request(request):
     """
-    Update request.
+    Update request for view function.
     Fill post_fields and query_params attributes.
     If post_fields has a From that parses to an extension name, fill from_user.
     Otherwise, fill from_user with the hot-leet placeholder, and optionally
@@ -88,6 +108,11 @@ def setup(f):
         # By now the global app has been set up with its request,
         # so we can modify it.
         request = setup_request(app.current_request)
+        valid = validate_request(request, env)
+        if not valid:
+            # XXX We don't actually do anything about an invalid request,
+            #     because validation doesn't always succeed.
+            util.log("invalid request")
         response = f(request, *args, **kwargs)
         return setup_response(response)
     return decorated

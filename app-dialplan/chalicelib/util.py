@@ -40,8 +40,8 @@ def log_request(request):
     msg = 'request '
     msg += 'query_params:{} '.format(request.query_params)
     msg += 'uri_params:{} '.format(request.uri_params)
+    msg += 'post_fields:{} '.format(request.post_fields)
     msg += 'path:{} '.format(request.path)
-    msg += 'raw_body:{}'.format(request.raw_body)
     log(msg)
 
 def log_response(response):
@@ -64,8 +64,6 @@ def function_url(function_name, params=None):
     if params:
         # Don't serialize Nones.
         params = {k:v for (k,v) in params.items() if v is not None}
-        # XXX We are putting URL arguments on what may be a POST with
-        #     body parameters. Get around this by using path?
         params = parse.urlencode(params)
         url += '?' + params
     return url
