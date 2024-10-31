@@ -35,8 +35,13 @@ def route(path):
 def validate_request(request, env):
     validator = RequestValidator(env['TWILIO_AUTH_TOKEN'])
     # XXX We need to reconstruct the URL that we were called with, and we're
-    #     doing it wrong! Either we or twilio are not assembling query params
-    #     properly when we make the signature.
+    #     doing it wrong! Either we or twilio are not assembling the signature
+    #     properly. It appears to happen on requests that are playing a menu
+    #     with query params, but it still happens if we test by removing all
+    #     query params from the request. It appears to happen when there is a
+    #     Digits post param in the request. When that happens, there is also a
+    #     'msg':'Gather End' post param sent by twilio, but quoting that
+    #     doesn't help.
     host = request.headers['host']
     path = request.context['path']
     url = 'https://' + host + path
