@@ -167,10 +167,10 @@ def ivr(context_name, request, env):
     """
     from_user = request.from_user
     metric.publish('ivr', from_user, env)
+    from_extension = util.sip_to_extension(from_user, env)
     # Params from twilio are in the body, params from us are in the
-    # query string. We aren't supposted to combine them in a request.
+    # query string.
     digits = request.post_fields.get('Digits')
-    parent_name = request.query_params.get('parent')
     stanza = request.query_params.get('stanza')
     iteration = request.query_params.get('iteration')
     lang = request.query_params.get('lang', 'en')
@@ -183,7 +183,6 @@ def ivr(context_name, request, env):
 
     if not context_name:
         # Use the default context, presumably this is the first interaction.
-        from_extension = util.sip_to_extension(from_user, env)
         context_name = from_extension['outgoing']
 
     if digits:
@@ -192,16 +191,16 @@ def ivr(context_name, request, env):
             lang = ivrs.swap_lang(lang)
         elif digits == ivrs.PARENT_DESTINATION:
             # Redirect to the parent context.
-            context_name = parent_name
-            parent_name = None  # User gets to go up one parent.
+            # Punt by redirecting to the default context so we don't have to
+            # track or know the previous path.
+            context_name = from_extension['outgoing']
         else:
             # Redirect to the context indicated by the digit.
-            parent_name = context_name
             c_dict = ivrs.context_dict(env['ivrs'], context_name)
             context_name = ivrs.destination_context_name(digits, c_dict)
         response = VoiceResponse()
         path = '/ivr/{}'.format(context_name)
-        path = util.function_url(path, {'lang': lang, 'parent': parent_name})
+        path = util.function_url(path, {'lang': lang})
         response.redirect(path)
         return str(response)
 
@@ -229,8 +228,7 @@ def ivr(context_name, request, env):
         # This is an ivr destination, so metric.
         metric.publish(dest_c_dict['name'], from_user, env)
     return str(
-        ivrs.ivr_context(
-            dest_c_dict, lang, context_name, stanza, iteration, request, env))
+        ivrs.ivr_context(dest_c_dict, lang, stanza, iteration, request, env))
 
 def _enqueue_operator_call(request, env):
     """

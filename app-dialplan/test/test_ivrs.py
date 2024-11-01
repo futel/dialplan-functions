@@ -68,7 +68,6 @@ class TestIvrs(TestCase):
                 response,
                 {'name':'name'},
                 'lang',
-                'parent_c_name',
                 1,
                 request,
                 {}),
@@ -81,7 +80,6 @@ class TestIvrs(TestCase):
                 response,
                 {'name':'name'},
                 'lang',
-                'parent_c_name',
                 1,
                 request,
                 {}),
@@ -103,7 +101,6 @@ class TestIvrs(TestCase):
             ivrs.ivr_context(
                 c_dict,
                 'en',
-                'c_name',
                 ivrs.INTRO_STANZA,
                 1,
                 request,

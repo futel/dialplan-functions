@@ -119,7 +119,6 @@ def sound_url(
 
 def _add_gather_stanza(
         c_name,
-        parent_c_name,
         lang,
         iteration,
         timeout,
@@ -130,7 +129,6 @@ def _add_gather_stanza(
     """
     path = "/ivr/{}".format(c_name)
     url_params = {
-        'parent': parent_c_name,
         'lang': lang,
         'iteration': iteration}
     if timeout is None:
@@ -157,7 +155,7 @@ def _add_gather_stanza(
     # We should return the response instead.
     return gather
 
-def _add_intro_stanza(response, c_dict, lang, parent_c_name, iteration, request, env):
+def _add_intro_stanza(response, c_dict, lang, iteration, request, env):
     """
     Add a TwiML stanza to play intro and gather a digit
     based on c_dict and lang, sending the next request to the
@@ -165,7 +163,6 @@ def _add_intro_stanza(response, c_dict, lang, parent_c_name, iteration, request,
     """
     gather = _add_gather_stanza(
         c_dict['name'],
-        parent_c_name,
         lang,
         iteration,
         timeout=0,
@@ -201,7 +198,7 @@ def _add_menu_entry_stanza(statement, e, gather, c_dict, lang, request, env):
     return gather
 
 def _add_menu_stanza(
-        response, c_dict, lang, parent_c_name, iteration, request, env):
+        response, c_dict, lang, iteration, request, env):
     """
     Add a TwiML stanza to play a menu and gather a digit
     based on c_dict and lang, sending the next request to the
@@ -210,7 +207,6 @@ def _add_menu_stanza(
     # The next stanza after menu is another menu, with another iteration.
     gather = _add_gather_stanza(
         c_dict['name'],
-        parent_c_name,
         lang,
         iteration,
         timeout=None,
@@ -240,18 +236,17 @@ def _has_next_context_stanza(c_dict):
     return c_dict.get('next_context')
 
 def _add_next_context_stanza(
-        response, c_dict, lang, parent_c_name, request, env):
+        response, c_dict, lang, request, env):
     next_context = c_dict['next_context']
     path = "/ivr/{}".format(next_context)
     action_url = util.function_url(
         path,
         {'lang': lang,
-         'parent': parent_c_name,
          'stanza': INTRO_STANZA.value}) # First stanza is always intro stanza.
     response.redirect(action_url)
     return response
 
-def ivr_context(dest_c_dict, lang, c_name, stanza, iteration, request, env):
+def ivr_context(dest_c_dict, lang, stanza, iteration, request, env):
     """
     Return TwiML to play an IVR context based on dest_c_dict.
     """
@@ -265,7 +260,7 @@ def ivr_context(dest_c_dict, lang, c_name, stanza, iteration, request, env):
             return str(pre_response)
         if _has_intro_stanza(dest_c_dict):
             return _add_intro_stanza(
-                response, dest_c_dict, lang, c_name, iteration, request, env)
+                response, dest_c_dict, lang, iteration, request, env)
     if stanza is not NEXT_CONTEXT_STANZA:
         if _has_menu_stanza(dest_c_dict):
             iteration += 1
@@ -274,10 +269,10 @@ def ivr_context(dest_c_dict, lang, c_name, stanza, iteration, request, env):
                 return response
             else:
                 return _add_menu_stanza(
-                    response, dest_c_dict, lang, c_name, iteration, request, env)
+                    response, dest_c_dict, lang, iteration, request, env)
     if _has_next_context_stanza(dest_c_dict):
         return _add_next_context_stanza(
-            response, dest_c_dict, lang, c_name, request, env)
+            response, dest_c_dict, lang, request, env)
     # XXX Is this an expected state, do we want to survive this?
     response.hangup()
     return response
