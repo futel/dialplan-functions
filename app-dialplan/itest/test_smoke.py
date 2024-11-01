@@ -20,7 +20,7 @@ class TestDialers(TestCase):
                 "SipDomain": "direct-futel-stage.sip.twilio.com"})
         check_response(
             response,
-            '<?xml version="1.0" encoding="UTF-8"?><Response><Dial action="/ops/call_status_outgoing" answerOnBridge="true" callerId="+19713512383"><Number>+15035551212</Number></Dial></Response>')
+            '<?xml version="1.0" encoding="UTF-8"?><Response><Dial action="/ops/call_status_outgoing" answerOnBridge="true" callerId="+19713512383" timeLimit="3600"><Number>+15035551212</Number></Dial></Response>')
 
     def test_dial_outgoing_e164_sip(self):
         response = requests.post(
