@@ -197,7 +197,9 @@ def ivr(context_name, request, env):
         else:
             # Redirect to the context indicated by the digit.
             c_dict = ivrs.context_dict(env['ivrs'], context_name)
-            context_name = ivrs.destination_context_name(digits, c_dict)
+            dest_name = ivrs.destination_context_name(digits, c_dict)
+            if dest_name != None:
+                context_name = dest_name
         response = VoiceResponse()
         path = '/ivr/{}'.format(context_name)
         path = util.function_url(path, {'lang': lang})
@@ -228,7 +230,8 @@ def ivr(context_name, request, env):
         # This is an ivr destination, so metric.
         metric.publish(dest_c_dict['name'], from_user, env)
     return str(
-        ivrs.ivr_context(dest_c_dict, lang, stanza, iteration, request, env))
+        ivrs.ivr_context(
+            context_name, dest_c_dict, lang, stanza, iteration, request, env))
 
 def _enqueue_operator_call(request, env):
     """

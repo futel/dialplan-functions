@@ -74,8 +74,8 @@ def destination_context_name(digits, c_dict):
                     entry for entry in other_menu_entries
                     if entry[1] == 0][0]
             except IndexError:
-                # Invalid digit, repeat context.
-                return c_dict['name']
+                # Invalid digit.
+                return None
             return menu_entry[2]
         else:
             # Humans start with 1 when not calling the operator.
@@ -84,12 +84,12 @@ def destination_context_name(digits, c_dict):
             try:
                 menu_entry = menu_entries[position]
             except IndexError:
-                # Invalid digit, repeat context.
-                return c_dict['name']
+                # Invalid digit.
+                return None
             return menu_entry[1]
     except (AttributeError, TypeError):
-        # Invalid digit, repeat context.
-        return c_dict['name']
+        # Invalid digit.
+        return None
 
 def pre_callable(c_dict, request, env):
     """
@@ -155,14 +155,14 @@ def _add_gather_stanza(
     # We should return the response instead.
     return gather
 
-def _add_intro_stanza(response, c_dict, lang, iteration, request, env):
+def _add_intro_stanza(response, c_name, c_dict, lang, iteration, request, env):
     """
     Add a TwiML stanza to play intro and gather a digit
     based on c_dict and lang, sending the next request to the
     destination URL. Return response.
     """
     gather = _add_gather_stanza(
-        c_dict['name'],
+        c_name,
         lang,
         iteration,
         timeout=0,
@@ -198,7 +198,7 @@ def _add_menu_entry_stanza(statement, e, gather, c_dict, lang, request, env):
     return gather
 
 def _add_menu_stanza(
-        response, c_dict, lang, iteration, request, env):
+        response, c_name, c_dict, lang, iteration, request, env):
     """
     Add a TwiML stanza to play a menu and gather a digit
     based on c_dict and lang, sending the next request to the
@@ -206,7 +206,7 @@ def _add_menu_stanza(
     """
     # The next stanza after menu is another menu, with another iteration.
     gather = _add_gather_stanza(
-        c_dict['name'],
+        c_name,
         lang,
         iteration,
         timeout=None,
@@ -246,7 +246,7 @@ def _add_next_context_stanza(
     response.redirect(action_url)
     return response
 
-def ivr_context(dest_c_dict, lang, stanza, iteration, request, env):
+def ivr_context(c_name, dest_c_dict, lang, stanza, iteration, request, env):
     """
     Return TwiML to play an IVR context based on dest_c_dict.
     """
@@ -260,7 +260,7 @@ def ivr_context(dest_c_dict, lang, stanza, iteration, request, env):
             return str(pre_response)
         if _has_intro_stanza(dest_c_dict):
             return _add_intro_stanza(
-                response, dest_c_dict, lang, iteration, request, env)
+                response, c_name, dest_c_dict, lang, iteration, request, env)
     if stanza is not NEXT_CONTEXT_STANZA:
         if _has_menu_stanza(dest_c_dict):
             iteration += 1
@@ -269,7 +269,7 @@ def ivr_context(dest_c_dict, lang, stanza, iteration, request, env):
                 return response
             else:
                 return _add_menu_stanza(
-                    response, dest_c_dict, lang, iteration, request, env)
+                    response, c_name, dest_c_dict, lang, iteration, request, env)
     if _has_next_context_stanza(dest_c_dict):
         return _add_next_context_stanza(
             response, dest_c_dict, lang, request, env)
