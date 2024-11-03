@@ -171,21 +171,19 @@ def ivr(context_name, request, env):
     # Params from twilio are in the body, params from us are in the
     # query string.
     digits = request.post_fields.get('Digits')
-    stanza = request.query_params.get('stanza')
     iteration = request.query_params.get('iteration')
     lang = request.query_params.get('lang', 'en')
     # Deserialize.
-    stanza = ivrs.get_stanza(stanza)
     iteration = ivrs.get_iteration(iteration)
 
-    util.log('context_name:{} stanza:{} digits:{}'.format(
-        context_name, stanza, digits))
+    util.log('context_name:{} digits:{}'.format(context_name, digits))
 
     if not context_name:
         # Use the default context, presumably this is the first interaction.
         context_name = from_extension['outgoing']
 
     if digits:
+        # Redirect to the context indicated by the digit.
         if digits == ivrs.LANG_DESTINATION:
             # Redirect to the same context with lang swapped.
             lang = ivrs.swap_lang(lang)
@@ -195,7 +193,7 @@ def ivr(context_name, request, env):
             # track or know the previous path.
             context_name = from_extension['outgoing']
         else:
-            # Redirect to the context indicated by the digit.
+            # Redirect to the chosen menu destination context.
             c_dict = ivrs.context_dict(env['ivrs'], context_name)
             dest_name = ivrs.destination_context_name(digits, c_dict)
             if dest_name != None:
@@ -214,8 +212,7 @@ def ivr(context_name, request, env):
         # If it is an IVR destination, return the output of the function.
         destination = ivr_destinations.get_destination(context_name)
         if destination:
-            # This is an ivr destination, so metric. We can assume this is
-            # the first stanza and iteration.
+            # This is an ivr destination, so metric.
             metric.publish(context_name, from_user, env)
             return str(destination(request, env))
         else:
@@ -226,12 +223,10 @@ def ivr(context_name, request, env):
             return str(util.dial_sip_asterisk(context_name, from_user, env))
 
     # We got this far, it's in the context_dict.
-    if stanza is ivrs.INTRO_STANZA:
-        # This is an ivr destination, so metric.
-        metric.publish(dest_c_dict['name'], from_user, env)
+    metric.publish(context_name, from_user, env)
     return str(
         ivrs.ivr_context(
-            context_name, dest_c_dict, lang, stanza, iteration, request, env))
+            context_name, dest_c_dict, lang, iteration, request, env))
 
 def _enqueue_operator_call(request, env):
     """

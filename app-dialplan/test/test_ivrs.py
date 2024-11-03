@@ -61,30 +61,24 @@ class TestIvrs(TestCase):
             'call_911_9')
 
     def test_add_intro_stanza(self):
-        response = mock.Mock()
-        self.assertEqual(
-            ivrs._add_intro_stanza(
-                response,
-                "foo",
-                {'name':'name'},
-                'lang',
-                1,
-                request,
-                {}),
-            response)
+        response = ivrs._add_intro_stanza(
+            "foo",
+            {'name':'name'},
+            'lang',
+            1,
+            request,
+            {})
+        # Smoke test.
 
     def test_add_menu_stanza(self):
-        response = mock.Mock()
-        self.assertEqual(
-            ivrs._add_menu_stanza(
-                response,
-                "foo",
-                {'name':'name'},
-                'lang',
-                1,
-                request,
-                {}),
-            response)
+        response = ivrs._add_menu_stanza(
+            "foo",
+            {'name':'name'},
+            'lang',
+            1,
+            request,
+            {})
+        # Smoke test.
 
     def test_sound_url(self):
         self.assertEqual(
@@ -103,7 +97,6 @@ class TestIvrs(TestCase):
                 "foo",
                 c_dict,
                 'en',
-                ivrs.INTRO_STANZA,
                 1,
                 request,
                 {'ASSET_HOST':'ASSET_HOST'}))

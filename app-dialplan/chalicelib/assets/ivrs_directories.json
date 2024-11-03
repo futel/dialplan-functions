@@ -1,6 +1,5 @@
 {
     "directories_generic": {
-        "name": "directories_generic",
         "menu_entries": [
              ["for-the-druid-of-sissyphus-gardens", "dial_sisyphus"],
              ["for-nature-x-x-x", "dial_8336287999"],
@@ -8,7 +7,6 @@
              ["for-they-might-be-giants-dial-a-song", "dial_8443876962"]],
         "statement_dir": "directories"},
     "directories_portland": {
-        "name": "directories_portland",
         "menu_entries": [
             ["for-the-mayor", "dial_5038234120"],
             ["for-the-directory", "directories_generic"],
@@ -16,13 +14,11 @@
             ["for-the-telecommunications-network", "network"]],
         "statement_dir": "directories"},
     "directories_seattle": {
-        "name": "directories_seattle",
         "menu_entries": [
             ["for-the-directory", "directories_generic"],
             ["for-the-telecommunications-network", "network"]],
         "statement_dir": "directories"},
     "directories_ypsi": {
-        "name": "directories_ypsi",
         "menu_entries": [
             ["for-the-mayor", "dial_3138884044"],
             ["for-the-directory", "directories_generic"],
@@ -30,7 +26,6 @@
             ["for-the-telecommunications-network", "network"]],
         "statement_dir": "directories"},
     "directories_detroit": {
-        "name": "directories_detroit",
         "menu_entries": [
             ["for-the-mayor", ""],
             ["for-the-directory", "directories_generic"],
@@ -38,13 +33,11 @@
             ["for-the-telecommunications-network", "network"]],
         "statement_dir": "directories"},
     "directories_safe": {
-        "name": "directories_safe",
         "menu_entries": [
             ["for-the-directory", "directories_generic"],
             ["for-the-telecommunications-network", "network"]],
         "statement_dir": "directories"},
     "directories_souwester": {
-        "name": "directories_souwester",
         "menu_entries": [
             ["for-the-directory", "directories_generic"],
             ["for-the-telecommunications-network", "network"]],

@@ -1,6 +1,5 @@
 {
     "utilities_portland": {
-        "name": "utilities_portland",
         "menu_entries": [
             ["for-the-current-time", "current-time"],
             ["for-the-trymet-transit-tracker", "trimet-transit-tracker"],
