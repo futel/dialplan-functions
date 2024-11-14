@@ -117,7 +117,7 @@ def setup(f):
         if not valid:
             # XXX We don't actually do anything about an invalid request,
             #     because validation doesn't always succeed.
-            util.log("invalid request")
+            util.log("invalid request signature")
         response = f(request, *args, **kwargs)
         return setup_response(response)
     return decorated
