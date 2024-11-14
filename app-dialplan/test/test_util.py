@@ -31,7 +31,7 @@ class TestUtil(TestCase):
             util.e164_to_extension('+19713512383', extensions), 'test-one')
 
     def test_filter_outgoing_number(self):
-        self.assertFalse(util.filter_outgoing_number('+911', True))
+        self.assertFalse(util.filter_outgoing_number('+1911', True))
         self.assertFalse(util.filter_outgoing_number('+15035551212', True))
         # Mexico City Anthropological Museum
         self.assertFalse(
