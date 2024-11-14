@@ -97,12 +97,15 @@ def e164_to_extension(e164, extension_map):
     # callerid without finding one?
     return None
 
-# Return normalized string, if it can be.
-# E.164 is +[country code][number]. Three digit numbers are +1[number].
 def normalize_number(number):
+    """
+    Return a guess of a normalized phone number string.
+    Strings are normalized to E.164 +[country code][number]
+    or +1[number] for three digit numbers.
+    """
     # XXX DigitalOcean is not letting us import the phonenumbers library?
     #     We do this klugy partial normalization instead.
-    #     We aren't on DigitalOcean anymore and shouln't need this.
+    #     We aren't on DigitalOcean anymore and shouldn't need this.
     if number.startswith('+'):
         # Temporarily remove a leading +.
         number = number[1:]
@@ -126,13 +129,13 @@ def transform_number(phone_number):
 def filter_outgoing_number(number, enable_emergency):
     """
     Return True if number should be filtered.
-    Number can be E.164 or a 3 digit service number formatted with the E.164
-    plus prefix.
+    Number can be E.164 or a 3 digit service number
+    formatted with the "+1" prefix.
     """
-    if number == '+911':
+    if number in ('+1911', '+1933'):
         return not enable_emergency
-    if len(number) == 4:
-        # Allow 911, 211, etc.
+    if len(number) == 5:
+        # Accept +1911, +1211, etc.
         return False
     if not (number.startswith('+' + usa_code) or
             number.startswith('+' + mexico_code)):
@@ -140,7 +143,7 @@ def filter_outgoing_number(number, enable_emergency):
         return True
     # Should we validate US length here?
     # Can we validate Mexico length here?
-    # Check for expensive NANPA numbers.
+    # Reject expensive NANPA numbers.
     # Note that Twilio might still reject some NANPA,
     # depending on settings.
     for prefix in premium_nanpa_codes:
