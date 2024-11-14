@@ -2,13 +2,15 @@
 
 Outgoing extension tests for each extension
 - callerid on outgoing dialtone is correct
+  - dial pstn number from linphone
 - emergency service on outgoing dialtone is correct
-  - dial 933
+  - dial 933 from linphone
 - top level extension is correct
   - dial # from linphone, off hook from ata
 - callerid on menu dialtone is correct
+  - dial 1 from menu
 - emergency service on menu dialtone is correct
-  - dial 933
+  - dial 933 from menu
 - first asterisk context reached is correct
   - check voicemail and get mailbox prompt
 
