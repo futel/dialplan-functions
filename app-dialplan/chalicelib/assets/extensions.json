@@ -29,6 +29,11 @@
         "caller_id": "+13132469283",
         "enable_emergency": true
     },
+    "central": {
+        "outgoing": "outgoing_portland",
+        "caller_id": "+15034836584",
+        "enable_emergency": true
+    },
     "cesar-chavez-one": {
         "outgoing": "outgoing_portland",
         "caller_id": "+15039465227",
@@ -119,8 +124,18 @@
         "caller_id": "+17345476651",
         "enable_emergency": true
     },
+    "microcosm": {
+        "outgoing": "outgoing_portland",
+        "caller_id": "+15032945966",
+        "enable_emergency": true
+    },
     "monitor-one": {
         "outgoing": "directories_detroit",
+        "caller_id": "+15034681337",
+        "enable_emergency": false
+    },
+    "princeton": {
+        "outgoing": "outgoing_portland",
         "caller_id": "+15034681337",
         "enable_emergency": false
     },
