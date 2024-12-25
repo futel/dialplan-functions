@@ -169,6 +169,11 @@
         "caller_id": "+13602282259",
         "enable_emergency": true
     },
+   "taylor": {
+        "outgoing": "outgoing_portland",
+        "caller_id": "+15039266271",
+        "enable_emergency": true
+    },
     "tishbite-test": {
         "outgoing": "outgoing_portland",
         "caller_id": "+15034681337",
