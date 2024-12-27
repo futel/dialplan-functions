@@ -58,11 +58,14 @@ If deploying stage or prod, check out or create relevant release branch.
 
 See test.md. Run the local tests.
 
-## Deploy instances
+## Update certificates in config
 
-Update the certificate_arn for the instances to match the certificate set up in the meta-requrements:
+If the certificate has been changed in the meta-requrements, update the certificate_arn for the instances to match the certificate:
+
 - app-dialplan/.chalice/config.json
 - app-ops/.chalice/config.json
+
+## Deploy instances
 
 Deploy the instances:
 
@@ -108,6 +111,13 @@ If stage, see test.md. Run the tests against the deployed instance.
 ## Test
 
 See test.md. Run the local tests.
+
+## Update certificates in config
+
+If the certificate has been changed in the meta-requrements, update the certificate_arn for the instances to match the certificate:
+
+- app-dialplan/.chalice/config.json
+- app-ops/.chalice/config.json
 
 ## Deploy instances
 
