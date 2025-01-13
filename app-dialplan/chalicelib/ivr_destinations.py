@@ -46,7 +46,7 @@ def outgoing_operator_accept(request, env):
             if not queue.current_size:
                 # Too late, tell the operator.
                 response = VoiceResponse()
-                response.redirect('/ivrs/outgoing_operator_empty')
+                response.redirect('/ivr/outgoing_operator_empty')
                 return str(response)
 
     # The queue is not empty. Send the operator to the next caller in the queue.
@@ -72,7 +72,7 @@ def outgoing_operator_pre(request, env):
             if not queue.current_size:
                 # Too late, tell the operator, ending the call.
                 response = VoiceResponse()
-                response.redirect('/ivrs/outgoing_operator_empty')
+                response.redirect('/ivr/outgoing_operator_empty')
                 return str(response)
 
 def _dialtone(destination, request, env):
