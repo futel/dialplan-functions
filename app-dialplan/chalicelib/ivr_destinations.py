@@ -63,7 +63,6 @@ def outgoing_operator_pre(request, env):
     otherwise return None.
     """
     util.log('outgoing_operator_pre')
-    lang = request.query_params.get('lang', 'en')
     client = env['twilio_client']
     # If there are no callers in the operator queue, notify the operator and end
     # the call.
