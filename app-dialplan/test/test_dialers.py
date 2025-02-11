@@ -103,18 +103,67 @@ class TestIvr(TestCase):
         # Smoke test.
 
     @mock.patch.object(dialers, 'metric')
-    def test_ivr_context_star(self, _mock_metric):
+    def test_ivr_context_digit_star_no_lang(self, _mock_metric):
+        """
+        A star digit given to ivr_context with no lang query_param
+        returns a redirect with the 'es' lang.
+        """
         request = mock.Mock(
+            context={'domainPrefix':'prod'},
             headers={'host': 'host'},
             post_fields={
                 'SipDomain': 'direct-futel-prod.sip.twilio.com',
                 'To': 'sip:xyzzy@direct-futel-prod.sip.twilio.com',
                 'From': 'sip:test-one@direct-futel-prod.sip.twilio.com',
                 'Digits': '*'},
-            context={'domainPrefix':'prod'})
+                query_params={})
 
         got = dialers.ivr('outgoing_portland', request, env)
-        # Smoke test.
+        # Q&D check for a substring, hope the lang query param is correctly
+        # formatted in there.
+        self.assertIn('lang=es', got)
+
+    @mock.patch.object(dialers, 'metric')
+    def test_ivr_context_digit_star_en(self, _mock_metric):
+        """
+        A star digit given to ivr_context with the en lang query_param
+        returns a redirect with the 'es' lang.
+        """
+        request = mock.Mock(
+            context={'domainPrefix':'prod'},
+            headers={'host': 'host'},
+            post_fields={
+                'SipDomain': 'direct-futel-prod.sip.twilio.com',
+                'To': 'sip:xyzzy@direct-futel-prod.sip.twilio.com',
+                'From': 'sip:test-one@direct-futel-prod.sip.twilio.com',
+                'Digits': '*'},
+                query_params={'lang': 'en'})
+
+        got = dialers.ivr('outgoing_portland', request, env)
+        # Q&D check for a substring, hope the lang query param is correctly
+        # formatted in there.
+        self.assertIn('lang=es', got)
+
+    @mock.patch.object(dialers, 'metric')
+    def test_ivr_context_digit_star_es(self, _mock_metric):
+        """
+        A star digit given to ivr_context with the es lang query_param
+        returns a redirect with the 'en' lang.
+        """
+        request = mock.Mock(
+            context={'domainPrefix':'prod'},
+            headers={'host': 'host'},
+            post_fields={
+                'SipDomain': 'direct-futel-prod.sip.twilio.com',
+                'To': 'sip:xyzzy@direct-futel-prod.sip.twilio.com',
+                'From': 'sip:test-one@direct-futel-prod.sip.twilio.com',
+                'Digits': '*'},
+                query_params={'lang': 'es'})
+
+        got = dialers.ivr('outgoing_portland', request, env)
+        # Q&D check for a substring, hope the lang query param is correctly
+        # formatted in there.
+        self.assertIn('lang=en', got)
 
 
 class TestEnqueueOperatorWait(TestCase):
