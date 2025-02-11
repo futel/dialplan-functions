@@ -58,9 +58,10 @@ def exercise(event, env):
     util.log("exercise")
     stage = util.get_instance(env)
     extension = _extension()
-    exercise_one(stage, extension, env)
+    context = "community_outgoing"
+    exercise_one(stage, extension, context, env=env)
 
-def exercise_one(stage, extension, env):
+def exercise_one(stage, extension, context, env):
     """
     SIP call extension with the twilio API and play a dialplan.
     """
@@ -69,7 +70,6 @@ def exercise_one(stage, extension, env):
         env['TWILIO_AUTH_TOKEN'])
     to = 'sip:{extension}@direct-futel-{stage}.sip.twilio.com'.format(
         extension=extension, stage=stage)
-    context = "community_outgoing"
     # Ring timeout in seconds, twilio may add 5s? 20s should give us 4 rings.
     timeout = 20
     # Call time limit in seconds.
