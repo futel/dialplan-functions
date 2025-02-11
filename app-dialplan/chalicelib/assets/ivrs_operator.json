@@ -23,5 +23,7 @@
         "statement_dir": "operator"},    
     "outgoing_operator_empty": {
         "intro_statements": ["thank-you", "you-are-too-late"],
-        "statement_dir": "operator"}
+        "next_context": "hangup",        
+        "statement_dir": "operator"},
+    "hangup": {}
 }

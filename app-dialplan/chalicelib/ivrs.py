@@ -225,6 +225,7 @@ def ivr_context(c_name, c_dict, lang, iteration, request, env):
         # to the next context.
         next_name = c_dict.get('next_context')
         if not next_name:
+            # XXX This will repeat infinitely.
             next_name = c_name
         return _add_intro_stanza(
             next_name, c_dict, lang, iteration, request, env)
