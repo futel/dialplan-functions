@@ -53,6 +53,11 @@ If testplan or extensions have changed since last release branch, update google 
 
 Set up and run acceptance tests as in testplan/setup.md and testplan/readme.md. Emphasize tests which are important or have not been run for a while.
 
+# Manual test
+
+- source venv/bin/activate
+- PYTHONPATH=app-ops python3 local/call_extension.py
+
 # View logs
 
 - cd app-dialplan # or app-ops
