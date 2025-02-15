@@ -75,6 +75,7 @@ def exercise_one(stage, extension, context, env):
     # Call time limit in seconds.
     time_limit = 30 * 60
     # URL to return twiml for callee to experience.
+    #url = "https://stage.dialplans.phu73l.net/dial_extension/cesar-chavez-one"
     url = "https://{stage}.dialplans.phu73l.net/ivr/{context}".format(
         stage=stage, context=context)
     # URL to be posted with call status.

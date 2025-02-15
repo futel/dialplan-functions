@@ -5,6 +5,7 @@ This should probably be an entirely separate project, but the tooling is here.
 import json
 from twilio.twiml.voice_response import VoiceResponse
 
+from . import ivrs
 from . import metric
 from . import util
 
@@ -55,7 +56,8 @@ def call_status_exercise(request, env):
     Peform side effects from an outgoing rest api call.
     Return a twiml hangup document string.
     """
-    # XXX Need to validate caller.
+    # XXX Need to validate caller.e
+    # XXX This is just call_status_outgoing with a different request field?
     from_user = request.from_user
     call_status = request.post_fields.get('CallStatus')
 
@@ -76,8 +78,21 @@ def call_status_outgoing(request, env):
     _metric_status(call_status, from_user, env)
     _metric_log_error(request, from_user, env)
 
-    # We should sometimes return twiml to play to notify the caller
-    # eg str(util.reject(request, env, reason='busy'))
+    if call_status == 'busy':
+        # Play a sound effect. The caller should be getting a proper status and
+        # we'd rather not be involved by now but we're just writing twiml
+        # documents here.
+        response = VoiceResponse()
+        # XXX This sound file is not in the ivrs structure, so it isn't checked.
+        response.play(
+            ivrs.sound_url(
+                'busy-signal',
+                'sound',
+                'ops',
+                env))
+        response.hangup()
+        return str(response)
+
     return _hangup()
 
 def log(request, env):
