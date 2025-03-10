@@ -89,6 +89,11 @@
         "caller_id": "+15034681337",
         "enable_emergency": false
     },
+    "fiftyeighth": {
+        "outgoing": "outgoing_portland",
+        "caller_id": "+15034681337",
+        "enable_emergency": false
+    },
     "fortysecond": {
         "outgoing": "outgoing_seattle",
         "caller_id": "+14252431894",
@@ -160,6 +165,16 @@
         "enable_emergency": false
     },
     "street-books-two": {
+        "outgoing": "outgoing_dialtone",
+        "caller_id": "+15034681337",
+        "enable_emergency": false
+    },
+    "street-roots-one": {
+        "outgoing": "outgoing_portland",
+        "caller_id": "+15034681337",
+        "enable_emergency": false
+    },
+    "street-roots-two": {
         "outgoing": "outgoing_dialtone",
         "caller_id": "+15034681337",
         "enable_emergency": false
