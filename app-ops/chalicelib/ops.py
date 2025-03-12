@@ -31,7 +31,10 @@ def _extension():
         'dome-workshop',
         'fortysecond',
         'ghost-mountain',
-        'landline'
+        'landline',
+        'microcosm',
+        'street-roots-one',
+        'street-roots-two'
     ]
 
     # Choose the next extension to call modulo the current minute.
