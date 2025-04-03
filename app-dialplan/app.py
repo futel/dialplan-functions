@@ -1,7 +1,10 @@
 """
-Chalice top level module. For a HTTP interactoin, this exists to start the app
-to get the request, run a single view function, and return the result. There may
-be other actions enabled by chalice, like scheduled tasks.
+Chalice top level module. Read on application init. HTTP endpoints are defined
+by functions with the route decorator.
+
+For a HTTP interaction, this exists to start the appplication, run a single view
+function, and return the result. There may be other actions enabled by chalice,
+like scheduled tasks.
 """
 
 from chalice import Chalice, Response

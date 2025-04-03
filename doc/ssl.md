@@ -35,7 +35,9 @@ Domains should be created with DigitalOcean:
 
 # Create certificate
 
-This needs to be done when the certificate doesn't exist yet or after attributes have changed. The certificate is registered with let's encrypt, but not yet used to publish HTTPS. This is done on whatever box will handle renewals.
+This needs to be done when a valid certificate doesn't exist or after attributes have changed. The certificate is registered with let's encrypt. This is done on whatever box will handle renewals.
+
+Verify with "sudo certbot certificates", see valid certificate for "phu73l.net *.dialplans.phu73l.net *.ops.phu73l.net dialplans.phu73l.net ops.phu73l.net".
 
 ## Create
 
@@ -74,7 +76,8 @@ This needs to be done after a certificate is created or renewed. The certificate
  - certificate body /etc/letsencrypt/live/phu73l.net/cert.pem
  - certificate private key /etc/letsencrypt/live/phu73l.net/privkey.pem
  - certificate chain /tmp/all.pem
- 
+   - this assumes /tmp/all.pem was populated above, if not, remake it
+   
 If this is a new certificate, note the ARN. This is needed to deploy the AWS API Gateway.
 
 # Update Lambda functions to use new certificate
@@ -97,7 +100,7 @@ This should have been set up by the certificate creation method using systemd, b
 
 sudo certbot renew --cert-name phu73l.net --dns-digitalocean --dns-digitalocean-credentials conf/certbot-creds.ini
 
-- add expiration to calendar, "sudo certbot certificates" to show the date
+- add a weeklong event for expiration to calendar, "sudo certbot certificates" to show the date
 - sudo cat /etc/letsencrypt/live/phu73l.net/cert.pem /etc/letsencrypt/live/phu73l.net/chain.pem /etc/letsencrypt/live/phu73l.net/fullchain.pem >/tmp/all.pem
 - Reimport the certificate as in Import or reimport and deploy certificate
 
