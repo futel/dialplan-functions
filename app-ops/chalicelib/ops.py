@@ -33,6 +33,7 @@ def _extension():
         'ghost-mountain',
         'landline',
         'microcosm',
+        'princeton',
         'street-roots-one',
         'street-roots-two'
     ]
