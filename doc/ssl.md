@@ -72,7 +72,8 @@ This needs to be done after a certificate is created or renewed. The certificate
 - sudo cat /etc/letsencrypt/live/phu73l.net/cert.pem /etc/letsencrypt/live/phu73l.net/chain.pem /etc/letsencrypt/live/phu73l.net/fullchain.pem >/tmp/all.pem
 - visit AWS certificate manager (ACM) web console
 - change region to us-east-1
-- import a certificate, or list, visit, reimport certificate with domain phu73l.net
+- import a certificate, or list, visit, reimport certificate with domain name phu73l.net
+ - (on the certificate page, it also shows domains phu73l.net, dialplans.phu73l.net, *.dialplans.phu73l.net, ops.phu73l.net, *.ops.phu73l.net)
  - certificate body /etc/letsencrypt/live/phu73l.net/cert.pem
  - certificate private key /etc/letsencrypt/live/phu73l.net/privkey.pem
  - certificate chain /tmp/all.pem
@@ -120,10 +121,17 @@ This does not normally have to be done.
 - visit AWS ACM web console
 - change region to us-east-1
 
-
 # Test
 
 Run the itest tests, or POST to a smoke test URL, as described in test.md.
+
+Verify with "sudo certbot certificates", see valid certificate for "phu73l.net *.dialplans.phu73l.net *.ops.phu73l.net dialplans.phu73l.net ops.phu73l.net".
+
+View console
+- visit AWS certificate manager (ACM) web console
+- change region to us-east-1
+- list certificates with domains phu73l.net and *.dialplans.phu73l.net
+
 
 # Notes
 
