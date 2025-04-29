@@ -1,4 +1,9 @@
 {
+    "ainsworth": {
+        "outgoing": "outgoing_portland",
+        "caller_id": "+15034449412",
+        "enable_emergency": true
+    },
     "alleymaple": {
         "outgoing": "outgoing_portland",
         "caller_id": "+15034681337",
@@ -89,6 +94,11 @@
         "caller_id": "+15034681337",
         "enable_emergency": false
     },
+    "eighth": {
+        "outgoing": "outgoing_portland",
+        "caller_id": "+15039266188",
+        "enable_emergency": true
+    },
     "fiftyeighth": {
         "outgoing": "outgoing_portland",
         "caller_id": "+15034681337",
@@ -124,6 +134,11 @@
         "caller_id": "+15034681337",
         "enable_emergency": false
     },
+    "killingsworth": {
+        "outgoing": "outgoing_portland",
+        "caller_id": "+15039266341",
+        "enable_emergency": true
+    },
     "landline": {
         "outgoing": "outgoing_ypsi",
         "caller_id": "+17345476651",
@@ -153,6 +168,11 @@
         "outgoing": "outgoing_ypsi",
         "caller_id": "+15034681337",
         "enable_emergency": false
+    },
+    "saratoga": {
+        "outgoing": "outgoing_portland",
+        "caller_id": "+15033889637",
+        "enable_emergency": true
     },
     "sjac": {
         "outgoing": "outgoing_safe",
@@ -223,5 +243,10 @@
         "outgoing": "outgoing_safe",
         "caller_id": "+19713512383",
         "enable_emergency": false
+    },
+    "upright": {
+        "outgoing": "outgoing_portland",
+        "caller_id": "+15034681337",
+        "enable_emergency": true
     }
 }
