@@ -91,6 +91,8 @@ Using the DigitalOcean network web console, add or update CNAME records for doma
 
 Wait for DNS to be updated:
 
+Verify that the canonical name matches the alias domain name.
+
 - nslookup stage.dialplans.phu73l.net
 - nslookup stage.ops.phu73l.net
 
