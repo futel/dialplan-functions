@@ -21,21 +21,27 @@ def _extension():
     # Don't include extensions in workplaces or other environments where we
     # don't want to disturb a human.
     extensions = [
+        'ainsworth',
         'alleymaple',
         'alleytwentyseventh',
         # bottles-and-cans-one is only on 12p-9p
         #'bottles-and-cans-one',
         "brazee",
+        'breckenridge',
         'cesar-chavez-one',
+        'central',
         'clinton',
         'dome-workshop',
         'fortysecond',
         'ghost-mountain',
+        'killingsworth',
         'landline',
         'microcosm',
         'princeton',
+        'saratoga',
         'street-roots-one',
-        'street-roots-two'
+        'street-roots-two',
+        'taylor'
     ]
 
     # Choose the next extension to call modulo the current minute.
