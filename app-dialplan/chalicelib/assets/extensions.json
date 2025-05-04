@@ -189,6 +189,11 @@
         "caller_id": "+15034681337",
         "enable_emergency": false
     },
+    "souwester": {
+        "outgoing": "outgoing_souwester",
+        "caller_id": "+13602282259",
+        "enable_emergency": true
+    },
     "street-roots-one": {
         "outgoing": "outgoing_portland",
         "caller_id": "+19712745717",
@@ -199,12 +204,7 @@
         "caller_id": "+15034681337",
         "enable_emergency": false
     },
-    "souwester": {
-        "outgoing": "outgoing_souwester",
-        "caller_id": "+13602282259",
-        "enable_emergency": true
-    },
-   "taylor": {
+    "taylor": {
         "outgoing": "outgoing_portland",
         "caller_id": "+15039266271",
         "enable_emergency": true
