@@ -107,7 +107,7 @@
     "fortysecond": {
         "outgoing": "outgoing_seattle",
         "caller_id": "+14252431894",
-        "enable_emergency": false
+        "enable_emergency": true
     },
     "ghost-mountain": {
         "outgoing": "outgoing_portland",
@@ -247,6 +247,6 @@
     "upright": {
         "outgoing": "outgoing_portland",
         "caller_id": "+15034681337",
-        "enable_emergency": true
+        "enable_emergency": false
     }
 }
