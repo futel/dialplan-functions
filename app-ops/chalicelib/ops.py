@@ -33,6 +33,7 @@ def _extension():
         'clinton',
         'dome-workshop',
         'eighth',
+        'fiftyeighth',
         'fortysecond',
         'ghost-mountain',
         'killingsworth',
