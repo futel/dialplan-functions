@@ -56,17 +56,17 @@
     },
     "demo-one": {
         "outgoing": "outgoing_safe",
-        "caller_id": "+15038945775",
+        "caller_id": "+15034681337",
         "enable_emergency": false
     },
     "demo-two": {
         "outgoing": "outgoing_safe",
-        "caller_id": "+15038945775",
+        "caller_id": "+15034681337",
         "enable_emergency": false
     },
     "demo-three": {
         "outgoing": "outgoing_safe",
-        "caller_id": "+15038945775",
+        "caller_id": "+15034681337",
         "enable_emergency": false
     },
     "dome-basement": {
@@ -101,8 +101,8 @@
     },
     "fiftyeighth": {
         "outgoing": "outgoing_portland",
-        "caller_id": "+15034681337",
-        "enable_emergency": false
+        "caller_id": "+15038945775",
+        "enable_emergency": true
     },
     "fortysecond": {
         "outgoing": "outgoing_seattle",
