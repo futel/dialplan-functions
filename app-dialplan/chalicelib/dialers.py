@@ -20,6 +20,9 @@ dial_max = 60 * 60              # 60 minutes in seconds
 
 
 def _get_sip_domain(extension, env):
+    """Return the SIP domain for the extension."""
+    # <extension>-<instance>.<domain>
+    # direct-futel-stage.sip.twilio.com
     extension_map = env['extensions']
     return (sip_domain_subdomain_base +
             '-' + util.get_instance(env) +
