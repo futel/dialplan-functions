@@ -1,6 +1,6 @@
 """
 Functions for ops HTTP endpoints.
-This should probably be an entirely separate project, but the tooling is here.
+This should probably be hosted by the ops app instance, but the tooling is here.
 """
 import json
 from twilio.twiml.voice_response import VoiceResponse
@@ -17,7 +17,8 @@ event_prefix = "twilio-error"
 def _validate(request, env):
     """Q&D request validation."""
     # XXX Disabled to faciliate testing, implement real validation before
-    #     there are attribute to protect or someone decides to make metrics!
+    #     there are attributes to protect or someone decides to make
+    #     fake metrics!
     return None
     #if env['TWILIO_ACCOUNT_SID'] == request.post_fields['AccountSid']:
     #    return
