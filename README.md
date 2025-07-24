@@ -4,6 +4,8 @@ Publishes dialplan documents to drive Twilio Programmable Voice, with side effec
 
 Interfaces with
 - twilio-sip-server (HTTP)
+Requires
+- dialplan-assets
 
 # Overview
 
