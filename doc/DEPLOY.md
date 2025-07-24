@@ -10,6 +10,8 @@ AWS should be set up as described in aws.md.
 
 An AWS Certificate Manager certificate should be set up as described in ssl.md.
 
+dialplan-assets project should be set up.
+
 Domains should be created with DigitalOcean:
 - dialplans.phu73l.net
 - ops.phu73l.net
