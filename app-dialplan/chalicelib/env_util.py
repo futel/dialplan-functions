@@ -51,7 +51,8 @@ def _get_ivrs():
         'ivrs_directories',
         'ivrs_operator',
         'ivrs_outgoing',
-        'ivrs_utilities']
+        'ivrs_utilities',
+        'ivrs_streetroots']
     for src in srcs:
         path = '{}.json'.format(src)
         path = os.path.join(

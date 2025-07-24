@@ -18,6 +18,25 @@
         "other_menu_entries": [
             ["for-the-operator", 0, "outgoing_operator_caller"]],
         "statement_dir": "outgoing"},
+    "outgoing_streetroots": {
+        "pre_callable": "friction",
+        "intro_statements": ["para-espanol", "oprima-estrella"],
+        "next_context": "outgoing_streetroots_menu",
+        "statement_dir": "outgoing"},
+    "outgoing_streetroots_menu": {
+        "menu_entries": [
+            ["to-make-a-call", "outgoing_dialtone"],
+            ["for-the-old-town-crier", "streetroots_main"],            
+            ["for-voicemail", "voicemail_outgoing"],
+            ["for-the-directory", "directories_portland"],
+            ["for-utilities", "utilities_portland"],
+            ["for-the-fewtel-community", "community_outgoing"],
+            null,
+            null,
+            [null, "call_911_9"]],
+        "other_menu_entries": [
+            ["for-the-operator", 0, "outgoing_operator_caller"]],
+        "statement_dir": "outgoing"},
     "outgoing_seattle": {
         "pre_callable": "friction",
         "intro_statements": ["para-espanol", "oprima-estrella"],

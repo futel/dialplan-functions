@@ -129,10 +129,29 @@ def dial_nanpa(nanpa):
         return util.dial_pstn(e164, from_extension, request)
     return curried
 
+def play(name, directory):
+    """Return a function to return TwiML to play a sound file."""
+    def curried(request, env):
+        response = VoiceResponse()
+        # XXX We should gather instead, send to the same context so we get the
+        #     default keys at least?
+        response.play(
+            # XXX This sound file is not in the ivrs structure,
+            # so it isn't checked.
+            ivrs.sound_url(
+                name,
+                'sound',
+                directory,
+                env))
+        response.hangup()
+        return response
+    return curried
+
 def dial_sisyphus(request, env):
     """Return TwiML to dial Sisyphus."""
     return dial_nanpa(env['nanpa_sisyphus'])(request, env)
 
+# Dict of destination names to functions to be called for that context.
 DESTINATIONS = {
     'call_911_911': call_911_911,
     'call_911_9_bounce': call_911_9_bounce,
@@ -143,6 +162,9 @@ DESTINATIONS = {
     'dial_8443876962': dial_nanpa("8443876962"),
     'dial_sisyphus': dial_sisyphus,
     'friction': friction,
+    'old_town_crier_info': play('old-town-crier-info', 'old-town-crier'),
+    'connecting_through_the_static': play(
+        'connecting-through-the-static', 'old-town-crier'),
     'outgoing_operator_accept': outgoing_operator_accept,
     'outgoing_dialtone_pre': outgoing_dialtone_pre,
     'outgoing_operator_enqueue': outgoing_operator_enqueue,

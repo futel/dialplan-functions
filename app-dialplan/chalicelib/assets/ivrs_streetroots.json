@@ -1,0 +1,8 @@
+{
+    "streetroots_main": {
+        "menu_entries": [
+            ["for-connecting-through-the-static", "connecting_through_the_static"],
+            ["for-more-information-about-the-old-town-crier",
+             "old_town_crier_info"]],
+        "statement_dir": "streetroots"}
+}
