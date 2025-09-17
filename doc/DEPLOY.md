@@ -17,7 +17,7 @@ Domains should be created with DigitalOcean:
 # Requirements
 
 - debian box (trixie, ubuntu 23)
-- Python 3.11-3.12, but this should be Python 3.10
+- Python 3.12
 
 # Deploy and development docs
 
@@ -40,7 +40,7 @@ Populate .env to match .env.sample as described in aws.md:
 
 ## Create deployment virtualenv
 
-- python3 -m venv venv
+- python3.12 -m venv venv
 - source venv/bin/activate
 - cd app-dialplan
 - pip install -r requirements.txt
