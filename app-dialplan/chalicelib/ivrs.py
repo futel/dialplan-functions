@@ -76,7 +76,7 @@ def destination_context_name(digits, c_dict):
         # Invalid digit.
         return None
 
-def pre_callable(c_dict, request, env):
+def _pre_callable(c_dict, request, env):
     """
     Perform side effects, if any.
     Return TwiML to preface the context TwiML, or None.
@@ -86,6 +86,18 @@ def pre_callable(c_dict, request, env):
     if function_name:
         destination = ivr_destinations.get_destination(function_name)
         return destination(request, env)
+
+def _intro_response(c_name, c_dict, lang, iteration, request, env):
+    intro_statements = c_dict.get('intro_statements')
+    if intro_statements:
+        # The context has an intro stanza. Play that, which will then redirect
+        # to the next context.
+        next_name = c_dict.get('next_context')
+        if not next_name:
+            # XXX This will repeat infinitely.
+            next_name = c_name
+        return _add_intro_stanza(
+            next_name, c_dict, lang, iteration, request, env)
 
 def sound_url(
         sound_name, lang, directory, env, sound_format='ulaw'):
@@ -208,27 +220,22 @@ def _add_menu_stanza(c_name, c_dict, lang, iteration, request, env):
                 statement, key, gather, c_dict, lang, request, env)
     return response
 
-def _has_intro_stanza(c_dict):
-    return c_dict.get('intro_statements')
-
 def ivr_context(c_name, c_dict, lang, iteration, request, env):
     """
     Return TwiML to play an IVR context based on c_dict.
     """
-    # Play the pre response if we get one.
-    pre_response = pre_callable(c_dict, request, env)
+    pre_response = _pre_callable(c_dict, request, env)
     if pre_response:
+        # The context has a pre callable. Play that, which will then redirect
+        # or hang up.
         return str(pre_response)
 
-    if _has_intro_stanza(c_dict):
+    intro_response = _intro_response(
+        c_name, c_dict, lang, iteration, request, env)
+    if intro_response:
         # The context has an intro stanza. Play that, which will then redirect
         # to the next context.
-        next_name = c_dict.get('next_context')
-        if not next_name:
-            # XXX This will repeat infinitely.
-            next_name = c_name
-        return _add_intro_stanza(
-            next_name, c_dict, lang, iteration, request, env)
+        return str(intro_response)
 
     # Play the menu stanza, which will then redirect to the same context
     # or hang up.
