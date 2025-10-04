@@ -78,8 +78,7 @@ def destination_context_name(digits, c_dict):
 
 def _pre_callable(c_dict, request, env):
     """
-    Perform side effects, if any.
-    Return TwiML to preface the context TwiML, or None.
+    Perform side effects, if any. Return TwiML, or None.
     """
     # Friction, bounce for maintenance, play random, etc.
     function_name = c_dict.get('pre_callable')
@@ -87,17 +86,65 @@ def _pre_callable(c_dict, request, env):
         destination = ivr_destinations.get_destination(function_name)
         return destination(request, env)
 
-def _intro_response(c_name, c_dict, lang, iteration, request, env):
+def _intro_sounds(c_name, c_dict, lang, iteration, request, env):
+    """
+    Return TwiML to play sounds, or None.
+    """
+    intro_sounds = c_dict.get('intro_sounds')
+    if intro_sounds:
+        # The context has an intro stanza. Play that, which will then redirect
+        # to the next context.
+        next_name = c_dict.get('next_context')
+        if not next_name:
+            # XXX This will repeat infinitely. We should instead validate.
+            next_name = c_name
+        response = VoiceResponse()
+        gather = _add_gather_stanza(
+            next_name,
+            lang,
+            iteration=0,
+            timeout=0,
+            request=request,
+            response=response)
+        # Play the intro statements once.
+        for name in intro_sounds:
+            gather.play(
+                sound_url(
+                    name,
+                    'sound',
+                    c_dict['statement_dir'],
+                    env))
+        return response
+
+def _intro_statements(c_name, c_dict, lang, iteration, request, env):
+    """
+    Return TwiML to play statements, or None.
+    """
     intro_statements = c_dict.get('intro_statements')
     if intro_statements:
         # The context has an intro stanza. Play that, which will then redirect
         # to the next context.
         next_name = c_dict.get('next_context')
         if not next_name:
-            # XXX This will repeat infinitely.
+            # XXX This will repeat infinitely. We should instead validate.
             next_name = c_name
-        return _add_intro_stanza(
-            next_name, c_dict, lang, iteration, request, env)
+        response = VoiceResponse()
+        gather = _add_gather_stanza(
+            next_name,
+            lang,
+            iteration=0,
+            timeout=0,
+            request=request,
+            response=response)
+        # Play the intro statements once.
+        for statement in intro_statements:
+            gather.play(
+                sound_url(
+                    statement,
+                    lang,
+                    c_dict['statement_dir'],
+                    env))
+        return response
 
 def sound_url(
         sound_name, lang, directory, env, sound_format='ulaw'):
@@ -125,9 +172,9 @@ def _add_gather_stanza(
     Append a gather and redirect to the TwiML Response, and return the gather.
     """
     path = "/ivr/{}".format(c_name)
-    url_params = {
-        'lang': lang,
-        'iteration': iteration}
+    url_params = {'lang': lang}
+    if iteration:
+        url_params['iteration'] = iteration
     if timeout is None:
         timeout = 2
 
@@ -147,30 +194,6 @@ def _add_gather_stanza(
     _redirect = response.redirect(action_url)
     # We should return the response instead.
     return gather
-
-def _add_intro_stanza(c_name, c_dict, lang, iteration, request, env):
-    """
-    Add a TwiML stanza to play intro and gather a digit
-    based on c_dict and lang, sending the next request to the
-    destination URL. Return response.
-    """
-    response = VoiceResponse()
-    gather = _add_gather_stanza(
-        c_name,
-        lang,
-        iteration,
-        timeout=0,
-        request=request,
-        response=response)
-    # Play the intro statements once.
-    for statement in c_dict.get('intro_statements', []):
-        gather.play(
-            sound_url(
-                statement,
-                lang,
-                c_dict['statement_dir'],
-                env))
-    return response
 
 def _add_menu_entry_stanza(statement, e, gather, c_dict, lang, request, env):
     """
@@ -224,18 +247,25 @@ def ivr_context(c_name, c_dict, lang, iteration, request, env):
     """
     Return TwiML to play an IVR context based on c_dict.
     """
-    pre_response = _pre_callable(c_dict, request, env)
-    if pre_response:
+    response = _pre_callable(c_dict, request, env)
+    if response:
         # The context has a pre callable. Play that, which will then redirect
         # or hang up.
-        return str(pre_response)
+        return str(response)
 
-    intro_response = _intro_response(
+    response = _intro_sounds(
         c_name, c_dict, lang, iteration, request, env)
-    if intro_response:
+    if response:
+        # The context has intro sounds. Play that, which will then redirect
+        # to the next context.
+        return str(response)
+
+    response = _intro_statements(
+        c_name, c_dict, lang, iteration, request, env)
+    if response:
         # The context has an intro stanza. Play that, which will then redirect
         # to the next context.
-        return str(intro_response)
+        return str(response)
 
     # Play the menu stanza, which will then redirect to the same context
     # or hang up.

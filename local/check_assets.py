@@ -17,12 +17,15 @@ def paths(i_dicts):
     """Yield paths required by ivr config dicts."""
     for lang in langs:
         for i_dict in i_dicts.values():
+            # XXX We are not checking intro_sounds.
             statements = i_dict.get('intro_statements', [])
             statements += [e[0] for e in i_dict.get('menu_entries', []) if e]
             statements += [e[0] for e in i_dict.get('other_menu_entries', []) if e]
             statements = [s for s in statements if s]
             statements = [s + '.' + sound_format for s in statements]
-            paths = [lang + "/" + i_dict['statement_dir'] + '/' + s for s in statements]
+            paths = [
+                lang + "/" + i_dict['statement_dir'] + '/' + s
+                for s in statements]
             for p in paths:
                 yield(p)
 

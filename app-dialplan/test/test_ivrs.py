@@ -27,11 +27,11 @@ request = mock.Mock(
 class TestIvrs(TestCase):
 
     def test_pre_callable_missing(self):
-        self.assertIsNone(ivrs.pre_callable({}, 'request', 'env'))
+        self.assertIsNone(ivrs._pre_callable({}, 'request', 'env'))
 
     def test_pre_callable_friction(self):
         self.assertIsNone(
-            ivrs.pre_callable(
+            ivrs._pre_callable(
                 {"name": "dummy", "pre_callable": "friction"},
                 'request',
                 'env'))
@@ -60,8 +60,18 @@ class TestIvrs(TestCase):
             ivrs.destination_context_name('9', c_dict),
             'call_911_9')
 
-    def test_add_intro_stanza(self):
-        response = ivrs._add_intro_stanza(
+    def test_intro_sounds(self):
+        response = ivrs._intro_sounds(
+            "foo",
+            {'name':'name'},
+            'lang',
+            1,
+            request,
+            {})
+        # Smoke test.
+
+    def test_intro_statements(self):
+        response = ivrs._intro_statements(
             "foo",
             {'name':'name'},
             'lang',
