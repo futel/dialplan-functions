@@ -17,6 +17,8 @@ def get_env():
 
 def _get_env_attributes():
     """Return a map of attributes from the environment."""
+    # These are in the environment because they are secrets, or because
+    # they are decided at deployment time.
     normal_variables = {
         'ASSET_HOST': os.environ['ASSET_HOST'],
         #'AWS_DEFAULT_REGION': os.environ['AWS_DEFAULT_REGION'],
