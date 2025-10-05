@@ -1,4 +1,12 @@
 {
+    "connecting_through_the_static": {
+        "intro_sounds": ["connecting-through-the-static"],
+        "next_context": "streetroots-main",
+        "statement_dir": "streetroots"},    
+    "old_town_crier_info": {
+        "intro_sounds": ["old-town-crier-info"],
+        "next_context": "streetroots-main",
+        "statement_dir": "streetroots"},
     "streetroots_main": {
         "menu_entries": [
             ["for-connecting-through-the-static", "connecting_through_the_static"],
