@@ -18,14 +18,18 @@ def paths(i_dicts):
     for lang in langs:
         for i_dict in i_dicts.values():
             # XXX We are not checking intro_sounds.
+            # intro_statements are lists of strings.
             statements = i_dict.get('intro_statements', [])
+            # menu_entries are lists of tuples or nulls.
+            # Ignore null entries, which are placeholders.
             statements += [e[0] for e in i_dict.get('menu_entries', []) if e]
+            # other_menu_entries are lists of tuples or nulls.
+            # Ignore null entries, which are placeholders.
             statements += [e[0] for e in i_dict.get('other_menu_entries', []) if e]
+            # Ignore tuples with initial nulls, which have no statement.
             statements = [s for s in statements if s]
-            statements = [s + '.' + sound_format for s in statements]
-            paths = [
-                lang + "/" + i_dict['statement_dir'] + '/' + s
-                for s in statements]
+            paths = [statement_to_path(s, i_dict['statement_dir'], lang)
+                          for s in statements]
             for p in paths:
                 yield(p)
 
@@ -33,12 +37,15 @@ def paths(i_dicts):
 def missing_paths(paths, base):
     """Yield missing paths."""
     for path in paths:
+        print('xxx', path)
         path = '/'.join([base, path])
+        print('xxx', path)
         if not pathlib.Path(path).is_file():
-            yield path
+             yield path
 
 if __name__ == '__main__':
     base = '../dialplan-assets/assets'
     i_dicts = env_util._get_ivrs()
+    i_dicts = {'xxx':list(i_dicts.values())[0]}
     for p in set(missing_paths(paths(i_dicts), base)):
         print(p)
