@@ -10,7 +10,7 @@ These test against the local source.
 
 # Verify assets
 
-These test against the local source.
+This tests against the local source. Note that this only tests that the source has been provisioned, not that it has been uploaded to the store used after deployment.
 
 - source venv/bin/activate
 - PYTHONPATH=app-dialplan python local/check_assets.py
