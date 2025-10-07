@@ -42,6 +42,7 @@ def _extension():
         'princeton',
         'saratoga',
         'seattle-thistle',
+        'seattle-estelitas',
         'souwester',
         'street-roots-one',
         'street-roots-two',
