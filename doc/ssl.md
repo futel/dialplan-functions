@@ -97,7 +97,7 @@ This needs to be done after a certificate is created or replaced, not after reim
 
 Certificates must be renewed before they expire.
 
-This should have been set up by the certificate creation method using systemd, but hasn't been tested, so be prepared to manually renew at the end of the certificate's life. Certificates need to be reimported to aws after renewal? This deployment process doesn't include requirements to make automatic renewal reliable, it is probably running on a laptop.
+This should have been set up by the certificate creation method using systemd, but hasn't been tested, so be prepared to manually renew at the end of the certificate's life. Certificates need to be reimported to aws after renewal. This deployment process doesn't include requirements to make automatic renewal reliable, it is probably running on a laptop.
 
 sudo certbot renew --cert-name phu73l.net --dns-digitalocean --dns-digitalocean-credentials conf/certbot-creds.ini
 
@@ -111,13 +111,13 @@ sudo certbot renew --cert-name phu73l.net --dns-digitalocean --dns-digitalocean-
 
 This does not normally have to be done.
 
-- certbot certificates
+- sudo certbot certificates
 - certbot delete --cert-name dev.dialplans.phu73l.net
 - visit ACM web console
 
 # List certificates
 
-- certbot certificates
+- sudo certbot certificates
 - visit AWS ACM web console
 - change region to us-east-1
 
