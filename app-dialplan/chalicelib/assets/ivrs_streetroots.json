@@ -1,22 +1,24 @@
 {
     "bronwyn_cannot_sweep_nature": {
-        "intro_sounds": ["bronwyn-cannot-sweep-nature"],
+        "intro_sounds": [
+            "bronwyn-intro-cannot-sweep-nature", "bronwyn-cannot-sweep-nature"],
         "next_context": "bronwyn_this_is_love",
         "statement_dir": "streetroots"},
     "bronwyn_this_is_love": {
-        "intro_sounds": ["bronwyn-this-is-love"],
+        "intro_sounds": ["bronwyn-intro-this-is-love", "bronwyn-this-is-love"],
         "next_context": "streetroots_menu",
         "statement_dir": "streetroots"},
     "connecting_through_the_static": {
         "intro_sounds": ["connecting-through-the-static"],
         "next_context": "streetroots_menu",
-        "statement_dir": "streetroots"},    
+        "statement_dir": "streetroots"},
     "old_town_crier_info": {
         "intro_sounds": ["old-town-crier-info"],
         "next_context": "streetroots_menu",
         "statement_dir": "streetroots"},
     "streetroots_main": {
-        "intro_sounds": ["bronwyn-cannot-sweep-nature"],
+        "intro_sounds": [
+            "bronwyn-intro-cannot-sweep-nature", "bronwyn-cannot-sweep-nature"],
         "next_context": "bronwyn_this_is_love",
         "statement_dir": "streetroots"},
     "streetroots_menu": {
