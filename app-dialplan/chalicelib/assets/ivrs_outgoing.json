@@ -36,7 +36,7 @@
             [null, "call_911_9"]],
         "other_menu_entries": [
             ["for-the-operator", 0, "outgoing_operator_caller"]],
-        "statement_dir": "outgoing"},
+        "statement_dir": "streetroots"},
     "outgoing_seattle": {
         "pre_callable": "friction",
         "intro_statements": ["para-espanol", "oprima-estrella"],
