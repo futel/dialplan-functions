@@ -31,6 +31,7 @@ def _extension():
         'central',
         'cesar-chavez-one',
         'clinton',
+        'demo-one',
         'dome-workshop',
         'eighth',
         'fiftyeighth',
