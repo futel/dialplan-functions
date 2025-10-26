@@ -31,7 +31,6 @@ def _extension():
         'central',
         'cesar-chavez-one',
         'clinton',
-        'demo-one',
         'dome-workshop',
         'eighth',
         'fiftyeighth',
@@ -47,7 +46,8 @@ def _extension():
         'souwester',
         'street-roots-one',
         'street-roots-two',
-        'taylor'
+        'taylor',
+        'test-one'
     ]
 
     # Choose the next extension to call modulo the current minute.
