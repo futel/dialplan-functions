@@ -12,18 +12,26 @@
         "intro_sounds": ["connecting-through-the-static"],
         "next_context": "streetroots_menu",
         "statement_dir": "streetroots"},
+    "george_mccarthy_unpacking_my_life": {
+        "intro_sounds": [
+            "george-mccarthy-intro-unpacking-my-life",
+            "george-mccarthy-unpacking-my-life"],
+        "next_context": "streetroots_menu",
+        "statement_dir": "streetroots"},
     "old_town_crier_info": {
         "intro_sounds": ["old-town-crier-info"],
         "next_context": "streetroots_menu",
         "statement_dir": "streetroots"},
     "streetroots_main": {
         "intro_sounds": [
-            "bronwyn-intro-cannot-sweep-nature", "bronwyn-cannot-sweep-nature"],
-        "next_context": "bronwyn_this_is_love",
+            "george-mccarthy-intro-unpacking-my-life",
+            "george-mccarthy-unpacking-my-life"],
+        "next_context": "streetroots_menu",
         "statement_dir": "streetroots"},
     "streetroots_menu": {
         "menu_entries": [
-            ["for-bronwyn", "bronwyn_cannot_sweep_nature"],
+            ["for-george-mccarthy", "george_mccarthy_unpacking_my_life"],
+            ["for-bronwyn", "bronwyn_cannot_sweep_nature"],            
             ["for-connecting-through-the-static", "connecting_through_the_static"],
             ["for-more-information-about-the-old-town-crier",
              "old_town_crier_info"]],
