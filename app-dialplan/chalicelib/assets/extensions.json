@@ -225,7 +225,7 @@
         "enable_emergency": false
     },
     "test-one": {
-        "outgoing": "outgoing_safe",
+        "outgoing": "incoming_leet",
         "caller_id": "+19713512383",
         "enable_emergency": false
     },
