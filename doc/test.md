@@ -60,6 +60,7 @@ Set up and run acceptance tests as in testplan/setup.md and testplan/readme.md. 
 
 # View logs
 
+- source venv/bin/activate
 - cd app-dialplan # or app-ops
 - chalice logs --stage stage --since 10m --follow
 

@@ -130,7 +130,7 @@ Verify with "sudo certbot certificates", see valid certificate for "phu73l.net *
 View console
 - visit AWS certificate manager (ACM) web console
 - change region to us-east-1
-- list certificates with domains phu73l.net and *.dialplans.phu73l.net
+- list certificates with domain name phu73l.net
 
 
 # Notes
