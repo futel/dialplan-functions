@@ -53,6 +53,7 @@ def _get_ivrs():
         'ivrs_directories',
         'ivrs_operator',
         'ivrs_outgoing',
+        'ivrs_incoming',
         'ivrs_utilities',
         'ivrs_streetroots']
     for src in srcs:
