@@ -4,9 +4,9 @@ Other AWS components which must be set up before deploying, and local setup for 
 
 # Meta-requirements
 
-AWS credentials should be set up, and the us-west-2 region configured, in ~/.aws/credentials.
+AWS credentials should be set up, and the `us-west-2` region configured, in `~/.aws/credentials`.
 
-AWS should be set up as described in asteriskserver README-aws:
+AWS should be set up as described in asteriskserver [README-aws.md](https://github.com/futel/asteriskserver/blob/main/README-aws.md):
 - IAM user "asteriskmanager" and related policy
 - SNS topic "asterisk-prod-events" for metric events
 
