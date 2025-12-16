@@ -1,0 +1,25 @@
+{
+    "incoming_leet": {
+        "intro_statements": ["para-espanol", "oprima-estrella"],
+        "next_context": "incoming_leet_menu",
+        "statement_dir": "incoming"},
+    "incoming_leet_menu": {
+        "menu_entries": [
+            ["for-voicemail", "voicemail_incoming"],
+            ["for-the-fewtel-community", "community_incoming"],
+            [null, "member_auth"],
+            [null, "admin_auth"],
+            [null, "fake_admin_auth"]],
+        "other_menu_entries": [
+            ["to-speak-to-an-operator", 0, "operator_incoming"]],
+        "statement_dir": "incoming"},
+    "community_incoming": {
+        "menu_entries": [
+            ["for-the-fewtel-voice-conference", "futel-conf"],
+            ["for-the-wildcard-line", "wildcard_line_incoming"],
+            ["for-the-church-of-robotron", "robotron"],
+            ["for-hold-the-phone", "hold_the_phone_main"],
+            ["for-the-apology-service", "apology_intro"],
+            ["for-more-information-about-fewtel", "information_futel"]],
+        "statement_dir": "community"}
+}
