@@ -4,9 +4,9 @@ Uses AWS Lambda, AWS API Gateway, and whatever else the Chalice framework create
 
 # Meta-requirements
 
-AWS should be set up as described in aws.md.
+AWS should be set up as described in [aws.md](aws.md).
 
-An AWS Certificate Manager certificate should be set up as described in ssl.md.
+An AWS Certificate Manager certificate should be set up as described in [ssl.md](ssl.md).
 
 dialplan-assets project should be set up.
 
@@ -33,7 +33,7 @@ To be done once.
 
 ## Set up environment secrets
 
-Populate .env to match .env.sample as described in aws.md:
+Populate .env to match .env.sample as described in [aws.md](aws.md):
 
 - app-dialplan/chalicelib/environment/.env
 - app-ops/chalicelib/environment/.env
@@ -56,7 +56,7 @@ If deploying stage or prod, check out or create relevant release branch.
 
 ## Test
 
-See test.md. Run the local tests.
+See [test.md](test.md). Run the local tests.
 
 ## Update certificates in config
 
@@ -93,8 +93,8 @@ Wait for DNS to be updated:
 
 Verify that the canonical name matches the alias domain name.
 
-- nslookup stage.dialplans.phu73l.net
-- nslookup stage.ops.phu73l.net
+- `nslookup stage.dialplans.phu73l.net`
+- `nslookup stage.ops.phu73l.net`
 
 ## Update Twilio Programmable Voice stage components to point to dialplan URLs
 
@@ -106,24 +106,24 @@ For the Application Resources, the URL path is "/dial_sip_e164".
 
 ## Test
 
-If stage, see test.md. Run the tests against the deployed instance.
+If stage, see [test.md](test.md). Run the tests against the deployed instance.
 
 # Update an existing instance
 
 ## Test
 
-See test.md. Run the local tests.
+See [test.md](test.md). Run the local tests.
 
 ## Update certificates in config
 
-If the certificate has been changed in the meta-requrements, update the certificate_arn for the instances to match the certificate:
+If the certificate has been changed in the meta-requirements, update the certificate_arn for the instances to match the certificate:
 
 - app-dialplan/.chalice/config.json
 - app-ops/.chalice/config.json
 
 ## Deploy instances
 
-- source venv/bin/activate
+- `source venv/bin/activate`
 - (cd app-dialplan && chalice deploy --stage stage)
 - (cd app-ops && chalice deploy --stage stage)
 
@@ -131,11 +131,11 @@ Twilio SIP components and DigitalOcean networking components do not need to be u
 
 ## Test
 
-If stage, see test.md. Run the tests against the deployed instance.
+If stage, see [test.md](test.md). Run the tests against the deployed instance.
 
 # Delete instances
 
-- source venv/bin/activate
+- `source venv/bin/activate`
 - (cd app-dialplan && chalice delete --stage stage)
 - (cd app-ops && chalice delete --stage stage)
 
