@@ -71,7 +71,8 @@ class TestDialSipE164(TestCase):
         got = dialers.dial_sip_e164(request, env)
         self.assertEqual(
             str(got),
-            '<?xml version="1.0" encoding="UTF-8"?><Response><Redirect>/dial_extension/test-one</Redirect></Response>')
+            '<?xml version="1.0" encoding="UTF-8"?>'
+            '<Response><Redirect>/dial_extension/test-six</Redirect></Response>')
 
 
 class TestIvr(TestCase):

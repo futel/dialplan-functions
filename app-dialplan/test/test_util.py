@@ -28,7 +28,7 @@ class TestUtil(TestCase):
     def test_e164_to_extension(self):
         extensions = env_util._get_extensions()
         self.assertEqual(
-            util.e164_to_extension('+19713512383', extensions), 'test-one')
+            util.e164_to_extension('+19713512383', extensions), 'test-six')
 
     def test_filter_outgoing_number(self):
         self.assertFalse(util.filter_outgoing_number('+1911', True))
@@ -39,7 +39,7 @@ class TestUtil(TestCase):
 
     def test_dial_pstn(self):
         extensions = env_util._get_extensions()
-        extension = extensions['test-one']
+        extension = extensions['test-six']
         request = mock.Mock(
             headers={'host': 'host'},
 
