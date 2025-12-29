@@ -65,14 +65,14 @@ class TestDialSipE164(TestCase):
             headers={'host': 'host'},
             post_fields={
                 'SipDomain': 'direct-futel-prod.sip.twilio.com',
-                'To': '9713512383',
+                'To': '15034449412',
                 'From': '5035551212'},
             context={'domainPrefix':'prod'})
         got = dialers.dial_sip_e164(request, env)
         self.assertEqual(
             str(got),
             '<?xml version="1.0" encoding="UTF-8"?>'
-            '<Response><Redirect>/dial_extension/test-six</Redirect></Response>')
+            '<Response><Redirect>/dial_extension/ainsworth</Redirect></Response>')
 
 
 class TestIvr(TestCase):

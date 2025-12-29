@@ -28,7 +28,7 @@ class TestUtil(TestCase):
     def test_e164_to_extension(self):
         extensions = env_util._get_extensions()
         self.assertEqual(
-            util.e164_to_extension('+19713512383', extensions), 'test-six')
+            util.e164_to_extension('+15034449412', extensions), 'ainsworth')
 
     def test_filter_outgoing_number(self):
         self.assertFalse(util.filter_outgoing_number('+1911', True))
@@ -39,7 +39,7 @@ class TestUtil(TestCase):
 
     def test_dial_pstn(self):
         extensions = env_util._get_extensions()
-        extension = extensions['test-six']
+        extension = extensions['ainsworth']
         request = mock.Mock(
             headers={'host': 'host'},
 
@@ -54,7 +54,7 @@ class TestUtil(TestCase):
             str(response),
             '<?xml version="1.0" encoding="UTF-8"?><Response>'
             '<Dial action="/ops/call_status_outgoing" '
-            'answerOnBridge="true" callerId="+19713512383" timeLimit="3600">'
+            'answerOnBridge="true" callerId="+15034449412" timeLimit="3600">'
             '<Number>+15035551212</Number></Dial></Response>')
 
     def test_dial_sip_asterisk(self):
