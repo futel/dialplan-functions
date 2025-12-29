@@ -13,7 +13,7 @@
             [null, "fake_admin_auth"]
         ],
         "other_menu_entries": [
-            ["to-speak-to-an-operator", 0, "operator_incoming"]
+            ["for-the-operator", 0, "operator_incoming"]
         ],
         "statement_dir": "incoming"
     },
