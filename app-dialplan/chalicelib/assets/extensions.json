@@ -84,6 +84,11 @@
         "caller_id": "+15034681337",
         "enable_emergency": false
     },
+    "dome-hab": {
+        "outgoing": "outgoing_safe",
+        "caller_id": "+15039436834",
+        "enable_emergency": false
+    },
     "dome-office": {
         "outgoing": "outgoing_safe",
         "caller_id": "+15034681337",
@@ -114,21 +119,6 @@
         "caller_id": "+15034448615",
         "enable_emergency": true
     },
-    "groundscore-one": {
-        "outgoing": "outgoing_portland",
-        "caller_id": "+15033087601",
-        "enable_emergency": true
-    },
-    "groundscore-two": {
-        "outgoing": "outgoing_portland",
-        "caller_id": "+15033087601",
-        "enable_emergency": true
-    },
-    "groundscore-three": {
-        "outgoing": "outgoing_portland",
-        "caller_id": "+15033087601",
-        "enable_emergency": true
-    },
     "hot-leet": {
         "outgoing": "incoming_leet",
         "caller_id": "+15034681337",
@@ -152,6 +142,11 @@
     "monitor-one": {
         "outgoing": "directories_detroit",
         "caller_id": "+15034681337",
+        "enable_emergency": false
+    },
+    "pod-hab": {
+        "outgoing": "outgoing_safe",
+        "caller_id": "+15033087601",
         "enable_emergency": false
     },
     "princeton": {
@@ -251,7 +246,7 @@
     },
     "test-six": {
         "outgoing": "outgoing_safe",
-        "caller_id": "+19713512383",
+        "caller_id": "+15034681337",
         "enable_emergency": false
     },
     "upright": {
