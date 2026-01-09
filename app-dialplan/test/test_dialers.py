@@ -202,5 +202,95 @@ class OutgoingOperatorLeave(TestCase):
         # Smoke test.
 
 
+class TestDialSip(TestCase):
+    """Test cases for dialers._dial_sip()"""
+
+    def test_dial_sip_single_extension(self):
+        """Test _dial_sip with a single extension."""
+        request = mock.Mock()
+        extension_names = ['test-one']
+        from_number = '+15034681337'
+
+        got = dialers._dial_sip(extension_names, from_number, request, env)
+
+        # Verify the response is valid TwiML string
+        self.assertIsInstance(got, str)
+        self.assertIn('<Response>', got)
+        self.assertIn('</Response>', got)
+        self.assertIn('<Dial', got)
+        self.assertIn('</Dial>', got)
+
+        # Verify caller_id is set correctly
+        self.assertIn('callerId="+15034681337"', got)
+
+        # Verify answer_on_bridge is set
+        self.assertIn('answerOnBridge="true"', got)
+
+        # Verify time limit is set
+        self.assertIn('timeLimit="3600"', got)
+
+        # Verify action callback is set
+        self.assertIn('action="/ops/call_status_outgoing"', got)
+
+        # Verify the SIP URI is correct
+        sip_domain = dialers._get_sip_domain(env)
+        expected_sip_uri = f'sip:test-one@{sip_domain}'
+        self.assertIn(expected_sip_uri, got)
+        self.assertIn('<Sip>', got)
+        self.assertIn('</Sip>', got)
+
+    def test_dial_sip_multiple_extensions(self):
+        """Test _dial_sip with multiple extensions."""
+        request = mock.Mock()
+        extension_names = ['test-one', 'test-two', 'test-three']
+        from_number = '+15034681337'
+
+        got = dialers._dial_sip(extension_names, from_number, request, env)
+
+        # Verify the response is valid TwiML
+        self.assertIsInstance(got, str)
+        self.assertIn('<Response>', got)
+        self.assertIn('<Dial', got)
+
+        # Verify all three extensions are included
+        sip_domain = dialers._get_sip_domain(env)
+        for extension_name in extension_names:
+            expected_sip_uri = f'sip:{extension_name}@{sip_domain}'
+            self.assertIn(expected_sip_uri, got)
+
+        # Count the number of <Sip> tags (should be 3)
+        sip_count = got.count('<Sip>')
+        self.assertEqual(sip_count, 3)
+
+    def test_dial_sip_different_from_numbers(self):
+        """Test _dial_sip with different caller IDs."""
+        request = mock.Mock()
+        extension_names = ['test-one']
+
+        # Test with different from_numbers
+        from_numbers = ['+15034681337', '+15551234567', '2025551234']
+        for from_number in from_numbers:
+            got = dialers._dial_sip(extension_names, from_number, request, env)
+            self.assertIn(f'callerId="{from_number}"', got)
+
+    def test_dial_sip_uses_correct_sip_domain(self):
+        """Test _dial_sip uses the correct SIP domain from environment."""
+        request = mock.Mock()
+        extension_names = ['extension-alpha']
+        from_number = '+15034681337'
+
+        got = dialers._dial_sip(extension_names, from_number, request, env)
+
+        # Get the expected domain
+        sip_domain = dialers._get_sip_domain(env)
+
+        # Verify it's used in the SIP URI
+        self.assertIn(f'@{sip_domain}', got)
+
+        # Verify it matches the expected format
+        self.assertIn('direct-futel', sip_domain)
+        self.assertIn('sip.twilio.com', sip_domain)
+
+
 if __name__ == '__main__':
     unittest.main()
