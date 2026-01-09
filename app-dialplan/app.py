@@ -22,10 +22,30 @@ from chalicelib import util
 env = env_util.get_env()
 app = Chalice(app_name='dialplan')
 
-def post_fields(request):
-    """Return the fields from a POST request."""
-    return dict(
-        parse.parse_qsl(request.raw_body.decode('UTF-8')))
+def _accumulate_dict(kv_list):
+    """
+    Return a dict from a list of (key, value) pairs.
+    Keys with single values will have string values.
+    Keys with multiple values will have list values.
+    """
+    out = {}
+    for (key, value) in kv_list:
+        if key in out:
+            if isinstance(out[key], list):
+                out[key].append(value)
+            else:
+                out[key] = [out[key], value]
+        else:
+            out[key] = value
+    return out
+
+def _post_fields(request):
+    """
+    Return the fields from a POST request.
+    Keys with single values will have string values.
+    Keys with multiple values will have list values.
+    """
+    return _accumulate_dict(parse.parse_qsl(request.raw_body.decode('UTF-8')))
 
 def route(path):
     """Decorator which curries app.route"""
@@ -66,7 +86,7 @@ def setup_request(request):
     Otherwise, fill from_user with the hot-leet placeholder, and optionally
     fill from_number.
     """
-    request.post_fields = post_fields(request)
+    request.post_fields = _post_fields(request)
     request.query_params = request.query_params or {}
 
     from_user = request.post_fields.get('From')
