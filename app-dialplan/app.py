@@ -136,6 +136,7 @@ def setup(f):
 def _index(request, extension_name):
     return dialers.dial_extension(extension_name, request, env)
 
+# XXX Is this dead code?
 @route('/dial_e164_extension')
 @setup
 def _index(request):
