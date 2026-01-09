@@ -1,7 +1,9 @@
 from unittest import mock, TestCase
+import urllib
 
 from chalicelib import env_util
 from chalicelib import util
+
 
 env = {'AWS_METRICS_TOPIC_ARN': 'AWS_METRICS_TOPIC_ARN',
        'ASSET_HOST': 'ASSET_HOST',
@@ -62,6 +64,28 @@ class TestUtil(TestCase):
         self.assertEqual(
             str(response),
             '<?xml version="1.0" encoding="UTF-8"?><Response><Dial answerOnBridge="true" timeLimit="3600"><Sip>sip:outgoing_safe@futel-stage.phu73l.net;region=us2?x-callerid=+19713512383&amp;x-enableemergency=false</Sip></Dial></Response>')
+
+    def test_function_url_no_params(self):
+        self.assertEqual(util.function_url('/foo'), '/foo')
+
+    def test_function_url_with_params(self):
+        url = util.function_url('/foo', {'a': '1', 'b': '2'})
+        parsed = urllib.parse.urllib.parse(url)
+        qs = urllib.parse.parse_qs(parsed.query)
+        # parse_qs returns lists for values
+        self.assertEqual(qs, {'a': ['1'], 'b': ['2']})
+
+    def test_function_url_omits_none(self):
+        url = util.function_url('/foo', {'a': '1', 'b': None})
+        parsed = urllib.parse.urllib.parse(url)
+        qs = urllib.parse.parse_qs(parsed.query)
+        self.assertEqual(qs, {'a': ['1']})
+
+    def test_function_url_encodes(self):
+        url = util.function_url('/search', {'q': 'a b', 'x': '@'})
+        parsed = urllib.parse.urllib.parse(url)
+        qs = urllib.parse.parse_qs(parsed.query)
+        self.assertEqual(qs, {'q': ['a b'], 'x': ['@']})
 
 
 if __name__ == '__main__':
