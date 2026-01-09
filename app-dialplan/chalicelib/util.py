@@ -59,12 +59,13 @@ def get_instance(env):
 def function_url(function_name, params=None):
     """
     Return the URL for another function served by the same host.
+    Handles list values by repeating the parameter for each value.
     """
     url = function_name
     if params:
         # Don't serialize Nones.
         params = {k:v for (k,v) in params.items() if v is not None}
-        params = parse.urlencode(params)
+        params = parse.urlencode(params, doseq=True)
         url += '?' + params
     return url
 
@@ -92,6 +93,7 @@ def e164_to_extension(e164, extension_map):
         return None
     for key in extension_map:
         if extension_map[key]['caller_id'] == e164:
+            # XXX We want to handle more than one extension here.
             return key
     # Are we in an unknown state if we get here? We didn't expect to look up a
     # callerid without finding one?
