@@ -19,7 +19,6 @@ env = {'AWS_METRICS_TOPIC_ARN': 'AWS_METRICS_TOPIC_ARN',
        'stage':'stage',
        'twilio_client': twilio_client}
 
-outgoing_safe_body = '<?xml version="1.0" encoding="UTF-8"?><Response><Redirect>/ivr</Redirect></Response>'
 
 class TestDialOutgoing(TestCase):
 
@@ -36,24 +35,10 @@ class TestDialOutgoing(TestCase):
             query_params={},
             context={'domainPrefix':'prod'})
         got = dialers.dial_outgoing(request, env)
-        self.assertEqual(str(got), outgoing_safe_body)
-
-    # # We are phasing these out.
-    # @mock.patch.object(dialers, 'metric')
-    # def test_dial_outgoing_remote(self, _mock_metrici):
-    #     # demo extension redirects to SIP URI call.
-    #     request = mock.Mock(
-    #         headers={'host': 'host'},
-    #         query_params={},
-    #         post_fields={
-    #             'SipDomain': 'direct-futel-prod.sip.twilio.com',
-    #             'To': 'sip:%23@direct-futel-stage.sip.twilio.com',
-    #             'From': 'sip:alleymaple@direct-futel-stage.sip.twilio.com'},
-    #         context={'domainPrefix':'prod'})
-    #     got = dialers.dial_outgoing(request, env)
-    #     self.assertEqual(
-    #         str(got),
-    #         '<?xml version="1.0" encoding="UTF-8"?><Response><Dial answerOnBridge="true"><Sip>sip:outgoing_portland@futel-prod.phu73l.net;region=us2?x-callerid=+15034681337&amp;x-enableemergency=false</Sip></Dial></Response>')
+        self.assertEqual(
+            str(got),
+            '<?xml version="1.0" encoding="UTF-8"?>'
+            '<Response><Redirect>/ivr</Redirect></Response>')
 
 
 class TestDialSipE164(TestCase):
@@ -72,7 +57,7 @@ class TestDialSipE164(TestCase):
         self.assertEqual(
             str(got),
             '<?xml version="1.0" encoding="UTF-8"?>'
-            '<Response><Redirect>/dial_extension/ainsworth</Redirect></Response>')
+            '<Response><Redirect>/dial_extension?extensions=ainsworth</Redirect></Response>')
 
 
 class TestIvr(TestCase):

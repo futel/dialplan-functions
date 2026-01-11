@@ -32,7 +32,7 @@ class TestDialers(TestCase):
                 "SipDomain": "direct-futel-stage.sip.twilio.com"})
         check_response(
             response,
-            '<?xml version="1.0" encoding="UTF-8"?><Response><Redirect>/dial_extension/cesar-chavez-one</Redirect></Response>')
+            '<?xml version="1.0" encoding="UTF-8"?><Response><Redirect>/dial_extension?extensions=cesar-chavez-one</Redirect></Response>')
 
     def test_dial_outgoing_pound(self):
         response = requests.post(
@@ -64,7 +64,7 @@ class TestDialers(TestCase):
                 "From": "+15034681337"})
         check_response(
             response,
-            '<?xml version="1.0" encoding="UTF-8"?><Response><Redirect>/dial_extension/landline</Redirect></Response>')
+            '<?xml version="1.0" encoding="UTF-8"?><Response><Redirect>/dial_extension?extensions=landline</Redirect></Response>')
 
 
 class TestOps(TestCase):

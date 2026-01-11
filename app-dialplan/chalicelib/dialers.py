@@ -19,20 +19,23 @@ operator_message_max = 60 * 15  # 15 minutes in seconds
 dial_max = 60 * 60              # 60 minutes in seconds
 
 
-def _get_sip_domain(extension, env):
-    """Return the SIP domain for the extension."""
-    # <extension>-<instance>.<domain>
-    # direct-futel-stage.sip.twilio.com
+def _get_sip_domain(env):
+    """Return the SIP domain."""
+    # eg direct-futel-stage.sip.twilio.com
     extension_map = env['extensions']
     return (sip_domain_subdomain_base +
             '-' + util.get_instance(env) +
             '.' +
             sip_domain_suffix)
 
-def dial_extension(extension_name, request, env):
+def dial_extension(request, env):
     """
-    Return TwiML string to call extension.
+    Return TwiML string to call extensions given in the extensions parameter
+    of request.post_fields.
     """
+    extension_names = request.post_fields['extensions']
+    # XXX We want to handle more than one extension here.
+    extension_names = [extension_names]
     from_user = request.from_user
     metric.publish('dial_extension', from_user, env)
     if from_user == 'hot-leet':
@@ -43,8 +46,9 @@ def dial_extension(extension_name, request, env):
         # We are an outgoing call, find out what to tell it.
         from_extension = util.sip_to_extension(from_user, env)
         from_number = from_extension['caller_id']
-    return _dial_sip(extension_name, from_number, request, env)
+    return _dial_sip(extension_names, from_number, request, env)
 
+# XXX Is this dead code?
 def dial_e164_extension(request, env):
     """
     Return TwiML string to call an extension registered to our SIP Domains,
@@ -59,7 +63,9 @@ def dial_e164_extension(request, env):
     to_extension = util.e164_to_extension(to_number, env['extensions'])
     if to_extension:
         response = VoiceResponse()
-        response.redirect('/dial_extension/{}'.format(to_extension))
+        path = util.function_url(
+            '/dial_extension', {'extensions': to_extension})
+        response.redirect(path)
         return str(response)
 
     # It didn't match the number of one of our SIP extensions.
@@ -109,7 +115,9 @@ def dial_outgoing(request, env):
     to_extension = util.e164_to_extension(to_number, env['extensions'])
     if to_extension:
         response = VoiceResponse()
-        response.redirect('/dial_extension/{}'.format(to_extension))
+        path = util.function_url(
+            '/dial_extension', {'extensions': to_extension})
+        response.redirect(path)
         return str(response)
 
     # It's a PSTN number, call it.
@@ -118,7 +126,7 @@ def dial_outgoing(request, env):
     metric.publish('dial_pstn', from_user, env)
     return str(util.dial_pstn(to_number, from_extension, request))
 
-# This might more normally named dial_incoming_e164.
+# This might more normally named dial_incoming.
 def dial_sip_e164(request, env):
     """
     Return TwiML string to call an extension registered to our SIP Domains,
@@ -139,7 +147,9 @@ def dial_sip_e164(request, env):
     to_extension = util.e164_to_extension(to_number, env['extensions'])
     if to_extension:
         response = VoiceResponse()
-        response.redirect('/dial_extension/{}'.format(to_extension))
+        path = util.function_url(
+            '/dial_extension', {'extensions': to_extension})
+        response.redirect(path)
         return str(response)
 
     # It didn't match the number of one of our SIP extensions.
@@ -147,11 +157,9 @@ def dial_sip_e164(request, env):
     response.redirect('/reject')
     return str(response)
 
-def _dial_sip(extension, from_number, request, env):
+def _dial_sip(extension_names, from_number, request, env):
     """Return TwiML to dial a SIP client on our Twilio SIP domain."""
-    sip_domain = _get_sip_domain(extension, env)
-    sip_uri = f'sip:{extension}@{sip_domain}'
-    util.log('sip_uri: {}'.format(sip_uri))
+    sip_domain = _get_sip_domain(env)
 
     response = VoiceResponse()
     dial = response.dial(
@@ -159,7 +167,9 @@ def _dial_sip(extension, from_number, request, env):
         caller_id=from_number,
         time_limit=dial_max,
         action='/ops/call_status_outgoing')
-    dial.sip(sip_uri)
+    for extension_name in extension_names:
+        sip_uri = f'sip:{extension_name}@{sip_domain}'
+        dial.sip(sip_uri)
     return str(response)
 
 def ivr(context_name, request, env):

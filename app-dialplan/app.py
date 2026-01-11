@@ -151,10 +151,10 @@ def setup(f):
 # here by defining it is never accessed, we throw it away. Probably fun
 # to design but needs 4 lines of comments.
 
-@route('/dial_extension/{extension_name}')
+@route('/dial_extension')
 @setup
-def _index(request, extension_name):
-    return dialers.dial_extension(extension_name, request, env)
+def _index(request):
+    return dialers.dial_extension(request, env)
 
 # XXX Is this dead code?
 @route('/dial_e164_extension')
