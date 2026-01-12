@@ -7,14 +7,15 @@
 - run tests on stage
 - update the record of tests on the google sheet
   - for passed tests, mark date
-  - for failed tests, mark fail, comment, optionally 
-    [open issue](https://github.com/futel/dialplan-functions/issues)
+  - for failed tests, mark fail, comment, optionally [open issue](https://github.com/futel/dialplan-functions/issues)
     and add link
 
 ## where to find the testplan
 
-- source is the testplan directory of the dialplan-functions repository https://github.com/futel/dialplan-functions/tree/main/testplan
-- record of tests is the google sheet https://docs.google.com/spreadsheets/d/1WYEMQqlvuJeSEwOWJAA_KTBnpaOOddj_leQfczQgE0w/edit#gid=670551017
+- source is the testplan directory of the dialplan-functions repository (where this readme lives)
+  - https://github.com/futel/dialplan-functions/tree/main/testplan
+- record of tests is the google sheet
+  - https://docs.google.com/spreadsheets/d/1WYEMQqlvuJeSEwOWJAA_KTBnpaOOddj_leQfczQgE0w/edit#gid=670551017
 
 what should be tested, this should be what is filled out in the testplan sheet
 - for every extension listed, run extension tests in tests.md
