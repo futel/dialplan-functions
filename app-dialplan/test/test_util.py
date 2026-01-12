@@ -69,30 +69,27 @@ class TestUtil(TestCase):
         self.assertEqual(util.function_url('/foo'), '/foo')
 
     def test_function_url_with_params(self):
-        url = util.function_url('/foo', {'a': '1', 'b': '2'})
+        url = util.function_url('/foo', [('a', '1'), ('b', '2')])
         parsed = urllib.parse.urlparse(url)
         qs = urllib.parse.parse_qs(parsed.query)
         # parse_qs returns lists for values
         self.assertEqual(qs, {'a': ['1'], 'b': ['2']})
 
     def test_function_url_omits_none(self):
-        url = util.function_url('/foo', {'a': '1', 'b': None})
+        url = util.function_url('/foo', [('a', '1'), ('b', None)])
         parsed = urllib.parse.urlparse(url)
         qs = urllib.parse.parse_qs(parsed.query)
         self.assertEqual(qs, {'a': ['1']})
 
     def test_function_url_encodes(self):
-        url = util.function_url('/search', {'q': 'a b', 'x': '@'})
+        url = util.function_url('/search', [('q', 'a b'), ('x', '@')])
         parsed = urllib.parse.urlparse(url)
         qs = urllib.parse.parse_qs(parsed.query)
         self.assertEqual(qs, {'q': ['a b'], 'x': ['@']})
 
     def test_function_url_param_with_two_values(self):
-        url = util.function_url('/foo', {'tags': ['foo', 'bar']})
-        parsed = urllib.parse.urlparse(url)
-        qs = urllib.parse.parse_qs(parsed.query)
-        # The parameter value should be preserved as-is
-        self.assertEqual(qs, {'tags': ['foo', 'bar']})
+        url = util.function_url('/foo', [['foo', 'bar'], ['foo', 'baz']])
+        self.assertEqual(url, '/foo?foo=bar&foo=baz')
 
 
 if __name__ == '__main__':

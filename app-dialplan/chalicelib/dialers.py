@@ -31,9 +31,11 @@ def _get_sip_domain(env):
 def dial_extension(request, env):
     """
     Return TwiML string to call extensions given in the extensions parameter
-    of request.post_fields.
+    of request.query_params.
     """
-    extension_names = request.post_fields['extensions']
+    # The chalice MultiDict implements getlist() instead of getall()?
+    # https://aws.github.io/chalice/api.html#Request.query_params
+    extension_names = request.query_params.getlist('extensions')
     from_user = request.from_user
     metric.publish('dial_extension', from_user, env)
     if from_user == 'hot-leet':
@@ -62,7 +64,7 @@ def dial_e164_extension(request, env):
     if to_extensions:
         response = VoiceResponse()
         path = util.function_url(
-            '/dial_extension', {'extensions': to_extensions})
+            '/dial_extension', [('extensions', to_extensions)])
         response.redirect(path)
         return str(response)
 
@@ -114,7 +116,7 @@ def dial_outgoing(request, env):
     if to_extensions:
         response = VoiceResponse()
         path = util.function_url(
-            '/dial_extension', {'extensions': to_extensions})
+            '/dial_extension', [('extensions', to_extensions)])
         response.redirect(path)
         return str(response)
 
@@ -146,7 +148,7 @@ def dial_sip_e164(request, env):
     if to_extensions:
         response = VoiceResponse()
         path = util.function_url(
-            '/dial_extension', {'extensions': to_extensions})
+            '/dial_extension', [('extensions', to_extensions)])
         response.redirect(path)
         return str(response)
 
@@ -211,7 +213,7 @@ def ivr(context_name, request, env):
                 context_name = dest_name
         response = VoiceResponse()
         path = '/ivr/{}'.format(context_name)
-        path = util.function_url(path, {'lang': lang})
+        path = util.function_url(path, [('lang', lang)])
         response.redirect(path)
         return str(response)
 

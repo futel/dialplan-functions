@@ -197,32 +197,9 @@ class TestDialSip(TestCase):
         from_number = '+15034681337'
 
         got = dialers._dial_sip(extension_names, from_number, request, env)
-
-        # Verify the response is valid TwiML string
-        self.assertIsInstance(got, str)
-        self.assertIn('<Response>', got)
-        self.assertIn('</Response>', got)
-        self.assertIn('<Dial', got)
-        self.assertIn('</Dial>', got)
-
-        # Verify caller_id is set correctly
-        self.assertIn('callerId="+15034681337"', got)
-
-        # Verify answer_on_bridge is set
-        self.assertIn('answerOnBridge="true"', got)
-
-        # Verify time limit is set
-        self.assertIn('timeLimit="3600"', got)
-
-        # Verify action callback is set
-        self.assertIn('action="/ops/call_status_outgoing"', got)
-
-        # Verify the SIP URI is correct
-        sip_domain = dialers._get_sip_domain(env)
-        expected_sip_uri = f'sip:test-one@{sip_domain}'
-        self.assertIn(expected_sip_uri, got)
-        self.assertIn('<Sip>', got)
-        self.assertIn('</Sip>', got)
+        self.assertEqual(
+            got,
+            '<?xml version="1.0" encoding="UTF-8"?><Response><Dial action="/ops/call_status_outgoing" answerOnBridge="true" callerId="+15034681337" timeLimit="3600"><Sip>sip:test-one@direct-futel-stage.sip.twilio.com</Sip></Dial></Response>')
 
     def test_dial_sip_multiple_extensions(self):
         """Test _dial_sip with multiple extensions."""

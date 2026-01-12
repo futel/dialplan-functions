@@ -172,14 +172,14 @@ def _add_gather_stanza(
     Append a gather and redirect to the TwiML Response, and return the gather.
     """
     path = "/ivr/{}".format(c_name)
-    url_params = {'lang': lang}
+    url_params = [('lang', lang)]
     if iteration:
-        url_params['iteration'] = iteration
+        url_params.append(('iteration', iteration))
     if timeout is None:
         timeout = 2
 
     # Create the URL that the gather will send the user to on digit entry.
-    gather_url_params = copy.copy(url_params)
+    gather_url_params = list(url_params)
     action_url = util.function_url(
         path,
         gather_url_params)
@@ -187,7 +187,7 @@ def _add_gather_stanza(
         num_digits=1, timeout=timeout, finish_on_key='', action=action_url)
 
     # Create the URL that the redirect will send the user to on no digit entry.
-    redirect_url_params = copy.copy(url_params)
+    redirect_url_params = list(url_params)
     action_url = util.function_url(
         path,
         redirect_url_params)

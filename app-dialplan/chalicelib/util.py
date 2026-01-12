@@ -59,12 +59,14 @@ def get_instance(env):
 def function_url(function_name, params=None):
     """
     Return the URL for another function served by the same host.
-    Handles list values by repeating the parameter for each value.
+    params should be a sequence of (key, value) sequences or None.
+    Values of None are omitted.
+    List values are repeated as separate parameters.
     """
     url = function_name
     if params:
-        # Don't serialize Nones.
-        params = {k:v for (k,v) in params.items() if v is not None}
+        params = [(k, v) for (k, v) in params if v is not None]
+    if params:
         params = parse.urlencode(params, doseq=True)
         url += '?' + params
     return url
