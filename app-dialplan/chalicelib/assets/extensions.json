@@ -146,7 +146,7 @@
     },
     "pod-hab": {
         "outgoing": "outgoing_safe",
-        "caller_id": "+15033087601",
+        "caller_id": "+15039436834",
         "enable_emergency": false
     },
     "princeton": {
@@ -178,21 +178,6 @@
         "outgoing": "outgoing_seattle",
         "caller_id": "+12064663296",
         "enable_emergency": true
-    },
-    "sjac": {
-        "outgoing": "outgoing_safe",
-        "caller_id": "+15034681337",
-        "enable_emergency": false
-    },
-    "street-books-one": {
-        "outgoing": "outgoing_portland",
-        "caller_id": "+15034681337",
-        "enable_emergency": false
-    },
-    "street-books-two": {
-        "outgoing": "outgoing_dialtone",
-        "caller_id": "+15034681337",
-        "enable_emergency": false
     },
     "souwester": {
         "outgoing": "outgoing_souwester",
