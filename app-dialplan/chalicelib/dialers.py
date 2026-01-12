@@ -34,8 +34,6 @@ def dial_extension(request, env):
     of request.post_fields.
     """
     extension_names = request.post_fields['extensions']
-    # XXX We want to handle more than one extension here.
-    extension_names = [extension_names]
     from_user = request.from_user
     metric.publish('dial_extension', from_user, env)
     if from_user == 'hot-leet':
@@ -60,11 +58,11 @@ def dial_e164_extension(request, env):
     # Find the extension to call, and redirect to call it.
     to_number = request.post_fields['Digits']
     to_number = util.normalize_number(to_number)
-    to_extension = util.e164_to_extension(to_number, env['extensions'])
-    if to_extension:
+    to_extensions = util.e164_to_extensions(to_number, env['extensions'])
+    if to_extensions:
         response = VoiceResponse()
         path = util.function_url(
-            '/dial_extension', {'extensions': to_extension})
+            '/dial_extension', {'extensions': to_extensions})
         response.redirect(path)
         return str(response)
 
@@ -112,11 +110,11 @@ def dial_outgoing(request, env):
 
     # If it's the number of one of our extensions,
     # redirect to SIP call it instead of PSTN calling it.
-    to_extension = util.e164_to_extension(to_number, env['extensions'])
-    if to_extension:
+    to_extensions = util.e164_to_extensions(to_number, env['extensions'])
+    if to_extensions:
         response = VoiceResponse()
         path = util.function_url(
-            '/dial_extension', {'extensions': to_extension})
+            '/dial_extension', {'extensions': to_extensions})
         response.redirect(path)
         return str(response)
 
@@ -143,12 +141,12 @@ def dial_sip_e164(request, env):
     to_number = request.post_fields['To']
     to_number = util.normalize_number(to_number)
 
-    # Find the extension to call, and redirect to call it.
-    to_extension = util.e164_to_extension(to_number, env['extensions'])
-    if to_extension:
+    # Find the extensions to call, and redirect to call them.
+    to_extensions = util.e164_to_extensions(to_number, env['extensions'])
+    if to_extensions:
         response = VoiceResponse()
         path = util.function_url(
-            '/dial_extension', {'extensions': to_extension})
+            '/dial_extension', {'extensions': to_extensions})
         response.redirect(path)
         return str(response)
 
@@ -349,9 +347,9 @@ def _find_operator_calls(client, extension, env):
             # extension, so that's the one we're looking for.
             # XXX If the caller's extension has hot-leet as the caller id,
             # we won't find it.
-            caller_extension = util.e164_to_extension(
+            caller_extensions = util.e164_to_extension(
                 record._from, env['extensions'])
-            if caller_extension == extension:
+            if extension in caller_extensions:
                 # We found a call coming from extension, that must be it.
                 yield record
 

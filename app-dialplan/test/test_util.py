@@ -27,10 +27,10 @@ class TestUtil(TestCase):
         self.assertEqual(util.normalize_number('+911'), '+1911')
         self.assertEqual(util.normalize_number('911'), '+1911')
 
-    def test_e164_to_extension(self):
+    def test_e164_to_extensions(self):
         extensions = env_util._get_extensions()
         self.assertEqual(
-            util.e164_to_extension('+15034449412', extensions), 'ainsworth')
+            util.e164_to_extensions('+15034449412', extensions), ['ainsworth'])
 
     def test_filter_outgoing_number(self):
         self.assertFalse(util.filter_outgoing_number('+1911', True))

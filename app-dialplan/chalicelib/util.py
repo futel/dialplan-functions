@@ -83,18 +83,17 @@ def sip_to_extension(sip_user, env):
     """Return the extension from a SIP user, or None."""
     return env['extensions'].get(sip_user)
 
-def e164_to_extension(e164, extension_map):
+def e164_to_extensions(e164, extension_map):
     """
-    Return the key for the extension matching the given E.164 string, or None.
+    Return a list of keys for the extension matching the given E.164 string,
+    or None.
     """
     if e164 == "+15034681337":
         # The incoming number that we don't want to match. Extensions use this
         # for their caller id when they don't have one.
         return None
-    for key in extension_map:
-        if extension_map[key]['caller_id'] == e164:
-            # XXX We want to handle more than one extension here.
-            return key
+    return [key for key in extension_map
+            if extension_map[key]['caller_id'] == e164]
     # Are we in an unknown state if we get here? We didn't expect to look up a
     # callerid without finding one?
     return None
