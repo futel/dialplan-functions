@@ -64,7 +64,8 @@ def validate_request(request, env):
     #     query params from the request. It appears to happen when there is a
     #     Digits post param in the request. When that happens, there is also a
     #     'msg':'Gather End' post param sent by twilio, but quoting that
-    #     doesn't help.
+    #     doesn't help. Is the prorblem that we are confusing query and post
+    #     params?
     host = request.headers['host']
     path = request.context['path']
     url = 'https://' + host + path
