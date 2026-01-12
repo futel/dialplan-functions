@@ -17,7 +17,8 @@ Outgoing extension tests for each extension
   - check voicemail from menu and get mailbox prompt
 
 Incoming call tests for each extension configured to take stage incoming call
-- extension rings
+- extension rings when incoming number goes to one extension
+- all extensions ring when incoming number goes to multiple extensions
 
 General context tests, once for all contexts
 - # repeats context if top level
