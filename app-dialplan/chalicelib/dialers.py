@@ -76,10 +76,12 @@ def dial_e164_extension(request, env):
 def dial_outgoing(request, env):
     """
     Return TwiML string to dial PSTN, dial SIP URI, or play IVR,
-    with attributes from request.
+    with attributes from request. Used for both the initial destination
+    and the destination for numbers gathered from the dialtone.
     """
     from_user = request.from_user
     metric.publish('dial_outgoing', from_user, env)
+    dialtone_ivr = request.query_params.get('dialtone_ivr')
     from_extension = util.sip_to_extension(from_user, env)
     to_extension = util.deserialize_pstn(request)
     util.log('to_extension {}'.format(to_extension))
@@ -90,9 +92,14 @@ def dial_outgoing(request, env):
         response.redirect('/ivr/outgoing_operator_caller')
         return str(response)
     if to_extension == '#':
-        # Redirect to the top ivr context.
+        if dialtone_ivr:
+            # We have been told where to redirect to on pound.
+            destination = '/ivr/{}'.format(dialtone_ivr)
+        else:
+            # Redirect to the default top ivr context.
+            destination = '/ivr'
         response = VoiceResponse()
-        response.redirect('/ivr')
+        response.redirect(destination)
         return str(response)
 
     # It's a number to dial from a dialtone. Normalize, transform, filter.
@@ -121,7 +128,7 @@ def dial_outgoing(request, env):
         return str(response)
 
     # It's a PSTN number, call it.
-    # We can't redirect here beucase we don't know if we got to_number from
+    # We can't redirect here because we don't know if we got to_number from
     # Digits or not. We need to preserve Digits if we have it.
     metric.publish('dial_pstn', from_user, env)
     return str(util.dial_pstn(to_number, from_extension, request))
@@ -192,7 +199,7 @@ def ivr(context_name, request, env):
     util.log('context_name:{} digits:{}'.format(context_name, digits))
 
     if not context_name:
-        # Use the default context, presumably this is the first interaction.
+        # This is the first context of this call.
         context_name = from_extension['outgoing']
 
     if digits:
@@ -236,6 +243,7 @@ def ivr(context_name, request, env):
             return str(util.dial_sip_asterisk(context_name, from_user, env))
 
     # We got this far, it's in the context_dict.
+    # Metric and return the TwiML for the ivr.
     metric.publish(context_name, from_user, env)
     return str(
         ivrs.ivr_context(

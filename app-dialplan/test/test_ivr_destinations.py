@@ -5,6 +5,7 @@ from chalicelib import ivr_destinations
 
 request = mock.Mock(
     context={'domainPrefix':'domainPrefix'},
+    from_user='clinton',
     headers={'host': 'host'},
     post_fields={'From':'From'},
     query_params={'lang': 'en'})

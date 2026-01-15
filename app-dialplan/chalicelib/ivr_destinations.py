@@ -75,7 +75,7 @@ def outgoing_operator_pre(request, env):
                 return str(response)
 
 def _dialtone(destination, request, env):
-    """Return TwiML for a dialtone sending input to destination."""
+    """Return TwiML for a dialtone which sends gathered keys to destination."""
     response = VoiceResponse()
     gather = response.gather(
         finish_on_key='', action=destination, action_on_empty_result=False)
@@ -86,12 +86,23 @@ def _dialtone(destination, request, env):
             'sound',
             'ops',
             env))
-    response.hangup()           # We should fast busy instead.
+    # Hangup if no input. We should fast busy instead.
+    response.hangup()
     return response
 
 def outgoing_dialtone_pre(request, env):
     """Return TwiML for a dialtone for outgoing calls."""
-    return _dialtone('/dial_outgoing', request, env)
+    # Tell the dialtone destination where to go after gathering,
+    # if configured for this extension.
+    from_user = request.from_user
+    from_extension = util.sip_to_extension(from_user, env)
+    dialtone_ivr = from_extension.get('dialtone_ivr')
+    if dialtone_ivr:
+        params = [('dialtone_ivr', dialtone_ivr)]
+    else:
+        params = None
+    path = util.function_url('/dial_outgoing', params)
+    return _dialtone(path, request, env)
 
 def call_911_911(request, env):
     """Return TwiML to call 911."""

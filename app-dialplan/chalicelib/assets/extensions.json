@@ -85,7 +85,8 @@
         "enable_emergency": false
     },
     "dome-hab": {
-        "outgoing": "outgoing_safe",
+        "outgoing": "outgoing_dialtone",
+        "dialtone_ivr": "outgoing_safe",        
         "caller_id": "+15039436834",
         "enable_emergency": false
     },
@@ -145,7 +146,8 @@
         "enable_emergency": false
     },
     "pod-hab": {
-        "outgoing": "outgoing_safe",
+        "outgoing": "outgoing_dialtone",
+        "dialtone_ivr": "outgoing_safe",
         "caller_id": "+15039436834",
         "enable_emergency": false
     },
