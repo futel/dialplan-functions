@@ -196,6 +196,12 @@
         "caller_id": "+15034681337",
         "enable_emergency": false
     },
+    "sunnyside-shower-project": {
+        "outgoing": "outgoing_dialtone",
+        "dialtone_ivr": "outgoing_portland",
+        "caller_id": "+15034681337",
+        "enable_emergency": false
+    },
     "taylor": {
         "outgoing": "outgoing_portland",
         "caller_id": "+15039266271",
