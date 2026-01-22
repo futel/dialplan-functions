@@ -184,6 +184,7 @@ DESTINATIONS = {
     'dial_8003900934': dial_nanpa("8003900934"),
     'dial_8336287999': dial_nanpa("8336287999"),
     'dial_8443876962': dial_nanpa("8443876962"),
+    'dial_5032387433': dial_nanpa("5032387433"),
     'dial_sisyphus': dial_sisyphus,
     'friction': friction,
     'outgoing_operator_accept': outgoing_operator_accept,
