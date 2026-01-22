@@ -4,5 +4,10 @@
             ["for-the-current-time", "current-time"],
             ["for-the-trymet-transit-tracker", "trimet-transit-tracker"],
             ["for-a-random-number", "random_number"]],
+        "statement_dir": "utilities"},
+    "utilities_generic": {
+        "menu_entries": [
+            ["for-the-current-time", "current-time-ypsi"],
+            ["for-a-random-number", "random_number"]],
         "statement_dir": "utilities"}
 }

@@ -2,6 +2,7 @@
 Functions reached by IVR menu choices.
 """
 
+import random
 from twilio.twiml.voice_response import VoiceResponse
 
 from . import ivrs
@@ -140,6 +141,40 @@ def dial_sisyphus(request, env):
     """Return TwiML to dial Sisyphus."""
     return dial_nanpa(env['nanpa_sisyphus'])(request, env)
 
+def random_number(request, env):
+    """Return TwiML to say a random integer."""
+    lang = request.query_params.get('lang', 'en')
+    r = random.randint(0, 9)
+    digit = [
+        "zero",
+        "one",
+        "two",
+        "three",
+        "four",
+        "five",
+        "six",
+        "seven",
+        "eight",
+        "nine"][r]
+    response = VoiceResponse()
+    response.play(
+        # XXX This sound file is not in the ivrs structure, so it isn't checked.
+        ivrs.sound_url(
+            'your-random-number-is',
+            lang,
+            'utilities',
+            env))
+    response.play(
+        # XXX This sound file is not in the ivrs structure, so it isn't checked.
+        ivrs.sound_url(
+            digit,
+            lang,
+            'utilities',
+            env))
+    response.hangup()
+    return response
+
+
 # Dict of destination names to functions to be called for that context.
 DESTINATIONS = {
     'call_911_911': call_911_911,
@@ -154,4 +189,5 @@ DESTINATIONS = {
     'outgoing_operator_accept': outgoing_operator_accept,
     'outgoing_dialtone_pre': outgoing_dialtone_pre,
     'outgoing_operator_enqueue': outgoing_operator_enqueue,
-    'outgoing_operator_pre': outgoing_operator_pre}
+    'outgoing_operator_pre': outgoing_operator_pre,
+    'random_number': random_number}
