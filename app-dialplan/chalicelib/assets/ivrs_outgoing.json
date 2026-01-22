@@ -133,7 +133,7 @@
     "community_outgoing": {
         "menu_entries": [
             ["for-the-fewtel-voice-conference", "futel-conf"],
-            ["for-the-wildcard-line", "wildcard_line_outgoing"],
+            ["for-the-wildcard-line", "wildcard_line_menu"],
             ["for-the-church-of-robotron", "robotron"],
             ["for-hold-the-phone", "hold_the_phone_main"],
             ["for-the-apology-service", "apology_intro"],
