@@ -1,4 +1,37 @@
 {
+    "robotron_menu": {
+        "menu_entries": [
+            ["for-the-doctrine-of-futility", "robotron_doctrine_of_futility"],
+            ["for-the-eight-ways", "robotron_eight_ways"],
+            ["for-the-doctrine-of-error", "robotron_doctrine_of_error"],
+            ["for-the-ninth-position", "robotron_ninth_position"],
+            ["for-what-are-the-robotrons", "robotron_what_are_the_robotrons"],
+            ["for-robotron-battle-poetry", "robotron_robotron_battle_poetry"]],
+        "statement_dir": "community"},
+    "robotron_doctrine_of_futility": {
+        "intro_sounds": ["robotron-doctrine-of-futility"],
+        "next_context": "robotron_menu",
+        "statement_dir": "community"},
+    "robotron_eight_ways": {
+        "intro_sounds": ["robotron-eight-ways"],
+        "next_context": "robotron_menu",
+        "statement_dir": "community"},
+    "robotron_doctrine_of_error": {
+        "intro_sounds": ["robotron-doctrine-of-error"],
+        "next_context": "robotron_menu",
+        "statement_dir": "community"},
+    "robotron_ninth_position": {
+        "intro_sounds": ["robotron-ninth-position"],
+        "next_context": "robotron_menu",
+        "statement_dir": "community"},
+    "robotron_what_are_the_robotrons": {
+        "intro_sounds": ["robotron-what-are-the-robotrons"],
+        "next_context": "robotron_menu",
+        "statement_dir": "community"},
+    "robotron_robotron_battle_poetry": {
+        "intro_sounds": ["robotron-robotron-battle-poetry"],
+        "next_context": "robotron_menu",
+        "statement_dir": "community"},
     "wildcard_line_episode_one": {
         "intro_sounds": ["wildcard-line-episode-one"],
         "next_context": "wildcard_line_menu",
