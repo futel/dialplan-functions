@@ -1,0 +1,15 @@
+{
+    "community_services_oregon": {
+        "menu_entries": [
+            ["for-two-one-one-community-resources", "dial_8666986155"],
+            ["for-multnomah-county-mental-health-crisis-intervention",
+             "dial_5039884888"],
+            ["for-the-call-to-safety-crisis-line", "dial_5032355333"],
+            ["for-the-suicide-prevention-hotline", "dial_8002738255"],
+            ["for-an-obamaphone", "dial_8883215880"]],
+        "statement_dir": "community-services"},
+    "community_services_michigan": {
+        "menu_entries": [
+            ["for-the-suicide-prevention-hotline", "dial_8002738255"],
+            ["for-an-obamaphone", "dial_8003779450"]],
+        "statement_dir": "community-services"}}

@@ -51,6 +51,7 @@ def _get_ivrs():
     out = {}
     srcs = [
         'ivrs_community',
+        'ivrs_community_services',
         'ivrs_directories',
         'ivrs_operator',
         'ivrs_outgoing',
