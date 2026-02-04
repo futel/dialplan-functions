@@ -1,4 +1,21 @@
 {
+    "community_menu": {
+        "menu_entries": [
+            ["for-the-fewtel-voice-conference", "futel-conf"],
+            ["for-the-wildcard-line", "wildcard_line_menu"],
+            ["for-the-church-of-robotron", "robotron_menu"],
+            ["for-hold-the-phone", "hold_the_phone_main"],
+            ["for-the-apology-service", "apology_intro"],
+            ["for-more-information-about-fewtel", "information_futel"]],
+        "statement_dir": "community"},
+    "information_futel": {
+        "intro_statements": [
+            "fewtel-is-portlands-most-exclusive-telephone-network",
+            "fewtel-provides-telephony-and-voicemail-and-human-and-machine-interaction",
+            "all-services-are-free-from-any-fewtel-phone",
+            "for-more-information-contact-the-operator-from-any-fewtel-phone-or-visit-our-website-at-fewtel-dot-net"],
+        "next_context": "community_menu",
+        "statement_dir": "community"},
     "robotron_menu": {
         "menu_entries": [
             ["for-the-doctrine-of-futility", "robotron_doctrine_of_futility"],
