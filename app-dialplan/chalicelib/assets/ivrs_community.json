@@ -8,6 +8,25 @@
             ["for-the-apology-service", "apology_intro"],
             ["for-more-information-about-fewtel", "information_futel"]],
         "statement_dir": "community"},
+    "apology_intro": {
+        "menu_entries": [
+            ["to-apologize", "apology_instructions"],
+            ["to-learn-more-about-the-apology-service", "apology_about"]],
+        "statement_dir": "community"},
+    "apology_about": {
+        "intro_statements": [
+            "apologies-are-not-recorded-or-listened-to",
+            "this-apology-service-is-an-homage-to-allen-bridges-apology-line",
+            "we-hope-you-find-the-act-of-apologizing-helpful"],
+        "next_context": "apology_intro",        
+        "statement_dir": "community"},
+    "apology_instructions": {
+        "intro_statements": ["begin-to-apologize-after-the-tone"],
+        "next_context": "apology_apology",
+        "statement_dir": "community"},
+    "apology_apology": {
+        "intro_sounds": ["beep", "silence-5m"],
+        "statement_dir": "community"},            
     "information_futel": {
         "intro_statements": [
             "fewtel-is-portlands-most-exclusive-telephone-network",

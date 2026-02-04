@@ -106,7 +106,7 @@ def _intro_sounds(c_name, c_dict, lang, iteration, request, env):
             timeout=0,
             request=request,
             response=response)
-        # Play the intro statements once.
+        # Play the intro sounds once.
         for name in intro_sounds:
             gather.play(
                 sound_url(
