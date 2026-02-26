@@ -176,6 +176,11 @@
         "caller_id": "+15033889637",
         "enable_emergency": true
     },
+    "seattle-fortysecond": {
+        "outgoing": "outgoing_seattle",
+        "caller_id": "+14252431894",
+        "enable_emergency": true
+    },
     "seattle-thistle": {
         "outgoing": "outgoing_seattle",
         "caller_id": "+12068886424",
