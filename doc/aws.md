@@ -4,11 +4,14 @@ Other AWS components which must be set up before deploying, and local setup for 
 
 # Meta-requirements
 
-First thing, install the aws cli. You should be able to run the command "aws" from the terminal.
+Install the aws cli. You should be able to run the command "aws" from the terminal.
 
-You need an AWS access key and matching secret key for things to work. An admin will need to give these to you,
-unless you have access to the AWS console. If you do, you can navigate to:
-* <Your login name> (Upper  righthand corner)
+- Have an AWS root user/management account with an organization.
+- Have a user group "cli" with "AdministratorAccess" policy.
+- Have a user in the "cli" user group.
+
+Create an AWS access key and matching secret key. As a root user, use the AWS web console:
+* <Your login name> (Upper righthand corner)
 * Security credentials
 * Users (left)
 * (Choose the desired user)

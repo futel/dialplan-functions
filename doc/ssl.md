@@ -97,9 +97,11 @@ This needs to be done after a certificate is created or replaced, not after reim
 
 Certificates must be renewed before they expire.
 
-This should have been set up by the certificate creation method using systemd, but hasn't been tested, so be prepared to manually renew at the end of the certificate's life. Certificates need to be reimported to aws after renewal. This deployment process doesn't include requirements to make automatic renewal reliable, it is probably running on a laptop.
+This should have been set up by the certificate creation method using systemd, but hasn't been tested, so be prepared to manually renew at the end of the certificate's life. Certificates need to be reimported to AWS after renewal. This deployment process doesn't include requirements to make automatic renewal reliable, it is probably running on a laptop.
 
-sudo certbot renew --cert-name phu73l.net --dns-digitalocean --dns-digitalocean-credentials conf/certbot-creds.ini
+Renew the certificate. If it doesn't need renewal because it expires in over 30 days, the output of certbot renew will indicate that, but the other actions must still be taken.
+
+- sudo certbot renew --cert-name phu73l.net --dns-digitalocean --dns-digitalocean-credentials conf/certbot-creds.ini
 
 - add a weeklong event for expiration to calendar, "sudo certbot certificates" to show the date
 - sudo cat /etc/letsencrypt/live/phu73l.net/cert.pem /etc/letsencrypt/live/phu73l.net/chain.pem /etc/letsencrypt/live/phu73l.net/fullchain.pem >/tmp/all.pem
