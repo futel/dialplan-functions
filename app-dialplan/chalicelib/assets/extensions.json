@@ -145,6 +145,11 @@
         "caller_id": "+15034681337",
         "enable_emergency": false
     },
+    "mother-foucaults": {
+        "outgoing": "directories_portland",
+        "caller_id": "+15034681337",
+        "enable_emergency": false
+    },
     "pod-hab": {
         "outgoing": "outgoing_dialtone",
         "dialtone_ivr": "outgoing_safe",
