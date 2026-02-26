@@ -41,6 +41,7 @@ def _extension():
         'microcosm',
         'princeton',
         'saratoga',
+        'seattle-fortysecond',
         'seattle-thistle',
         'seattle-estelitas',
         'souwester',
