@@ -34,7 +34,6 @@ def _extension():
         'dome-workshop',
         'eighth',
         'fiftyeighth',
-        'fortysecond',
         'ghost-mountain',
         'killingsworth',
         'landline',

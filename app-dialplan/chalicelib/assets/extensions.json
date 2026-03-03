@@ -110,11 +110,6 @@
         "caller_id": "+15038945775",
         "enable_emergency": true
     },
-    "fortysecond": {
-        "outgoing": "outgoing_seattle",
-        "caller_id": "+14252431894",
-        "enable_emergency": true
-    },
     "ghost-mountain": {
         "outgoing": "outgoing_portland",
         "caller_id": "+15034448615",
