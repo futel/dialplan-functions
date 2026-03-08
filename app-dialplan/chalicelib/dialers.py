@@ -357,7 +357,7 @@ def _find_operator_calls(client, extension, env):
             # extension, so that's the one we're looking for.
             # XXX If the caller's extension has hot-leet as the caller id,
             # we won't find it.
-            caller_extensions = util.e164_to_extension(
+            caller_extensions = util.e164_to_extensions(
                 record._from, env['extensions'])
             if extension in caller_extensions:
                 # We found a call coming from extension, that must be it.
