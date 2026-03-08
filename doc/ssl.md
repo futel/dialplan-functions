@@ -67,10 +67,11 @@ Sign up for Red Sift for certificate monitoring.
 
 # Import or reimport and deploy certificate
 
-This needs to be done after a certificate is created or renewed. The certificate is given to AWS, but not yet used to publish HTTPS.
+This needs to be done after a certificate is created or renewed. This gives the certificate to AWS, but does not not yet deploy it to the AWS API gateway if it is not already being used.
 
 - sudo cat /etc/letsencrypt/live/phu73l.net/cert.pem /etc/letsencrypt/live/phu73l.net/chain.pem /etc/letsencrypt/live/phu73l.net/fullchain.pem >/tmp/all.pem
-- visit AWS certificate manager (ACM) web console
+- visit AWS certificate manager web console
+  - https://console.aws.amazon.com/acm/
 - change region to us-east-1
 - import a certificate, or list, visit, reimport certificate with domain name phu73l.net
  - (on the certificate page, it also shows domains phu73l.net, dialplans.phu73l.net, *.dialplans.phu73l.net, ops.phu73l.net, *.ops.phu73l.net)
@@ -83,7 +84,7 @@ If this is a new certificate, note the ARN. This is needed to deploy the AWS API
 
 # Update Lambda functions to use new certificate
 
-This needs to be done after a certificate is created or replaced, not after reimport. The certificate is used by AWS to publish HTTPS.
+This needs to be done after a certificate is created or replaced, not after reimport. The certificate is used by the AWS API gateway to publish HTTPS.
 
 - update config files:
   - app-dialplan/.chalice/config.json
@@ -116,11 +117,13 @@ This does not normally have to be done.
 - sudo certbot certificates
 - certbot delete --cert-name dev.dialplans.phu73l.net
 - visit ACM web console
+  - https://console.aws.amazon.com/acm/
 
 # List certificates
 
 - sudo certbot certificates
 - visit AWS ACM web console
+  - https://console.aws.amazon.com/acm/
 - change region to us-east-1
 
 # Test
@@ -130,7 +133,8 @@ Run the itest tests, or POST to a smoke test URL, as described in test.md.
 Verify with "sudo certbot certificates", see valid certificate for "phu73l.net *.dialplans.phu73l.net *.ops.phu73l.net dialplans.phu73l.net ops.phu73l.net".
 
 View console
-- visit AWS certificate manager (ACM) web console
+- visit AWS certificate manager web console
+  - https://console.aws.amazon.com/acm/
 - change region to us-east-1
 - list certificates with domain name phu73l.net
 
