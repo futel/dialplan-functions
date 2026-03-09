@@ -25,8 +25,16 @@
             ["to-ring-a-fewtel-telephone", "ring-a-futel-fone"],
             ["for-hold-the-phone", "hold_the_phone_main"],
             ["for-the-apology-service", "apology_intro"],
-            ["for-more-information-about-fewtel", "information_futel"]
+            ["for-more-information-about-fewtel", "information_futel_incoming"]
         ],
         "statement_dir": "community"
-    }
+    },
+    "information_futel_incoming": {
+        "intro_statements": [
+            "fewtel-is-portlands-most-exclusive-telephone-network",
+            "fewtel-provides-telephony-and-voicemail-and-human-and-machine-interaction",
+            "all-services-are-free-from-any-fewtel-phone",
+            "for-more-information-contact-the-operator-from-any-fewtel-phone-or-visit-our-website-at-fewtel-dot-net"],
+        "next_context": "community_incoming",
+        "statement_dir": "community"}
 }
