@@ -7,7 +7,7 @@ request = mock.Mock(
     context={'domainPrefix':'domainPrefix'},
     from_user='clinton',
     headers={'host': 'host'},
-    post_fields={'From':'From'},
+    post_fields={'From':'sip:clinton@futel-stage.phu73l.net'},
     query_params={'lang': 'en'})
 
 env = {
@@ -24,6 +24,10 @@ class TestIvrsDestinations(TestCase):
     def test_outgoing_dialtone_pre(self):
         self.assertTrue(
             ivr_destinations.outgoing_dialtone_pre(request, env))
+
+    def test_dial_random_nanpa(self):
+        self.assertTrue(
+            ivr_destinations.dial_random_nanpa(['foo', 'bar'])(request, env))
 
 
 if __name__ == '__main__':

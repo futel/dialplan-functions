@@ -127,13 +127,24 @@ def call_911_9_bounce(request, env):
     return None
 
 def dial_nanpa(nanpa):
-    """Return a function to return TwiML to dial NANPA number."""
+    """Return a function to return TwiML to dial a NANPA number."""
     e164 = "+1" + nanpa
     def curried(request, env):
         """Return twiml to dial the curried e164 number."""
         # This is an outgoing call from a sip client.
         from_user = util.sip_to_user(request.post_fields['From'])
         from_extension = util.sip_to_extension(from_user, env)
+        return util.dial_pstn(e164, from_extension, request)
+    return curried
+
+def dial_random_nanpa(nanpas):
+    """Return a function to return TwiML to dial a random NANPA number."""
+    def curried(request, env):
+        """Return twiml to dial a random NAMPA number."""
+        # This is an outgoing call from a sip client.
+        from_user = util.sip_to_user(request.post_fields['From'])
+        from_extension = util.sip_to_extension(from_user, env)
+        e164 = "+1" + random.choice(nanpas)
         return util.dial_pstn(e164, from_extension, request)
     return curried
 
@@ -184,13 +195,42 @@ DESTINATIONS = {
     'dial_5032387433': dial_nanpa("5032387433"),
     'dial_5039884888': dial_nanpa("5039884888"),
     'dial_5032355333': dial_nanpa("5032355333"),
+    'dial_5056086123': dial_nanpa("5056086123"),
+    'dial_7607339969': dial_nanpa("7607339969"),
     'dial_8002738255': dial_nanpa("8002738255"),
     'dial_8003779450': dial_nanpa("8003779450"),
-    'dial_8003900934': dial_nanpa("8003900934"),
     'dial_8336287999': dial_nanpa("8336287999"),
     'dial_8443876962': dial_nanpa("8443876962"),
     'dial_8666986155': dial_nanpa("8666986155"),
     'dial_8883215880': dial_nanpa("8883215880"),
+    'dial_8134695930': dial_nanpa("8134695930"),
+    'dial_9149401363': dial_nanpa("9149401363"),
+    'dial_dark_fiber': dial_random_nanpa(
+        ['3305720999',
+         '3138499906',
+         '9164400031',
+         '5739960002',
+         '6107970014',
+         '4128850075',
+         '5703870000',
+         '9147379938',
+         '2029659970',
+         '2129679999',
+         '3034360069',
+         '3034360043',
+         '2063670020',
+         '5413340026',
+         '3034360067',
+         '8004379606',
+         '9093900003',
+         '4803919983',
+         '5417380015',
+         '3034360088',
+         '7162579952',
+         '2122559901',
+         '4103339966',
+         # harvard sentence reading
+         '8586515050']),
     'dial_sisyphus': dial_sisyphus,
     'friction': friction,
     'outgoing_operator_accept': outgoing_operator_accept,

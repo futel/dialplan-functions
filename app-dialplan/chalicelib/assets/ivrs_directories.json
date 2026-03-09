@@ -3,7 +3,6 @@
         "menu_entries": [
              ["for-the-druid-of-sissyphus-gardens", "dial_sisyphus"],
              ["for-nature-x-x-x", "dial_8336287999"],
-             ["for-the-office-of-night-things", "dial_8003900934"],
              ["for-they-might-be-giants-dial-a-song", "dial_8443876962"]],
         "statement_dir": "directories"},
     "directories_portland": {
@@ -41,4 +40,13 @@
         "menu_entries": [
             ["for-the-directory", "directories_generic"],
             ["for-the-telecommunications-network", "network"]],
-        "statement_dir": "directories"}}
+        "statement_dir": "directories"},
+    "network": {
+        "menu_entries": [
+            ["for-the-dark-fiber", "dial_dark_fiber"],
+            ["for-the-p-l-a-telephone-network-interface", "dial_5056086123"],
+            ["for-the-collectors-net-inbound-portal", "dial_9149401363"],
+            ["for-the-mojave-phone-booth-conference-line", "dial_7607339969"],
+            ["for-the-shadytel-voice-bbs", "dial_8134695930"]],
+        "statement_dir": "directories"}
+}
