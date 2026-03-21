@@ -38,6 +38,7 @@ def _extension():
         'killingsworth',
         'landline',
         'microcosm',
+        'mother-foucaults',
         'princeton',
         'saratoga',
         'seattle-fortysecond',
