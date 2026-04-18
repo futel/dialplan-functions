@@ -73,12 +73,13 @@ This needs to be done after a certificate is created or renewed. This gives the 
 - visit AWS certificate manager web console
   - https://console.aws.amazon.com/acm/
 - change region to us-east-1
-- import a certificate, or list, visit, reimport certificate with domain name phu73l.net
+- list certificates, visit certificate with domain name phu73l.net
  - (on the certificate page, it also shows domains phu73l.net, dialplans.phu73l.net, *.dialplans.phu73l.net, ops.phu73l.net, *.ops.phu73l.net)
- - certificate body /etc/letsencrypt/live/phu73l.net/cert.pem
- - certificate private key /etc/letsencrypt/live/phu73l.net/privkey.pem
- - certificate chain /tmp/all.pem
-   - this assumes /tmp/all.pem was populated above, if not, remake it
+ - reimport 
+   - certificate body /etc/letsencrypt/live/phu73l.net/cert.pem
+   - certificate private key /etc/letsencrypt/live/phu73l.net/privkey.pem
+   - certificate chain /tmp/all.pem
+     - this assumes /tmp/all.pem was populated above, if not, remake it
    
 If this is a new certificate, note the ARN. This is needed to deploy the AWS API Gateway.
 
