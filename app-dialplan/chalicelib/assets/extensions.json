@@ -142,8 +142,8 @@
     },
     "mother-foucaults": {
         "outgoing": "outgoing_portland",
-        "caller_id": "+15034681337",
-        "enable_emergency": false
+        "caller_id": "+19717542740",
+        "enable_emergency": true
     },
     "pod-hab": {
         "outgoing": "outgoing_dialtone",
