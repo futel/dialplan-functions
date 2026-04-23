@@ -171,6 +171,11 @@
         "caller_id": "+15033889637",
         "enable_emergency": true
     },
+    "seattle-cafered": {
+        "outgoing": "outgoing_seattle",
+        "caller_id": "+12066531750",
+        "enable_emergency": true
+    },
     "seattle-fortysecond": {
         "outgoing": "outgoing_seattle",
         "caller_id": "+14252431894",

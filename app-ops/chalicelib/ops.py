@@ -41,6 +41,7 @@ def _extension():
         'mother-foucaults',
         'princeton',
         'saratoga',
+        'seattle-cafered',
         'seattle-fortysecond',
         'seattle-thistle',
         'seattle-estelitas',
