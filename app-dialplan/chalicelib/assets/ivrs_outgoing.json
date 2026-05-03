@@ -37,6 +37,25 @@
         "other_menu_entries": [
             ["for-the-operator", 0, "outgoing_operator_caller"]],
         "statement_dir": "streetroots"},
+    "outgoing_motherfoucaults": {
+        "pre_callable": "friction",
+        "intro_statements": ["para-espanol", "oprima-estrella"],
+        "next_context": "outgoing_motherfoucaults_menu",
+        "statement_dir": "outgoing"},
+    "outgoing_motherfoucaults_menu": {
+        "menu_entries": [
+            ["to-make-a-call", "outgoing_dialtone"],
+            ["for-aloha-irish-trees", "aloha_menu"],            
+            ["for-voicemail", "voicemail_outgoing"],
+            ["for-the-directory", "directories_portland"],
+            ["for-utilities", "utilities_portland"],
+            ["for-the-fewtel-community", "community_menu"],
+            null,
+            null,
+            [null, "call_911_9"]],
+        "other_menu_entries": [
+            ["for-the-operator", 0, "outgoing_operator_caller"]],
+        "statement_dir": "motherfoucaults"},
     "outgoing_seattle": {
         "pre_callable": "friction",
         "intro_statements": ["para-espanol", "oprima-estrella"],

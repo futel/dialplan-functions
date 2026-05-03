@@ -141,7 +141,7 @@
         "enable_emergency": false
     },
     "mother-foucaults": {
-        "outgoing": "outgoing_portland",
+        "outgoing": "outgoing_motherfoucaults",
         "caller_id": "+19717542740",
         "enable_emergency": true
     },
