@@ -73,20 +73,16 @@ Deploy the instances:
 - (cd app-dialplan && chalice deploy --stage stage)
 - (cd app-ops && chalice deploy --stage stage)
 
-Note the AliasDomainNames.
+Note the AliasDomainName for app-dialplan.
 
 ## Update domain
 
 Find the alias_domain_name:
 - app-dialplan/.chalice/deployed/stage.json
-- app-ops/.chalice/deployed/stage.json
 
-Using the DigitalOcean network web console, add or update CNAME records for domains:
+Using the DigitalOcean network web console, add or update CNAME record for domain:
 - dialplans.phu73l.net
   - hostname stage.dialplans.phu73l.net
-  - alias: <alias domain name>
-- ops.phu73l.net
-  - hostname stage.ops.phu73l.net
   - alias: <alias domain name>
 
 Wait for DNS to be updated:
@@ -94,7 +90,6 @@ Wait for DNS to be updated:
 Verify that the canonical name matches the alias domain name.
 
 - `nslookup stage.dialplans.phu73l.net`
-- `nslookup stage.ops.phu73l.net`
 
 ## Update Twilio Programmable Voice stage components to point to dialplan URLs
 
@@ -139,6 +134,7 @@ If stage, see [test.md](test.md). Run the tests against the deployed instance.
 - (cd app-dialplan && chalice delete --stage stage)
 - (cd app-ops && chalice delete --stage stage)
 
-Using the DigitalOcean network web console, remove CNAME records for domains:
+Using the DigitalOcean network web console, remove CNAME records for domain:
 - dialplans.phu73l.net
+  - hostname stage.dialplans.phu73l.net
 - ops.phu73l.net
