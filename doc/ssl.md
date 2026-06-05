@@ -101,7 +101,11 @@ Certificates must be renewed before they expire.
 
 This should have been set up by the certificate creation method using systemd, but hasn't been tested, so be prepared to manually renew at the end of the certificate's life. Certificates need to be reimported to AWS after renewal. This deployment process doesn't include requirements to make automatic renewal reliable, it is probably running on a laptop.
 
-Renew the certificate. If it doesn't need renewal because it expires in over 30 days, the output of certbot renew will indicate that, but the other actions must still be taken.
+See if the certificate has been renewed. Look for the phutel.net certificate.
+
+- sudo certbot certificates
+
+Renew the certificate if necessary. If it doesn't need renewal because it expires in over 30 days, the output of certbot renew will indicate that, but the other actions must still be taken.
 
 - sudo certbot renew --cert-name phu73l.net --dns-digitalocean --dns-digitalocean-credentials conf/certbot-creds.ini
 
