@@ -55,8 +55,8 @@
         "enable_emergency": true
     },
     "demo-one": {
-        "outgoing": "outgoing_safe",
-        "caller_id": "+15034681337",
+        "outgoing": "outgoing_dialtone",
+        "caller_id": "+19717542538",
         "enable_emergency": false
     },
     "demo-two": {
