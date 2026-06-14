@@ -89,7 +89,7 @@ Wait for DNS to be updated:
 
 Verify that the canonical name matches the alias domain name.
 
-- `nslookup stage.dialplans.phu73l.net`
+- nslookup stage.dialplans.phu73l.net
 
 ## Update Twilio Programmable Voice stage components to point to dialplan URLs
 
@@ -118,7 +118,7 @@ If the certificate has been changed in the meta-requirements, update the certifi
 
 ## Deploy instances
 
-- `source venv/bin/activate`
+- source venv/bin/activate
 - (cd app-dialplan && chalice deploy --stage stage)
 - (cd app-ops && chalice deploy --stage stage)
 
@@ -130,7 +130,7 @@ If stage, see [test.md](test.md). Run the tests against the deployed instance.
 
 # Delete instances
 
-- `source venv/bin/activate`
+- source venv/bin/activate
 - (cd app-dialplan && chalice delete --stage stage)
 - (cd app-ops && chalice delete --stage stage)
 
