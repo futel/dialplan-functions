@@ -45,12 +45,6 @@
         "intro_sounds": ["old-town-crier-info"],
         "next_context": "streetroots_menu",
         "statement_dir": "streetroots"},
-    "streetroots_main": {
-        "intro_sounds": [
-            "shaggy-douglas-intro-i-dream-of-jeany",
-            "shaggy-douglas-i-dream-of-jeany"],
-        "next_context": "shaggy_douglas_street_flea",
-        "statement_dir": "streetroots"},
     "streetroots_menu": {
         "menu_entries": [
             ["for-phoenix", "phoenix_darkness_is_haunting"],

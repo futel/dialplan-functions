@@ -4,6 +4,7 @@
             ["for-the-fewtel-voice-conference", "futel-conf"],
             ["for-the-wildcard-line", "wildcard_line_menu"],
             ["for-the-church-of-robotron", "robotron_menu"],
+            ["for-the-old-town-crier", "streetroots_menu"],
             ["for-hold-the-phone", "hold_the_phone_main"],
             ["for-the-apology-service", "apology_intro"],
             ["for-more-information-about-fewtel", "information_futel"]],

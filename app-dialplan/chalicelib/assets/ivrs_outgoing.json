@@ -26,7 +26,7 @@
     "outgoing_streetroots_menu": {
         "menu_entries": [
             ["to-make-a-call", "outgoing_dialtone"],
-            ["for-the-old-town-crier", "streetroots_main"],            
+            ["for-the-old-town-crier", "streetroots_menu"],            
             ["for-voicemail", "voicemail_outgoing"],
             ["for-the-directory", "directories_portland"],
             ["for-utilities", "utilities_portland"],
