@@ -158,8 +158,8 @@
     },
     "r2d2": {
         "outgoing": "outgoing_safe",
-        "caller_id": "+15033828838",
-        "enable_emergency": true
+        "caller_id": "+15034681337",
+        "enable_emergency": false
     },
     "ry4an-test": {
         "outgoing": "outgoing_ypsi",
