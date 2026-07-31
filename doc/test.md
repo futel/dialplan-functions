@@ -15,7 +15,7 @@ This tests against the local source. Note that this only tests that the source h
 - source venv/bin/activate
 - PYTHONPATH=app-dialplan python local/check_assets.py
 
-# Smoke API integration test
+# API integration test
 
 These test against the current stage deployment. Note that these will cause side effects like log generation.
 
@@ -23,7 +23,7 @@ These test against the current stage deployment. Note that these will cause side
 - pytest app-dialplan/itest
 - pytest app-ops/itest
 
-# Smoke dialplan API client integration test
+# Dialplan API client integration test
 
 These manual tests are to be converted to the itest tests.
 
