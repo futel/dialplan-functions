@@ -45,6 +45,7 @@
     "outgoing_motherfoucaults_menu": {
         "menu_entries": [
             ["to-make-a-call", "outgoing_dialtone"],
+            ["for-the-resident-phone", "mother_foucaults_resident_menu"],
             ["for-aloha-irish-trees", "aloha_menu"],            
             ["for-voicemail", "voicemail_outgoing"],
             ["for-the-directory", "directories_portland"],

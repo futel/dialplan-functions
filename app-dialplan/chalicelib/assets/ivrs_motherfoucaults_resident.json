@@ -8,7 +8,7 @@
         "next_context": "mother_foucaults_resident_menu",
         "statement_dir": "motherfoucaults"},
     "mother_foucaults_resident_request": {
-        "intro_sounds": ["mother-foucaults-resident-request-intro", "beep"],
+        "intro_sounds": ["mother-foucaults-resident-request-intro"],
         "next_context": "mother_foucaults_resident_request_record",
         "statement_dir": "motherfoucaults"},
     "mother_foucaults_resident_interpretation": {

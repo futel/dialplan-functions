@@ -28,6 +28,14 @@ def friction(request, env):
     # 911 digits.
     return None
 
+def mother_foucaults_resident_request_record(request, env):
+    """Return TwiML to record a message."""
+    util.log('mother_foucaults_resident_request_record')
+    response = VoiceResponse()
+    path = util.function_url('/record', [('action', 'mother-foucaults')])
+    response.redirect(path)
+    return response
+
 def outgoing_operator_enqueue(request, env):
     """
     Return TwiML to run an IVR context to put the call next in line
@@ -243,4 +251,5 @@ DESTINATIONS = {
     'outgoing_dialtone_pre': outgoing_dialtone_pre,
     'outgoing_operator_enqueue': outgoing_operator_enqueue,
     'outgoing_operator_pre': outgoing_operator_pre,
-    'random_number': random_number}
+    'random_number': random_number,
+    'mother_foucaults_resident_request_record': mother_foucaults_resident_request_record}
