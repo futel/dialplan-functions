@@ -21,7 +21,7 @@ Domains should be created with DigitalOcean:
 
 # Deploy and development docs
 
-We use dev, stage, and prod instances. We will document stage here.
+We use dev, stage, and prod instances. We will document stage here, replace "stage" with "dev" or "prod" when addressing those instances.
 
 The instance type is determined by the domain and related attributes configured for it. The Twilio Programmable Voice components are pointed at URLs on the domain. An instance can be deleted when the relevant Twilio components don't point to it.
 
@@ -33,10 +33,12 @@ To be done once.
 
 ## Set up environment secrets
 
-Populate .env to match .env.sample as described in [aws.md](aws.md):
+Populate .env.stage to match .env.sample:
 
-- app-dialplan/chalicelib/environment/.env
-- app-ops/chalicelib/environment/.env
+- app-dialplan/chalicelib/environment
+- app-ops/chalicelib/environment
+
+Populate as described in [aws.md](aws.md), and also Twilio creds, and also secret content.
 
 ## Create deployment virtualenv
 
@@ -49,6 +51,13 @@ Populate .env to match .env.sample as described in [aws.md](aws.md):
 ---
 
 # Create and deploy new instances
+
+## Determine branch
+
+Copy relevant .env.stage to .env in:
+
+- app-dialplan/chalicelib/environment
+- app-ops/chalicelib/environment
 
 ## Create or check out branch
 
@@ -104,6 +113,13 @@ For the Application Resources, the URL path is "/dial_sip_e164".
 If stage, see [test.md](test.md). Run the tests against the deployed instance.
 
 # Update an existing instance
+
+## Determine branch
+
+Copy relevant .env.stage to .env in:
+
+- app-dialplan/chalicelib/environment
+- app-ops/chalicelib/environment
 
 ## Test
 

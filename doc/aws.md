@@ -55,9 +55,9 @@ Using the AWS console:
 
 ## Set up environment secrets
 
-Populate .env to match .env.sample:
-- app-dialplan/chalicelib/environment/.env
-- app-ops/chalicelib/environment/.env
+Populate .env.stage or relevant instance to match .env.sample:
+- app-dialplan/chalicelib/environment
+- app-ops/chalicelib/environment
 
 - ASSET_HOST dialplan-assets S3 bucket URL
 - AWS_DEFAULT_REGION us-west-2
