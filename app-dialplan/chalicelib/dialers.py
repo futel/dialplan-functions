@@ -327,18 +327,17 @@ def enqueue_operator_wait(request, env):
     response.leave()
     return str(response)
 
-def enqueue_operator_record(request, env):
+def after_record(request, env):
     """
-    Perform side effects and return TwiML string for the enqueue recording
-    callback after recording has occured.
+    Perform side effects and return TwiML string for the recording
+    callback after recording has occured. The action query param indicates
+    the action which triggered the recording.
     """
     from_user = request.from_user
-    metric.publish('enqueue_operator_record', from_user, env)
+    action = request.query_params['action']
+    metric.publish(action, from_user, env)
     # This is not much notification, but the recordings are discoverable.
-    # XXX but not distinguishable between this and other recordings
-    #     need util using twilio console cli to list, retrieve, delete recording
-    #     web is https://1console.twilio.com/account/ACccee506a7e232c9b6b17175c9e54860c/us1/logs/call-recordings
-    util.log("Operator message: {}".format(request.post_fields['RecordingUrl']))
+    util.log("Recording: {}: {}".format(action, request.post_fields['RecordingUrl']))
     response = VoiceResponse()
     response.hangup()
     return str(response)
@@ -424,7 +423,7 @@ def outgoing_operator_leave(request, env):
         # Return TwiML to record the call, sending to the post-record action,
         # which is needed to log/organize recording.
         response.record(
-            action='/enqueue_operator_record',
+            action='/after_record?action=operator',
             max_length=operator_message_max)
     return str(response)
 

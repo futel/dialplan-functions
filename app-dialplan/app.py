@@ -188,10 +188,10 @@ def _index(request, context_name):
 def _index(request):
     return dialers.enqueue_operator_wait(request, env)
 
-@route('/enqueue_operator_record')
+@route('/after_record')
 @setup
 def _index(request):
-    return dialers.enqueue_operator_record(request, env)
+    return dialers.after_record(request, env)
 
 @route('/outgoing_operator_dialer_status')
 @setup
