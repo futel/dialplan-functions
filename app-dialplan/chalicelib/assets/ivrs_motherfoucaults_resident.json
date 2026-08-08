@@ -1,0 +1,27 @@
+{
+    "mother_foucaults_resident_info": {
+        "intro_sounds": ["mother-foucaults-resident-info"],
+        "next_context": "mother_foucaults_resident_menu",
+        "statement_dir": "motherfoucaults"},
+    "mother_foucaults_resident_view": {
+        "intro_sounds": ["mother-foucaults-resident-view"],
+        "next_context": "mother_foucaults_resident_menu",
+        "statement_dir": "motherfoucaults"},
+    "mother_foucaults_resident_request": {
+        "intro_sounds": ["mother-foucaults-resident-request-intro", "beep"],
+        "next_context": "mother_foucaults_resident_request_record",
+        "statement_dir": "motherfoucaults"},
+    "mother_foucaults_resident_interpretation": {
+        "intro_sounds": ["mother-foucaults-resident-interpretation"],
+        "next_context": "mother_foucaults_resident_menu",
+        "statement_dir": "motherfoucaults"},
+    "mother_foucaults_resident_menu": {
+        "menu_entries": [
+            ["to-request-or-comment", "mother_foucaults_resident_request"],
+            ["to-view-poetic-interactions", "mother_foucaults_resident_view"],
+            ["for-more-information-about-the-resident-phone",
+             "mother_foucaults_resident_info"],
+            ["for-an-interpretation",
+             "mother_foucaults_resident_interpretation"]],
+        "statement_dir": "motherfoucaults"}
+}

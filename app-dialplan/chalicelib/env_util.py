@@ -57,6 +57,7 @@ def _get_ivrs():
         'ivrs_outgoing',
         'ivrs_incoming',
         'ivrs_motherfoucaults',
+        'ivrs_motherfoucaults_resident',
         'ivrs_utilities',
         'ivrs_streetroots']
     for src in srcs:
