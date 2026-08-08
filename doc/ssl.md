@@ -1,12 +1,12 @@
 # SSL certificate
 
-Certificates are needed to for AWS Lambda to publish HTTPS with a custom domain name.
+Certificates are needed for AWS Lambda to publish HTTPS with a custom domain name.
 
 The process is:
 - Create certificate and create calendar renew/reimport reminder
 - Import certificate to AWS
 - Renew certificate peridocally before expiration, or verify renewal
-- Reimport certificate to AWS peridocally before expiration
+- Reimport renewed certificate to AWS peridocally before expiration
 
 # Meta-requirements
 
@@ -43,7 +43,7 @@ Verify with "sudo certbot certificates", see valid certificate for "phu73l.net *
 
 - sudo certbot certonly --dns-digitalocean --dns-digitalocean-credentials conf/certbot-creds.ini -d phu73l.net -d dialplans.phu73l.net -d '*.dialplans.phu73l.net' -d ops.phu73l.net -d '*.ops.phu73l.net'
   - answer questions
-- add expiration to a human's calendar
+- add expiration event to a human's calendar to renew and remport before certficicate expires
 - sudo cat /etc/letsencrypt/live/phu73l.net/cert.pem /etc/letsencrypt/live/phu73l.net/chain.pem /etc/letsencrypt/live/phu73l.net/fullchain.pem >/tmp/all.pem
 
 ## Set up renewal
@@ -80,7 +80,8 @@ This needs to be done after a certificate is created or renewed. This gives the 
    - certificate private key /etc/letsencrypt/live/phu73l.net/privkey.pem
    - certificate chain /tmp/all.pem
      - this assumes /tmp/all.pem was populated above, if not, remake it
-   
+- add expiration event to a human's calendar to renew and remport before certficicate expires
+
 If this is a new certificate, note the ARN. This is needed to deploy the AWS API Gateway.
 
 # Update Lambda functions to use new certificate
@@ -109,7 +110,6 @@ Renew the certificate if necessary. If it doesn't need renewal because it expire
 
 - sudo certbot renew --cert-name phu73l.net --dns-digitalocean --dns-digitalocean-credentials conf/certbot-creds.ini
 
-- add a weeklong event for expiration to calendar, "sudo certbot certificates" to show the date
 - sudo cat /etc/letsencrypt/live/phu73l.net/cert.pem /etc/letsencrypt/live/phu73l.net/chain.pem /etc/letsencrypt/live/phu73l.net/fullchain.pem >/tmp/all.pem
 - Reimport the certificate as in Import or reimport and deploy certificate
 
