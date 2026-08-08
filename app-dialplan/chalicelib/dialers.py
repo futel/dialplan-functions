@@ -1,5 +1,6 @@
 """
-Functions returning TwiML to application HTTP endpoints.
+Functions returning TwiML to application HTTP endpoints. Function definitions to
+be used by routes in the app module.
 """
 
 from twilio.twiml.voice_response import VoiceResponse
@@ -328,12 +329,15 @@ def enqueue_operator_wait(request, env):
 
 def enqueue_operator_record(request, env):
     """
-    Perform side effects and return TwiML string
-    for the enqueue recording callback.
+    Perform side effects and return TwiML string for the enqueue recording
+    callback after recording has occured.
     """
     from_user = request.from_user
     metric.publish('enqueue_operator_record', from_user, env)
     # This is not much notification, but the recordings are discoverable.
+    # XXX but not distinguishable between this and other recordings
+    #     need util using twilio console cli to list, retrieve, delete recording
+    #     web is https://1console.twilio.com/account/ACccee506a7e232c9b6b17175c9e54860c/us1/logs/call-recordings
     util.log("Operator message: {}".format(request.post_fields['RecordingUrl']))
     response = VoiceResponse()
     response.hangup()
@@ -408,14 +412,17 @@ def outgoing_operator_leave(request, env):
     # Return TwiML to continue the caller's call.
     response = VoiceResponse()
     if queue_result != 'bridged':
-        # The caller was not connected to an operator.
+        # The caller was not connected to an operator. Prompt, record message.
         response.play(
-            # XXX This sound file is not in the ivrs structure, so it isn't checked.
+            # XXX This sound file is not in the ivrs structure,
+            #     so it isn't checked.
             ivrs.sound_url(
                 'operators-are-currently-unavailable-please-leave-a-message-for-a-response-leave-your-voicemail-box-number',
                 lang,
                 'operator',
                 env))
+        # Return TwiML to record the call, sending to the post-record action,
+        # which is needed to log/organize recording.
         response.record(
             action='/enqueue_operator_record',
             max_length=operator_message_max)
