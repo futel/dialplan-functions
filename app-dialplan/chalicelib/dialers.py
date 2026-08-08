@@ -16,7 +16,7 @@ sip_domain_subdomain_base = "direct-futel"
 sip_domain_suffix = "sip.twilio.com"
 #sip_edge = "edge=umatilla"
 
-operator_message_max = 60 * 15  # 15 minutes in seconds
+message_max = 60 * 15  # 15 minutes in seconds
 dial_max = 60 * 60              # 60 minutes in seconds
 
 
@@ -327,6 +327,22 @@ def enqueue_operator_wait(request, env):
     response.leave()
     return str(response)
 
+def record(request, env):
+    """
+    Return TwiML string to record, sending the user to after_record after.
+    The action query param indicates the action which triggered the recording.
+    """
+    from_user = request.from_user
+    metric.publish('record', from_user, env)
+    action = request.query_params['action']
+    response = VoiceResponse()
+    # Return TwiML to record the call, sending to the post-record action,
+    # which is needed to log/organize recording.
+    response.record(
+        action='/after_record?action={}'.format(action),
+        max_length=message_max)
+    return str(response)
+
 def after_record(request, env):
     """
     Perform side effects and return TwiML string for the recording
@@ -411,7 +427,8 @@ def outgoing_operator_leave(request, env):
     # Return TwiML to continue the caller's call.
     response = VoiceResponse()
     if queue_result != 'bridged':
-        # The caller was not connected to an operator. Prompt, record message.
+        # The caller was not connected to an operator.
+        # Prompt and redirect to record a message.
         response.play(
             # XXX This sound file is not in the ivrs structure,
             #     so it isn't checked.
@@ -420,11 +437,8 @@ def outgoing_operator_leave(request, env):
                 lang,
                 'operator',
                 env))
-        # Return TwiML to record the call, sending to the post-record action,
-        # which is needed to log/organize recording.
-        response.record(
-            action='/after_record?action=operator',
-            max_length=operator_message_max)
+        path = util.function_url('/record', [('action', 'operator')])
+        response.redirect(path)
     return str(response)
 
 def reject(request, env):
