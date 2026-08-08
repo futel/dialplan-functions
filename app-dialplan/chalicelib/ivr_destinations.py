@@ -1,5 +1,10 @@
 """
 Functions reached by IVR menu choices.
+
+What is the difference between these and dialers? These are IVR destinations,
+reached from /ivr/{destination}, usually when directed from the IVR asset map.
+We could implement these as dialer destinations, this module is mainly for
+IVR organization?
 """
 
 import random
@@ -8,6 +13,7 @@ from twilio.twiml.voice_response import VoiceResponse
 from . import ivrs
 from . import util
 
+# Dialplan URLs used as TwiML response destinations.
 WAIT_FUNCTION = '/enqueue_operator_wait'
 LEAVE_FUNCTION = '/outgoing_operator_leave'
 operator_queue_name = 'operator'
