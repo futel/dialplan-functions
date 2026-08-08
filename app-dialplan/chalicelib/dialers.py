@@ -228,7 +228,7 @@ def ivr(context_name, request, env):
     # There is no digit.
     # Get the source dict for the destination to play.
     dest_c_dict = ivrs.context_dict(env['ivrs'], context_name)
-    if not dest_c_dict:
+    if dest_c_dict is None:
         # We didn't find an IVR context in the context_dict.
         # If it is an IVR destination, return the output of the function.
         destination = ivr_destinations.get_destination(context_name)
