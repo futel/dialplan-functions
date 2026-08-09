@@ -55,7 +55,7 @@
         "enable_emergency": true
     },
     "demo-one": {
-        "outgoing": "outgoing_dialtone",
+        "outgoing": "outgoing_motherfoucaults",
         "caller_id": "+19717542538",
         "enable_emergency": false
     },
