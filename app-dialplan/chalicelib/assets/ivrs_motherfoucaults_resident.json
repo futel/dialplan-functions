@@ -17,11 +17,11 @@
         "statement_dir": "motherfoucaults"},
     "mother_foucaults_resident_menu": {
         "menu_entries": [
-            ["to-request-or-comment", "mother_foucaults_resident_request"],
-            ["to-view-poetic-interactions", "mother_foucaults_resident_view"],
+            ["to-leave-a-poetic-request-for-the-poet-in-residence", "mother_foucaults_resident_request"],
+            ["to-view-responses-by-the-poet-in-residence", "mother_foucaults_resident_view"],
             ["for-more-information-about-the-resident-phone",
              "mother_foucaults_resident_info"],
-            ["for-an-interpretation",
+            ["for-interpretation",
              "mother_foucaults_resident_interpretation"]],
         "statement_dir": "motherfoucaults"}
 }
