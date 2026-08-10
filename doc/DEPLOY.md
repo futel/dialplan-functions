@@ -31,14 +31,14 @@ The instance type is determined by the domain and related attributes configured 
 
 To be done once.
 
-## Set up environment secrets
+## Set up Chalice environment secrets
 
 Populate .env.stage to match .env.sample:
 
 - app-dialplan/chalicelib/environment
 - app-ops/chalicelib/environment
 
-Populate as described in [aws.md](aws.md), and also Twilio creds, and also secret content.
+Populate variable values as described in [aws.md](aws.md), and also Twilio creds, and also secret content.
 
 ## Create deployment virtualenv
 
@@ -74,7 +74,7 @@ If the certificate has been changed in the meta-requrements, update the certific
 - app-dialplan/.chalice/config.json
 - app-ops/.chalice/config.json
 
-## Deploy instances
+## Deploy AWS Lambda etc instances
 
 Deploy the instances:
 
@@ -84,7 +84,7 @@ Deploy the instances:
 
 Note the AliasDomainName for app-dialplan.
 
-## Update domain
+## Update DNS domain hosted by DigitalOcean
 
 Find the alias_domain_name:
 - app-dialplan/.chalice/deployed/stage.json
@@ -132,7 +132,7 @@ If the certificate has been changed in the meta-requirements, update the certifi
 - app-dialplan/.chalice/config.json
 - app-ops/.chalice/config.json
 
-## Deploy instances
+## Deploy AWS Lambda etc instances
 
 - source venv/bin/activate
 - (cd app-dialplan && chalice deploy --stage stage)
@@ -146,9 +146,13 @@ If stage, see [test.md](test.md). Run the tests against the deployed instance.
 
 # Delete instances
 
+## Remove AWS Lambda etc instances
+
 - source venv/bin/activate
 - (cd app-dialplan && chalice delete --stage stage)
 - (cd app-ops && chalice delete --stage stage)
+
+## Remove DNS domain names hosted by DigitalOcean
 
 Using the DigitalOcean network web console, remove CNAME records for domain:
 - dialplans.phu73l.net
