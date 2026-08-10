@@ -367,7 +367,9 @@ def after_record(request, env):
     action = request.query_params['action']
     metric.publish(action, from_user, env)
     # This is not much notification, but the recordings are discoverable.
-    util.log("Recording: {}: {}".format(action, request.post_fields['RecordingUrl']))
+    # We don't mention what stage we are, so we can't tell stage from prod here.
+    util.log(
+        "Recording: {}: {}".format(action, request.post_fields['RecordingUrl']))
     response = VoiceResponse()
     response.hangup()
     return str(response)
