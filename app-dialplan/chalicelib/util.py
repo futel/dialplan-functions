@@ -96,8 +96,15 @@ def e164_to_extensions(e164, extension_map):
         return None
     return [key for key in extension_map
             if extension_map[key]['caller_id'] == e164]
-    # Are we in an unknown state if we get here? We didn't expect to look up a
-    # callerid without finding one?
+    return None
+
+def e164_to_destination(e164, destination_map):
+    """
+    Return a keys for the destination matching the given E.164 string, or None.
+    """
+    for key in destination_map:
+        if destination_map[key]['caller_id'] == e164:
+            return destination_map[key]['destination']
     return None
 
 def normalize_number(number):

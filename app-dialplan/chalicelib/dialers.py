@@ -78,7 +78,7 @@ def dial_outgoing(request, env):
     """
     Return TwiML string to dial PSTN, dial SIP URI, or play IVR,
     with attributes from request. Used for both the initial destination
-    and the destination for numbers gathered from the dialtone.
+    for Twilio outgoing calls, and for numbers gathered from the dialtone.
     """
     from_user = request.from_user
     metric.publish('dial_outgoing', from_user, env)
@@ -137,8 +137,10 @@ def dial_outgoing(request, env):
 # This might more normally named dial_incoming.
 def dial_sip_e164(request, env):
     """
-    Return TwiML string to call an extension registered to our SIP Domains,
-    looked up by the E.164 number in the To of the request.
+    Return TwiML string to call an extension registered to our SIP Domains or
+    start a destination context, looked up by the E.164 number in the To of the
+    request.
+    Used for incoming calls to Twilio phone numbers.
     """
     # Find the calling user.
     # We only expect to be taking incoming calls from external numbers, so we
@@ -151,16 +153,28 @@ def dial_sip_e164(request, env):
     to_number = request.post_fields['To']
     to_number = util.normalize_number(to_number)
 
-    # Find the extensions to call, and redirect to call them.
+    # Find out how to redirect based on the number being called.
+
     to_extensions = util.e164_to_extensions(to_number, env['extensions'])
     if to_extensions:
+        # The number called corresponds to extension(s). Redirect to call them.
         response = VoiceResponse()
         path = util.function_url(
             '/dial_extension', [('extensions', to_extensions)])
         response.redirect(path)
         return str(response)
 
-    # It didn't match the number of one of our SIP extensions.
+    to_destination = util.e164_to_destination(to_number, env['destinations'])
+    if to_destination:
+        # The number called corresponds to a destination. Redirect to it.
+        destination = '/ivr/{}'.format(to_destination)
+        response = VoiceResponse()
+        response.redirect(destination)
+        return str(response)
+
+    # The number didn't match an extension or destination.
+    # This is probably an configuration error? We don't expect to hook up Twilio
+    # to numbers that don't have an extension or destination.
     response = VoiceResponse()
     response.redirect('/reject')
     return str(response)

@@ -9,6 +9,7 @@ dotenv.load_dotenv(os.path.join(
 
 def get_env():
     env = _get_env_attributes()
+    env['destinations'] = _get_destinations()
     env['extensions'] = _get_extensions()
     env['ivrs'] = _get_ivrs()
     env['twilio_client'] = _get_twilio_client(env)
@@ -38,6 +39,13 @@ def _get_twilio_client(env):
     twilio_auth_token = env['TWILIO_AUTH_TOKEN']
     client = Client(twilio_account_sid, twilio_auth_token)
     return client
+
+def _get_destinations():
+    """Return destinations asset object."""
+    filename = os.path.join(
+        os.path.dirname(__file__), 'assets', 'destinations.json')
+    with open(filename) as f:
+        return json.load(f)
 
 def _get_extensions():
     """Return extensions asset object."""
