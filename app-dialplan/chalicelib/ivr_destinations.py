@@ -252,4 +252,5 @@ DESTINATIONS = {
     'outgoing_operator_enqueue': outgoing_operator_enqueue,
     'outgoing_operator_pre': outgoing_operator_pre,
     'random_number': random_number,
+    'cycle_quest_clue': dial_nanpa("5416665020"),
     'mother_foucaults_resident_request_record': mother_foucaults_resident_request_record}
