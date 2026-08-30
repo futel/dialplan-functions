@@ -3,9 +3,7 @@
         "menu_entries": [
             ["for-the-current-time", "current-time"],
             ["for-the-trymet-transit-tracker", "dial_5032387433"],
-            ["for-a-random-number", "random_number"],
-            ["to-hear-the-cycle-quest-clue", "cycle_quest_clue"]
-        ],
+            ["for-a-random-number", "random_number"]],
         "statement_dir": "utilities"},
     "utilities_generic": {
         "menu_entries": [
