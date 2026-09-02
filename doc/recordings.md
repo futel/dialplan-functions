@@ -12,21 +12,19 @@ What recordings are there?
   - mother-foucaults
 
 How are recordings found?
-- Recording existence is indicated by log lines. Each 
+- When reordings are made, a log message is created: "Recording: <name>: <url>"
 - Look through the logs as described in test.md
 - Lines starting with "Recording:" in the logs indicate recordings
 - log line format is "Recording: ", followed by the action and URL
   - eg for operator recordings look for "Recording: operator"
 
 How are recordings obtained?
-
-Currently 
-
-- When reordings are made, a log message is created: "Recording: <name>: <url>"
-- To retrieve WAV audio, GET URLs
-  - No creds are needed for GET?
-  - If you are me, store these locally in the project directory
-- To delete, DELETE URLs XXX with a json suffix?
+- With get_recordings.py eg
+  - python3 local/get_recordings.py app-dialplan/logs.out mother-foucaults
+  - python3 local/get_recordings.py app-dialplan/logs.out operator --delete
+- If you are me, store these locally in the project directory  
+- To retrieve, GET URLs
+- To delete, DELETE URLs
   - HTTP basic auth creds are needed for these
     - creds are found at the front page of the Twilio web console, "Account ID" "Auth Token"
   - example "curl -X DELETE <URL>.json -u '<id>:<password>'"

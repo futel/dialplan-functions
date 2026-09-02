@@ -1,5 +1,5 @@
 """
-Download and delete operator messages stored by Twilio Programmable Voice.
+Download and delete all messages stored by Twilio Programmable Voice.
 """
 
 import dotenv
