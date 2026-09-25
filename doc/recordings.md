@@ -24,8 +24,10 @@ How are recordings obtained?
   - python3 local/get_recordings.py app-dialplan/logs.out operator --delete
 - If you are me, store these locally in the project directory  
 - To retrieve, GET URLs
+  - example "wget <URL>.wav"
+  - note that .wav suffix is added, this is not necessary but sets the format and names the downloaded file
 - To delete, DELETE URLs
   - HTTP basic auth creds are needed for these
     - creds are found at the front page of the Twilio web console, "Account ID" "Auth Token"
   - example "curl -X DELETE <URL>.json -u '<id>:<password>'"
-
+  - note that .json suffix is added
