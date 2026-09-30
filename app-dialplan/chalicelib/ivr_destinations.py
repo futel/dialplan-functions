@@ -204,6 +204,7 @@ def random_number(request, env):
 DESTINATIONS = {
     'call_911_911': call_911_911,
     'call_911_9_bounce': call_911_9_bounce,
+    'dial_2027621401': dial_nanpa("2027621401"),
     'dial_3138884044': dial_nanpa("3138884044"),
     'dial_5038234120': dial_nanpa("5038234120"),
     'dial_5032387433': dial_nanpa("5032387433"),
