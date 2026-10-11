@@ -130,6 +130,11 @@
         "caller_id": "+17345476651",
         "enable_emergency": true
     },
+    "matteson-library": {
+        "outgoing": "outgoing_safe",
+        "caller_id": "+15034681337",
+        "enable_emergency": false
+    },
     "microcosm": {
         "outgoing": "outgoing_portland",
         "caller_id": "+15032945966",
