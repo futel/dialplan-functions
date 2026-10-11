@@ -102,7 +102,7 @@ Certificates must be renewed before they expire.
 
 This should have been set up by the certificate creation method using systemd, but hasn't been tested, so be prepared to manually renew at the end of the certificate's life. Certificates need to be reimported to AWS after renewal. This deployment process doesn't include requirements to make automatic renewal reliable, it is probably running on a laptop.
 
-See if the certificate has been renewed. Look for the phutel.net certificate.
+See if the certificate has been renewed. Look for the phu73l.net certificate.
 
 - sudo certbot certificates
 
