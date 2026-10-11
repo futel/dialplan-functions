@@ -110,6 +110,8 @@ Renew the certificate if necessary. If it doesn't need renewal because it expire
 
 - sudo certbot renew --cert-name phu73l.net --dns-digitalocean --dns-digitalocean-credentials conf/certbot-creds.ini
 
+Set up and reimport the certificate with AWS.
+
 - sudo cat /etc/letsencrypt/live/phu73l.net/cert.pem /etc/letsencrypt/live/phu73l.net/chain.pem /etc/letsencrypt/live/phu73l.net/fullchain.pem >/tmp/all.pem
 - Reimport the certificate as in Import or reimport and deploy certificate
 

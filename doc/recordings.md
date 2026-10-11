@@ -20,8 +20,8 @@ How are recordings found?
 
 How are recordings obtained?
 - With get_recordings.py eg
-  - python3 local/get_recordings.py app-dialplan/logs.out mother-foucaults
-  - python3 local/get_recordings.py app-dialplan/logs.out operator --delete
+  - source venv/bin/activate && python3 local/get_recordings.py logs.out mother-foucaults
+  - source venv/bin/activate && python3 local/get_recordings.py logs.out operator
 - If you are me, store these locally in the project directory  
 - To retrieve, GET URLs
   - example "wget <URL>.wav"

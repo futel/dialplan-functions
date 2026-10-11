@@ -60,9 +60,16 @@ Set up and run acceptance tests as in testplan/setup.md and testplan/readme.md. 
 
 # View logs
 
+## Use --follow to avoid a chalice bug with --since, then quit when we hit the present or when desired.
+
 - source venv/bin/activate
 - cd app-dialplan # or app-ops
 - chalice logs --stage stage --since 10m --follow
+
+## use aws logs to avoid a chalice bug with --since.
+
+- aws logs tail /aws/lambda/dialplan-prod --since 10m --format short
+  - or dialplan-prod, ops-prod, ops-stage
 
 # View components in AWS console
 
