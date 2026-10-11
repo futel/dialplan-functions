@@ -1,4 +1,4 @@
->{
+{
     "incoming_leet": {
         "intro_statements": ["para-espanol", "oprima-estrella"],
         "next_context": "incoming_leet_menu",
