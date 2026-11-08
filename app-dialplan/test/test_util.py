@@ -39,6 +39,19 @@ class TestUtil(TestCase):
         self.assertFalse(
             util.filter_outgoing_number('+525555536266', True))
 
+    def test_filter_outgoing_number_length(self):
+        # NANPA numbers that are too short or too long.
+        self.assertTrue(util.filter_outgoing_number('+1', True))
+        self.assertTrue(util.filter_outgoing_number('+11', True))
+        self.assertTrue(util.filter_outgoing_number('+1503555121', True))
+        self.assertTrue(util.filter_outgoing_number('+150355512123', True))
+        # Mexican numbers that are too short or too long.
+        self.assertTrue(util.filter_outgoing_number('+52555553626', True))
+        self.assertTrue(util.filter_outgoing_number('+5255555362661', True))
+        # Short numbers that aren't NANPA service numbers.
+        self.assertTrue(util.filter_outgoing_number('+5037', True))
+        self.assertTrue(util.filter_outgoing_number('+5212', True))
+
     def test_dial_pstn(self):
         extensions = env_util._get_extensions()
         extension = extensions['ainsworth']

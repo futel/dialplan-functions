@@ -144,15 +144,20 @@ def filter_outgoing_number(number, enable_emergency):
     """
     if number in ('+1911', '+1933'):
         return not enable_emergency
-    if len(number) == 5:
+    if number.startswith('+' + usa_code) and len(number) == 5:
         # Accept +1911, +1211, etc.
         return False
-    if not (number.startswith('+' + usa_code) or
-            number.startswith('+' + mexico_code)):
+    if number.startswith('+' + usa_code):
+        # NANPA numbers are a 10 digit national number.
+        if len(number) != len('+' + usa_code) + 10:
+            return True
+    elif number.startswith('+' + mexico_code):
+        # Mexican numbers are a 10 digit national number.
+        if len(number) != len('+' + mexico_code) + 10:
+            return True
+    else:
         # Not NANPA or Mexico.
         return True
-    # Should we validate US length here?
-    # Can we validate Mexico length here?
     # Reject expensive NANPA numbers.
     # Note that Twilio might still reject some NANPA,
     # depending on settings.
