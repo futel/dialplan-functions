@@ -27,6 +27,10 @@ class TestUtil(TestCase):
         self.assertEqual(util.normalize_number('+911'), '+1911')
         self.assertEqual(util.normalize_number('911'), '+1911')
 
+    def test_pstn_number(self):
+        self.assertEqual(util.pstn_number('211', True), '+18666986155')
+        self.assertEqual(util.pstn_number('5035551212', True), '+15035551212')
+
     def test_e164_to_extensions(self):
         extensions = env_util._get_extensions()
         self.assertEqual(

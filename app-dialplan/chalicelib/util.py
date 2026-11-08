@@ -2,7 +2,7 @@ from twilio.twiml.voice_response import VoiceResponse
 from urllib import parse
 
 # Map of phone numbers to transform.
-transform_numbers = {'+211': '+18666986155'}
+transform_numbers = {'+1211': '+18666986155'}
 # Allowed country codes.
 usa_code = '1';
 mexico_code = '52';
