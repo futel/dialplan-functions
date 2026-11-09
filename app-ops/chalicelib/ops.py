@@ -37,6 +37,7 @@ def _extension():
         'ghost-mountain',
         'killingsworth',
         'landline',
+        'matteson-library',
         'microcosm',
         'mother-foucaults',
         'princeton',
